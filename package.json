@@ -1,0 +1,22 @@
+{
+  "name": "unblocked-react-ssr",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node server/index.js",
+    "build": "npm run build:client && npm run build:server",
+    "build:client": "vite build --outDir dist/client",
+    "build:server": "vite build --ssr src/entry-server.jsx --outDir dist/server",
+    "start": "node server/index.js --prod"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "latest",
+    "express": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {
+    "sass": "^1.105.1",
+    "vite": "latest"
+  }
+}

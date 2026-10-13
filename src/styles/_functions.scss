@@ -1,0 +1,3 @@
+@function vw($sizeInPx) {
+  @return #{calc($sizeInPx * 1px / var(--base-size) * 100vw)};
+}

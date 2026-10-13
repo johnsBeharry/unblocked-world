@@ -1,0 +1,307 @@
+@use '../../../../../styles/functions' as *;
+
+// Shared layout for the four homepage theme sections.
+// Values are based on the supplied Permanence section; colors and artwork
+// are switched through section modifiers.
+
+.theme-section {
+  --theme-bg: #43a772;
+  --theme-art-bg: #369462;
+  --theme-ink: #272727;
+  --theme-copy: #272727;
+  --theme-bar: #272727;
+
+  position: relative;
+  width: vw(1440);
+  height: vw(984);
+  overflow: clip;
+  box-sizing: border-box;
+  background-color: var(--theme-bg);
+
+  &, *, *::before, *::after { box-sizing: border-box; }
+  p { margin: 0; }
+
+  &__title,
+  &__index,
+  &__side-label,
+  &__versus {
+    position: absolute;
+    word-break: break-word;
+    font-style: normal;
+    color: var(--theme-ink);
+  }
+
+  &__title,
+  &__index,
+  &__question {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+  }
+
+  &__description,
+  &__side-label,
+  &__versus {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+  }
+
+  &__title {
+    line-height: 0.9;
+    left: calc(62.5% - vw(407));
+    top: calc(50% - vw(472));
+    font-size: vw(100);
+    letter-spacing: vw(-6);
+    width: vw(792.939);
+  }
+
+  &__index {
+    line-height: 0.9;
+    left: calc(4.17% - vw(40));
+    top: calc(50% - vw(472));
+    font-size: vw(100);
+    letter-spacing: vw(-6);
+    white-space: nowrap;
+  }
+
+  &__art {
+    position: absolute;
+    left: calc(33.33% + vw(13));
+    top: vw(404);
+    width: vw(927);
+    height: vw(560);
+    background-color: var(--theme-art-bg);
+  }
+
+  &__bar {
+    position: absolute;
+    background-color: var(--theme-bar);
+  }
+
+  &__rule {
+    position: absolute;
+    left: vw(20);
+    top: vw(384);
+    width: vw(1400);
+    height: 0;
+  }
+
+  &__rule-inset {
+    position: absolute;
+    inset: vw(-0.5) 0;
+  }
+
+  &__rule-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__copy {
+    position: absolute;
+    left: vw(20);
+    bottom: vw(40);
+    width: vw(335);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: vw(40);
+    color: var(--theme-copy);
+    font-style: normal;
+    word-break: break-word;
+    line-height: 0;
+  }
+
+  &__question-wrap,
+  &__description-wrap {
+    position: relative;
+    width: 100%;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
+  &__question-wrap {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: vw(40);
+    letter-spacing: vw(-1.6);
+  }
+
+  &__description-wrap {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: vw(20);
+    letter-spacing: vw(-0.8);
+  }
+
+  &__question,
+  &__description {
+    line-height: 1.02;
+  }
+
+  &__description {
+    position: relative;
+    width: 100%;
+    flex-shrink: 0;
+    font-style: normal;
+    color: var(--theme-copy);
+  }
+
+  &__side-label,
+  &__versus {
+    transform: translateX(-100%);
+    line-height: 1.02;
+    font-size: vw(20);
+    letter-spacing: vw(-0.8);
+    text-align: right;
+    white-space: nowrap;
+    top: vw(344);
+  }
+
+  &__side-label { left: calc(91.67% + vw(101)); }
+  &__versus { left: calc(4.17% - vw(5)); }
+
+  &--ownership {
+    --theme-bg: #101010;
+    --theme-art-bg: #000;
+    --theme-ink: #dc91a8;
+    --theme-copy: #dc91a8;
+    --theme-bar: #f4a8c0;
+
+    .theme-section__copy {
+      position: static;
+      display: block;
+    }
+
+    .theme-section__question-wrap {
+      position: absolute;
+      left: calc(12.5% - vw(160));
+      top: vw(726);
+      width: vw(335);
+    }
+
+    .theme-section__description-wrap {
+      position: absolute;
+      left: calc(12.5% - vw(160));
+      top: vw(848);
+      width: vw(335);
+    }
+  }
+
+  &--energy {
+    --theme-bg: #e8e17e;
+    --theme-art-bg: #d6cf6c;
+
+    .theme-section__copy {
+      top: vw(701);
+      bottom: auto;
+    }
+  }
+
+  &--peers {
+    --theme-bg: #f4a8c0;
+    --theme-art-bg: #d997ac;
+
+    .theme-section__copy {
+      top: vw(742);
+      bottom: auto;
+    }
+  }
+}
+
+/* Permanence artwork */
+.theme-section--permanence {
+  .theme-section__bar--01 { left: vw(233.13); top: vw(194.63); width: vw(153.75); height: vw(30); }
+  .theme-section__bar--02 { left: vw(233.13); top: vw(149.13); width: vw(153.75); height: vw(30); }
+  .theme-section__bar--03 { left: vw(233.13); top: vw(239.63); width: vw(153.75); height: vw(22.5); }
+  .theme-section__bar--04 { left: vw(233.13); top: vw(277.13); width: vw(153.75); height: vw(15); }
+  .theme-section__bar--05 { left: vw(233.13); top: vw(307.13); width: vw(153.75); height: vw(7.5); }
+  .theme-section__bar--06 { left: vw(233.13); top: vw(329.63); width: vw(153.75); height: vw(3.75); }
+  .theme-section__bar--07 { left: vw(386.87); top: vw(371.38); width: vw(153.75); height: vw(30); }
+  .theme-section__bar--08 { left: vw(386.87); top: vw(416.38); width: vw(153.75); height: vw(30); }
+  .theme-section__bar--09 { left: vw(386.87); top: vw(333.88); width: vw(153.75); height: vw(22.5); }
+  .theme-section__bar--10 { left: vw(386.87); top: vw(303.88); width: vw(153.75); height: vw(15); }
+  .theme-section__bar--11 { left: vw(386.87); top: vw(281.38); width: vw(153.75); height: vw(7.5); }
+  .theme-section__bar--12 { left: vw(386.87); top: vw(262.63); width: vw(153.75); height: vw(3.75); }
+  .theme-section__bar--13 { left: vw(540.62); top: vw(221.63); width: vw(153.75); height: vw(30); }
+  .theme-section__bar--14 { left: vw(540.62); top: vw(270.38); width: vw(153.75); height: vw(30); }
+  .theme-section__bar--15 { left: vw(540.62); top: vw(184.13); width: vw(153.75); height: vw(22.5); }
+  .theme-section__bar--16 { left: vw(540.62); top: vw(154.13); width: vw(153.75); height: vw(15); }
+  .theme-section__bar--17 { left: vw(540.62); top: vw(131.63); width: vw(153.75); height: vw(7.5); }
+  .theme-section__bar--18 { left: vw(540.62); top: vw(112.88); width: vw(153.75); height: vw(3.75); }
+}
+
+/* Ownership artwork */
+.theme-section--ownership {
+  .theme-section__bar--01 { left: vw(389.66); top: vw(177.98); width: vw(147); height: vw(28.683); }
+  .theme-section__bar--02 { left: vw(389.66); top: vw(142.12); width: vw(147); height: vw(21.512); }
+  .theme-section__bar--03 { left: vw(389.66); top: vw(113.44); width: vw(147); height: vw(14.341); }
+  .theme-section__bar--04 { left: vw(389.66); top: vw(91.93); width: vw(147); height: vw(7.171); }
+  .theme-section__bar--05 { left: vw(389.66); top: vw(74); width: vw(147); height: vw(3.585); }
+  .theme-section__bar--06 { left: vw(389.66); top: vw(353.66); width: vw(147); height: vw(28.683); }
+  .theme-section__bar--07 { left: vw(389.66); top: vw(396.69); width: vw(147); height: vw(21.512); }
+  .theme-section__bar--08 { left: vw(389.66); top: vw(432.54); width: vw(147); height: vw(14.341); }
+  .theme-section__bar--09 { left: vw(389.66); top: vw(461.22); width: vw(147); height: vw(7.171); }
+  .theme-section__bar--10 { left: vw(389.66); top: vw(482.73); width: vw(147); height: vw(3.585); }
+  .theme-section__bar--11 { left: vw(360.98); top: vw(206.66); width: vw(28.683); height: vw(147); }
+  .theme-section__bar--12 { left: vw(325.12); top: vw(206.66); width: vw(21.512); height: vw(147); }
+  .theme-section__bar--13 { left: vw(296.44); top: vw(206.66); width: vw(14.341); height: vw(147); }
+  .theme-section__bar--14 { left: vw(274.92); top: vw(206.66); width: vw(7.171); height: vw(147); }
+  .theme-section__bar--15 { left: vw(257); top: vw(206.66); width: vw(3.585); height: vw(147); }
+  .theme-section__bar--16 { left: vw(536.66); top: vw(206.66); width: vw(28.683); height: vw(147); }
+  .theme-section__bar--17 { left: vw(579.69); top: vw(206.66); width: vw(21.512); height: vw(147); }
+  .theme-section__bar--18 { left: vw(615.53); top: vw(206.66); width: vw(14.341); height: vw(147); }
+  .theme-section__bar--19 { left: vw(644.22); top: vw(206.66); width: vw(7.171); height: vw(147); }
+  .theme-section__bar--20 { left: vw(665.73); top: vw(206.66); width: vw(3.585); height: vw(147); }
+}
+
+/* Energy artwork */
+.theme-section--energy {
+  .theme-section__bar--01 { left: vw(540.88); top: vw(264.62); width: vw(153.75); height: vw(30); }
+  .theme-section__bar--02 { left: vw(540.88); top: vw(212.12); width: vw(153.75); height: vw(37.5); }
+  .theme-section__bar--03 { left: vw(540.88); top: vw(152.12); width: vw(153.75); height: vw(45); }
+  .theme-section__bar--04 { left: vw(540.88); top: vw(99.62); width: vw(153.75); height: vw(37.5); }
+  .theme-section__bar--05 { left: vw(540.88); top: vw(309.62); width: vw(153.75); height: vw(22.5); }
+  .theme-section__bar--06 { left: vw(540.88); top: vw(347.12); width: vw(153.75); height: vw(15); }
+  .theme-section__bar--07 { left: vw(540.88); top: vw(377.12); width: vw(153.75); height: vw(7.5); }
+  .theme-section__bar--08 { left: vw(540.88); top: vw(399.62); width: vw(153.75); height: vw(3.75); }
+  .theme-section__bar--09 { left: vw(233.38); top: vw(264.62); width: vw(153.75); height: vw(30); }
+  .theme-section__bar--10 { left: vw(233.38); top: vw(212.12); width: vw(153.75); height: vw(37.5); }
+  .theme-section__bar--11 { left: vw(233.38); top: vw(309.62); width: vw(153.75); height: vw(22.5); }
+  .theme-section__bar--12 { left: vw(233.38); top: vw(347.12); width: vw(153.75); height: vw(15); }
+  .theme-section__bar--13 { left: vw(233.38); top: vw(377.12); width: vw(153.75); height: vw(7.5); }
+  .theme-section__bar--14 { left: vw(233.38); top: vw(188.62); width: vw(153.75); height: vw(7.5); }
+  .theme-section__bar--15 { left: vw(387.13); top: vw(264.62); width: vw(153.75); height: vw(30); }
+  .theme-section__bar--16 { left: vw(387.13); top: vw(309.62); width: vw(153.75); height: vw(37.5); }
+  .theme-section__bar--17 { left: vw(387.13); top: vw(362.12); width: vw(153.75); height: vw(45); }
+  .theme-section__bar--18 { left: vw(387.13); top: vw(422.12); width: vw(153.75); height: vw(37.5); }
+  .theme-section__bar--19 { left: vw(387.13); top: vw(227.12); width: vw(153.75); height: vw(22.5); }
+  .theme-section__bar--20 { left: vw(387.13); top: vw(197.12); width: vw(153.75); height: vw(15); }
+  .theme-section__bar--21 { left: vw(387.13); top: vw(174.62); width: vw(153.75); height: vw(7.5); }
+  .theme-section__bar--22 { left: vw(387.13); top: vw(155.87); width: vw(153.75); height: vw(3.75); }
+}
+
+/* Peers artwork */
+.theme-section--peers {
+  .theme-section__bar--01 { left: vw(387.13); top: vw(161.62); width: vw(153.75); height: vw(24.75); }
+  .theme-section__bar--02 { left: vw(297.63); top: vw(186.62); width: vw(90); height: vw(12); }
+  .theme-section__bar--03 { left: vw(233.38); top: vw(223.12); width: vw(153.75); height: vw(18); }
+  .theme-section__bar--04 { left: vw(233.38); top: vw(303.37); width: vw(153.75); height: vw(36); }
+  .theme-section__bar--05 { left: vw(297.63); top: vw(370.62); width: vw(90); height: vw(36); }
+  .theme-section__bar--06 { left: vw(540.88); top: vw(241.12); width: vw(153.75); height: vw(62.25); }
+  .theme-section__bar--07 { left: vw(540.63); top: vw(149.62); width: vw(90); height: vw(12); }
+  .theme-section__bar--08 { left: vw(418.63); top: vw(104.62); width: vw(90); height: vw(6); }
+  .theme-section__bar--09 { left: vw(540.88); top: vw(186.37); width: vw(153.75); height: vw(24.75); }
+  .theme-section__bar--10 { left: vw(387.13); top: vw(339.37); width: vw(153.75); height: vw(31.5); }
+  .theme-section__bar--11 { left: vw(387.13); top: vw(134.62); width: vw(153.75); height: vw(15); }
+  .theme-section__bar--12 { left: vw(387.13); top: vw(406.87); width: vw(153.75); height: vw(18); }
+  .theme-section__bar--13 { left: vw(419.63); top: vw(442.62); width: vw(90); height: vw(12); }
+  .theme-section__bar--14 { left: vw(387.13); top: vw(264.37); width: vw(153.75); height: vw(39); }
+  .theme-section__bar--15 { left: vw(387.13); top: vw(210.37); width: vw(153.75); height: vw(13.5); }
+  .theme-section__bar--16 { left: vw(540.88); top: vw(321.37); width: vw(153.75); height: vw(36); }
+  .theme-section__bar--17 { left: vw(540.63); top: vw(379.62); width: vw(90); height: vw(27); }
+}
+
+
+

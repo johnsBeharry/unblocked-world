@@ -5,12 +5,15 @@
   z-index: 20;
 }
 
+.homeColor { color: #d9d9d9; }
+.posterColor { color: #dc91a8; }
+
 .nav,
 .home {
   position: absolute;
   top: vw(20);
   color: inherit;
-  font-family: 'Inter:Medium', sans-serif;
+  font-family: 'Inter Local', sans-serif;
   font-size: vw(20);
   font-weight: 500;
   letter-spacing: vw(-0.8);
@@ -38,3 +41,9 @@
   left: vw(20);
   text-decoration: none;
 }
+
+.nav.homeColor,
+.home.homeColor { color: #d9d9d9; }
+
+.nav.posterColor,
+.home.posterColor { color: #dc91a8; }

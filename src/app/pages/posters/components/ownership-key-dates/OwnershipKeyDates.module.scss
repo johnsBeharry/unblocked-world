@@ -1,0 +1,97 @@
+@use '../../../../../styles/functions' as *;
+
+.section {
+  position: relative;
+  width: vw(1440);
+  height: vw(1434);
+  overflow: clip;
+  background: #000;
+  color: #dc91a8;
+
+  &, *, *::before, *::after { box-sizing: border-box; }
+  p, h2 { margin: 0; }
+}
+
+.title {
+  position: absolute;
+  top: vw(206);
+  left: 0;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  color: #dc91a8;
+  font-family: 'Inter Local', sans-serif;
+  font-size: vw(160);
+  font-style: normal;
+  font-weight: 600;
+  line-height: 0.83;
+  letter-spacing: vw(-9.6);
+  text-align: center;
+}
+
+.intro {
+  position: absolute;
+  top: vw(540);
+  left: 50%;
+  width: vw(460);
+  transform: translateX(-50%);
+  color: #dc91a8;
+  font-family: 'Inter Local', sans-serif;
+  font-size: vw(20);
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: vw(-0.8);
+  text-align: center;
+}
+
+.timeline {
+  position: absolute;
+  top: vw(820);
+  left: vw(20);
+  width: vw(1400);
+}
+
+.row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: vw(73);
+  border-top: vw(1) solid rgba(220, 145, 168, 0.75);
+  color: #dc91a8;
+  font-family: 'Inter Local', sans-serif;
+}
+
+.number,
+.milestone,
+.date {
+  font-style: normal;
+  line-height: 1.02;
+  white-space: nowrap;
+}
+
+.number {
+  position: absolute;
+  left: 0;
+  font-size: vw(20);
+  font-weight: 500;
+  letter-spacing: vw(-0.8);
+}
+
+.milestone {
+  position: absolute;
+  left: calc(50% + vw(1));
+  font-size: vw(32);
+  font-weight: 600;
+  letter-spacing: vw(-1.28);
+}
+
+.date {
+  position: absolute;
+  right: 0;
+  font-size: vw(32);
+  font-weight: 600;
+  letter-spacing: vw(-1.28);
+}

@@ -175,11 +175,15 @@
   &__el-195 { flex: none; transform: rotate(180deg); }
   &__el-196 { background-color: #db38c8; height: vw(40.4); position: relative; width: vw(451.137); }
   &__el-197 { position: absolute; background-color: #db38c8; height: vw(40.4); left: vw(480.96); top: vw(711.21); width: vw(478.07); }
-  &__el-198 { word-break: break-word; position: absolute; font-family: 'Inter', sans-serif; font-weight: 600; line-height: 0; left: 50%; font-style: normal; color: #d9d9d9; font-size: vw(164); text-align: center; top: calc(50% - vw(56)); letter-spacing: vw(-9.84); white-space: nowrap; transform: translateX(-50%); }
+  &__el-198 { word-break: break-word; position: absolute; font-family: 'Inter Local', sans-serif; font-weight: 600; line-height: 0; left: 50%; font-style: normal; color: #d9d9d9; font-size: vw(164); text-align: center; top: calc(50% - vw(56)); letter-spacing: vw(-9.84); white-space: nowrap; transform: translateX(-50%); }
   &__el-199 { line-height: 0.83; margin-bottom: 0; }
   &__el-200 { line-height: 0.83; }
-  &__el-201 { word-break: break-word; position: absolute; font-family: 'Inter', sans-serif; font-weight: 500; line-height: 1.02; left: calc(50% + vw(0.5)); font-style: normal; color: #d9d9d9; font-size: vw(20); text-align: center; top: vw(20); letter-spacing: vw(-0.8); white-space: nowrap; transform: translateX(-50%); }
-  &__el-202 { word-break: break-word; position: absolute; font-family: 'Inter', sans-serif; font-weight: 500; line-height: 1.02; left: calc(50% + vw(0.5)); font-style: normal; color: #d9d9d9; font-size: vw(20); text-align: center; top: vw(696); letter-spacing: vw(-0.8); white-space: nowrap; transform: translateX(-50%); }
+  &__el-201 { word-break: break-word; position: absolute; font-family: 'Inter Local', sans-serif; font-weight: 500; line-height: 1.02; left: calc(50% + vw(0.5)); font-style: normal; color: #d9d9d9; font-size: vw(20); text-align: center; top: vw(20); letter-spacing: vw(-0.8); white-space: nowrap; transform: translateX(-50%); }
+  &__el-202 { word-break: break-word; position: absolute; font-family: 'Inter Local', sans-serif; font-weight: 500; line-height: 1.02; left: calc(50% + vw(0.5)); font-style: normal; color: #d9d9d9; font-size: vw(20); text-align: center; top: vw(696); letter-spacing: vw(-0.8); white-space: nowrap; transform: translateX(-50%); }
+
+  &--poster &__el-201 {
+    top: vw(80);
+    width: vw(454);
+    white-space: normal;
+  }
 }
-
-

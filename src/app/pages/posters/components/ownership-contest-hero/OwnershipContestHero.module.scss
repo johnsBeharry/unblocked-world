@@ -1,0 +1,88 @@
+@use '../../../../../styles/functions' as *;
+
+.hero {
+  position: relative;
+  width: vw(1440);
+  height: vw(1690);
+  overflow: clip;
+  background: #000;
+  box-sizing: border-box;
+
+  &, *, *::before, *::after { box-sizing: border-box; }
+  p, h1 { margin: 0; }
+
+  .art {
+    position: absolute;
+    left: calc(50% + vw(0.16));
+    top: calc(50% + vw(90.3));
+    width: vw(602);
+    height: vw(766.609);
+    transform: translate(-50%, -50%);
+    background: #dc91a8;
+  }
+
+  .bar {
+    position: absolute;
+    display: block;
+    background: #000;
+  }
+
+  .title, .subtitle, .dates, .guidelines, .submit {
+    position: absolute;
+    font-family: 'Inter Local', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    word-break: break-word;
+  }
+
+  .title {
+    top: vw(59);
+    left: 50%;
+    color: #f4a9c0;
+    font-size: vw(290.738);
+    line-height: 0.9;
+    letter-spacing: vw(-17.4443);
+    text-align: center;
+    white-space: nowrap;
+    transform: translateX(-50%);
+  }
+
+  .subtitle {
+    top: vw(321);
+    left: 50%;
+    color: #f4a9c0;
+    font-size: vw(72);
+    line-height: 0.86;
+    letter-spacing: vw(-2.88);
+    text-align: center;
+    white-space: nowrap;
+    transform: translateX(-50%);
+  }
+
+  .dates {
+    top: vw(1429);
+    left: calc(50% - vw(178));
+    color: #dc91a8;
+    font-size: vw(40);
+    line-height: 1.02;
+    letter-spacing: vw(-1.6);
+    white-space: nowrap;
+  }
+
+  .guidelines, .submit {
+    left: 50%;
+    color: rgba(244, 169, 192, 0.5);
+    font-size: vw(40);
+    line-height: 0.86;
+    letter-spacing: vw(-1.6);
+    text-align: center;
+    text-decoration: underline solid;
+    text-underline-position: from-font;
+    text-decoration-thickness: from-font;
+    white-space: nowrap;
+    transform: translateX(-50%);
+  }
+
+  .guidelines { top: vw(1486); left: calc(50% + vw(0.5)); }
+  .submit { top: vw(1536); }
+}

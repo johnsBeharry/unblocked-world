@@ -23,7 +23,7 @@ p { margin: 0; }
   word-break: break-word;
   position: absolute;
   display: contents;
-  font-family: "Inter:Medium",sans-serif;
+  font-family: "Inter Local",sans-serif;
   font-weight: 500;
   line-height: 1.02;
   left: 50%;
@@ -39,26 +39,26 @@ p { margin: 0; }
 .hero__node-002 {
   position: absolute;
   left: calc(4.17% - vw(40));
-  top: vw(512);
+  top: vw(404);
 }
 
 .hero__node-003 {
   position: absolute;
   left: calc(95.83% - vw(140));
-  top: vw(512);
+  top: vw(404);
 }
 
 .hero__node-004 {
   word-break: break-word;
   position: absolute;
-  font-family: "Inter:Medium",sans-serif;
+  font-family: "Inter Local",sans-serif;
   font-weight: 500;
   line-height: 1.02;
   left: calc(12.5% - vw(160));
   font-style: normal;
   color: #d9d9d9;
   font-size: vw(20);
-  top: vw(804);
+  top: vw(670);
   letter-spacing: vw(-0.8);
   width: vw(335);
 }
@@ -66,20 +66,23 @@ p { margin: 0; }
 .hero__node-005 {
   word-break: break-word;
   position: absolute;
-  font-family: "Inter:Semi Bold",sans-serif;
+  font-family: "Inter Local",sans-serif;
   font-weight: 600;
   line-height: 1.02;
   left: calc(12.5% - vw(160));
   font-style: normal;
   color: #d9d9d9;
   font-size: vw(20);
-  top: vw(764);
+  top: vw(630);
   letter-spacing: vw(-0.8);
   width: vw(335);
 }
 
 .hero__pink-wrap {
-  display: contents;
+  position: absolute;
+  inset: 0;
+  transform: scale(0.85);
+  transform-origin: 50% 0;
 }
 
 .hero__node-006 {
@@ -1657,20 +1660,17 @@ p { margin: 0; }
 .hero__node-202 {
   word-break: break-word;
   position: absolute;
-  font-family: "Inter:Semi Bold",sans-serif;
+  font-family: "Inter Local",sans-serif;
   font-weight: 600;
   line-height: 0.9;
-  left: calc(50% - vw(1));
+  left: calc(50% - vw(11));
   font-style: normal;
   color: #101010;
   font-size: vw(248.245);
   text-align: center;
   top: vw(56);
-  letter-spacing: vw(-14.8947);
+  letter-spacing: vw(-21.4);
   text-transform: uppercase;
   white-space: nowrap;
   transform: translateX(-50%) rotate(0deg) scaleY(1);
 }
-
-
-

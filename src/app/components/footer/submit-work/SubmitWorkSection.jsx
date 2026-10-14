@@ -2,9 +2,14 @@ import React from 'react';
 import styles from './SubmitWorkSection.module.scss'
 
 /** Export frame: 1440 × 800. Global Figma top:6576px normalized to local section origin. */
-export default function SubmitWorkSection() {
+export default function SubmitWorkSection({
+  variant = 'default',
+  titleLines = ['Submit', 'Work (→)'],
+  topLabel = 'Current Theme (Ownership)',
+  bottomLabel = 'View Brief (→)',
+}) {
   return (
-    <section className={`${styles['submit-work']} ${styles['submit-work__el-000']}`} data-name="-">
+    <section className={`${styles['submit-work']} ${styles['submit-work__el-000']} ${variant === 'poster' ? styles['submit-work--poster'] : ''}`} data-name="-">
       <div className={styles['submit-work__el-001']}>
         <div className={styles['submit-work__el-002']} />
         <div className={styles['submit-work__el-003']} />
@@ -292,13 +297,11 @@ export default function SubmitWorkSection() {
         <div className={styles['submit-work__el-197']} />
       </div>
       <div className={styles['submit-work__el-198']}>
-        <p className={styles['submit-work__el-199']}>Submit</p>
-        <p className={styles['submit-work__el-200']}>Work (→)</p>
+        <p className={styles['submit-work__el-199']}>{titleLines[0]}</p>
+        <p className={styles['submit-work__el-200']}>{titleLines[1]}</p>
       </div>
-      <p className={styles['submit-work__el-201']}>Current Theme (Ownership)</p>
-      <p className={styles['submit-work__el-202']}>View Brief (→)</p>
+      {topLabel && <p className={styles['submit-work__el-201']}>{topLabel}</p>}
+      {bottomLabel && <p className={styles['submit-work__el-202']}>{bottomLabel}</p>}
     </section>
   );
 }
-
-

@@ -4,9 +4,22 @@ import SubmitWorkSection from './submit-work/SubmitWorkSection.jsx'
 
 export const FOOTER_COLORS = { home: '#d9d9d9', poster: '#d9d9d9' }
 
-export function Footer({ color = FOOTER_COLORS.home }) {
+export function Footer({ color = FOOTER_COLORS.home, ctaVariant = 'default' }) {
+  const colorClass = color === FOOTER_COLORS.poster ? styles.posterColor : styles.homeColor
+  const ctaProps = ctaVariant === 'poster'
+    ? {
+        variant: 'poster',
+        titleLines: ['Read the', 'Guidelines (→)'],
+        topLabel: 'Before You Submit. Make sure your work is original, prepared in the correct format, and connected to the current theme.',
+        bottomLabel: '',
+      }
+    : {}
+
   return (
-    <footer className={styles.footer} style={{ color }}>
+    <footer className={`${styles.footer} ${colorClass}`}>
+      <div className={styles.cta}>
+        <SubmitWorkSection {...ctaProps} />
+      </div>
       <div className={styles.main}>
         <p className={styles.brand}>UNBLOCKED</p>
         <p className={`${styles.text} ${styles.question}`}>Question Everything</p>
@@ -21,9 +34,6 @@ export function Footer({ color = FOOTER_COLORS.home }) {
         <a className={`${styles.text} ${styles.backToTop}`} href="#top">Back to Top (↑)</a>
         <p className={`${styles.text} ${styles.description}`}>Exploring ownership, permanence, energy and peers through art, design and culture.</p>
         <p className={`${styles.text} ${styles.socials}`}>Socials</p>
-      </div>
-      <div className={styles.cta}>
-        <SubmitWorkSection />
       </div>
     </footer>
   )

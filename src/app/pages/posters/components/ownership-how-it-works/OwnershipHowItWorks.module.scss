@@ -1,0 +1,85 @@
+@use '../../../../../styles/functions' as *;
+
+.section {
+  position: relative;
+  width: vw(1440);
+  height: vw(824);
+  overflow: clip;
+  background: #101010;
+  color: #dc91a8;
+
+  &, *, *::before, *::after { box-sizing: border-box; }
+  p { margin: 0; }
+}
+
+.label {
+  position: absolute;
+  top: vw(20);
+  left: vw(20);
+  display: flex;
+  align-items: center;
+  padding: vw(2) vw(4);
+  background: #dc91a8;
+
+  p {
+    color: #101010;
+    font-family: 'Inter Local', sans-serif;
+    font-size: vw(20);
+    font-weight: 500;
+    line-height: 1.02;
+    letter-spacing: vw(-0.8);
+    white-space: nowrap;
+  }
+}
+
+.rule {
+  position: absolute;
+  top: vw(244);
+  left: vw(20);
+  width: vw(1400);
+  height: vw(1);
+  background: rgba(220, 145, 168, 0.75);
+}
+
+.steps {
+  position: absolute;
+  top: vw(270);
+  left: vw(20);
+  width: vw(690);
+  color: #dc91a8;
+  font-family: 'Inter Local', sans-serif;
+  font-size: vw(40);
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: vw(-1.6);
+}
+
+.pattern {
+  position: absolute;
+  top: vw(270);
+  left: vw(1200);
+  width: vw(220);
+  height: vw(220);
+  overflow: hidden;
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+  }
+}
+
+.submitLink {
+  position: absolute;
+  top: vw(590);
+  left: vw(20);
+  color: rgba(220, 145, 168, 0.65);
+  font-family: 'Inter Local', sans-serif;
+  font-size: vw(40);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: vw(-1.6);
+  text-decoration: underline;
+  text-underline-offset: vw(6);
+}

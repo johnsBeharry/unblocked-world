@@ -1,10 +1,17 @@
 @use '../../../styles/functions' as *;
 
-.footer { color: inherit; }
+.footer {
+  display: flex;
+  flex-direction: column;
+  color: inherit;
+}
+
+.homeColor { color: #d9d9d9; }
+.posterColor { color: #d9d9d9; }
 
 .text {
   color: inherit;
-  font-family: 'Inter:Medium', sans-serif;
+  font-family: 'Inter Local', sans-serif;
   font-size: vw(20);
   font-weight: 500;
   letter-spacing: vw(-0.4);
@@ -13,13 +20,11 @@
 }
 
 .main {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
+  position: relative;
+  margin: 0 auto;
   width: vw(1440);
   height: vw(800);
   overflow: clip;
-  transform: translateX(-50%);
   background: #000;
   font-style: normal;
 }
@@ -29,7 +34,7 @@
   bottom: vw(228);
   left: calc(50% - vw(700));
   margin: 0;
-  font-family: 'Inter:Semi_Bold', sans-serif;
+  font-family: 'Inter Local', sans-serif;
   font-size: vw(244.441);
   font-weight: 600;
   letter-spacing: vw(-14.6664);
@@ -48,15 +53,15 @@
   color: rgba(217, 217, 217, 0.5);
 }
 
-.question { top: vw(20); left: calc(79.17% - vw(54)); white-space: nowrap; }
+.question { top: vw(235); left: calc(54.17% - vw(49)); white-space: nowrap; }
 .explore { top: vw(20); left: calc(54.17% - vw(49)); white-space: nowrap; }
 .socials { top: vw(163); left: calc(79.17% - vw(54)); white-space: nowrap; }
 .description { top: vw(20); left: vw(21); width: vw(335); }
 
 .email {
   position: absolute;
-  top: vw(65);
-  left: calc(83.33% - vw(114));
+  top: vw(280);
+  left: calc(54.17% - vw(49));
   color: inherit;
   text-decoration: none;
   white-space: nowrap;
@@ -65,7 +70,7 @@
 .emailText {
   margin: 0;
   cursor: pointer;
-  font-family: 'Inter:Medium', sans-serif;
+  font-family: 'Inter Local', sans-serif;
   font-size: vw(20);
   font-weight: 500;
   letter-spacing: vw(-0.4);
@@ -97,9 +102,7 @@
 .backToTop { left: calc(95.83% - vw(52.5)); }
 
 .cta {
-  position: absolute;
-  top: vw(6576);
-  left: 0;
+  position: relative;
   width: vw(1440);
   height: vw(800);
   overflow: visible;

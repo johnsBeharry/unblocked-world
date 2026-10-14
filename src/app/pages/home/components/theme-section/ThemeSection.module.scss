@@ -34,14 +34,14 @@
   &__title,
   &__index,
   &__question {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter Local', sans-serif;
     font-weight: 600;
   }
 
   &__description,
   &__side-label,
   &__versus {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter Local', sans-serif;
     font-weight: 500;
   }
 
@@ -122,14 +122,14 @@
   }
 
   &__question-wrap {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter Local', sans-serif;
     font-weight: 600;
     font-size: vw(40);
     letter-spacing: vw(-1.6);
   }
 
   &__description-wrap {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter Local', sans-serif;
     font-weight: 500;
     font-size: vw(20);
     letter-spacing: vw(-0.8);
@@ -302,6 +302,5 @@
   .theme-section__bar--16 { left: vw(540.88); top: vw(321.37); width: vw(153.75); height: vw(36); }
   .theme-section__bar--17 { left: vw(540.63); top: vw(379.62); width: vw(90); height: vw(27); }
 }
-
 
 

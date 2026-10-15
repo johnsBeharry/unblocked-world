@@ -1,11 +1,146 @@
-import React from 'react'
-import '../../styles/Unblocked.generated.module.scss'
+import React, { useRef, useState } from 'react'
+import styles from './SubmitPage.module.scss'
+import { ContactInformationPanel } from './components/ContactInformationPanel/ContactInformationPanel.jsx'
+import { SubmitProgress } from './components/SubmitProgress/SubmitProgress.jsx'
+import { SubmitFooterNav } from './components/SubmitFooterNav/SubmitFooterNav.jsx'
+import { PosterEntriesPanel } from './components/PosterEntriesPanel/PosterEntriesPanel.jsx'
+import { PosterDetailsPanel } from './components/PosterDetailsPanel/PosterDetailsPanel.jsx'
+import { ConsentPanel } from './components/ConsentPanel/ConsentPanel.jsx'
+import { SubmissionSuccessPanel } from './components/SubmissionSuccessPanel/SubmissionSuccessPanel.jsx'
+import { useSubmitLenis } from './hooks/useSubmitLenis.js'
 
-export function SubmitPage() {
+const steps = [
+  'Review the Ownership theme.',
+  'Create one or more original poster responses.',
+  'Prepare your files.',
+  'Complete the submission form.',
+  'Your posters will then be reviewed by the international jury.',
+  'Confirm the submission terms.',
+  'Submit your entry.',
+]
+
+const demoPosterEntries = [
+  {
+    id: 'demo-greener-tomorrow',
+    title: 'Voices for a Greener Tomorrow',
+    src: '/UNBLOCKED-poster_files/ff2033a1c38a4357386d641377703903abf0cb51.ff2033a1.png',
+  },
+  {
+    id: 'demo-good-things',
+    title: 'Good Things',
+    src: '/UNBLOCKED-poster_files/e353c20b9b160ceed44fa9f8dfbd71844bc63f36.e353c20b.png',
+  },
+]
+
+function SubmitArtwork() {
   return (
-    <main>
-      <div className><div className><div className="css-uwf2km css-fou3uo tailwind"><div className="flex h-screen overflow-hidden flex-col md:flex-row"><div className="hidden md:block md:w-[calc(33.33%+96px)] md:min-w-[280px] h-screen overflow-hidden relative flex-shrink-0"><div className="relative w-[1440px] h-full"><div className="bg-[#dc91a8] relative size-full" data-name="submit / submitted"><p className="[word-break:break-word] absolute font-['Inter:Medium',sans-serif] font-medium leading-[1.02] left-[20px] not-italic text-[20px] text-black top-[20px] tracking-[-0.8px] whitespace-nowrap">(←) Home</p><div className="-translate-x-1/2 -translate-y-1/2 absolute bg-black h-[415.141px] left-[calc(20.83%-12px)] top-[calc(50%+0.57px)] w-[326px]" data-name="illustration"><div className="absolute contents left-[44.98px] top-[89.65px]" data-name="Container"><div className="absolute contents left-[120.97px] top-[89.65px]" data-name="Container"><div className="absolute bg-[#dc91a8] h-[16.431px] left-[120.97px] top-[149.22px] w-[84.209px]" data-name="Rounded rectangle" /><div className="absolute bg-[#dc91a8] h-[12.323px] left-[120.97px] top-[128.68px] w-[84.209px]" data-name="Rounded rectangle" /><div className="absolute bg-[#dc91a8] h-[8.216px] left-[120.97px] top-[112.24px] w-[84.209px]" data-name="Rounded rectangle" /><div className="absolute bg-[#dc91a8] h-[4.108px] left-[120.97px] top-[99.93px] w-[84.209px]" data-name="Rounded rectangle" /><div className="absolute bg-[#dc91a8] h-[2.054px] left-[120.97px] top-[89.65px] w-[84.209px]" data-name="Rounded rectangle" /></div><div className="absolute contents left-[120.97px] top-[249.85px]" data-name="Container"><div className="absolute flex h-[16.431px] items-center justify-center left-[120.97px] top-[249.85px] w-[84.209px]"><div className="flex-none rotate-180"><div className="bg-[#dc91a8] h-[16.431px] relative w-[84.209px]" data-name="Rounded rectangle" /></div></div><div className="absolute flex h-[12.323px] items-center justify-center left-[120.97px] top-[274.51px] w-[84.209px]"><div className="flex-none rotate-180"><div className="bg-[#dc91a8] h-[12.323px] relative w-[84.209px]" data-name="Rounded rectangle" /></div></div><div className="absolute flex h-[8.216px] items-center justify-center left-[120.97px] top-[295.03px] w-[84.209px]"><div className="flex-none rotate-180"><div className="bg-[#dc91a8] h-[8.216px] relative w-[84.209px]" data-name="Rounded rectangle" /></div></div><div className="absolute flex h-[4.108px] items-center justify-center left-[120.97px] top-[311.47px] w-[84.209px]"><div className="flex-none rotate-180"><div className="bg-[#dc91a8] h-[4.108px] relative w-[84.209px]" data-name="Rounded rectangle" /></div></div><div className="absolute flex h-[2.054px] items-center justify-center left-[120.97px] top-[323.8px] w-[84.209px]"><div className="flex-none rotate-180"><div className="bg-[#dc91a8] h-[2.054px] relative w-[84.209px]" data-name="Rounded rectangle" /></div></div></div><div className="absolute contents h-[84.209px] left-[44.97px] top-[165.64px] w-[75.994px]" data-name="Container"><div className="absolute flex h-[84.209px] items-center justify-center left-[104.54px] top-[165.65px] w-[16.431px]"><div className="-rotate-90 flex-none"><div className="bg-[#dc91a8] h-[16.431px] relative w-[84.209px]" data-name="Rounded rectangle" /></div></div><div className="absolute flex h-[84.209px] items-center justify-center left-[84px] top-[165.65px] w-[12.323px]"><div className="-rotate-90 flex-none"><div className="bg-[#dc91a8] h-[12.323px] relative w-[84.209px]" data-name="Rounded rectangle" /></div></div><div className="absolute flex h-[84.209px] items-center justify-center left-[67.57px] top-[165.65px] w-[8.216px]"><div className="-rotate-90 flex-none"><div className="bg-[#dc91a8] h-[8.216px] relative w-[84.209px]" data-name="Rounded rectangle" /></div></div><div className="absolute flex h-[84.209px] items-center justify-center left-[55.24px] top-[165.65px] w-[4.108px]"><div className="-rotate-90 flex-none"><div className="bg-[#dc91a8] h-[4.108px] relative w-[84.209px]" data-name="Rounded rectangle" /></div></div><div className="absolute flex h-[84.209px] items-center justify-center left-[44.97px] top-[165.65px] w-[2.054px]"><div className="-rotate-90 flex-none"><div className="bg-[#dc91a8] h-[2.054px] relative w-[84.209px]" data-name="Rounded rectangle" /></div></div></div><div className="absolute contents h-[84.209px] left-[205.17px] top-[165.65px] w-[75.999px]" data-name="Container"><div className="absolute flex h-[84.209px] items-center justify-center left-[205.18px] top-[165.65px] w-[16.431px]"><div className="flex-none rotate-90"><div className="bg-[#dc91a8] h-[16.431px] relative w-[84.209px]" data-name="Rounded rectangle" /></div></div><div className="absolute flex h-[84.209px] items-center justify-center left-[229.83px] top-[165.65px] w-[12.323px]"><div className="flex-none rotate-90"><div className="bg-[#dc91a8] h-[12.323px] relative w-[84.209px]" data-name="Rounded rectangle" /></div></div><div className="absolute flex h-[84.209px] items-center justify-center left-[250.36px] top-[165.65px] w-[8.216px]"><div className="flex-none rotate-90"><div className="bg-[#dc91a8] h-[8.216px] relative w-[84.209px]" data-name="Rounded rectangle" /></div></div><div className="absolute flex h-[84.209px] items-center justify-center left-[266.79px] top-[165.65px] w-[4.108px]"><div className="flex-none rotate-90"><div className="bg-[#dc91a8] h-[4.108px] relative w-[84.209px]" data-name="Rounded rectangle" /></div></div><div className="absolute flex h-[84.209px] items-center justify-center left-[279.12px] top-[165.65px] w-[2.054px]"><div className="flex-none rotate-90"><div className="bg-[#dc91a8] h-[2.054px] relative w-[84.209px]" data-name="Rounded rectangle" /></div></div></div></div></div><p className="[word-break:break-word] absolute bottom-[132.93px] font-['Inter:Semi_Bold',sans-serif] font-semibold leading-[0.9] left-[calc(20.83%-280px)] not-italic text-[112.123px] text-black tracking-[-6.7274px] translate-y-full whitespace-nowrap">Ownership</p><div className="absolute bg-black h-[918px] left-[calc(33.33%+96px)] top-0 w-[864px]" data-name="content-container" /></div></div><a className="absolute top-3 left-3 w-[100px] h-8 block z-10" href="/" data-discover="true" /></div><div className="flex-1 h-screen bg-black relative"><div className="sticky top-0 left-0 right-0 h-[112px] bg-black z-20 flex-shrink-0 pointer-events-none"><div className="absolute top-0 left-0 w-[181px] h-[2px] bg-[#dc91a8]" /><div className="absolute top-5 left-5 font-['Inter',sans-serif] text-base font-medium tracking-[-0.64px] leading-[1.62] whitespace-nowrap"><span className="text-[rgba(220,145,168,0.5)]">(01)</span><br /><span className="text-[#dc91a8]">(02)</span><span className="text-[#dc91a8] ml-6">Poster</span><br /><span className="text-[rgba(220,145,168,0.5)]">(03)</span></div></div><div className="h-[calc(100vh-112px)] overflow-y-auto overflow-x-hidden"><div className="bg-black relative size-full" data-name="all-fields"><div className="absolute w-full left-0 top-0 px-[20px] max-w-[800px] mx-auto" style={{left: '50%', transform: 'translateX(-50%)'}}><div className="content-stretch flex flex-col gap-[48px] items-start pt-[252px] w-full max-w-[406px] mx-auto pb-[100px]"><p className="[word-break:break-word] font-['Inter:Semi_Bold',sans-serif] font-semibold leading-[1.02] not-italic relative shrink-0 text-[#dc91a8] text-[40px] tracking-[-1.6px] w-full">Poster Entries</p><p className="[word-break:break-word] font-['Inter:Medium',sans-serif] font-medium leading-[1.02] not-italic relative shrink-0 text-[#dc91a8] text-[20px] tracking-[-0.8px] w-full">Provide your contact details so we can communicate important updates regarding your submission.</p><div className="content-stretch flex flex-col gap-[20px] items-start relative shrink-0 w-full" data-name="poster-1"><p className="[word-break:break-word] font-['Inter:Medium',sans-serif] font-medium leading-[1.02] not-italic relative shrink-0 text-[#dc91a8] text-[20px] tracking-[-0.8px] w-full">Poster 1</p><div className="content-stretch flex flex-col gap-[11px] items-start pt-[21px] relative shrink-0 w-full"><input type="text" placeholder="Poster Title" className="[word-break:break-word] font-['Inter:Medium',sans-serif] font-medium leading-[1.02] not-italic relative shrink-0 text-[20px] tracking-[-0.8px] w-full bg-transparent border-none outline-none p-0" defaultValue style={{color: 'rgba(220, 145, 168, 0.5)'}} /><div className="h-0 relative shrink-0 w-full" data-name="line"><div className="absolute inset-[-0.5px_0]"><svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 406 1"><path d="M0 0.5H406" stroke="#DC91A8" strokeOpacity="0.5" /></svg></div></div></div><div className="content-stretch flex flex-col gap-[11px] items-start pt-[21px] relative shrink-0 w-full"><div className="content-stretch flex items-center justify-between relative shrink-0 w-full"><button type="button" className="flex-1 text-left bg-transparent border-none outline-none p-0 cursor-pointer [word-break:break-word] font-['Inter:Medium',sans-serif] font-medium leading-[1.02] not-italic text-[20px] tracking-[-0.8px]" style={{color: 'rgba(220, 145, 168, 0.5)'}}>Year Designed</button><div className="relative shrink-0 size-[20px]"><svg className="absolute block inset-0 size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 20 20"><g><path d="M6 8L10 12L14 8" stroke="#DC91A8" /></g></svg></div></div><div className="h-0 relative shrink-0 w-full" data-name="line"><div className="absolute inset-[-0.5px_0]"><svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 406 1"><path d="M0 0.5H406" stroke="#DC91A8" strokeOpacity="0.5" /></svg></div></div></div><div className="content-stretch flex flex-col gap-[11px] items-start pt-[21px] relative shrink-0 w-full"><input type="text" placeholder="Designed For" className="[word-break:break-word] font-['Inter:Medium',sans-serif] font-medium leading-[1.02] not-italic relative shrink-0 text-[20px] tracking-[-0.8px] w-full bg-transparent border-none outline-none p-0" defaultValue style={{color: 'rgba(220, 145, 168, 0.5)'}} /><div className="h-0 relative shrink-0 w-full" data-name="line"><div className="absolute inset-[-0.5px_0]"><svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 406 1"><path d="M0 0.5H406" stroke="#DC91A8" strokeOpacity="0.5" /></svg></div></div></div><div className="content-stretch flex flex-col gap-[11px] items-start pt-[21px] relative shrink-0 w-full"><input type="text" placeholder="Client Name" className="[word-break:break-word] font-['Inter:Medium',sans-serif] font-medium leading-[1.02] not-italic relative shrink-0 text-[20px] tracking-[-0.8px] w-full bg-transparent border-none outline-none p-0" defaultValue style={{color: 'rgba(220, 145, 168, 0.5)'}} /><div className="h-0 relative shrink-0 w-full" data-name="line"><div className="absolute inset-[-0.5px_0]"><svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 406 1"><path d="M0 0.5H406" stroke="#DC91A8" strokeOpacity="0.5" /></svg></div></div></div><div className="content-stretch flex flex-col gap-[11px] items-start pt-[21px] relative shrink-0 w-full"><input type="text" placeholder="Creation Method" className="[word-break:break-word] font-['Inter:Medium',sans-serif] font-medium leading-[1.02] not-italic relative shrink-0 text-[20px] tracking-[-0.8px] w-full bg-transparent border-none outline-none p-0" defaultValue style={{color: 'rgba(220, 145, 168, 0.5)'}} /><div className="h-0 relative shrink-0 w-full" data-name="line"><div className="absolute inset-[-0.5px_0]"><svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 406 1"><path d="M0 0.5H406" stroke="#DC91A8" strokeOpacity="0.5" /></svg></div></div></div><div className="content-stretch flex flex-col gap-[11px] items-start pt-[21px] relative shrink-0 w-full"><input type="text" placeholder="Materials Used" className="[word-break:break-word] font-['Inter:Medium',sans-serif] font-medium leading-[1.02] not-italic relative shrink-0 text-[20px] tracking-[-0.8px] w-full bg-transparent border-none outline-none p-0" defaultValue style={{color: 'rgba(220, 145, 168, 0.5)'}} /><div className="h-0 relative shrink-0 w-full" data-name="line"><div className="absolute inset-[-0.5px_0]"><svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 406 1"><path d="M0 0.5H406" stroke="#DC91A8" strokeOpacity="0.5" /></svg></div></div></div><div className="content-stretch flex flex-col gap-[11px] items-start pt-[21px] relative shrink-0 w-full"><input type="text" placeholder="Digital Programs Used" className="[word-break:break-word] font-['Inter:Medium',sans-serif] font-medium leading-[1.02] not-italic relative shrink-0 text-[20px] tracking-[-0.8px] w-full bg-transparent border-none outline-none p-0" defaultValue style={{color: 'rgba(220, 145, 168, 0.5)'}} /><div className="h-0 relative shrink-0 w-full" data-name="line"><div className="absolute inset-[-0.5px_0]"><svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 406 1"><path d="M0 0.5H406" stroke="#DC91A8" strokeOpacity="0.5" /></svg></div></div></div><div className="content-stretch flex flex-col gap-[11px] items-start pt-[21px] relative shrink-0 w-full"><input type="text" placeholder="Printing Method" className="[word-break:break-word] font-['Inter:Medium',sans-serif] font-medium leading-[1.02] not-italic relative shrink-0 text-[20px] tracking-[-0.8px] w-full bg-transparent border-none outline-none p-0" defaultValue style={{color: 'rgba(220, 145, 168, 0.5)'}} /><div className="h-0 relative shrink-0 w-full" data-name="line"><div className="absolute inset-[-0.5px_0]"><svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 406 1"><path d="M0 0.5H406" stroke="#DC91A8" strokeOpacity="0.5" /></svg></div></div></div><div className="content-stretch flex flex-col gap-[11px] items-start pt-[21px] relative shrink-0 w-full"><textarea placeholder="Poster Concept" rows={1} className="[word-break:break-word] font-['Inter:Medium',sans-serif] font-medium leading-[1.02] not-italic relative shrink-0 text-[20px] tracking-[-0.8px] w-full bg-transparent border-none outline-none p-0 resize-none overflow-hidden" style={{color: 'rgba(220, 145, 168, 0.5)', minHeight: 160, height: 160}} defaultValue={""} /><div className="h-0 relative shrink-0 w-full" data-name="line"><div className="absolute inset-[-0.5px_0]"><svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 406 1"><path d="M0 0.5H406" stroke="#DC91A8" strokeOpacity="0.5" /></svg></div></div></div><div className="h-[176px] relative shrink-0 w-full cursor-pointer"><div aria-hidden="true" className="absolute border border-solid inset-[-0.5px] pointer-events-none transition-colors" style={{borderColor: 'rgba(220, 145, 168, 0.4)', backgroundColor: 'transparent'}} /><input type="file" multiple className="hidden" accept="image/jpeg,image/png,image/gif,video/mp4" /><p className="-translate-x-1/2 [word-break:break-word] absolute font-['Inter:Medium',sans-serif] font-medium leading-[1.02] left-[calc(50%+0.5px)] not-italic text-[#dc91a8] text-[20px] text-center tracking-[-0.8px] whitespace-nowrap" style={{top: 'calc(50% - 44px)'}}>Poster Files</p><div className="-translate-x-1/2 [word-break:break-word] absolute font-['Inter:Medium',sans-serif] font-medium leading-[0] left-1/2 not-italic text-[14px] text-center top-[calc(50%-20px)] tracking-[-0.56px] whitespace-nowrap" style={{color: 'rgba(220, 145, 168, 0.5)'}}><p className="leading-[1.02] mb-0">Static: JPG, PNG, GIF up to 2000px wide under 4mb.</p><p className="leading-[1.02]">Motion: GIF or MP4 up to 2000px wide under 20mb.</p></div><button type="button" className="-translate-x-1/2 [text-underline-position:from-font] [word-break:break-word] absolute decoration-from-font decoration-solid font-['Inter:Medium',sans-serif] font-medium leading-[1.02] left-1/2 not-italic text-[#dc91a8] text-center tracking-[-0.64px] underline whitespace-nowrap cursor-pointer bg-transparent border-none p-0 pointer-events-auto" style={{top: 'calc(50% + 28px)', fontSize: 16}}>Browse</button></div><div className="h-[176px] relative shrink-0 w-full cursor-pointer"><div aria-hidden="true" className="absolute border border-solid inset-[-0.5px] pointer-events-none transition-colors" style={{borderColor: 'rgba(220, 145, 168, 0.4)', backgroundColor: 'transparent'}} /><input type="file" multiple className="hidden" /><p className="-translate-x-1/2 [word-break:break-word] absolute font-['Inter:Medium',sans-serif] font-medium leading-[1.02] left-[calc(50%+0.5px)] not-italic text-[#dc91a8] text-[20px] text-center tracking-[-0.8px] whitespace-nowrap" style={{top: 'calc(50% - 26px)'}}>Supporting Assets (Optional)</p><button type="button" className="-translate-x-1/2 [text-underline-position:from-font] [word-break:break-word] absolute decoration-from-font decoration-solid font-['Inter:Medium',sans-serif] font-medium leading-[1.02] left-1/2 not-italic text-[#dc91a8] text-center tracking-[-0.64px] underline whitespace-nowrap cursor-pointer bg-transparent border-none p-0 pointer-events-auto" style={{top: 'calc(50% + 10px)', fontSize: 20}}>Browse</button></div></div><div className="content-stretch flex flex-col gap-[20px] items-start relative shrink-0 w-full" data-name="add-more"><div className="h-0 relative shrink-0 w-full" data-name="line"><div className="absolute inset-[-0.5px_0]"><svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 406 1"><path d="M0 0.5H406" stroke="#DC91A8" strokeOpacity="0.4" /></svg></div></div><button type="button" className="h-[52px] relative shrink-0 w-full bg-transparent border border-[rgba(220,145,168,0.4)] border-solid cursor-pointer p-0"><div className="flex flex-row items-center justify-center size-full"><div className="content-stretch flex items-center justify-center px-[146px] py-[26px] relative size-full"><p className="[word-break:break-word] font-['Inter:Medium',sans-serif] font-medium leading-[1.02] not-italic relative shrink-0 text-[#dc91a8] text-[20px] text-center tracking-[-0.8px] whitespace-nowrap">(+) Add Another Poster</p></div></div></button></div></div></div></div></div><a className="absolute bottom-[46px] left-5 font-['Inter',sans-serif] text-base font-medium text-[#dc91a8] no-underline tracking-[-0.64px] z-30 hover:opacity-80" href="/posters" data-discover="true">(←)</a></div></div></div></div></div>
-      
+    <div className={styles.artwork} aria-hidden="true">
+      <svg className={styles.pattern} width="237" height="237" viewBox="0 0 237 237" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M75.9941 59.5742H160.203V76.0053H75.9941V59.5742Z" fill="#DC91A8" />
+        <rect x="75.9941" y="39.0312" width="84.2092" height="12.3233" fill="#DC91A8" />
+        <rect x="75.9941" y="22.5938" width="84.2092" height="8.21553" fill="#DC91A8" />
+        <rect x="75.9941" y="10.2773" width="84.2092" height="4.10776" fill="#DC91A8" />
+        <rect x="75.9941" width="84.2092" height="2.05388" fill="#DC91A8" />
+        <path d="M160.203 176.633L75.994 176.633L75.994 160.202L160.203 160.202L160.203 176.633Z" fill="#DC91A8" />
+        <rect x="160.203" y="197.184" width="84.2092" height="12.3233" transform="rotate(180 160.203 197.184)" fill="#DC91A8" />
+        <rect x="160.203" y="213.602" width="84.2092" height="8.21553" transform="rotate(180 160.203 213.602)" fill="#DC91A8" />
+        <rect x="160.203" y="225.93" width="84.2092" height="4.10776" transform="rotate(180 160.203 225.93)" fill="#DC91A8" />
+        <rect x="160.203" y="236.203" width="84.2092" height="2.05388" transform="rotate(180 160.203 236.203)" fill="#DC91A8" />
+        <path d="M59.5625 160.203L59.5625 75.994L75.9936 75.994L75.9936 160.203L59.5625 160.203Z" fill="#DC91A8" />
+        <rect x="39.0234" y="160.203" width="84.2092" height="12.3233" transform="rotate(-90 39.0234 160.203)" fill="#DC91A8" />
+        <rect x="22.5918" y="160.203" width="84.2092" height="8.21553" transform="rotate(-90 22.5918 160.203)" fill="#DC91A8" />
+        <rect x="10.2637" y="160.203" width="84.2092" height="4.10776" transform="rotate(-90 10.2637 160.203)" fill="#DC91A8" />
+        <rect y="160.203" width="84.2092" height="2.05388" transform="rotate(-90 0 160.203)" fill="#DC91A8" />
+        <path d="M176.631 76L176.631 160.209L160.2 160.209L160.2 76L176.631 76Z" fill="#DC91A8" />
+        <rect x="197.176" y="76" width="84.2092" height="12.3233" transform="rotate(90 197.176 76)" fill="#DC91A8" />
+        <rect x="213.604" y="76" width="84.2092" height="8.21553" transform="rotate(90 213.604 76)" fill="#DC91A8" />
+        <rect x="225.928" y="76" width="84.2092" height="4.10776" transform="rotate(90 225.928 76)" fill="#DC91A8" />
+        <rect x="236.199" y="76" width="84.2092" height="2.05388" transform="rotate(90 236.199 76)" fill="#DC91A8" />
+      </svg>
+    </div>
+  )
+}
+
+export function SubmitPage({ initialStep = 0 }) {
+  const [step, setStep] = useState(initialStep)
+  const [posterEntries, setPosterEntries] = useState(() => (
+    typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('demo') === 'uploaded'
+      ? demoPosterEntries
+      : []
+  ))
+  const [posterDraft, setPosterDraft] = useState({ title: '', posterFiles: [] })
+  const [editingEntryId, setEditingEntryId] = useState(null)
+  const contentScrollRef = useRef(null)
+  useSubmitLenis(contentScrollRef, step)
+  const showContact = step === 1
+  const showPoster = step === 2
+  const showPosterDetails = step === 3
+  const showConsent = step === 4
+  const showSuccess = step === 5
+
+  return (
+    <main className={styles.page} data-name="submit-index">
+      <section className={styles.identity} aria-label="Ownership theme">
+        <a className={styles.homeLink} href="/">(←) Home</a>
+        <SubmitArtwork />
+        <h1>Ownership</h1>
+      </section>
+
+      <section className={styles.content} aria-labelledby="submit-title">
+        {step > 0 && !showSuccess && <SubmitProgress activeStep={showConsent ? 3 : step} compact />}
+        {showSuccess && <SubmitProgress activeStep={3} compact lineOnly />}
+        {showPosterDetails && <div className={styles.editorActions}>
+          <button type="button" onClick={() => setStep(2)}>Cancel</button>
+          <button type="button" onClick={() => {
+            const nextEntries = posterDraft.posterFiles.map(file => ({
+              id: `${file.name}-${file.lastModified}`,
+              title: posterDraft.title || file.name.replace(/\.[^/.]+$/, ''),
+              src: URL.createObjectURL(file),
+            }))
+            if (editingEntryId) {
+              setPosterEntries(current => current.map(entry => entry.id === editingEntryId
+                ? { ...entry, title: posterDraft.title || entry.title, src: nextEntries[0]?.src || entry.src }
+                : entry))
+            } else {
+              setPosterEntries(current => [...current, ...nextEntries])
+            }
+            setEditingEntryId(null)
+            setStep(2)
+          }}>Save</button>
+        </div>}
+        <div ref={contentScrollRef} className={styles.contentScroll} data-lenis-prevent>
+          {showContact
+            ? <ContactInformationPanel embedded />
+            : showPoster
+              ? <PosterEntriesPanel entries={posterEntries} onEdit={entry => {
+                  setEditingEntryId(entry.id)
+                  setPosterDraft({ title: entry.title, posterFiles: [] })
+                  setStep(3)
+                }} onRemove={id => setPosterEntries(current => current.filter(entry => entry.id !== id))} onAdd={() => {
+                  setPosterDraft({ title: '', posterFiles: [] })
+                  setEditingEntryId(null)
+                  setStep(3)
+                }} />
+              : showPosterDetails
+                ? <PosterDetailsPanel draft={posterDraft} onDraftChange={changes => setPosterDraft(current => ({ ...current, ...changes }))} />
+                : showConsent
+                  ? <ConsentPanel />
+                  : showSuccess
+                  ? <SubmissionSuccessPanel onExplore={() => setStep(0)} />
+                : <div className={styles.contentInner}>
+                    <h2 id="submit-title">Submit to the Poster<br />Contest</h2>
+                    <p className={styles.intro}>Use this page to submit poster work<br />responding to the first theme:<br />Ownership. Before submitting, review the<br />contest overview, Ownership page, and<br />guidelines. Poster Content Guidelines.</p>
+                    <h3>Submission Process</h3>
+                    <ol>
+                      {steps.map(step => <li key={step}>{step}</li>)}
+                    </ol>
+                    <button className={styles.submitLink} type="button" onClick={() => setStep(1)}>Enter Submission (→)</button>
+                </div>}
+        </div>
+        {showContact && <SubmitFooterNav nextLabel="Poster" onBack={() => setStep(0)} onNext={() => setStep(2)} />}
+        {showPoster && <SubmitFooterNav nextLabel="Consent" onBack={() => setStep(1)} onNext={() => setStep(4)} />}
+        {showConsent && <SubmitFooterNav nextLabel="Submit" onBack={() => setStep(2)} onNext={() => setStep(5)} />}
+      </section>
     </main>
   )
 }

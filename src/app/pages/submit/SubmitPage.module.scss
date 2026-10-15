@@ -1,0 +1,21 @@
+@use '../../../styles/functions' as *;
+
+.page { position: relative; display: grid; grid-template-columns: 40% 60%; width: 100vw; min-height: 100vh; overflow: hidden; background: #000; color: #dc91a8; font-family: 'Inter Local', sans-serif; }
+.identity { position: relative; min-height: 100vh; overflow: hidden; background: #dc91a8; color: #000; }
+.homeLink { position: absolute; top: vw(20); left: vw(20); z-index: 2; color: inherit; font-size: vw(20); font-weight: 500; letter-spacing: vw(-0.8); line-height: 1.02; text-decoration: none; }
+.artwork { position: absolute; top: 50%; left: vw(125); width: vw(326); height: vw(415.141); transform: translateY(-50%); background: #000; }
+.pattern { position: absolute; top: vw(89.65); left: vw(44.97); width: vw(237); height: vw(237); }
+.identity h1 { position: absolute; bottom: vw(33); left: vw(24); margin: 0; font-size: vw(112.123); font-weight: 600; letter-spacing: vw(-6.7274); line-height: 0.9; white-space: nowrap; }
+.content { position: relative; height: 100vh; min-height: 0; overflow: hidden; background: #000; }
+.contentScroll { height: 100%; overflow-y: auto; overscroll-behavior: contain; scroll-behavior: smooth; scrollbar-width: none; }
+.contentScroll::-webkit-scrollbar { display: none; }
+.contentInner { position: relative; width: vw(406); margin-left: vw(229); padding-top: vw(173); padding-bottom: vw(24); }
+.content h2, .content h3, .content p, .content ol { margin: 0; }
+.content h2 { font-size: vw(40); font-weight: 600; letter-spacing: vw(-1.6); line-height: 1.02; }
+.intro { margin-top: vw(47) !important; font-size: vw(20); font-weight: 500; letter-spacing: vw(-0.8); line-height: 1.02; }
+.content h3 { margin-top: vw(54) !important; font-size: vw(20); font-weight: 600; letter-spacing: vw(-0.8); line-height: 1.02; }
+.contentInner ol { margin-top: vw(24) !important; padding-left: vw(30); list-style: decimal; font-size: vw(20); font-weight: 500; letter-spacing: vw(-0.8); line-height: 1.62; }
+.contentInner li { padding-left: vw(1); }
+.submitLink { display: block; width: max-content; margin-top: vw(81); margin-left: vw(108); border: 0; padding: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; font-size: vw(20); font-weight: 500; letter-spacing: vw(-0.8); line-height: 1.02; text-decoration: none; }
+.editorActions { position: absolute; top: vw(24); right: vw(24); left: vw(24); z-index: 3; display: flex; justify-content: space-between; color: #dc91a8; }
+.editorActions button { border: 0; padding: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; font-size: vw(20); font-weight: 500; letter-spacing: vw(-0.8); line-height: 1.02; }

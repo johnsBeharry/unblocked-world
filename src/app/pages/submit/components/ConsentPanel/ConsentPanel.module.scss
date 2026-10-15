@@ -1,0 +1,33 @@
+@use '../../../../../styles/functions' as *;
+
+.panel { min-height: 100%; }
+.inner { width: vw(406); margin-left: vw(229); padding-top: vw(253); padding-bottom: vw(24); }
+.inner h1, .intro { margin: 0; }
+.inner h1 { font-size: vw(40); font-weight: 600; letter-spacing: vw(-1.6); line-height: 1.02; }
+.intro { margin-top: vw(47) !important; font-size: vw(20); font-weight: 500; letter-spacing: vw(-0.8); line-height: 1.02; }
+.list { margin-top: vw(46); }
+.row { display: grid; grid-template-columns: vw(20) 1fr; align-items: start; column-gap: vw(20); border-top: vw(2) solid rgb(220 145 168 / 0.4); padding: vw(11) 0 vw(23); color: #dc91a8; cursor: pointer; font-size: vw(20); font-weight: 500; letter-spacing: vw(-0.8); line-height: 1.02; }
+.row input {
+  align-self: center;
+  appearance: none;
+  width: vw(20);
+  height: vw(20);
+  margin: 0;
+  border: vw(2) solid rgb(220 145 168 / 0.4);
+  border-radius: 0;
+  background: #000;
+  position: relative;
+  cursor: pointer;
+}
+.row input:checked { border-color: #dc91a8; background: #dc91a8; }
+.row input:checked::after {
+  content: '';
+  position: absolute;
+  width: vw(9);
+  height: vw(5);
+  left: vw(4);
+  top: vw(4);
+  border-left: vw(2) solid #000;
+  border-bottom: vw(2) solid #000;
+  transform: rotate(-45deg);
+}

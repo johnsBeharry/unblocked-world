@@ -1,0 +1,37 @@
+@use '../../../../../styles/functions' as *;
+
+.panel { min-height: 100%; }
+.inner { width: vw(406); margin-left: vw(229); padding-top: vw(253); padding-bottom: vw(24); }
+.hasEntries .inner { padding-top: vw(173); }
+.inner h1, .inner p { margin: 0; }
+.inner h1 { font-size: vw(40); font-weight: 600; letter-spacing: vw(-1.6); line-height: 1.02; }
+.intro { margin-top: vw(47) !important; font-size: vw(20); font-weight: 500; letter-spacing: vw(-0.8); line-height: 1.02; }
+.addCard {
+  display: grid;
+  width: 100%;
+  height: vw(176);
+  margin-top: vw(47);
+  place-content: center;
+  gap: vw(20);
+  border: 0;
+  padding: 0;
+  background: #0a0a0a;
+  color: #dc91a8;
+  cursor: pointer;
+  font: inherit;
+  font-size: vw(16);
+  font-weight: 500;
+  letter-spacing: vw(-0.64);
+  line-height: 1.02;
+}
+.compactAddCard { height: vw(64); margin-top: vw(47); display: flex; align-items: center; justify-content: flex-start; gap: vw(12); padding: 0 vw(24); }
+.plus { font-size: vw(20); }
+.entries { margin-top: vw(20); border-top: vw(2) solid rgb(220 145 168 / 0.4); }
+.entry { display: flex; gap: vw(24); min-height: vw(176); border-bottom: vw(2) solid rgb(220 145 168 / 0.4); padding: vw(20) 0; }
+.entry:last-child { border-bottom: 0; }
+.thumbnail { flex: 0 0 vw(96); width: vw(96); height: vw(137); object-fit: cover; background: #0a0a0a; }
+.entryInfo { padding-top: 0; }
+.entryInfo h2, .entryInfo p { margin: 0; }
+.entryInfo h2 { font-size: vw(20); font-weight: 500; letter-spacing: vw(-0.8); line-height: 1.02; }
+.entryInfo p { margin-top: vw(8); font-size: vw(16); font-weight: 500; letter-spacing: vw(-0.64); line-height: 1.02; }
+.entryInfo button { border: 0; padding: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; }

@@ -1,0 +1,49 @@
+@use '../../../../../styles/functions' as *;
+
+.progress {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  color: #dc91a8;
+  font-family: 'Inter Local', sans-serif;
+}
+
+.progressBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--progress);
+  height: vw(4);
+  background: #dc91a8;
+  transition: width 400ms ease;
+}
+
+.progress ol {
+  position: absolute;
+  top: vw(34);
+  left: vw(38);
+  display: grid;
+  gap: vw(18);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: vw(40);
+  font-weight: 500;
+  letter-spacing: vw(-1.6);
+  line-height: 1.02;
+}
+
+.progress li { color: rgb(220 145 168 / 0.4); }
+.progress li.active { color: #dc91a8; }
+
+.compact .progressBar { height: vw(2); }
+.compact ol {
+  top: vw(20);
+  left: vw(22);
+  gap: vw(12);
+  font-size: vw(20);
+  letter-spacing: vw(-0.8);
+}
+
+.lineOnly ol { display: none; }

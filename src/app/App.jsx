@@ -5,6 +5,7 @@ import { HomePage } from './pages/home/HomePage.jsx'
 import { PostersPage } from './pages/posters/PostersPage.jsx'
 import { GuidelinesPage } from './pages/guidelines/GuidelinesPage.jsx'
 import { SubmitPage } from './pages/submit/SubmitPage.jsx'
+import { SubmitFormPage } from './pages/submit/SubmitFormPage.jsx'
 import { SmoothScroll } from './components/smooth-scroll/SmoothScroll.jsx'
 
 export function App({ url = '/' }) {
@@ -15,6 +16,10 @@ export function App({ url = '/' }) {
       ? <GuidelinesPage />
       : path === '/submit'
         ? <SubmitPage />
+        : path === '/submit/form/consent'
+          ? <SubmitPage initialStep={4} />
+        : path === '/submit/form'
+          ? <SubmitFormPage />
         : <HomePage />
   const headerColor = path === '/posters'
     ? HEADER_COLORS.poster
@@ -22,5 +27,5 @@ export function App({ url = '/' }) {
       ? HEADER_COLORS.guidelines
       : HEADER_COLORS.home
 
-  return <div className={styles.app} data-route={path}><SmoothScroll /><Header color={headerColor} /><div>{page}</div></div>
+  return <div className={styles.app} data-route={path}><SmoothScroll />{!path.startsWith('/submit') && <Header color={headerColor} />}<div>{page}</div></div>
 }

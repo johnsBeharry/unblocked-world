@@ -1,0 +1,28 @@
+@use '../../../../../styles/functions' as *;
+
+.nav {
+  position: absolute;
+  right: 0;
+  bottom: vw(24);
+  left: 0;
+  z-index: 3;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 vw(22) 0 vw(19);
+  color: #dc91a8;
+  font-family: 'Inter Local', sans-serif;
+}
+
+.link {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  font-size: vw(20);
+  font-weight: 500;
+  letter-spacing: vw(-0.8);
+  line-height: 1.02;
+  text-decoration: none;
+}

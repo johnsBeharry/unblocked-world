@@ -1,0 +1,13 @@
+@use '../../../../../styles/functions' as *;
+
+.summary { display: flex; align-items: flex-start; justify-content: space-between; gap: vw(20); margin: 0; padding-bottom: vw(18.5); border-bottom: vw(1) solid rgba(0, 0, 0, 0.25); cursor: pointer; list-style: none; font-size: vw(25); font-weight: 600; line-height: 1.02; letter-spacing: vw(-1); }
+.summary::-webkit-details-marker { display: none; }
+.contentfulSummary { padding-bottom: 0; border-bottom: 0; }
+.icon { position: relative; display: block; width: vw(12); height: vw(12); flex: 0 0 vw(12); margin-top: vw(6.75); margin-right: vw(4); font-size: 0; }
+.icon::before { position: absolute; top: 50%; left: 0; width: 100%; height: vw(2.39); background: currentColor; content: ''; transform: translateY(-50%); }
+.expandIcon::after { position: absolute; top: 0; left: 50%; width: vw(2.39); height: 100%; background: currentColor; content: ''; transform: translateX(-50%); }
+.collapseIcon { display: none; }
+.root[open] .expandIcon { display: none; }
+.root[open] .collapseIcon { display: block; }
+.content { margin-top: vw(39); }
+.content > * + * { margin-top: vw(22.5); }

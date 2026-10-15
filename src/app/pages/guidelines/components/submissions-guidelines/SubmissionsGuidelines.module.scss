@@ -1,0 +1,43 @@
+@use '../../../../../styles/functions' as *;
+
+.hero {
+  position: relative;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: vw(824);
+  overflow: clip;
+  background: #2850fe;
+  box-sizing: border-box;
+
+  & *,
+  & *::before,
+  & *::after {
+    box-sizing: border-box;
+  }
+}
+
+.heading {
+  position: absolute;
+  top: vw(282);
+  left: 50%;
+  z-index: 2;
+  width: 100%;
+  transform: translateX(-50%);
+  color: #d9d9d9;
+  font-family: 'Inter Local', sans-serif;
+  font-size: vw(164);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: vw(-9.84);
+  line-height: 0.83;
+  text-align: center;
+  white-space: nowrap;
+  word-break: break-word;
+
+  p { margin: 0; }
+  span { display: inline-block; margin-left: vw(10); }
+}
+
+.artwork { z-index: 0; }

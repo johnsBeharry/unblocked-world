@@ -7,6 +7,7 @@
 
 .homeColor { color: #d9d9d9; }
 .posterColor { color: #dc91a8; }
+.guidelinesColor { color: #fff0f0; }
 
 .nav,
 .home {
@@ -47,3 +48,6 @@
 
 .nav.posterColor,
 .home.posterColor { color: #dc91a8; }
+
+.nav.guidelinesColor,
+.home.guidelinesColor { color: #fff0f0; }

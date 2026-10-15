@@ -7,7 +7,8 @@
     "build": "npm run build:client && npm run build:server",
     "build:client": "vite build --outDir dist/client",
     "build:server": "vite build --ssr src/entry-server.jsx --outDir dist/server",
-    "start": "node server/index.js --prod"
+    "start": "node server/index.js --prod",
+    "qa:visual": "node scripts/qa-visual.mjs"
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",
@@ -17,6 +18,7 @@
     "react-dom": "latest"
   },
   "devDependencies": {
+    "playwright": "^1.58.0",
     "sass": "^1.105.1",
     "vite": "latest"
   }

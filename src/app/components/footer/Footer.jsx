@@ -13,6 +13,12 @@ export function Footer({ color = FOOTER_COLORS.home, ctaVariant = 'default' }) {
         topLabel: 'Before You Submit. Make sure your work is original, prepared in the correct format, and connected to the current theme.',
         bottomLabel: '',
       }
+    : ctaVariant === 'guidelines'
+      ? {
+          titleLines: ['Submit', 'Entry (→)'],
+          showTopLabel: false,
+          showBottomLabel: false,
+        }
     : {}
 
   return (

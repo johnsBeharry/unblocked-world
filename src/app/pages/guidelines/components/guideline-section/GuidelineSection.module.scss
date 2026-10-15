@@ -1,0 +1,20 @@
+@use '../../../../../styles/functions' as *;
+
+.section { scroll-margin-top: vw(20); > * + * { margin-top: vw(40); } }
+.section h2 { margin: 0; font-size: vw(40); font-weight: 600; line-height: 1.02; letter-spacing: vw(-1.6); }
+.description { margin: 0; }
+.withDescription .description { margin-top: vw(40.5); }
+.ruledList { margin: 0; padding: 0; list-style-position: outside; > * + * { margin-top: vw(11.1); } }
+.section > .ruledList { margin-top: vw(40.25); }
+.withDescription > .ruledList { margin-top: vw(22.25); }
+.ordered { list-style: none; }
+.unordered { list-style-type: disc; }
+.submissionProcess { font-weight: 500; }
+.submissionProcess > .ruledList { margin-top: vw(48.5); }
+.ruledListItem { position: relative; margin-left: vw(30); padding-top: vw(12.5); padding-bottom: 0; border-top: 0; }
+.ruledListItem::before { position: absolute; top: 0; left: vw(-30); width: calc(100% + vw(30)); border-top: vw(1) solid rgba(0, 0, 0, 0.25); content: ''; }
+.submissionProcess .ruledListItem::before { top: vw(-8.5); }
+.orderedItem { display: flex; align-items: flex-start; margin-left: vw(5); gap: vw(12); }
+.orderedItem::before { left: vw(-5); width: calc(100% + vw(5)); }
+.listMarker { flex: 0 0 auto; }
+.listText { min-width: 0; }

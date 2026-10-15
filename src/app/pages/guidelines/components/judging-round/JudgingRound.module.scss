@@ -1,0 +1,9 @@
+@use '../../../../../styles/functions' as *;
+
+.round { > * + * { margin-top: vw(38.5); } }
+.roundHeader { display: flex; align-items: center; justify-content: space-between; gap: vw(12); padding-top: vw(12); padding-bottom: vw(7); border-top: vw(0.5) solid rgba(0, 0, 0, 0.25); }
+.roundHeader h3 { margin: 0; font-family: 'Inter Local', sans-serif; font-size: vw(20); font-style: normal; font-weight: 700; line-height: 1.02; letter-spacing: vw(-0.8); }
+.roundStatus { display: flex; align-items: center; gap: vw(8); white-space: nowrap; }
+.statusLabel { position: relative; top: vw(-0.0234375); padding: 0 vw(3.79); background: var(--ink); color: var(--paper); line-height: 1.2; letter-spacing: vw(-0.6); }
+.roundContent > * + * { margin-top: vw(18); }
+.roundContent > p { position: relative; top: vw(-5); }

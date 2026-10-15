@@ -16,7 +16,11 @@ export function App({ url = '/' }) {
       : path === '/submit'
         ? <SubmitPage />
         : <HomePage />
-  const headerColor = path === '/posters' ? HEADER_COLORS.poster : HEADER_COLORS.home
+  const headerColor = path === '/posters'
+    ? HEADER_COLORS.poster
+    : path === '/guidelines'
+      ? HEADER_COLORS.guidelines
+      : HEADER_COLORS.home
 
   return <div className={styles.app} data-route={path}><SmoothScroll /><Header color={headerColor} /><div>{page}</div></div>
 }

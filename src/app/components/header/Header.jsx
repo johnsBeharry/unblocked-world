@@ -1,10 +1,18 @@
 import React from 'react'
 import styles from './Header.module.scss'
 
-export const HEADER_COLORS = { home: '#d9d9d9', poster: '#dc91a8' }
+export const HEADER_COLORS = {
+  home: '#d9d9d9',
+  poster: '#dc91a8',
+  guidelines: '#fff0f0',
+}
 
 export function Header({ color = HEADER_COLORS.home }) {
-  const colorClass = color === HEADER_COLORS.poster ? styles.posterColor : styles.homeColor
+  const colorClass = color === HEADER_COLORS.poster
+    ? styles.posterColor
+    : color === HEADER_COLORS.guidelines
+      ? styles.guidelinesColor
+      : styles.homeColor
 
   return (
     <header className={styles.header} aria-label="Primary navigation">

@@ -303,4 +303,89 @@
   .theme-section__bar--17 { left: vw(540.63); top: vw(379.62); width: vw(90); height: vw(27); }
 }
 
+/* Portrait tablet layout shared by every ThemeSection instance. Artwork bar
+   geometry remains variant-specific below. */
+@media (max-width: 1024px) and (orientation: portrait) {
+  .theme-section {
+    width: 100vw;
+    height: vw(1238);
 
+    .theme-section__copy {
+      position: static;
+      display: block;
+    }
+
+    .theme-section__index {
+      left: vw(20);
+      top: vw(20);
+    }
+
+    .theme-section__title {
+      left: vw(20);
+      top: vw(108);
+      width: vw(792);
+    }
+
+    .theme-section__versus,
+    .theme-section__side-label {
+      top: vw(380);
+      transform: none;
+      text-align: left;
+    }
+
+    .theme-section__versus { left: vw(20); }
+    .theme-section__side-label { left: auto; right: vw(20); }
+
+    .theme-section__rule {
+      left: vw(20);
+      top: vw(420);
+      width: calc(100% - #{vw(40)});
+    }
+
+    .theme-section__art {
+      left: vw(20);
+      top: vw(440);
+      width: calc(100% - #{vw(40)});
+      height: vw(498);
+    }
+
+    .theme-section__question-wrap {
+      position: absolute;
+      left: vw(20);
+      top: vw(1119);
+      width: vw(400);
+    }
+
+    .theme-section__description-wrap {
+      position: absolute;
+      left: vw(442);
+      top: vw(1118);
+      width: vw(402);
+    }
+
+    .theme-section__description { line-height: 1; }
+  }
+
+  .theme-section--ownership {
+    .theme-section__bar--01 { left: vw(347); top: vw(66); width: vw(130); height: vw(3.2); }
+    .theme-section__bar--02 { left: vw(347); top: vw(82); width: vw(130); height: vw(6.4); }
+    .theme-section__bar--03 { left: vw(347); top: vw(101); width: vw(130); height: vw(12.7); }
+    .theme-section__bar--04 { left: vw(347); top: vw(126); width: vw(130); height: vw(19.1); }
+    .theme-section__bar--05 { left: vw(347); top: vw(158); width: vw(130); height: vw(25.5); }
+    .theme-section__bar--06 { left: vw(347); top: vw(317); width: vw(130); height: vw(25.5); }
+    .theme-section__bar--07 { left: vw(347); top: vw(355); width: vw(130); height: vw(19.1); }
+    .theme-section__bar--08 { left: vw(347); top: vw(387); width: vw(130); height: vw(12.7); }
+    .theme-section__bar--09 { left: vw(347); top: vw(411); width: vw(130); height: vw(6.4); }
+    .theme-section__bar--10 { left: vw(347); top: vw(429); width: vw(130); height: vw(3.2); }
+    .theme-section__bar--11 { left: vw(321); top: vw(184); width: vw(25.5); height: vw(131); }
+    .theme-section__bar--12 { left: vw(290); top: vw(184); width: vw(19.1); height: vw(131); }
+    .theme-section__bar--13 { left: vw(264); top: vw(184); width: vw(12.7); height: vw(131); }
+    .theme-section__bar--14 { left: vw(245); top: vw(184); width: vw(6.4); height: vw(131); }
+    .theme-section__bar--15 { left: vw(229); top: vw(184); width: vw(3.2); height: vw(131); }
+    .theme-section__bar--16 { left: vw(478); top: vw(184); width: vw(25.5); height: vw(131); }
+    .theme-section__bar--17 { left: vw(516); top: vw(184); width: vw(19.1); height: vw(131); }
+    .theme-section__bar--18 { left: vw(549); top: vw(184); width: vw(12.7); height: vw(131); }
+    .theme-section__bar--19 { left: vw(574); top: vw(184); width: vw(6.4); height: vw(131); }
+    .theme-section__bar--20 { left: vw(593); top: vw(184); width: vw(3.2); height: vw(131); }
+  }
+}

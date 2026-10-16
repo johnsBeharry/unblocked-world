@@ -2,16 +2,16 @@ import React from 'react'
 import styles from './ContactInformationPanel.module.scss'
 
 const fields = [
-  { label: 'Full Name', value: 'Andre' },
-  { label: 'Email Address' },
-  { label: 'Instagram (Optional)' },
-  { label: 'Telephone Number' },
-  { label: 'Country', select: true },
-  { label: 'City', select: true },
-  { label: 'Website (Optional)' },
+  { name: 'full_name', label: 'Full Name', value: 'Andre' },
+  { name: 'email', label: 'Email Address' },
+  { name: 'instagram', label: 'Instagram (Optional)' },
+  { name: 'telephone', label: 'Telephone Number' },
+  { name: 'country', label: 'Country', select: true },
+  { name: 'city', label: 'City', select: true },
+  { name: 'website', label: 'Website (Optional)' },
 ]
 
-export function ContactInformationPanel({ embedded = false }) {
+export function ContactInformationPanel({ embedded = false, value = {}, onChange }) {
   return (
     <section className={`${styles.panel} ${embedded ? styles.embedded : ''}`} aria-labelledby="contact-title">
       <div className={styles.inner}>
@@ -23,11 +23,11 @@ export function ContactInformationPanel({ embedded = false }) {
               {field.value
                 ? <>
                     <span className={styles.fieldLabel}>{field.label}</span>
-                    <input className={styles.fieldValue} aria-label={field.label} defaultValue={field.value} />
+                    <input className={styles.fieldValue} aria-label={field.label} value={value[field.name] ?? field.value} onChange={event => onChange?.({ [field.name]: event.target.value })} />
                   </>
                 : field.select
-                  ? <select className={styles.emptyField} aria-label={field.label} defaultValue={field.label}><option value={field.label}>{field.label}</option></select>
-                  : <input className={styles.emptyField} aria-label={field.label} placeholder={field.label} />}
+                  ? <select className={styles.emptyField} aria-label={field.label} value={value[field.name] || ''} onChange={event => onChange?.({ [field.name]: event.target.value })}><option value="">{field.label}</option></select>
+                  : <input className={styles.emptyField} aria-label={field.label} placeholder={field.label} value={value[field.name] || ''} onChange={event => onChange?.({ [field.name]: event.target.value })} />}
               {field.select && <span className={styles.chevron} aria-hidden="true" />}
             </label>
           ))}

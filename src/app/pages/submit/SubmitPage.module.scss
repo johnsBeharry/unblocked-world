@@ -19,3 +19,5 @@
 .submitLink { display: block; width: max-content; margin-top: vw(81); margin-left: vw(108); border: 0; padding: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; font-size: vw(20); font-weight: 500; letter-spacing: vw(-0.8); line-height: 1.02; text-decoration: none; }
 .editorActions { position: absolute; top: vw(24); right: vw(24); left: vw(24); z-index: 3; display: flex; justify-content: space-between; color: #dc91a8; }
 .editorActions button { border: 0; padding: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; font-size: vw(20); font-weight: 500; letter-spacing: vw(-0.8); line-height: 1.02; }
+.editorActions button:disabled { cursor: wait; opacity: 0.5; }
+.editorStatus { position: absolute; top: vw(28); left: 50%; transform: translateX(-50%); color: inherit; font-size: vw(14); white-space: nowrap; }

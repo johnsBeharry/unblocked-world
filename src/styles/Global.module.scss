@@ -5,7 +5,7 @@
 
   :root {
     --base-size: 1440px;
-    --blue:#2449ed;
+    --blue:#2850fe;
     --magenta:#db38c8;
     --surface:#272727;
     --cream:#d9d9d9;
@@ -37,5 +37,13 @@
     font-family:'Inter Local', Arial, sans-serif;
     letter-spacing:-.09em;
     font-weight:700;
+  }
+
+  @media (max-width: 1024px) and (orientation: portrait) {
+    :root { --base-size: 864px; }
+  }
+
+  @media (max-width: 767px) and (orientation: portrait) {
+    :root { --base-size: 750px; }
   }
 }

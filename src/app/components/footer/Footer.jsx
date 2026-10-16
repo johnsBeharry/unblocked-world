@@ -36,9 +36,11 @@ export function Footer({ color = FOOTER_COLORS.home, ctaVariant = 'default' }) {
         <a className={`${styles.text} ${styles.ownership}`} href="/posters">Ownership</a>
         <a className={`${styles.text} ${styles.guidelines}`} href="/guidelines">Guidelines</a>
         <a className={`${styles.text} ${styles.submit}`} href="/submit">(→) Submit</a>
+        <a className={`${styles.text} ${styles.instagram}`} href="https://www.instagram.com" target="_blank" rel="noreferrer">Instagram</a>
+        <a className={`${styles.text} ${styles.twitter}`} href="https://twitter.com" target="_blank" rel="noreferrer">Twitter (X)</a>
         <p className={`${styles.text} ${styles.copyright}`}>© Copyright&nbsp;2026</p>
         <a className={`${styles.text} ${styles.backToTop}`} href="#top">Back to Top (↑)</a>
-        <p className={`${styles.text} ${styles.description}`}>Exploring ownership, permanence, energy and peers through art, design and culture.</p>
+        <p className={`${styles.text} ${styles.description}`}>Exploring ownership, permanence, energy and peers through art, design and culture. Built through participation, dialogue and creative expression.</p>
         <p className={`${styles.text} ${styles.socials}`}>Socials</p>
       </div>
     </footer>

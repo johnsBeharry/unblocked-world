@@ -12,7 +12,7 @@ export function ThemeSection({
   barCount,
 }) {
   return (
-    <section className={`${styles['theme-section']} ${styles[`theme-section--${variant}`]}`} data-name={variant}>
+    <section id={variant} className={`${styles['theme-section']} ${styles[`theme-section--${variant}`]}`} data-name={variant}>
       <p className={styles['theme-section__title']}>{title}</p>
       <p className={styles['theme-section__index']}>{index}</p>
 
@@ -47,4 +47,3 @@ export function ThemeSection({
     </section>
   )
 }
-

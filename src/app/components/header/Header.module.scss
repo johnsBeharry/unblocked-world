@@ -10,7 +10,8 @@
 .guidelinesColor { color: #fff0f0; }
 
 .nav,
-.home {
+.home,
+.menu {
   position: absolute;
   top: vw(20);
   color: inherit;
@@ -22,6 +23,8 @@
   white-space: nowrap;
   word-break: break-word;
 }
+
+.menu { display: none; }
 
 .nav {
   right: vw(20);
@@ -51,3 +54,35 @@
 
 .nav.guidelinesColor,
 .home.guidelinesColor { color: #fff0f0; }
+
+@media (max-width: 1024px) and (orientation: portrait) {
+  .nav { gap: vw(58); }
+}
+
+@media (max-width: 767px) and (orientation: portrait) {
+  .nav { display: none; }
+
+  .home,
+  .menu {
+    top: vw(40);
+    font-size: vw(40);
+    letter-spacing: vw(-1.6);
+    line-height: 1;
+  }
+
+  .home { left: vw(40); }
+
+  .menu {
+    position: absolute;
+    display: block;
+    right: vw(40);
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font-family: 'Inter Local', sans-serif;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+}

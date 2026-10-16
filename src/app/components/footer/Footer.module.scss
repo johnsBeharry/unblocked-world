@@ -79,7 +79,9 @@
 
 .ownership,
 .guidelines,
-.submit {
+.submit,
+.instagram,
+.twitter {
   position: absolute;
   left: calc(50% + vw(11));
   width: vw(118);
@@ -88,6 +90,8 @@
 .ownership { top: vw(65); }
 .guidelines { top: vw(85); }
 .submit { top: vw(105); }
+.instagram { top: vw(203); left: calc(79.17% - vw(54)); }
+.twitter { top: vw(223); left: calc(79.17% - vw(54)); }
 
 .copyright,
 .backToTop {
@@ -107,4 +111,97 @@
   height: vw(800);
   overflow: visible;
   background: transparent;
+}
+
+@media (max-width: 1024px) and (orientation: portrait) {
+  .main {
+    width: 100vw;
+    height: vw(929);
+  }
+
+  .description {
+    top: vw(20);
+    left: vw(20);
+    width: vw(335);
+  }
+
+  .explore,
+  .socials {
+    top: vw(199.5);
+  }
+
+  .explore,
+  .question,
+  .email {
+    left: vw(20);
+  }
+
+  .text,
+  .emailText {
+    line-height: 1;
+  }
+
+  .socials {
+    left: calc(50% + vw(10));
+  }
+
+  .question {
+    top: vw(383.5);
+  }
+
+  .email {
+    top: vw(428);
+  }
+
+  .ownership,
+  .guidelines,
+  .submit,
+  .instagram,
+  .twitter {
+    left: vw(20);
+    width: auto;
+  }
+
+  .ownership { top: vw(243.5); }
+
+  .guidelines { top: vw(264); }
+  .submit { top: vw(282.5); }
+
+  .instagram,
+  .twitter {
+    left: calc(50% + vw(10));
+  }
+
+  .instagram { top: vw(244.5); }
+  .twitter { top: vw(263.5); }
+
+  .copyright,
+  .backToTop {
+    top: vw(760);
+    transform: none;
+  }
+
+  .copyright {
+    left: vw(20);
+    text-align: left;
+  }
+
+  .backToTop {
+    right: vw(23);
+    left: auto;
+    text-align: right;
+  }
+
+  .brand {
+    bottom: vw(7);
+    left: vw(10);
+    font-size: vw(146.665);
+    letter-spacing: vw(-8.7999);
+    transform: none;
+  }
+
+  .cta {
+    width: 100vw;
+    height: vw(929);
+  }
 }

@@ -1,0 +1,38 @@
+@use '../../../../../styles/functions' as *;
+
+.tabletArt {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: none;
+}
+
+.tabletArt svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  shape-rendering: crispEdges;
+}
+
+.tabletArt rect {
+  fill: #db38c8;
+}
+
+@media (max-width: 1024px) and (orientation: portrait) {
+  .tabletArt { display: block; }
+
+  .legacyArt { display: none; }
+}
+
+@media (max-width: 767px) and (orientation: portrait) {
+  .tabletArt { display: block; }
+
+  .tabletArt {
+    inset: auto;
+    top: vw(43);
+    left: vw(23.7);
+    width: vw(702.35);
+    height: vw(1006);
+  }
+}

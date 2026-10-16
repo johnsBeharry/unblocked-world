@@ -346,4 +346,114 @@
   width: 100%;
 }
 
+@media (max-width: 1024px) and (orientation: portrait) {
+  .hidden-systems {
+    width: 100vw;
+    height: vw(1238);
+  }
 
+  .hidden-systems__node-001 {
+    left: calc(50% - #{vw(3.5)});
+    top: vw(242);
+    font-size: vw(120);
+    letter-spacing: vw(-7.2);
+  }
+
+  .hidden-systems__node-004 {
+    top: vw(455);
+    font-size: vw(120);
+    letter-spacing: vw(-7.2);
+  }
+
+  .hidden-systems__node-005 {
+    left: calc(50% - #{vw(4.5)});
+    top: vw(566);
+    font-size: vw(120);
+    letter-spacing: vw(-7.2);
+  }
+
+  .hidden-systems__node-008,
+  .hidden-systems__node-009 {
+    top: vw(500);
+    transform: none;
+    text-align: left;
+  }
+
+  .hidden-systems__node-008 { left: vw(20); }
+  .hidden-systems__node-009 { left: auto; right: vw(21); top: vw(503); text-align: right; }
+
+  .hidden-systems__node-013 {
+    left: calc(50% - #{vw(1.4)});
+    top: vw(96);
+    font-size: vw(34.5);
+  }
+
+  .hidden-systems__node-010 {
+    left: calc(50% - #{vw(1)});
+    top: vw(881);
+  }
+
+  .hidden-systems__node-014 {
+    width: vw(166);
+    height: vw(101.5);
+    top: vw(469.5);
+  }
+
+  .hidden-systems__node-015 {
+    width: vw(68.3);
+    height: vw(84.6);
+    top: calc(50% - #{vw(3.28)});
+  }
+
+  .hidden-systems__node-020 {
+    width: vw(71.6);
+    height: vw(84.4);
+    top: calc(50% - #{vw(16.77)});
+  }
+
+  .hidden-systems__node-025 {
+    width: vw(71.8);
+    height: vw(91.7);
+    top: calc(50% - #{vw(36.9)});
+  }
+
+  .hidden-systems__node-032 {
+    left: vw(20);
+    top: vw(1098);
+    width: calc(100% - #{vw(40)});
+  }
+
+  .hidden-systems__node-007 {
+    position: relative;
+    left: vw(1);
+    font-size: vw(123);
+  }
+
+  .hidden-systems__node-033,
+  .hidden-systems__node-041,
+  .hidden-systems__node-046,
+  .hidden-systems__node-049 {
+    height: vw(86);
+  }
+
+  .hidden-systems__node-042 {
+    width: vw(80.25);
+    height: vw(80.25);
+    top: vw(11);
+    left: calc(50% - #{vw(1.5)});
+  }
+
+  .hidden-systems__node-047,
+  .hidden-systems__node-050 {
+    width: vw(171);
+    height: vw(85.5);
+    left: calc(50% - #{vw(1)});
+    top: calc(50% + #{vw(8)});
+  }
+
+  .hidden-systems__node-035,
+  .hidden-systems__node-039 {
+    transform: translateY(vw(5)) scale(1.05);
+    transform-origin: center;
+  }
+}

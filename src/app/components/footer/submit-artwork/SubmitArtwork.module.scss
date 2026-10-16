@@ -175,5 +175,12 @@
   &__el-196 { background-color: #db38c8; height: vw(40.4); position: relative; width: vw(451.137); }
   &__el-197 { position: absolute; background-color: #db38c8; height: vw(40.4); left: vw(480.96); top: vw(711.21); width: vw(478.07); }
 
-}
+  @media (max-width: 1024px) and (orientation: portrait) {
+    top: vw(332.4);
+    bottom: auto;
+    height: vw(800);
+    transform: translateX(vw(-4)) scale(0.607, 0.6055);
+    transform-origin: left top;
+  }
 
+}

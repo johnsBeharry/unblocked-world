@@ -68,8 +68,14 @@ export function SubmitPage({ initialStep = 0 }) {
       ? demoPosterEntries
       : []
   ))
-  const [posterDraft, setPosterDraft] = useState({ title: '', posterFiles: [] })
+  const [contactDraft, setContactDraft] = useState({ full_name: 'Andre' })
+  const [posterDraft, setPosterDraft] = useState({ title: '', posterFiles: [], supportingFiles: [] })
   const [editingEntryId, setEditingEntryId] = useState(null)
+  const [saveState, setSaveState] = useState('idle')
+  const [saveError, setSaveError] = useState('')
+  const [consent, setConsent] = useState({ original: true, terms: false, privacy: false })
+  const [submissionState, setSubmissionState] = useState('idle')
+  const [submissionError, setSubmissionError] = useState('')
   const contentScrollRef = useRef(null)
   useSubmitLenis(contentScrollRef, step)
   const showContact = step === 1
@@ -77,6 +83,86 @@ export function SubmitPage({ initialStep = 0 }) {
   const showPosterDetails = step === 3
   const showConsent = step === 4
   const showSuccess = step === 5
+
+  async function handleSubmission() {
+    if (!consent.original || !consent.terms || !consent.privacy) {
+      setSubmissionError('Please accept all submission terms before submitting.')
+      return
+    }
+    if (!posterDraft.posterFiles?.[0]) {
+      setSubmissionError('Please add a poster file before submitting.')
+      return
+    }
+
+    setSubmissionState('submitting')
+    setSubmissionError('')
+    const formData = new FormData()
+    formData.set('title', posterDraft.title || posterDraft.posterFiles[0].name.replace(/\.[^/.]+$/, ''))
+    formData.set('artist_name', contactDraft.full_name || '')
+    formData.set('artist_email', contactDraft.email || '')
+    formData.set('country', contactDraft.country || '')
+    for (const field of ['concept', 'year_designed', 'designed_for', 'client_name', 'creation_method', 'materials_used', 'digital_programs', 'printing_method']) {
+      if (posterDraft[field]) formData.set(field, posterDraft[field])
+    }
+    formData.append('file', posterDraft.posterFiles[0])
+    for (const asset of posterDraft.supportingFiles || []) formData.append('assets', asset)
+
+    try {
+      const response = await fetch('/api/submissions', { method: 'POST', body: formData })
+      const result = await response.json().catch(() => null)
+      if (!response.ok) throw new Error(result?.error || 'Submission failed')
+      setSubmissionState('submitted')
+      setStep(5)
+    } catch (error) {
+      setSubmissionState('idle')
+      setSubmissionError(error.message)
+    }
+  }
+
+  async function handlePosterSave() {
+    if (saveState === 'saving') return
+    const title = posterDraft.title?.trim()
+    if (!title) {
+      setSaveError('Poster title is required.')
+      setSaveState('error')
+      return
+    }
+    if (title.length > 200) {
+      setSaveError('Poster title must be 200 characters or fewer.')
+      setSaveState('error')
+      return
+    }
+    if (!editingEntryId && !posterDraft.posterFiles?.[0]) {
+      setSaveError('Please choose a poster file before saving.')
+      setSaveState('error')
+      return
+    }
+    if ((posterDraft.supportingFiles || []).length > 3) {
+      setSaveError('You can add up to 3 supporting assets.')
+      setSaveState('error')
+      return
+    }
+
+    setSaveError('')
+    setSaveState('saving')
+    await new Promise(resolve => requestAnimationFrame(resolve))
+    const nextEntries = posterDraft.posterFiles.map(file => ({
+      id: `${file.name}-${file.lastModified}`,
+      title,
+      src: URL.createObjectURL(file),
+      file,
+    }))
+    if (editingEntryId) {
+      setPosterEntries(current => current.map(entry => entry.id === editingEntryId
+        ? { ...entry, title, src: nextEntries[0]?.src || entry.src, file: nextEntries[0]?.file || entry.file }
+        : entry))
+    } else {
+      setPosterEntries(current => [...current, ...nextEntries])
+    }
+    setSaveState('saved')
+    setEditingEntryId(null)
+    setStep(2)
+  }
 
   return (
     <main className={styles.page} data-name="submit-index">
@@ -90,41 +176,31 @@ export function SubmitPage({ initialStep = 0 }) {
         {step > 0 && !showSuccess && <SubmitProgress activeStep={showConsent ? 3 : step} compact />}
         {showSuccess && <SubmitProgress activeStep={3} compact lineOnly />}
         {showPosterDetails && <div className={styles.editorActions}>
-          <button type="button" onClick={() => setStep(2)}>Cancel</button>
-          <button type="button" onClick={() => {
-            const nextEntries = posterDraft.posterFiles.map(file => ({
-              id: `${file.name}-${file.lastModified}`,
-              title: posterDraft.title || file.name.replace(/\.[^/.]+$/, ''),
-              src: URL.createObjectURL(file),
-            }))
-            if (editingEntryId) {
-              setPosterEntries(current => current.map(entry => entry.id === editingEntryId
-                ? { ...entry, title: posterDraft.title || entry.title, src: nextEntries[0]?.src || entry.src }
-                : entry))
-            } else {
-              setPosterEntries(current => [...current, ...nextEntries])
-            }
-            setEditingEntryId(null)
-            setStep(2)
-          }}>Save</button>
+          <button type="button" disabled={saveState === 'saving'} onClick={() => { setSaveError(''); setSaveState('idle'); setStep(2) }}>Cancel</button>
+          <button type="button" disabled={saveState === 'saving'} onClick={handlePosterSave}>{saveState === 'saving' ? 'Saving…' : 'Save'}</button>
+          <span className={styles.editorStatus} role="status" aria-live="polite">{saveState === 'saving' ? 'Saving poster…' : ''}</span>
         </div>}
         <div ref={contentScrollRef} className={styles.contentScroll} data-lenis-prevent>
           {showContact
-            ? <ContactInformationPanel embedded />
+            ? <ContactInformationPanel embedded value={contactDraft} onChange={changes => setContactDraft(current => ({ ...current, ...changes }))} />
             : showPoster
               ? <PosterEntriesPanel entries={posterEntries} onEdit={entry => {
                   setEditingEntryId(entry.id)
-                  setPosterDraft({ title: entry.title, posterFiles: [] })
+                  setPosterDraft({ title: entry.title, posterFiles: entry.file ? [entry.file] : [], supportingFiles: [] })
+                  setSaveError('')
+                  setSaveState('idle')
                   setStep(3)
                 }} onRemove={id => setPosterEntries(current => current.filter(entry => entry.id !== id))} onAdd={() => {
-                  setPosterDraft({ title: '', posterFiles: [] })
+                  setPosterDraft({ title: '', posterFiles: [], supportingFiles: [] })
                   setEditingEntryId(null)
+                  setSaveError('')
+                  setSaveState('idle')
                   setStep(3)
                 }} />
               : showPosterDetails
-                ? <PosterDetailsPanel draft={posterDraft} onDraftChange={changes => setPosterDraft(current => ({ ...current, ...changes }))} />
+                ? <PosterDetailsPanel draft={posterDraft} error={saveError} onDraftChange={changes => { setSaveError(''); setSaveState('idle'); setPosterDraft(current => ({ ...current, ...changes })) }} />
                 : showConsent
-                  ? <ConsentPanel />
+                  ? <ConsentPanel value={consent} onChange={changes => setConsent(current => ({ ...current, ...changes }))} error={submissionError} />
                   : showSuccess
                   ? <SubmissionSuccessPanel onExplore={() => setStep(0)} />
                 : <div className={styles.contentInner}>
@@ -139,7 +215,7 @@ export function SubmitPage({ initialStep = 0 }) {
         </div>
         {showContact && <SubmitFooterNav nextLabel="Poster" onBack={() => setStep(0)} onNext={() => setStep(2)} />}
         {showPoster && <SubmitFooterNav nextLabel="Consent" onBack={() => setStep(1)} onNext={() => setStep(4)} />}
-        {showConsent && <SubmitFooterNav nextLabel="Submit" onBack={() => setStep(2)} onNext={() => setStep(5)} />}
+        {showConsent && <SubmitFooterNav nextLabel={submissionState === 'submitting' ? 'Submitting' : 'Submit'} disabled={submissionState === 'submitting'} onBack={() => setStep(2)} onNext={handleSubmission} />}
       </section>
     </main>
   )

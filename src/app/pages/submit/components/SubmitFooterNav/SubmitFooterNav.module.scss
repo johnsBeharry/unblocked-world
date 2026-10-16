@@ -26,3 +26,5 @@
   line-height: 1.02;
   text-decoration: none;
 }
+
+.link:disabled { cursor: wait; opacity: 0.5; }

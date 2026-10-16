@@ -17,6 +17,36 @@
     width: vw(454);
     white-space: normal;
   }
+
+  @media (max-width: 1024px) and (orientation: portrait) {
+    &__el-000 {
+      width: 100vw;
+      height: vw(929);
+      background-color: #2850fe;
+    }
+
+    &__el-198 {
+      top: vw(446.5);
+      font-size: vw(120);
+      letter-spacing: vw(-7.2);
+      left: calc(50% - vw(4));
+    }
+
+    &__el-199,
+    &__el-200 {
+      line-height: 0.9;
+    }
+
+    &__el-201 {
+      top: vw(20);
+      font-size: vw(20);
+      letter-spacing: vw(-0.8);
+    }
+
+    &__el-202 {
+      top: vw(786);
+      font-size: vw(20);
+      letter-spacing: vw(-0.8);
+    }
+  }
 }
-
-

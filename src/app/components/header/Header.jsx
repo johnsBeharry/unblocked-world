@@ -17,11 +17,12 @@ export function Header({ color = HEADER_COLORS.home }) {
   return (
     <header className={styles.header} aria-label="Primary navigation">
       <nav className={`${styles.nav} ${colorClass}`}>
-        <a className={styles.navItem} href="/posters">Posters</a>
+        <a className={styles.navItem} href="/posters">Poster</a>
         <a className={styles.navItem} href="/guidelines">Guidelines</a>
         <a className={styles.navItem} href="/submit">Submit (→)</a>
       </nav>
       <a className={`${styles.home} ${colorClass}`} href="/">Home</a>
+      <button className={`${styles.menu} ${colorClass}`} type="button">Menu</button>
     </header>
   )
 }

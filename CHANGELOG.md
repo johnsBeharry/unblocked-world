@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-10-18
+
+- Added the complete mobile responsive pass across the homepage content and shared visual components.
+- Added the responsive mobile footer layout, including the description, Explore and Socials columns, contact block, copyright row, mobile Back to Top marker, and oversized UNBLOCKED wordmark.
+- Refined mobile footer anchors, typography scale, spacing, and bottom positioning.
+- Added mobile responsive layouts for the shared theme sections, including Ownership, Permanence, Energy, and Peers titles, labels, content, artwork bounds, and section-specific artwork bars.
+- Updated mobile theme content and labels, including Ownership line breaks, Energy’s Dependence label, and the Peers copy.
+- Added the mobile Hidden Systems composition with responsive copy, artwork placement, and partner-logo layout.
+- Added the mobile Submit Work composition with CSS-based artwork bars, responsive title, CTA, and View Brief placement.
+- Added responsive mobile artwork and layout states without relying on flattened artwork images, keeping the visual elements ready for future animation.
+
 ## 2026-10-17
 
 - Added the external submission API integration with a server-only API key, configurable endpoint/contest environment variables, multipart upload handling, request validation, and secure server-side submission forwarding.

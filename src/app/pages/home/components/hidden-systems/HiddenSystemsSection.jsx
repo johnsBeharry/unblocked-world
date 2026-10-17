@@ -5,6 +5,7 @@ import styles from './HiddenSystemsSection.module.scss'
 export default function HiddenSystemsSection() {
   return (
     <div className={styles['hidden-systems']} data-name=".">
+      <div className={styles['hidden-systems__copy-frame']} data-name="hidden-systems-copy">
       <div className={styles['hidden-systems__node-001']}>
         <p className={styles['hidden-systems__node-002']}>Making</p>
         <p className={styles['hidden-systems__node-003']}>Hidden</p>
@@ -19,6 +20,7 @@ export default function HiddenSystemsSection() {
       <div className={styles['hidden-systems__node-010']}>
         <p className={styles['hidden-systems__node-011']}>Through public participation. Through questions</p>
         <p className={styles['hidden-systems__node-012']}>Through people who refuse to treat the current arrangement as permanent.</p>
+        <p className={styles['hidden-systems__mobile-copy']}>Through public participation. Through<br />questions Through people who<br />refuse to treat the current<br />arrangement as permanent.</p>
       </div>
       <p className={styles['hidden-systems__node-013']}>UNBLOCKED</p>
       <div className={styles['hidden-systems__node-014']}>
@@ -50,7 +52,8 @@ export default function HiddenSystemsSection() {
           </svg>
         </div>
       </div>
-      <div className={styles['hidden-systems__node-032']}>
+      </div>
+      <div className={styles['hidden-systems__node-032']} data-name="hidden-systems-logos">
         <div className={styles['hidden-systems__node-033']}>
           <div className={styles['hidden-systems__node-034']} data-name="logo">
             <div className={styles['hidden-systems__node-035']} data-name="Vector">
@@ -88,5 +91,3 @@ export default function HiddenSystemsSection() {
     </div>
   );
 }
-
-

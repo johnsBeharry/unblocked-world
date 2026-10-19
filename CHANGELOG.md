@@ -11,10 +11,13 @@
 - Restricted the 864px tablet design to portrait tablet widths so wider viewports use the desktop layout consistently.
 - Updated the shared responsive breakpoints so mobile ends at 600px and tablet begins at 601px, while retaining the 864px portrait-tablet ceiling.
 - Fixed the mobile submit CTA to activate by width in both orientations and scaled its decorative artwork canvas proportionally across the full mobile range.
+- Matched the mobile submit CTA to the supplied 750×1000 reference by preserving the eight visible artwork motifs at proportional viewport sizes; corrected the earlier ninth-motif overflow caused by a fixed mobile canvas scale.
+- Added the mobile-specific CTA line breaks (`Read the`, `Guidelines`, and `(→)`), top-label wrapping, mobile palette, centered artwork crop, and proportional artwork scaling.
 - Replaced the submit artwork's large generated div hierarchy with eight compact, data-driven motif blocks measured from the supplied 1440×800 desktop page mockup; each motif keeps its own measured layer count instead of forcing a fixed layer count.
 - Kept each motif and layer as an independent div for future animation, removed the SVG/image render path, and corrected the desktop CTA palette and artwork anchors against the 1440px QA frame.
+- Centered every layer vertically against its motif wrapper and largest layer, retaining the measured layer widths, heights, and per-motif layer counts.
 - Corrected responsive typography, line wrapping, alignment, section spacing, artwork bounds, colors, navigation states, and CTA presentation across the poster page and shared homepage/footer components.
-- Revalidated the updated layouts against the supplied mobile and tablet references and corrected the artwork sizing and positioning issues that caused visible ghosting or duplicated edges.
+- Revalidated the updated layouts against the supplied mobile and tablet references with fresh normal and contrast overlays; confirmed the mobile artwork count at eight motifs and recorded remaining automated raster/text differences for follow-up.
 
 ## 2026-10-18
 

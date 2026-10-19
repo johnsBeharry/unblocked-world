@@ -113,7 +113,7 @@
   background: transparent;
 }
 
-@media (max-width: 1024px) and (orientation: portrait) {
+@include compact-portrait {
   .main {
     width: 100vw;
     height: vw(929);
@@ -206,7 +206,7 @@
   }
 }
 
-@media (max-width: 767px) and (orientation: portrait) {
+@include mobile {
   .main {
     width: 100vw;
     height: vw(1336);

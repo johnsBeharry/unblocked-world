@@ -6,7 +6,7 @@
 }
 
 .homeColor { color: #d9d9d9; }
-.posterColor { color: #dc91a8; }
+.posterColor { color: #f4a9c0; }
 .guidelinesColor { color: #fff0f0; }
 
 .nav,
@@ -47,19 +47,22 @@
 }
 
 .nav.homeColor,
-.home.homeColor { color: #d9d9d9; }
+.home.homeColor,
+.menu.homeColor { color: #d9d9d9; }
 
 .nav.posterColor,
-.home.posterColor { color: #dc91a8; }
+.home.posterColor,
+.menu.posterColor { color: #f4a9c0; }
 
 .nav.guidelinesColor,
-.home.guidelinesColor { color: #fff0f0; }
+.home.guidelinesColor,
+.menu.guidelinesColor { color: #fff0f0; }
 
-@media (max-width: 1024px) and (orientation: portrait) {
+@include compact-portrait {
   .nav { gap: vw(58); }
 }
 
-@media (max-width: 767px) and (orientation: portrait) {
+@include mobile {
   .nav { display: none; }
 
   .home,
@@ -75,7 +78,7 @@
   .menu {
     position: absolute;
     display: block;
-    right: vw(40);
+    right: vw(42);
     border: 0;
     padding: 0;
     background: transparent;

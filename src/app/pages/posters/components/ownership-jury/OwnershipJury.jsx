@@ -12,11 +12,13 @@ const JURY_MEMBERS = [
   'Ava Sinclair',
 ]
 
+const MOBILE_JURY_CARDS = [0, 1, 2, 3]
+
 export function OwnershipJury({ photoSrc = DEFAULT_PHOTO }) {
   return (
     <section className={styles.section} data-name="jury" aria-label="Jury Members">
       <div className={styles.label}>
-        <p>Sec. 05 (July Members)</p>
+        <p>Sec. 05 (Jury Members)</p>
       </div>
 
       <div className={styles.imageFrame}>
@@ -36,6 +38,18 @@ export function OwnershipJury({ photoSrc = DEFAULT_PHOTO }) {
       <p className={styles.description}>
         Head of Brand Creative at Cash App, with experience shaping cultural work across music, identity, and visual systems.
       </p>
+
+      <div className={styles.mobileCards} aria-hidden="true">
+        {MOBILE_JURY_CARDS.map((card) => (
+          <article className={styles.mobileCard} key={card}>
+            <div className={styles.mobileImageFrame}>
+              <img src={photoSrc} alt="" />
+            </div>
+            <h2>Kyle Fletcher</h2>
+            <p>Head of Brand Creative at Cash App, with experience shaping cultural work across music, identity, and visual systems.</p>
+          </article>
+        ))}
+      </div>
     </section>
   )
 }

@@ -307,7 +307,7 @@
 
 /* Portrait tablet layout shared by every ThemeSection instance. Artwork bar
    geometry remains variant-specific below. */
-@media (max-width: 1024px) and (orientation: portrait) {
+@include compact-portrait {
   .theme-section {
     width: 100vw;
     height: vw(1238);
@@ -392,7 +392,7 @@
   }
 }
 
-@media (max-width: 767px) and (orientation: portrait) {
+@include mobile {
   .theme-section {
     width: 100vw;
     height: vw(1336);

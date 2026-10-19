@@ -3,7 +3,7 @@ import styles from './Header.module.scss'
 
 export const HEADER_COLORS = {
   home: '#d9d9d9',
-  poster: '#dc91a8',
+  poster: '#f4a9c0',
   guidelines: '#fff0f0',
 }
 

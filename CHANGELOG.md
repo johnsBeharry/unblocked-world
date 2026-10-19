@@ -1,5 +1,21 @@
 # Changelog
 
+## 2026-10-19
+
+- Added the responsive poster-page layouts for the Ownership contest hero and Sections 01–07 across mobile, portrait tablet, and desktop breakpoints.
+- Added tablet layouts for the About the Theme, Creative Exploration, References, About the Programme, Jury Members, How It Works, and Key Dates sections, including their typography, dividers, artwork, cards, timelines, and calls to action.
+- Added responsive artwork compositions for the References and How It Works sections, preserving the intended image proportions, placement, layering, and crop behavior at each viewport.
+- Added the tablet Jury Members grid with responsive artwork treatment, member copy, and consistent two-column card spacing.
+- Added the tablet Key Dates timeline with aligned milestone labels, dates, separators, and responsive section introduction.
+- Standardized responsive sizing through the shared `vw()` helper and centralized mobile, portrait-tablet, landscape-tablet, and desktop breakpoint helpers.
+- Restricted the 864px tablet design to portrait tablet widths so wider viewports use the desktop layout consistently.
+- Updated the shared responsive breakpoints so mobile ends at 600px and tablet begins at 601px, while retaining the 864px portrait-tablet ceiling.
+- Fixed the mobile submit CTA to activate by width in both orientations and scaled its decorative artwork canvas proportionally across the full mobile range.
+- Replaced the submit artwork's large generated div hierarchy with eight compact, data-driven motif blocks measured from the supplied 1440×800 desktop page mockup; each motif keeps its own measured layer count instead of forcing a fixed layer count.
+- Kept each motif and layer as an independent div for future animation, removed the SVG/image render path, and corrected the desktop CTA palette and artwork anchors against the 1440px QA frame.
+- Corrected responsive typography, line wrapping, alignment, section spacing, artwork bounds, colors, navigation states, and CTA presentation across the poster page and shared homepage/footer components.
+- Revalidated the updated layouts against the supplied mobile and tablet references and corrected the artwork sizing and positioning issues that caused visible ghosting or duplicated edges.
+
 ## 2026-10-18
 
 - Added the complete mobile responsive pass across the homepage content and shared visual components.

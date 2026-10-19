@@ -356,7 +356,7 @@
   width: 100%;
 }
 
-@media (max-width: 1024px) and (orientation: portrait) {
+@include compact-portrait {
   .hidden-systems {
     width: 100vw;
     height: vw(1238);
@@ -470,7 +470,7 @@
   }
 }
 
-@media (max-width: 767px) and (orientation: portrait) {
+@include mobile {
   .hidden-systems {
     width: 100vw;
     height: vw(2144);

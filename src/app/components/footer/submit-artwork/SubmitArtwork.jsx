@@ -1,298 +1,93 @@
 import React from 'react'
 import styles from './SubmitArtwork.module.scss'
 
+const ARTWORK_WIDTH = 2720
+const ARTWORK_HEIGHT = 1778
+const MIN_LAYER_HEIGHT = 3.63
+
+// Full artwork geometry, measured from the supplied 2720 x 1778 mockup.
+// Each motif is one animation target. Every visible layer below is one complete
+// rectangle/div; a layer is never split into separate left, center, or right
+// fragments. Layer counts follow the mockup instead of being forced to five.
+const ARTWORK_MOTIFS = [
+  { layers: [[1245, 0, 229, 40], [1172, 4, 376, 33], [686, 17, 1347, 7]] },
+  { layers: [[1178, 142, 363, 53], [1084, 152, 552, 33], [855, 158, 1010, 18], [370, 166, 1980, 7]] },
+  { layers: [[1111, 283, 497, 67], [1030, 290, 660, 54], [902, 300, 915, 27], [673, 307, 1373, 7], [190, 314, 2340, 4]] },
+  { layers: [[1030, 428, 659, 73], [889, 434, 942, 61], [761, 448, 1198, 27], [586, 455, 1548, 19], [103, 463, 2514, 4]] },
+  { layers: [[963, 566, 794, 80], [821, 576, 1077, 48], [694, 590, 1332, 32], [525, 596, 1669, 20], [44, 603, 2631, 7]] },
+  { layers: [[1013, 697, 693, 100], [909, 707, 901, 81], [768, 718, 1184, 47], [639, 731, 1441, 27], [485, 738, 1750, 14], [0, 745, 2719, 6]] },
+  { layers: [[997, 838, 726, 101], [882, 849, 956, 71], [740, 859, 1239, 60], [612, 872, 1495, 34], [485, 879, 1750, 14], [0, 886, 2719, 6]] },
+  { layers: [[1013, 980, 693, 101], [909, 990, 901, 81], [768, 1000, 1184, 47], [639, 1014, 1441, 27], [485, 1021, 1750, 14], [0, 1027, 2719, 7]] },
+  { layers: [[963, 1131, 794, 81], [821, 1141, 1077, 48], [694, 1155, 1332, 27], [525, 1162, 1693, 20], [42, 1168, 2636, 7]] },
+  { layers: [[1030, 1276, 659, 74], [889, 1283, 942, 60], [761, 1296, 1198, 33], [586, 1303, 1548, 27], [103, 1309, 2514, 7]] },
+  { layers: [[1111, 1428, 497, 67], [1030, 1434, 660, 54], [902, 1445, 915, 33], [673, 1452, 1373, 19], [190, 1457, 2340, 7]] },
+  { layers: [[1178, 1583, 363, 53], [1084, 1593, 552, 33], [855, 1599, 1010, 19], [370, 1606, 1980, 7]] },
+  { layers: [[1245, 1737, 229, 40], [1172, 1741, 376, 33], [686, 1754, 1347, 7]] },
+].map((motif) => {
+  const measuredLayers = motif.layers.map(([x, top, width, height]) => ({
+    x,
+    centerY: top + (height / 2),
+    width,
+    height: Math.max(height, MIN_LAYER_HEIGHT),
+  }))
+  const referenceLayer = measuredLayers.reduce((largest, layer) => (
+    layer.height > largest.height ? layer : largest
+  ))
+  const referenceCenterY = referenceLayer.centerY
+  const layers = measuredLayers.map((layer) => ({
+    ...layer,
+    centerY: referenceCenterY,
+  }))
+  const x = Math.min(...layers.map((layer) => layer.x))
+  const y = referenceCenterY - (referenceLayer.height / 2)
+  const right = Math.max(...layers.map((layer) => layer.x + layer.width))
+  const bottom = referenceCenterY + (referenceLayer.height / 2)
+
+  return {
+    x,
+    y,
+    width: right - x,
+    height: bottom - y,
+    layers,
+  }
+})
+
+function toCanvasPixels(value) {
+  return `${value}px`
+}
+
 export function SubmitArtwork({ className = '' }) {
   const artworkClassName = [styles.artwork, className].filter(Boolean).join(' ')
 
   return (
-      <div className={artworkClassName}>
-        <div className={styles['artwork__el-001']}>
-        <div className={styles['artwork__el-002']} />
-        <div className={styles['artwork__el-003']} />
-        <div className={styles['artwork__el-004']}>
-          <div className={styles['artwork__el-005']}>
-            <div className={styles['artwork__el-006']} />
-          </div>
+    <div className={artworkClassName} aria-hidden="true">
+      {ARTWORK_MOTIFS.map((motif, motifIndex) => (
+        <div
+          key={motifIndex}
+          className={styles.motif}
+          data-artwork-motif={motifIndex}
+          style={{
+            left: toCanvasPixels(motif.x),
+            top: toCanvasPixels(motif.y),
+            width: toCanvasPixels(motif.width),
+            height: toCanvasPixels(motif.height),
+          }}
+        >
+          {motif.layers.map((layer, layerIndex) => (
+            <div
+              key={layerIndex}
+              className={styles.layer}
+              data-artwork-layer={`${motifIndex}-${layerIndex}`}
+              style={{
+                left: toCanvasPixels(layer.x - motif.x),
+                top: toCanvasPixels(layer.centerY - motif.y - (layer.height / 2)),
+                width: toCanvasPixels(layer.width),
+                height: toCanvasPixels(layer.height),
+              }}
+            />
+          ))}
         </div>
-        <div className={styles['artwork__el-007']} />
-        <div className={styles['artwork__el-008']}>
-          <div className={styles['artwork__el-009']}>
-            <div className={styles['artwork__el-010']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-011']} />
-        <div className={styles['artwork__el-012']}>
-          <div className={styles['artwork__el-013']}>
-            <div className={styles['artwork__el-014']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-015']} />
-        <div className={styles['artwork__el-016']} />
-        <div className={styles['artwork__el-017']} />
-        <div className={styles['artwork__el-018']}>
-          <div className={styles['artwork__el-019']}>
-            <div className={styles['artwork__el-020']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-021']} />
-        <div className={styles['artwork__el-022']}>
-          <div className={styles['artwork__el-023']}>
-            <div className={styles['artwork__el-024']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-025']} />
-        <div className={styles['artwork__el-026']}>
-          <div className={styles['artwork__el-027']}>
-            <div className={styles['artwork__el-028']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-029']} />
-        <div className={styles['artwork__el-030']}>
-          <div className={styles['artwork__el-031']}>
-            <div className={styles['artwork__el-032']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-033']} />
-        <div className={styles['artwork__el-034']}>
-          <div className={styles['artwork__el-035']}>
-            <div className={styles['artwork__el-036']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-037']} />
-        <div className={styles['artwork__el-038']}>
-          <div className={styles['artwork__el-039']}>
-            <div className={styles['artwork__el-040']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-041']} />
-        <div className={styles['artwork__el-042']}>
-          <div className={styles['artwork__el-043']}>
-            <div className={styles['artwork__el-044']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-045']} />
-        <div className={styles['artwork__el-046']}>
-          <div className={styles['artwork__el-047']}>
-            <div className={styles['artwork__el-048']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-049']}>
-          <svg className={styles['artwork__el-050']} fill="none" preserveAspectRatio="none" viewBox="0 0 586.208 872.011">
-            <g id="Group 126">
-              <path d="M342.968 0L586.208 0.00340636V3.64859L342.968 3.64519V0Z" fill="var(--fill-0, #DB38C8)" id="Rectangle 156778" />
-              <path d="M342.968 872.011H586.208V868.363H342.968V872.011Z" fill="var(--fill-0, #DB38C8)" id="Rectangle 156779" />
-              <path d="M0 434.181L243.24 434.184V437.829L0 437.826V434.181Z" fill="var(--fill-0, #DB38C8)" id="Rectangle 156782" />
-              <path d="M0 363.642L243.24 363.646V367.291L0 367.287V363.642Z" fill="var(--fill-0, #DB38C8)" id="Rectangle 156784" />
-              <path d="M0 508.369H243.24V504.721H0V508.369Z" fill="var(--fill-0, #DB38C8)" id="Rectangle 156785" />
-              <path d="M21.8908 293.104L265.13 293.107V296.752L21.8908 296.749V293.104Z" fill="var(--fill-0, #DB38C8)" id="Rectangle 156788" />
-              <path d="M20.6742 578.908H263.914V575.259H20.6742V578.908Z" fill="var(--fill-0, #DB38C8)" id="Rectangle 156789" />
-              <path d="M51.0772 222.565L294.317 222.567V224.997L51.0772 224.995V222.565Z" fill="var(--fill-0, #DB38C8)" id="Rectangle 156792" />
-              <path d="M51.0772 649.446H294.317V645.798H51.0772V649.446Z" fill="var(--fill-0, #DB38C8)" id="Rectangle 156793" />
-              <path d="M94.8625 148.377L338.102 148.379V150.809L94.8625 150.807V148.377Z" fill="var(--fill-0, #DB38C8)" id="Rectangle 156796" />
-              <path d="M94.8625 723.635H338.102V719.986H94.8625V723.635Z" fill="var(--fill-0, #DB38C8)" id="Rectangle 156797" />
-              <path d="M184.863 74.1883L428.102 74.1917V77.8369L184.863 77.8335V74.1883Z" fill="var(--fill-0, #DB38C8)" id="Rectangle 156800" />
-              <path d="M184.863 797.823H428.102V794.174H184.863V797.823Z" fill="var(--fill-0, #DB38C8)" id="Rectangle 156801" />
-            </g>
-          </svg>
-        </div>
-        <div className={styles['artwork__el-065']}>
-          <div className={styles['artwork__el-066']}>
-            <div className={styles['artwork__el-067']}>
-              <svg className={styles['artwork__el-068']} fill="none" preserveAspectRatio="none" viewBox="0 0 586.208 872.011">
-                <g id="Group 127">
-                  <path d="M342.968 0L586.208 0.00340636V3.64859L342.968 3.64519V0Z" fill="var(--fill-0, #DB38C8)" id="Rectangle 156778" />
-                  <path d="M342.968 872.011H586.208V868.363H342.968V872.011Z" fill="var(--fill-0, #DB38C8)" id="Rectangle 156779" />
-                  <path d="M0 434.181L243.24 434.184V437.829L0 437.826V434.181Z" fill="var(--fill-0, #DB38C8)" id="Rectangle 156782" />
-                  <path d="M0 363.642L243.24 363.646V367.291L0 367.287V363.642Z" fill="var(--fill-0, #DB38C8)" id="Rectangle 156784" />
-                  <path d="M0 508.369H243.24V504.721H0V508.369Z" fill="var(--fill-0, #DB38C8)" id="Rectangle 156785" />
-                  <path d="M21.8908 293.104L265.13 293.107V296.752L21.8908 296.749V293.104Z" fill="var(--fill-0, #DB38C8)" id="Rectangle 156788" />
-                  <path d="M20.6742 578.908H263.914V575.259H20.6742V578.908Z" fill="var(--fill-0, #DB38C8)" id="Rectangle 156789" />
-                  <path d="M51.0772 222.565L294.317 222.567V224.997L51.0772 224.995V222.565Z" fill="var(--fill-0, #DB38C8)" id="Rectangle 156792" />
-                  <path d="M51.0772 649.446H294.317V645.798H51.0772V649.446Z" fill="var(--fill-0, #DB38C8)" id="Rectangle 156793" />
-                  <path d="M94.8625 148.377L338.102 148.379V150.809L94.8625 150.807V148.377Z" fill="var(--fill-0, #DB38C8)" id="Rectangle 156796" />
-                  <path d="M94.8625 723.635H338.102V719.986H94.8625V723.635Z" fill="var(--fill-0, #DB38C8)" id="Rectangle 156797" />
-                  <path d="M184.863 74.1883L428.102 74.1917V77.8369L184.863 77.8335V74.1883Z" fill="var(--fill-0, #DB38C8)" id="Rectangle 156800" />
-                  <path d="M184.863 797.823H428.102V794.174H184.863V797.823Z" fill="var(--fill-0, #DB38C8)" id="Rectangle 156801" />
-                </g>
-              </svg>
-            </div>
-          </div>
-        </div>
-        <div className={styles['artwork__el-083']} />
-        <div className={styles['artwork__el-084']}>
-          <div className={styles['artwork__el-085']}>
-            <div className={styles['artwork__el-086']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-087']} />
-        <div className={styles['artwork__el-088']}>
-          <div className={styles['artwork__el-089']}>
-            <div className={styles['artwork__el-090']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-091']}>
-          <div className={styles['artwork__el-092']}>
-            <div className={styles['artwork__el-093']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-094']}>
-          <div className={styles['artwork__el-095']}>
-            <div className={styles['artwork__el-096']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-097']} />
-        <div className={styles['artwork__el-098']}>
-          <div className={styles['artwork__el-099']}>
-            <div className={styles['artwork__el-100']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-101']} />
-        <div className={styles['artwork__el-102']}>
-          <div className={styles['artwork__el-103']}>
-            <div className={styles['artwork__el-104']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-105']}>
-          <div className={styles['artwork__el-106']}>
-            <div className={styles['artwork__el-107']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-108']}>
-          <div className={styles['artwork__el-109']}>
-            <div className={styles['artwork__el-110']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-111']} />
-        <div className={styles['artwork__el-112']}>
-          <div className={styles['artwork__el-113']}>
-            <div className={styles['artwork__el-114']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-115']}>
-          <div className={styles['artwork__el-116']}>
-            <div className={styles['artwork__el-117']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-118']}>
-          <div className={styles['artwork__el-119']}>
-            <div className={styles['artwork__el-120']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-121']} />
-        <div className={styles['artwork__el-122']}>
-          <div className={styles['artwork__el-123']}>
-            <div className={styles['artwork__el-124']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-125']} />
-        <div className={styles['artwork__el-126']}>
-          <div className={styles['artwork__el-127']}>
-            <div className={styles['artwork__el-128']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-129']} />
-        <div className={styles['artwork__el-130']}>
-          <div className={styles['artwork__el-131']}>
-            <div className={styles['artwork__el-132']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-133']} />
-        <div className={styles['artwork__el-134']}>
-          <div className={styles['artwork__el-135']}>
-            <div className={styles['artwork__el-136']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-137']} />
-        <div className={styles['artwork__el-138']}>
-          <div className={styles['artwork__el-139']}>
-            <div className={styles['artwork__el-140']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-141']} />
-        <div className={styles['artwork__el-142']}>
-          <div className={styles['artwork__el-143']}>
-            <div className={styles['artwork__el-144']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-145']} />
-        <div className={styles['artwork__el-146']}>
-          <div className={styles['artwork__el-147']}>
-            <div className={styles['artwork__el-148']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-149']} />
-        <div className={styles['artwork__el-150']}>
-          <div className={styles['artwork__el-151']}>
-            <div className={styles['artwork__el-152']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-153']} />
-        <div className={styles['artwork__el-154']}>
-          <div className={styles['artwork__el-155']}>
-            <div className={styles['artwork__el-156']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-157']} />
-        <div className={styles['artwork__el-158']} />
-        <div className={styles['artwork__el-159']} />
-        <div className={styles['artwork__el-160']}>
-          <div className={styles['artwork__el-161']}>
-            <div className={styles['artwork__el-162']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-163']} />
-        <div className={styles['artwork__el-164']}>
-          <div className={styles['artwork__el-165']}>
-            <div className={styles['artwork__el-166']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-167']} />
-        <div className={styles['artwork__el-168']}>
-          <div className={styles['artwork__el-169']}>
-            <div className={styles['artwork__el-170']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-171']}>
-          <div className={styles['artwork__el-172']}>
-            <div className={styles['artwork__el-173']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-174']} />
-        <div className={styles['artwork__el-175']}>
-          <div className={styles['artwork__el-176']}>
-            <div className={styles['artwork__el-177']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-178']} />
-        <div className={styles['artwork__el-179']}>
-          <div className={styles['artwork__el-180']}>
-            <div className={styles['artwork__el-181']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-182']} />
-        <div className={styles['artwork__el-183']}>
-          <div className={styles['artwork__el-184']}>
-            <div className={styles['artwork__el-185']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-186']} />
-        <div className={styles['artwork__el-187']} />
-        <div className={styles['artwork__el-188']} />
-        <div className={styles['artwork__el-189']} />
-        <div className={styles['artwork__el-190']}>
-          <div className={styles['artwork__el-191']}>
-            <div className={styles['artwork__el-192']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-193']} />
-        <div className={styles['artwork__el-194']}>
-          <div className={styles['artwork__el-195']}>
-            <div className={styles['artwork__el-196']} />
-          </div>
-        </div>
-        <div className={styles['artwork__el-197']} />
-        </div>
-      </div>
+      ))}
+    </div>
   )
 }
-

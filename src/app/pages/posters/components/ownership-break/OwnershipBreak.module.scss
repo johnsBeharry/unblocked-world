@@ -65,3 +65,89 @@
   letter-spacing: vw(-43.5097);
   word-break: break-word;
 }
+
+.mobileArt {
+  display: none;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.mobileRing,
+.mobileCrescent {
+  position: absolute;
+  background: #000;
+}
+
+.mobileRing {
+  left: calc(100vw * 78.25 / 375);
+  top: calc(100vw * -30 / 375);
+  width: calc(100vw * 189.5 / 375);
+  height: calc(100vw * 284 / 375);
+  background: none;
+  color: #000;
+  font-family: 'Inter Local', sans-serif;
+  font-size: calc(100vw * 284 / 375);
+  font-weight: 600;
+  line-height: 1;
+  text-align: center;
+  transform: scaleX(0.995);
+  transform-origin: left top;
+}
+
+.mobileCrescentLeft,
+.mobileCrescentRight {
+  top: calc(100vw * 29.5 / 375);
+  width: calc(100vw * 32 / 375);
+  height: calc(100vw * 165 / 375);
+}
+
+.mobileCrescentLeft {
+  left: calc(100vw * 44 / 375);
+  clip-path: ellipse(100% 50% at 100% 50%);
+}
+
+.mobileCrescentRight {
+  right: calc(100vw * 43.5 / 375);
+  clip-path: ellipse(100% 50% at 0 50%);
+}
+
+.mobileCrescentFarLeft,
+.mobileCrescentFarRight {
+  top: calc(100vw * 61.5 / 375);
+  width: calc(100vw * 9 / 375);
+  height: calc(100vw * 100.5 / 375);
+}
+
+.mobileCrescentFarLeft {
+  left: calc(100vw * 17.5 / 375);
+  clip-path: ellipse(100% 50% at 100% 50%);
+}
+
+.mobileCrescentFarRight {
+  right: calc(100vw * 17 / 375);
+  clip-path: ellipse(100% 50% at 0 50%);
+}
+
+@include tablet-portrait {
+  .breakSection {
+    width: 100vw;
+    height: calc(100vw * 516 / 864);
+    background: #dc91a8;
+  }
+
+  .layer { display: none; }
+  .mobileArt { display: block; }
+}
+
+@include mobile {
+  .breakSection {
+    width: 100vw;
+    height: calc(100vw * 224 / 375);
+    background: #dc91a8;
+  }
+
+  .layer { display: none; }
+
+  .mobileArt { display: block; }
+}

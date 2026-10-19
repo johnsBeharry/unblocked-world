@@ -25,16 +25,28 @@ const bars = [
 ]
 
 const toVw = (size) => `${(size / 1440) * 100}vw`
+const toMobileVw = (size) => `${(size / 375) * 100}vw`
+const mobileScaleX = 188.5 / 602
+const mobileScaleY = 240 / 766.609
 
 export function OwnershipContestHero({ guidelinesHref, submitHref }) {
   return (
-    <section className={styles.hero} aria-labelledby="ownership-contest-title">
+    <section className={styles.hero} data-name="contest-hero" aria-labelledby="ownership-contest-title">
       <div className={styles.art} aria-hidden="true">
         {bars.map(([left, top, width, height], index) => (
           <span
             className={styles.bar}
             key={index}
-            style={{ left: toVw(left), top: toVw(top), width: toVw(width), height: toVw(height) }}
+            style={{
+              '--desktop-bar-left': toVw(left),
+              '--desktop-bar-top': toVw(top),
+              '--desktop-bar-width': toVw(width),
+              '--desktop-bar-height': toVw(height),
+              '--mobile-left': toMobileVw(left * mobileScaleX),
+              '--mobile-top': toMobileVw(top * mobileScaleY),
+              '--mobile-width': toMobileVw(width * mobileScaleX),
+              '--mobile-height': toMobileVw(height * mobileScaleY),
+            }}
           />
         ))}
       </div>

@@ -39,11 +39,11 @@
     font-weight:700;
   }
 
-  @media (max-width: 1024px) and (orientation: portrait) {
+  @include tablet-portrait {
     :root { --base-size: 864px; }
   }
 
-  @media (max-width: 767px) and (orientation: portrait) {
+  @include mobile {
     :root { --base-size: 750px; }
   }
 }

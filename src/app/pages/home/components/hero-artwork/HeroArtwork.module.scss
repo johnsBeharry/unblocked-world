@@ -19,13 +19,13 @@
   fill: #db38c8;
 }
 
-@media (max-width: 1024px) and (orientation: portrait) {
+@include compact-portrait {
   .tabletArt { display: block; }
 
   .legacyArt { display: none; }
 }
 
-@media (max-width: 767px) and (orientation: portrait) {
+@include mobile {
   .tabletArt { display: block; }
 
   .tabletArt {

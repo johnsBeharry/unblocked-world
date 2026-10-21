@@ -28,7 +28,7 @@ const demoPosterEntries = [
   {
     id: 'demo-good-things',
     title: 'Good Things',
-    src: '/UNBLOCKED-poster_files/e353c20b9b160ceed44fa9f8dfbd71844bc63f36.e353c20b.png',
+    src: '/UNBLOCKED-poster_files/ace3413e5a82a9d017f82762129b9755a0ff0588.ace3413e.png',
   },
 ]
 
@@ -165,7 +165,7 @@ export function SubmitPage({ initialStep = 0 }) {
   }
 
   return (
-    <main className={styles.page} data-name="submit-index">
+    <main className={`${styles.page} ${showPosterDetails ? styles.editing : ''} ${showSuccess ? styles.success : ''}`} data-name="submit-index">
       <section className={styles.identity} aria-label="Ownership theme">
         <a className={styles.homeLink} href="/">(←) Home</a>
         <SubmitArtwork />
@@ -173,8 +173,9 @@ export function SubmitPage({ initialStep = 0 }) {
       </section>
 
       <section className={styles.content} aria-labelledby="submit-title">
-        {step > 0 && !showSuccess && <SubmitProgress activeStep={showConsent ? 3 : step} compact />}
-        {showSuccess && <SubmitProgress activeStep={3} compact lineOnly />}
+        {step > 0 && !showSuccess && !showPosterDetails && <SubmitProgress activeStep={showConsent ? 3 : step} compact />}
+        {showPosterDetails && <SubmitProgress activeStep={2} compact lineOnly />}
+        {showSuccess && <SubmitProgress activeStep={3} compact lineOnly hideBar />}
         {showPosterDetails && <div className={styles.editorActions}>
           <button type="button" disabled={saveState === 'saving'} onClick={() => { setSaveError(''); setSaveState('idle'); setStep(2) }}>Cancel</button>
           <button type="button" disabled={saveState === 'saving'} onClick={handlePosterSave}>{saveState === 'saving' ? 'Saving…' : 'Save'}</button>
@@ -182,7 +183,7 @@ export function SubmitPage({ initialStep = 0 }) {
         </div>}
         <div ref={contentScrollRef} className={styles.contentScroll} data-lenis-prevent>
           {showContact
-            ? <ContactInformationPanel embedded value={contactDraft} onChange={changes => setContactDraft(current => ({ ...current, ...changes }))} />
+            ? <ContactInformationPanel value={contactDraft} onChange={changes => setContactDraft(current => ({ ...current, ...changes }))} />
             : showPoster
               ? <PosterEntriesPanel entries={posterEntries} onEdit={entry => {
                   setEditingEntryId(entry.id)
@@ -204,17 +205,32 @@ export function SubmitPage({ initialStep = 0 }) {
                   : showSuccess
                   ? <SubmissionSuccessPanel onExplore={() => setStep(0)} />
                 : <div className={styles.contentInner}>
-                    <h2 id="submit-title">Submit to the Poster<br />Contest</h2>
-                    <p className={styles.intro}>Use this page to submit poster work<br />responding to the first theme:<br />Ownership. Before submitting, review the<br />contest overview, Ownership page, and<br />guidelines. Poster Content Guidelines.</p>
+                    <h2 id="submit-title">
+                      <span className={styles.titleDesktop}>Submit to the Poster<br />Contest</span>
+                      <span className={styles.titleMobile}>Submit to the<br />Poster Contest</span>
+                    </h2>
+                    <p className={`${styles.intro} ${styles.introDesktop}`}>Use this page to submit poster work<br />responding to the first theme:<br />Ownership. Before submitting, review the<br />contest overview, Ownership page, and<br />guidelines. Poster Contest Guidelines.</p>
+                    <p className={`${styles.intro} ${styles.introMobile}`}>Use this page to submit poster work responding to the first theme: Ownership. Before submitting, review the contest overview, Ownership page, and guidelines. Poster Contest Guidelines.</p>
                     <h3>Submission Process</h3>
                     <ol>
                       {steps.map(step => <li key={step}>{step}</li>)}
                     </ol>
+                    <h3>Rules and Eligibility</h3>
+                    <ul>
+                      <li>Open to individual and collaborative entries.</li>
+                      <li>You can submit more than one poster.</li>
+                      <li>Submitted work must be original.</li>
+                      <li>Accepted file types: JPG, PNG, PDF, GIF, or MP4.</li>
+                      <li>Static posters should be under 5MB.</li>
+                      <li>Motion posters should be under 20MB.</li>
+                      <li>Use the file name format: YourName_PosterTitle.</li>
+                      <li>Selected work may require additional formats later.</li>
+                    </ul>
                     <button className={styles.submitLink} type="button" onClick={() => setStep(1)}>Enter Submission (→)</button>
                 </div>}
         </div>
         {showContact && <SubmitFooterNav nextLabel="Poster" onBack={() => setStep(0)} onNext={() => setStep(2)} />}
-        {showPoster && <SubmitFooterNav nextLabel="Consent" onBack={() => setStep(1)} onNext={() => setStep(4)} />}
+        {showPoster && <SubmitFooterNav nextLabel="Consent" nextLabelMobile="Poster" onBack={() => setStep(1)} onNext={() => setStep(4)} />}
         {showConsent && <SubmitFooterNav nextLabel={submissionState === 'submitting' ? 'Submitting' : 'Submit'} disabled={submissionState === 'submitting'} onBack={() => setStep(2)} onNext={handleSubmission} />}
       </section>
     </main>

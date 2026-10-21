@@ -1,5 +1,38 @@
 # Changelog
 
+## 2026-10-22
+
+- Finalized the mobile Submission Success responsive state from the supplied 750×1336 mockup, including the corrected pattern origin, five-line confirmation copy, Home anchor, hidden progress/submit overlays, and Explore More CTA spacing.
+- Rebuilt and rechecked the mobile state at 375×668 CSS px / DPR 2 with fresh normal and contrast overlays; no visible geometric ghost remains, with residual browser raster differences recorded in the local QA evidence.
+
+## 2026-10-21
+
+- Consolidated the submit Contact step into the existing single-page submission flow so Enter, back, and next actions transition internally without switching to a second page layout.
+- Removed the duplicate route-specific Contact shell and kept one responsive Contact Information component as the source of truth.
+- Reworked Contact responsive styling for mobile and portrait tablet breakpoints, including shared sizing, typography, field spacing, wrapping, borders, and select controls.
+- Fixed mobile and tablet select labels being clipped by replacing the undersized fixed select height with the component line-height.
+- Restored the mobile `(←) Home` CTA when the Contact step is active while preserving the tablet progress layout.
+- Refined the shared responsive viewport sizing and progress positioning used by the submit Contact flow.
+- Added the responsive tablet Poster Entries state with the supplied uploaded-entry artwork, add-poster control, entry actions, progress state, and footer navigation alignment.
+- Corrected the tablet Poster Entries vertical origin, divider thickness, row rhythm, thumbnail crop, add-card spacing, progress placement, and footer anchors against the supplied 864×1236 reference viewport.
+- Rebuilt and rechecked the tablet Poster Entries section with fresh normal and contrast overlays; build passes, while automated visual QA still reports raster/image differences that prevent a Visual QA PASS.
+- Rebuilt and rechecked the submit Contact layout at mobile and portrait-tablet viewports; remaining visual text/progress differences are still tracked separately from the successful build.
+- Corrected the tablet Add/Edit Poster state so editor mode keeps the single-page flow, shows only the top progress line with Cancel and Save actions, and hides the inherited Home/progress labels.
+- Matched the tablet Poster Details form styling to the supplied mockup, including field rules, inactive text opacity, select chevron, upload-card spacing, and the darker Supporting Assets card.
+- Rebuilt and rechecked the tablet Add Poster state at 864×1503 CSS px / DPR 2 with fresh normal and contrast overlays; no visible geometric ghost remains in the reviewed form, while automated raster diff remains FAIL and is recorded separately.
+- Added the responsive mobile Poster Entries layout from the supplied 750×1746 mockup, including the left-aligned title and copy, three-line intro wrapping, add-poster card, uploaded thumbnails, entry actions, and mobile footer label.
+- Removed the forced intro line break so the copy wraps from the responsive content width instead of duplicating the tablet layout on mobile.
+- Added a mobile-only footer label variant so Poster Entries shows `Poster (→)` on mobile while retaining `Consent (→)` at tablet and desktop sizes.
+- Rebuilt and rechecked the mobile Poster Entries section with fresh normal and contrast overlays at 375×873 CSS px / DPR 2; structural alignment is substantially corrected, but the latest automated visual QA remains FAIL because the overlay still shows small progress/action text raster and edge differences.
+- Added the mobile Add/Edit Poster form state from the supplied 750×1746 mockup, including fixed Cancel/Save actions, title and intro spacing, all visible fields, select chevron, and field rules.
+- Removed the mobile submit gradient from editor mode so the lower `Printing Method` field remains visible, hid the editor's inherited progress labels while retaining its top rule, and corrected the inactive label color to the mockup's sampled value.
+- Rebuilt and rechecked the mobile Add Poster state at 375×873 CSS px / DPR 2 with fresh normal and contrast overlays; the complete visible form is aligned without an observable geometric ghost, while automated raster diff remains FAIL at 19,374 differing pixels / 97 flagged tiles.
+- Added responsive Consent layouts for mobile and portrait tablet, reusing the established submit-panel origin, typography scale, intro spacing, checkbox sizing, divider rhythm, and fixed footer navigation.
+- Corrected the tablet Submission Success panel origin so the pattern, heading, confirmation copy, and Explore More CTA align with the supplied 1728×2472 (2x) mockup at an 864×1236 CSS viewport; tightened the confirmation copy line-height to remove the lower-line text drift.
+- Rebuilt and rechecked the tablet Submission Success state with fresh normal and contrast overlays; browser fonts and assets were ready, while the automated raster comparison remains FAIL because of residual renderer-level pixel differences.
+- Added the mobile Submission Success layout from the supplied 750×1336 mockup: mobile-scale pattern, five-line confirmation copy, matching vertical rhythm, Home anchor, clean success state without the progress bar or submit gradient, and centered Explore More CTA.
+- Rebuilt and rechecked the mobile Submission Success state at 375×668 CSS px / DPR 2 with fresh normal and contrast overlays; no visible geometric ghost remains, while automated raster comparison remains FAIL because of residual text raster differences.
+
 ## 2026-10-19
 
 - Added the responsive poster-page layouts for the Ownership contest hero and Sections 01–07 across mobile, portrait tablet, and desktop breakpoints.

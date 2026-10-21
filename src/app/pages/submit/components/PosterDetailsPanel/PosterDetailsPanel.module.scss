@@ -3,19 +3,39 @@
 .panel { min-height: 100%; }
 .inner { width: vw(406); margin-left: vw(229); padding-top: vw(173); padding-bottom: vw(24); }
 .inner h1 { margin: 0; font-size: vw(40); font-weight: 600; letter-spacing: vw(-1.6); line-height: 1.02; }
+.inner .intro { margin-top: vw(47); }
 .form { display: grid; gap: 0; margin-top: vw(28); }
-.field { position: relative; display: block; box-sizing: border-box; height: vw(72); margin: 0; border-bottom: vw(2) solid rgb(220 145 168 / 0.4); padding: 0; }
+.field { position: relative; display: block; box-sizing: border-box; height: vw(72); margin: 0; border-bottom: vw(2) solid rgb(220 145 168 / 0.5); padding: 0; }
 .field:nth-child(9) { border-bottom: 0; }
-.field input, .field select { display: block; box-sizing: border-box; width: 100%; height: vw(20); margin-top: vw(40); border: 0; outline: 0; padding: 0; appearance: none; background: transparent; color: rgb(220 145 168 / 0.4); font: inherit; font-size: vw(20); font-weight: 500; letter-spacing: vw(-0.8); line-height: 1.02; }
-.field input::placeholder { color: rgb(220 145 168 / 0.4); opacity: 1; }
-.chevron { position: absolute; right: vw(8); top: vw(42); width: vw(8); height: vw(8); border-right: vw(2) solid rgb(220 145 168 / 0.4); border-bottom: vw(2) solid rgb(220 145 168 / 0.4); transform: rotate(45deg); }
+.field input, .field select { display: block; box-sizing: border-box; width: 100%; height: vw(20); margin-top: vw(40); border: 0; outline: 0; padding: 0; appearance: none; background: transparent; color: rgb(220 145 168 / 0.5); font: inherit; font-size: vw(20); font-weight: 500; letter-spacing: vw(-0.8); line-height: 1.02; }
+.field input::placeholder { color: rgb(220 145 168 / 0.5); opacity: 1; }
+.chevron { position: absolute; right: vw(8); top: vw(42); width: vw(16); height: vw(8); background: rgb(220 145 168 / 0.5); clip-path: polygon(0 0, 12.5% 0, 50% 72%, 87.5% 0, 100% 0, 50% 100%); }
 .uploadDivider { height: vw(2); margin-top: vw(158.5); background: rgb(220 145 168 / 0.4); }
 .uploadCard { position: relative; display: block; box-sizing: border-box; width: 100%; height: vw(176); margin-top: vw(20); background: #0a0a0a; color: #dc91a8; cursor: pointer; text-align: center; }
 .uploadDivider + .uploadCard { margin-top: vw(10); }
-.uploadCard + .uploadCard { margin-top: vw(20); }
+.uploadCard + .uploadCard { margin-top: vw(20); background: #161616; }
 .fileInput { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
 .uploadTitle, .uploadDescription, .uploadAction { position: absolute; left: 50%; display: block; transform: translateX(-50%); }
 .uploadTitle { top: vw(27.5); width: max-content; font-size: vw(20); font-weight: 500; letter-spacing: vw(-0.8); line-height: 1.02; }
-.uploadDescription { top: vw(67.5); width: max-content; color: rgb(220 145 168 / 0.4); font-size: vw(12); font-weight: 500; letter-spacing: vw(-0.48); line-height: 1.02; }
+.uploadDescription { top: vw(67.5); width: max-content; color: rgb(220 145 168 / 0.5); font-size: vw(12); font-weight: 500; letter-spacing: vw(-0.48); line-height: 1.02; }
 .uploadAction { top: vw(132); width: max-content; font-size: vw(16); font-weight: 500; letter-spacing: vw(-0.64); line-height: 1.02; text-decoration: underline; text-underline-offset: vw(2); }
 .error { margin: 0; color: #dc91a8; font-size: vw(16); line-height: 1.1; }
+
+@media (max-width: 600px) {
+  .inner {
+    width: vw(670);
+    margin-left: vw(40);
+    padding-top: vw(206.5);
+    padding-bottom: vw(160);
+  }
+
+  .inner h1 { font-size: vw(80); letter-spacing: vw(-3.2); }
+  .inner .intro { margin-top: vw(94.5); font-size: vw(40); font-weight: 500; letter-spacing: vw(-1.6); line-height: 1; }
+  .form { margin-top: vw(97); }
+  .field { height: vw(144); border-bottom: 0; }
+  .field::after { position: absolute; right: 0; bottom: vw(40.5); left: 0; height: vw(2); background: rgb(110 72 84); content: ''; }
+  .field input, .field select { height: vw(40); margin-top: vw(40); color: rgb(110 72 84); font-size: vw(40); letter-spacing: vw(-1.6); line-height: 1; }
+  .field input::placeholder { color: rgb(110 72 84); }
+  .chevron { right: vw(16); top: vw(51); width: vw(16); height: vw(8); background: rgb(110 72 84); }
+  .uploadDivider, .uploadCard { display: none; }
+}

@@ -6,12 +6,19 @@ export function RuledList({ items, ordered = false, className = '' }) {
 
   return (
     <ListTag className={`${styles.ruledList} ${ordered ? styles.ordered : styles.unordered} ${className}`}>
-      {items.map((item, index) => (
-        <li key={`${index}-${item}`} className={`${styles.ruledListItem} ${ordered ? styles.orderedItem : ''}`}>
-          {ordered && <span className={styles.listMarker} aria-hidden="true">{index + 1}.</span>}
-          <span className={styles.listText}>{item}</span>
-        </li>
-      ))}
+      {items.map((item, index) => {
+        const text = typeof item === 'string' ? item : item.text
+        const content = typeof item === 'string' || !item.href
+          ? text
+          : <a href={item.href}>{text}</a>
+
+        return (
+          <li key={`${index}-${text}`} className={`${styles.ruledListItem} ${ordered ? styles.orderedItem : ''}`}>
+            {ordered && <span className={styles.listMarker} aria-hidden="true">{index + 1}.</span>}
+            <span className={styles.listText}>{content}</span>
+          </li>
+        )
+      })}
     </ListTag>
   )
 }

@@ -2,9 +2,9 @@
 
 .panel { min-height: 100%; }
 .inner { width: vw(406); margin-left: vw(229); padding-top: vw(253); padding-bottom: vw(24); }
-.inner h1, .intro { margin: 0; }
+.inner h1, .inner .intro { margin: 0; }
 .inner h1 { font-size: vw(40); font-weight: 600; letter-spacing: vw(-1.6); line-height: 1.02; }
-.intro { margin-top: vw(47) !important; font-size: vw(20); font-weight: 500; letter-spacing: vw(-0.8); line-height: 1.02; }
+.inner .intro { margin-top: vw(47); font-size: vw(20); font-weight: 500; letter-spacing: vw(-0.8); line-height: 1.02; }
 .list { margin-top: vw(46); }
 .row { display: grid; grid-template-columns: vw(20) 1fr; align-items: start; column-gap: vw(20); border-top: vw(2) solid rgb(220 145 168 / 0.4); padding: vw(11) 0 vw(23); color: #dc91a8; cursor: pointer; font-size: vw(20); font-weight: 500; letter-spacing: vw(-0.8); line-height: 1.02; }
 .row input {
@@ -30,4 +30,24 @@
   border-left: vw(2) solid #000;
   border-bottom: vw(2) solid #000;
   transform: rotate(-45deg);
+}
+
+@media (min-width: 601px) and (max-width: 864px) and (orientation: portrait) {
+  .inner { width: vw(406); margin-left: vw(229); padding-top: vw(278); }
+  .inner h1 { font-size: vw(40); letter-spacing: vw(-1.6); }
+  .inner .intro { margin-top: vw(47); font-size: vw(20); letter-spacing: vw(-0.8); }
+  .list { margin-top: vw(48.5); }
+  .row { grid-template-columns: vw(20) 1fr; column-gap: vw(20); min-height: vw(72); box-sizing: border-box; border-top-width: vw(1); padding: vw(11) 0 vw(23); font-size: vw(20); letter-spacing: vw(-0.8); }
+  .row input { width: vw(20); height: vw(20); border-width: vw(1); }
+  .row input:checked::after { width: vw(9); height: vw(5); left: vw(4); top: vw(4); border-width: vw(1); }
+}
+
+@media (max-width: 600px) {
+  .inner { width: vw(670); margin-left: vw(40); padding-top: vw(206); padding-bottom: vw(260); }
+  .inner h1 { font-size: vw(80); letter-spacing: vw(-3.2); line-height: 1.02; }
+  .inner .intro { margin-top: vw(94); font-size: vw(40); letter-spacing: vw(-1.6); line-height: 1; }
+  .list { margin-top: vw(94); }
+  .row { grid-template-columns: vw(40) 1fr; column-gap: vw(40); min-height: vw(144); box-sizing: border-box; border-top-width: vw(1); padding: vw(20) 0 vw(23); font-size: vw(40); letter-spacing: vw(-1.6); line-height: 1; }
+  .row input { align-self: start; width: vw(40); height: vw(40); border-width: vw(2); }
+  .row input:checked::after { width: vw(18); height: vw(10); left: vw(8); top: vw(8); border-width: vw(2); }
 }

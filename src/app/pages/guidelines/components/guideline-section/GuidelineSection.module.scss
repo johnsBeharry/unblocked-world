@@ -16,5 +16,33 @@
 .submissionProcess .ruledListItem::before { top: vw(-8.5); }
 .orderedItem { display: flex; align-items: flex-start; margin-left: vw(5); gap: vw(12); }
 .orderedItem::before { left: vw(-5); width: calc(100% + vw(5)); }
-.listMarker { flex: 0 0 auto; }
+.listMarker { min-width: 0; flex: 0 0 vw(13.5); }
+.orderedItem:nth-child(n + 10) .listMarker { min-width: 0; flex-basis: auto; }
+.orderedItem:nth-child(10) .listMarker { flex-basis: vw(27.1); }
+.orderedItem:nth-child(11) .listMarker { flex-basis: vw(26.9); }
 .listText { min-width: 0; }
+.listText a { color: inherit; text-decoration: underline; }
+.ordered > * + * { margin-top: vw(19.1); }
+.ordered .ruledListItem { padding-top: vw(4.5); }
+
+@include mobile {
+  .section > * + * { margin-top: vw(80); }
+  .withDescription .description { margin-top: vw(81); }
+  .ruledList > * + * { margin-top: vw(31.2); }
+  .ruledListItem { padding-top: vw(16); }
+  .section > .ruledList { margin-top: vw(40.25); }
+  .withDescription > .ruledList { margin-top: vw(22.25); }
+  .submissionProcess > .ruledList { margin-top: vw(48.5); }
+  .submissionProcess .ruledListItem::before { top: vw(-17); }
+  .ordered > * + * { margin-top: vw(38.2); }
+  .ordered .ruledListItem { padding-top: vw(9); }
+  .ruledListItem { margin-left: vw(60); }
+  .ordered .ruledListItem { margin-left: vw(7.5); }
+
+  :global(#judging-process) .ruledList > * + * { margin-top: vw(22.2); }
+  :global(#judging-process) .ruledListItem { padding-top: vw(25); }
+
+  .orderedItem .listMarker { flex-basis: vw(38); }
+  .orderedItem:nth-child(5) { padding-right: vw(24); }
+  .orderedItem:nth-child(n + 10) .listMarker { flex-basis: vw(66); }
+}

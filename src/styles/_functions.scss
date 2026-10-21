@@ -1,5 +1,7 @@
 @function vw($sizeInPx) {
-  @return #{calc($sizeInPx * 1px / var(--base-size) * 100vw)};
+  @return #{calc(
+      $sizeInPx * 1px / var(--base-size) * var(--viewport-scale, 1) * 100vw
+    )};
 }
 
 @mixin mobile {

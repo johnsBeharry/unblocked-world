@@ -7,3 +7,13 @@
 .statusLabel { position: relative; top: vw(-0.0234375); padding: 0 vw(3.79); background: var(--ink); color: var(--paper); line-height: 1.2; letter-spacing: vw(-0.6); }
 .roundContent > * + * { margin-top: vw(18); }
 .roundContent > p { position: relative; top: vw(-5); }
+
+@include mobile {
+  .roundHeader h3 { font-size: vw(40); letter-spacing: vw(-1.6); }
+  .roundHeader { display: block; }
+  .roundStatus { margin-top: vw(22); }
+  .round > * + * { margin-top: vw(77); }
+  .roundHeader { padding-top: vw(24); padding-bottom: vw(14); }
+  .roundContent > * + * { margin-top: vw(34); }
+  .roundContent > p { top: vw(-10); }
+}

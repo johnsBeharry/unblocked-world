@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styles from './GuidelinesContent.module.scss'
-import { introduction, sections, rounds, unansweredQuestions, prizes } from './content.js'
+import { introduction, introductionLines, sections, rounds, unansweredQuestions, prizes } from './content.js'
 import { GuidelineSection, RuledList } from '../guideline-section/GuidelineSection.jsx'
 import { JudgingRound } from '../judging-round/JudgingRound.jsx'
 import { FaqAccordion } from '../faq-accordion/FaqAccordion.jsx'
@@ -26,7 +26,10 @@ export function GuidelinesContent() {
       <a href="#submission-process" className={styles.skipLink}>Skip to submission guide</a>
       <header className={styles.header}>
         <p className={styles.introText}>This page explains how to prepare<br />and submit work for the poster<br />contest. The first theme is<br /><u>Ownership</u>.</p>
-        <h1 className={`${styles.headline} ${styles.introHeadline}`}>{introduction}</h1>
+        <h1 className={`${styles.headline} ${styles.introHeadline}`}>
+          <span className={styles.introDesktop}>{introduction}</span>
+          <span className={styles.introTablet}>{introductionLines.map((line, index) => <React.Fragment key={line}>{index > 0 && <br />}{line}</React.Fragment>)}</span>
+        </h1>
       </header>
       <div className={styles.contentGrid}>
         <aside><div className={styles.stickyNavigation}><Label>Sections</Label><nav aria-label="Submission guide sections" className={styles.navigation}>{navigation.map(({ id, title }) => <a key={id} href={`#${id}`} aria-current={activeSection === id ? 'location' : undefined} onClick={() => setActiveSection(id)} className={`${styles.navLink} ${activeSection === id ? styles.navLinkActive : styles.navLinkInactive}`}>{title}</a>)}</nav></div></aside>

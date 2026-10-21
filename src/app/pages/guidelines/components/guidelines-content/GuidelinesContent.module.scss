@@ -7,6 +7,7 @@
 .header { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: vw(20); min-height: vw(651); padding: 0 0 vw(20); border-bottom: vw(0.5) solid var(--ink); box-sizing: border-box; }
 .introText { max-width: vw(335); margin: 0; color: rgba(39, 39, 39, 0.5); }
 .introHeadline { align-self: start; margin: 0; color: var(--ink); font-size: vw(40); font-weight: 600; line-height: 1.02; letter-spacing: vw(-1.6); }
+.introTablet { display: none; }
 .contentGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: vw(20); padding-top: vw(20); }
 .stickyNavigation { position: sticky; top: vw(20); }
 .label { display: inline-block; padding: 0 vw(4); background: var(--ink); color: var(--paper); line-height: 1; }
@@ -26,3 +27,212 @@
 .progressOverview > p { margin-top: vw(6); }
 .faqSection { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: vw(20); margin-top: vw(199.4); padding-top: vw(20); border-top: vw(1) solid var(--ink); }.faqSection h2 { margin: 0; }.faqSection > h2 .label { font-size: vw(20); }.faqContent { min-width: 0; > * + * { margin-top: vw(20); } }
 .prizesList { margin: 0; padding: 0 0 0 vw(10); list-style: none; > * + * { margin-top: vw(12.5); } }.prizeItem { display: flex; gap: vw(12); padding-top: vw(10); border-top: vw(1) solid rgba(0, 0, 0, 0.25); }
+
+@include tablet-portrait {
+  .page {
+    padding-bottom: vw(71.5);
+  }
+
+  .header {
+    display: block;
+    min-height: vw(648);
+  }
+
+  .introHeadline {
+    margin-top: vw(99);
+    line-height: 1.025;
+  }
+
+  .introDesktop { display: none; }
+  .introTablet { display: block; }
+
+  .contentGrid {
+    display: block;
+  }
+
+  .contentGrid > aside {
+    display: none;
+  }
+
+  .contentSections > :global(#before-submitting),
+  .contentSections > :global(#rules),
+  .contentSections > :global(#after-submission) {
+    display: none;
+  }
+
+  .faqSection {
+    display: block;
+  }
+
+  .faqContent {
+    margin-top: vw(20);
+  }
+
+  .contentSections {
+    > :nth-child(2) { margin-top: vw(99.5); }
+    > :nth-child(4) { margin-top: vw(99); }
+    > .guideSection:nth-child(6) { margin-top: vw(100); }
+  }
+
+  .guideSection > * + * { margin-top: vw(80); }
+  .guideSection > p { margin-top: vw(80); }
+
+  .contentSections > :nth-child(1) > ol {
+    margin-top: vw(48);
+  }
+
+  .contentSections > :nth-child(2) > ul {
+    margin-top: vw(39.5);
+  }
+
+  .contentSections > :nth-child(4) > p {
+    margin-top: vw(40.5);
+  }
+
+  .contentSections > section h2,
+  .contentSections > .guideSection > .headline {
+    font-size: vw(24);
+    line-height: 1.02;
+    letter-spacing: vw(-0.8);
+  }
+
+  .faqSection {
+    margin-top: vw(99.65);
+  }
+
+  .faqContent > details:first-child > summary {
+    padding-bottom: vw(17.5);
+  }
+
+  .faqContent > details > summary > span {
+    transform: translateY(vw(-5));
+  }
+
+  .faqSection > h2 .label {
+    transform: translateY(vw(-2));
+  }
+}
+
+@include mobile {
+  .page {
+    font-size: vw(40);
+    letter-spacing: vw(-1.6);
+    padding: vw(20) vw(40) calc(vw(259.5) - 33px);
+  }
+
+  .header {
+    display: block;
+    min-height: vw(1204);
+  }
+
+  .introDesktop { display: block; }
+  .introTablet { display: none; }
+
+  .introText {
+    max-width: vw(670);
+    font-size: vw(40);
+    margin-top: vw(20);
+  }
+
+  .introHeadline {
+    margin-top: vw(198);
+    font-size: vw(47);
+    line-height: 1.0213;
+    letter-spacing: vw(-1.6);
+  }
+
+  .contentGrid {
+    display: block;
+  }
+
+  .contentGrid > aside {
+    display: none;
+  }
+
+  .contentSections > :global(#before-submitting),
+  .contentSections > :global(#rules),
+  .contentSections > :global(#after-submission) {
+    display: none;
+  }
+
+  .contentSections {
+    > * + * { margin-top: vw(200); }
+    > :nth-child(2) { margin-top: vw(189.5); }
+    > :nth-child(3) { margin-top: vw(200); }
+    > :nth-child(4) { margin-top: vw(195); }
+    > .guideSection:nth-child(6) { margin-top: vw(230); }
+  }
+
+  .contentSections > :nth-child(1) > ol {
+    margin-top: vw(99.25);
+  }
+
+  .contentSections > :nth-child(2) > ul {
+    margin-top: vw(84);
+  }
+
+  .contentSections > :nth-child(4) > p {
+    margin-top: vw(82);
+  }
+
+  .contentSections > :nth-child(4) > ul {
+    margin-top: vw(60.25);
+  }
+
+  :global(#judging-process) > p {
+    margin-top: vw(90);
+  }
+
+  :global(#judging-process) > article:first-of-type {
+    margin-top: vw(70.5);
+  }
+
+  :global(#judging-process) > article + article {
+    margin-top: vw(75.5);
+  }
+
+  .contentSections > section h2,
+  .contentSections > .guideSection > .headline {
+    font-size: vw(48);
+    line-height: 1.02;
+    letter-spacing: vw(-1.6);
+  }
+
+  .progressOverview h3,
+  .progressOverview p {
+    font-size: vw(40);
+    line-height: 1.02;
+    letter-spacing: vw(-1.6);
+  }
+
+  .progressOverview { padding-top: vw(25.5); }
+
+  .faqSection {
+    display: block;
+    margin-top: vw(226.5);
+    padding-top: vw(32);
+    margin-right: 0;
+  }
+
+  .faqContent {
+    margin-top: vw(38);
+  }
+
+  .prizesList > * + * {
+    margin-top: vw(28.5);
+  }
+
+  .prizeItem {
+    padding-top: vw(18);
+  }
+
+  .prizesList {
+    padding-bottom: vw(88);
+    border-bottom: vw(1) solid rgba(0, 0, 0, 0.25);
+  }
+
+  .faqSection > h2 .label {
+    font-size: vw(40);
+  }
+
+}

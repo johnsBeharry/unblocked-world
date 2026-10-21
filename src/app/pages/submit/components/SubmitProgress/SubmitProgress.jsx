@@ -1,12 +1,12 @@
 import React from 'react'
 import styles from './SubmitProgress.module.scss'
 
-export function SubmitProgress({ activeStep = 1, compact = false, lineOnly = false }) {
+export function SubmitProgress({ activeStep = 1, compact = false, lineOnly = false, hideBar = false }) {
   const steps = ['Contact', 'Poster', 'Consent']
 
   return (
-    <aside className={`${styles.progress} ${compact ? styles.compact : ''} ${lineOnly ? styles.lineOnly : ''}`} aria-label="Submission progress">
-      <div className={styles.progressBar} style={{ '--progress': `${(activeStep / steps.length) * 100}%` }} />
+    <aside className={`${styles.progress} ${compact ? styles.compact : ''} ${activeStep === 2 ? styles.posterStep : ''} ${lineOnly ? styles.lineOnly : ''} ${hideBar ? styles.hideBar : ''}`} aria-label="Submission progress">
+      <div className={styles.progressBar} style={{ '--progress-width': `${(activeStep / steps.length) * 100}%` }} />
       <ol>
         {steps.map((step, index) => (
           <li className={index + 1 === activeStep ? styles.active : ''} key={step}>

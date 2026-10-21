@@ -13,7 +13,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: var(--progress);
+  width: var(--progress-width);
   height: vw(4);
   background: #dc91a8;
   transition: width 400ms ease;
@@ -47,3 +47,39 @@
 }
 
 .lineOnly ol { display: none; }
+.hideBar .progressBar { display: none; }
+
+@media (min-width: 601px) and (max-width: 864px) and (orientation: portrait) {
+  .progressBar { width: vw(229); height: vw(2); }
+  .progress ol {
+    top: vw(18.5);
+    left: vw(20);
+    gap: vw(12);
+    font-size: vw(20);
+    letter-spacing: vw(-0.8);
+  }
+
+  .compact.posterStep ol { top: vw(110.25); gap: vw(11.85); }
+  .compact.posterStep li.active { letter-spacing: vw(-0.75); }
+}
+
+@include mobile {
+  .progress { position: fixed; }
+
+  .progressBar { width: vw(132); height: vw(2); }
+
+  .progress ol {
+    top: vw(40);
+    right: vw(41);
+    left: auto;
+    display: block;
+    font-size: vw(40);
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 1;
+  }
+
+  .progress.lineOnly ol { display: none; }
+
+  .progress li:not(.active) { display: none; }
+}

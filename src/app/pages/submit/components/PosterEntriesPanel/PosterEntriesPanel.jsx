@@ -6,7 +6,7 @@ export function PosterEntriesPanel({ entries = [], onAdd, onEdit, onRemove }) {
     <section className={`${styles.panel} ${entries.length ? styles.hasEntries : ''}`} aria-labelledby="poster-entries-title">
       <div className={styles.inner}>
         <h1 id="poster-entries-title">Poster Entries</h1>
-        <p className={styles.intro}>Upload your poster submission and any<br />supporting information required for review.</p>
+        <p className={styles.intro}>Upload your poster submission and any supporting information required for review.</p>
         <button className={`${styles.addCard} ${entries.length ? styles.compactAddCard : ''}`} type="button" onClick={onAdd}>
           <span className={styles.plus} aria-hidden="true">(+)</span>
           <span>Add a Poster</span>

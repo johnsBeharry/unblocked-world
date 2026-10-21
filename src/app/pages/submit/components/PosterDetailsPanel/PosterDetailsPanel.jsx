@@ -18,6 +18,7 @@ export function PosterDetailsPanel({ draft = {}, onDraftChange, error }) {
     <section className={styles.panel} aria-labelledby="add-poster-title">
       <div className={styles.inner}>
         <h1 id="add-poster-title">Add a Poster</h1>
+        <p className={styles.intro}>Upload your poster submission and any supporting information required for review.</p>
         <form className={styles.form}>
           {fields.map(field => (
             <label className={styles.field} key={field.label}>

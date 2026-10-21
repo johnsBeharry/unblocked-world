@@ -1,8 +1,31 @@
-export const introduction =
-  'UNBLOCKED seeks provocative poster work that challenges the everyday – from visual politics to personal manifesto, from editorial critique to insurgent imagery. Everyone is invited. For this first edition, special focus is on poster responses that interrogate Ownership, asking what it means to take, give, claim, resist, and remake authorship and shared space.'
+export const introductionLines = [
+  'UNBLOCKED seeks provocative poster work',
+  'that challenges the everyday – from visual',
+  'politics to personal manifesto, from editorial',
+  'critique to insurgent imagery. Everyone is',
+  'invited. For this first edition, special focus is',
+  'on poster responses that interrogate',
+  'Ownership, asking what it means to take, give,',
+  'claim, resist, and remake authorship and',
+  'shared space.',
+]
+
+export const introduction = introductionLines.join(' ')
 
 export const sections = [
-  { id: 'submission-process', title: 'Submission Process', items: ['Visit the poster contest page.', 'Read the contest overview.', 'Review the Ownership theme.', 'Create one or more original poster responses.', 'Prepare your poster file or files and any supporting assets.', 'Open the submit page.', 'Complete the participant information.', 'Complete the poster information.', 'Upload the required files.', 'Accept the consent and copyright confirmations.', 'Submit your entry.'] },
+  { id: 'submission-process', title: 'Submission Process', items: [
+    { text: 'Visit the poster contest page.', href: '#contest-overview' },
+    'Read the contest overview.',
+    { text: 'Review the Ownership theme.', href: '#ownership-theme' },
+    'Create one or more original poster responses.',
+    'Prepare your poster file or files and any supporting assets.',
+    'Open the submit page.',
+    'Complete the participant information.',
+    'Complete the poster information.',
+    'Upload the required files.',
+    'Accept the consent and copyright confirmations.',
+    'Submit your entry.',
+  ] },
   { id: 'who-can-submit', title: 'Who Can Submit', items: ['Designers', 'Artists', 'Illustrators', 'Typographers', 'Students', 'Studios', 'Independent creatives', 'Collaborative groups'] },
   { id: 'before-submitting', title: 'What You Need Before Submitting', items: ['Your full name.', 'Your email address.', 'Your country and city.', 'Your website or Instagram, if available.', 'Your poster title.', 'Your poster concept.', 'Your final poster file or files.'] },
   { id: 'poster-information', title: 'Poster Information', description: 'Your submission should explain the idea behind the work. Use the poster concept field to describe:', items: ['The purpose of the poster.', 'The message being communicated.', 'The creative thinking process.', 'The design decisions.', 'How the work responds to Ownership.'] },

@@ -3,9 +3,21 @@
 .panel { position: relative; min-height: 100%; }
 .panel::before { position: absolute; top: 0; right: 0; left: 0; height: vw(2); background: #dc91a8; content: ''; }
 .inner { position: relative; width: vw(406); min-height: 100%; margin-left: vw(229); padding-bottom: vw(24); }
-.pattern { position: absolute; top: vw(252); left: vw(109); width: vw(187); height: vw(187); fill: none; stroke: #dc91a8; stroke-width: 1.41677; stroke-linejoin: round; }
-.message { position: absolute; top: vw(589); left: vw(-1); width: vw(406); padding-bottom: vw(24); text-align: center; }
+.pattern { position: absolute; top: vw(320); left: vw(109.5); width: vw(187); height: vw(187); fill: none; stroke: #dc91a8; stroke-width: 1.41677; stroke-linejoin: round; }
+.message { position: absolute; top: vw(657); left: vw(0); width: vw(406); padding-bottom: vw(24); text-align: center; }
 .message h1, .message p { margin: 0; }
+.copyMobile { display: none; }
 .message h1 { font-size: vw(40); font-weight: 600; letter-spacing: vw(-1.6); line-height: 1.02; }
-.message p { margin-top: vw(39); font-size: vw(20); font-weight: 500; letter-spacing: vw(-0.8); line-height: 1.02; }
-.explore { display: block; margin: vw(78) auto 0; border: 0; padding: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; font-size: vw(20); font-weight: 500; letter-spacing: vw(-0.8); line-height: 1.02; }
+.message p { margin-top: vw(39); font-size: vw(20); font-weight: 500; letter-spacing: vw(-0.8); line-height: 1; }
+.explore { display: block; margin: vw(79.6) auto 0; border: 0; padding: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; font-size: vw(20); font-weight: 500; letter-spacing: vw(-0.8); line-height: 1.02; }
+
+@include mobile {
+  .panel::before { display: none; }
+  .inner { width: vw(750); min-height: 100%; margin-left: 0; }
+  .pattern { top: vw(272); left: vw(218); width: vw(314); height: vw(314); }
+  .message { top: vw(691); left: vw(40); width: vw(670); padding-bottom: vw(24); }
+  .message h1 { font-size: vw(80); letter-spacing: vw(-3.2); line-height: 1.02; white-space: nowrap; }
+  .copyDesktop { display: none; }
+  .message .copyMobile { display: block; margin-top: vw(80) !important; font-size: vw(40); letter-spacing: vw(-1.6); line-height: 1; }
+  .explore { margin-top: vw(124); font-size: vw(40); letter-spacing: vw(-1.6); line-height: 1.02; white-space: nowrap; }
+}

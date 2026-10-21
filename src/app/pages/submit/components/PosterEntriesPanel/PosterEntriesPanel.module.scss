@@ -24,14 +24,56 @@
   letter-spacing: vw(-0.64);
   line-height: 1.02;
 }
-.compactAddCard { height: vw(64); margin-top: vw(47); display: flex; align-items: center; justify-content: flex-start; gap: vw(12); padding: 0 vw(24); }
-.plus { font-size: vw(20); }
-.entries { margin-top: vw(20); border-top: vw(2) solid rgb(220 145 168 / 0.4); }
-.entry { display: flex; gap: vw(24); min-height: vw(176); border-bottom: vw(2) solid rgb(220 145 168 / 0.4); padding: vw(20) 0; }
+.compactAddCard { height: vw(64); margin-top: vw(47); display: flex; align-items: center; justify-content: flex-start; gap: vw(9.25); padding: 0 vw(24) 0 vw(24.5); }
+.plus { font-size: vw(16); }
+.entries { margin-top: vw(19.75); border-top: vw(1) solid rgb(220 145 168 / 0.4); }
+.entry { display: flex; gap: vw(24); min-height: vw(176); border-bottom: vw(1) solid rgb(220 145 168 / 0.4); padding: vw(20) 0 vw(19); }
 .entry:last-child { border-bottom: 0; }
-.thumbnail { flex: 0 0 vw(96); width: vw(96); height: vw(137); object-fit: cover; background: #0a0a0a; }
+.thumbnail { flex: 0 0 vw(96); width: vw(96); height: vw(136); object-fit: cover; background: #0a0a0a; }
+.entry:first-child .thumbnail { object-position: center 49%; }
 .entryInfo { padding-top: 0; }
 .entryInfo h2, .entryInfo p { margin: 0; }
 .entryInfo h2 { font-size: vw(20); font-weight: 500; letter-spacing: vw(-0.8); line-height: 1.02; }
 .entryInfo p { margin-top: vw(8); font-size: vw(16); font-weight: 500; letter-spacing: vw(-0.64); line-height: 1.02; }
+.entryInfo p span { margin-inline: vw(1.5); }
 .entryInfo button { border: 0; padding: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; }
+
+@media (min-width: 601px) and (max-width: 864px) and (orientation: portrait) {
+  .hasEntries .inner { padding-top: vw(322); }
+}
+
+@media (max-width: 600px) {
+  .inner {
+    width: vw(670);
+    margin-left: vw(40);
+    padding-top: vw(206);
+    padding-bottom: vw(160);
+  }
+
+  .hasEntries .inner { padding-top: vw(206); }
+  .inner h1 { font-size: vw(80); letter-spacing: vw(-3.2); }
+  .intro { margin-top: vw(94) !important; font-size: vw(40); letter-spacing: vw(-1.6); line-height: 1; }
+  .compactAddCard {
+    height: vw(129);
+    margin-top: vw(96);
+    gap: vw(20);
+    padding: vw(2) vw(24) 0 vw(48);
+    font-size: vw(32);
+    letter-spacing: vw(-1.36);
+  }
+  .plus { font-size: vw(32); }
+  .entries { margin-top: vw(38); border-top-width: vw(2); }
+  .entry {
+    gap: vw(48);
+    min-height: vw(313);
+    border-bottom-width: vw(2);
+    padding: vw(40) 0 vw(38);
+  }
+  .thumbnail { flex-basis: vw(192); width: vw(192); height: vw(272); }
+  .entry + .entry { padding-top: vw(39); }
+  .entryInfo { padding-top: vw(1); }
+  .entry:first-child .entryInfo { padding-top: 0; }
+  .entryInfo h2 { font-size: vw(40); letter-spacing: vw(-1.6); line-height: 1; }
+  .entryInfo p { margin-top: vw(14); margin-left: vw(1); font-size: vw(32); letter-spacing: vw(-1.28); line-height: 1.02; }
+  .entryInfo p span { margin-inline: vw(3); }
+}

@@ -44,6 +44,9 @@
   }
 
   @include mobile {
-    :root { --base-size: 750px; }
+    :root {
+      --base-size: 375px;
+      --viewport-scale: 0.5;
+    }
   }
 }

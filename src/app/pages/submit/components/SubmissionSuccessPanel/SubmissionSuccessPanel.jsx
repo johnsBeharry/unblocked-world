@@ -34,7 +34,8 @@ export function SubmissionSuccessPanel({ onExplore }) {
         <SuccessPattern />
         <div className={styles.message}>
           <h1 id="submission-success-title">Entry Submitted</h1>
-          <p>Thank you for your submission. Your work has<br />been received and is now under review. We'll<br />keep you informed of any updates as the<br />selection process progresses.</p>
+          <p className={styles.copyDesktop}>Thank you for your submission. Your work has<br />been received and is now under review. We'll<br />keep you informed of any updates as the<br />selection process progresses.</p>
+          <p className={styles.copyMobile}>Thank you for your submission. Your<br />work has been received and is now<br />under review. We'll keep you informed<br />of any updates as the selection<br />process progresses.</p>
           <button className={styles.explore} type="button" onClick={onExplore}>Explore More (→)</button>
         </div>
       </div>

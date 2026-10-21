@@ -11,3 +11,20 @@
 .root[open] .collapseIcon { display: block; }
 .content { margin-top: vw(39); }
 .content > * + * { margin-top: vw(22.5); }
+
+@include mobile {
+  .summary {
+    padding-bottom: vw(59);
+    font-size: vw(48);
+    letter-spacing: vw(-0.66);
+  }
+  .summary > span { transform: translateY(vw(4)); }
+  .contentfulSummary { padding-bottom: 0; }
+  .content {
+    margin-top: vw(97);
+    font-size: vw(40);
+    letter-spacing: vw(-1.28);
+  }
+  .content > * + * { margin-top: vw(45); }
+
+}

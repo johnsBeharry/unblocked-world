@@ -28,3 +28,27 @@
 }
 
 .link:disabled { cursor: wait; opacity: 0.5; }
+.labelMobile { display: none; }
+
+@include mobile {
+  .nav {
+    position: fixed;
+    right: 0;
+    bottom: vw(48);
+    left: 0;
+    z-index: 2;
+    padding: 0 vw(40);
+  }
+
+  .link {
+    font-size: vw(40);
+    letter-spacing: vw(-1.6);
+  }
+
+  .labelDesktop { display: none; }
+  .labelMobile { display: inline; }
+}
+
+@media (min-width: 601px) and (max-width: 864px) and (orientation: portrait) {
+  .nav { bottom: vw(20); padding-left: vw(20); }
+}

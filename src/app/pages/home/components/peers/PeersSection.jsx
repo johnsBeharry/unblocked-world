@@ -7,11 +7,10 @@ export default function PeersSection() {
       variant="peers"
       title="Peers"
       index="04"
-      question="When did exhaustion become normal?"
-      description="Scarcity is not the natural state of human beings. What becomes possible when we stop accepting stagnation as progress?"
+      question="Who decides what matters?"
+      description="We are more connected than ever. Yet increasingly separated from each other. What happens when people build directly together again?"
       sideLabel="Hierarchies"
       barCount={17}
     />
   )
 }
-

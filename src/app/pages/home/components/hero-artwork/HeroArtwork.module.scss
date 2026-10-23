@@ -3,12 +3,14 @@
 .tabletArt {
   position: absolute;
   inset: 0;
+  z-index: 0;
   pointer-events: none;
   display: none;
 }
 
 .desktopArt {
   position: absolute;
+  z-index: 0;
   top: vw(84);
   left: calc(50% - #{vw(365)});
   width: vw(730);

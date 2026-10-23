@@ -10,7 +10,7 @@ export function HeroSection({ reveal = true }) {
         <RevealText as="a" className={styles["hero__node-002"]} href="/submit" enabled={reveal}>
           Submit Work (→)
         </RevealText>
-        <RevealText as="a" className={styles["hero__node-003"]} href="#ownership" enabled={reveal}>
+        <RevealText as="a" className={styles["hero__node-003"]} data-explore-themes href="#ownership" enabled={reveal}>
           (↓) Explore Themes
         </RevealText>
       </div>

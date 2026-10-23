@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Placed hero artwork behind hero copy and navigation with an explicit stacking order, preserving the artwork position and animation.
+
 ## 2026-10-24
 
 - Recorded the 04:07 AM header state as the rollback baseline at the user's request.
@@ -55,6 +59,8 @@
 - Added real-time scroll-driven `scaleX` updates to HeroArtwork groups; groups shrink horizontally along with their top-distance scale as they approach the viewport top.
 - Limited scroll-driven group `scaleX` to a `0.7` minimum and eased updates with short `power2.inOut` tweens so groups stay dynamically visible instead of collapsing flat.
 - Removed artwork-group `scaleX` shaping and scroll updates; HeroArtwork groups now use only the existing scroll-driven `scaleY` behavior. The loader's own horizontal progress remains unchanged.
+- Hid the Hero `Explore Themes` CTA across all mobile and tablet breakpoints so it remains desktop-only.
+- Fixed the mobile/tablet hide rule specificity against `RevealText`'s display rule using a dedicated CTA data attribute.
 - Restored group `scaleX` shaping and reveal animation after loading; scroll-time updates remain `scaleY` only.
 
 ## 2026-10-22

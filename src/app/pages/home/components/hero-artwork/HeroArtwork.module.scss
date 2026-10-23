@@ -1,4 +1,4 @@
-@use '../../../../../styles/functions' as *;
+@use "../../../../../styles/functions" as *;
 
 .tabletArt {
   position: absolute;
@@ -6,6 +6,357 @@
   pointer-events: none;
   display: none;
 }
+
+.desktopArt {
+  position: absolute;
+  top: vw(84);
+  left: calc(50% - #{vw(365)});
+  width: vw(730);
+  height: vw(656);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.desktopArtLayer {
+  top: 0;
+  left: 0;
+  width: 2720px;
+  height: 1778px;
+  // transform: scale(calc(50vw / 1440px));
+  transform-origin: top left;
+}
+
+.artwork {
+  gap: vw(3);
+  display: flex;
+  width: vw(730);
+  height: vw(656);
+  overflow: hidden;
+  position: absolute;
+  pointer-events: none;
+  flex-direction: column;
+
+  .motif {
+    height: vw(24);
+    flex: 0 0 vw(24);
+    position: relative;
+      transform: translateY(calc(
+        var(--motif-y-shift, 0) * 1px / var(--base-size) * 100vw
+      ));
+
+    .layer {
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+      position: absolute;
+      background: #db38c8;
+
+      &:first-child {
+        width: vw(243);
+        height: vw(24);
+      }
+      &:nth-of-type(2) {
+        width: vw(486);
+        height: vw(21.2);
+      }
+
+      &:last-child {
+        width: vw(730);
+        height: vw(9.45);
+      }
+    }
+
+    &:nth-of-type(1),
+    &:last-child {
+      .layer {
+        display: none;
+
+        &:nth-of-type(1) {
+          display: block;
+          height: vw(4.72);
+        }
+      }
+    }
+
+    &:nth-of-type(2),
+    &:nth-of-type(23) {
+      .layer {
+        &:nth-of-type(1) {
+          height: vw(7.09);
+        }
+
+        &:nth-of-type(2) {
+          height: vw(2.56);
+        }
+
+        &:nth-of-type(3) {
+          display: none;
+        }
+      }
+    }
+
+    &:nth-of-type(3),
+    &:nth-of-type(22) {
+      .layer {
+        &:nth-of-type(1) {
+          height: vw(7.09);
+        }
+
+        &:nth-of-type(2) {
+          height: vw(4.72);
+        }
+
+        &:nth-of-type(3) {
+          display: none;
+        }
+      }
+    }
+
+    &:nth-of-type(4),
+    &:nth-of-type(21) {
+      .layer {
+        &:nth-of-type(1) {
+          height: vw(9.45);
+        }
+
+        &:nth-of-type(2) {
+          height: vw(4.72);
+        }
+
+        &:nth-of-type(3) {
+          display: none;
+        }
+      }
+    }
+
+    &:nth-of-type(5),
+    &:nth-of-type(20) {
+      .layer {
+        &:nth-of-type(1) {
+          height: vw(14.7);
+        }
+
+        &:nth-of-type(2) {
+          height: vw(4.7);
+        }
+
+        &:nth-of-type(3) {
+          height: vw(2.36);
+        }
+      }
+    }
+
+    &:nth-of-type(6),
+    &:nth-of-type(7),
+    &:nth-of-type(8),
+    &:nth-of-type(17),
+    &:nth-of-type(18),
+    &:nth-of-type(19) {
+      margin-top: vw(3);
+      .layer {
+        &:nth-of-type(1) {
+          height: vw(21.26);
+        }
+
+        &:nth-of-type(2) {
+          height: vw(7.09);
+        }
+
+        &:nth-of-type(3) {
+          height: vw(2.36);
+        }
+      }
+    }
+
+    &:nth-of-type(8),
+    &:nth-of-type(17) {
+      .layer {
+        &:nth-of-type(3) {
+          height: vw(4.72);
+        }
+      }
+    }
+
+    &:nth-of-type(9),
+    &:nth-of-type(16) {
+      .layer {
+        &:nth-of-type(1) {
+          height: vw(21.26);
+        }
+
+        &:nth-of-type(2) {
+          height: vw(14.17);
+        }
+
+        &:nth-of-type(3) {
+          height: vw(7.09);
+        }
+      }
+
+    }
+
+      // Desktop reference spacing corrections measured from the 2880 x 1648
+      // mockup. Values are design-pixel deltas, resolved through vw() at the
+      // active desktop base size so the layer rhythm scales with the artwork.
+      &:nth-of-type(1) {
+        --motif-y-shift: -10;
+      }
+
+      &:nth-of-type(2) {
+        --motif-y-shift: -9.5;
+      }
+
+      &:nth-of-type(5) {
+        --motif-y-shift: -10.5;
+      }
+
+      &:nth-of-type(3),
+      &:nth-of-type(4) {
+        --motif-y-shift: -10.5;
+      }
+
+      &:nth-of-type(6) {
+        --motif-y-shift: -15.5;
+      }
+
+      &:nth-of-type(7) {
+        --motif-y-shift: -17;
+      }
+
+      &:nth-of-type(8) {
+        --motif-y-shift: -18.5;
+      }
+
+      &:nth-of-type(9) {
+        --motif-y-shift: -16;
+      }
+
+      &:nth-of-type(10) {
+        --motif-y-shift: -12.5;
+      }
+
+      &:nth-of-type(11) {
+        --motif-y-shift: -9;
+      }
+
+      &:nth-of-type(12) {
+        --motif-y-shift: -5;
+      }
+
+      &:nth-of-type(13) {
+        --motif-y-shift: -1.5;
+      }
+
+      &:nth-of-type(14) {
+        --motif-y-shift: 2.5;
+      }
+
+      &:nth-of-type(15) {
+        --motif-y-shift: 6;
+      }
+
+      &:nth-of-type(16) {
+        --motif-y-shift: 9.75;
+      }
+
+      &:nth-of-type(17) {
+        --motif-y-shift: 9.5;
+      }
+
+      &:nth-of-type(18) {
+        --motif-y-shift: 7.5;
+      }
+
+      &:nth-of-type(19) {
+        --motif-y-shift: 6;
+      }
+
+      &:nth-of-type(20) {
+        --motif-y-shift: 3.75;
+      }
+
+      &:nth-of-type(21) {
+        --motif-y-shift: 4;
+      }
+
+      &:nth-of-type(22) {
+        --motif-y-shift: 3.75;
+      }
+
+      &:nth-of-type(23) {
+        --motif-y-shift: 3;
+      }
+
+      &:nth-of-type(24) {
+        --motif-y-shift: 4;
+      }
+
+      // Row heights are tuned from the reference ink bounds; keeping these
+      // values on the existing layers preserves the current DOM structure.
+      &:nth-of-type(1),
+      &:nth-of-type(24) {
+        .layer:first-child {
+          height: vw(4.5);
+        }
+      }
+
+      &:nth-of-type(5) {
+        .layer:first-child {
+          height: vw(13.5);
+        }
+      }
+
+      &:nth-of-type(20) {
+        .layer:first-child {
+          height: vw(14);
+        }
+      }
+
+      &:nth-of-type(9),
+      &:nth-of-type(16) {
+        .layer:first-child {
+          height: vw(23);
+        }
+      }
+
+      &:nth-of-type(10),
+      &:nth-of-type(12),
+      &:nth-of-type(14) {
+        .layer:first-child {
+          height: vw(23);
+        }
+      }
+
+      &:nth-of-type(11),
+      &:nth-of-type(13),
+      &:nth-of-type(15) {
+        .layer:first-child {
+          height: vw(23.5);
+        }
+      }
+
+      &:nth-of-type(18) {
+        .layer:first-child {
+          height: vw(20.5);
+        }
+      }
+
+      &:nth-of-type(22),
+      &:nth-of-type(23) {
+        .layer:first-child {
+          height: vw(6.5);
+        }
+      }
+
+      &:nth-of-type(24) {
+        .layer:first-child {
+          height: vw(5);
+        }
+      }
+    }
+  }
 
 .tabletArt svg {
   display: block;
@@ -20,19 +371,142 @@
 }
 
 @include compact-portrait {
-  .tabletArt { display: block; }
+  .desktopArt {
+    display: none;
+  }
 
-  .legacyArt { display: none; }
+  .tabletArt {
+    display: block;
+  }
+
+  .tabletArt .artwork {
+    top: vw(248);
+    left: vw(20);
+    width: vw(824);
+    height: vw(743);
+    display: block;
+    gap: 0;
+    overflow: visible;
+  }
+
+  .tabletArt .desktopArtLayer {
+    width: vw(824);
+    height: vw(743);
+    transform: none;
+  }
+
+  .tabletArt .artwork .motif {
+    position: absolute;
+    margin-top: 0;
+    top: calc(var(--tablet-motif-y) * 1px / var(--base-size) * 100vw);
+    left: 0;
+    width: 100%;
+    height: calc(var(--tablet-motif-height) * 1px / var(--base-size) * 100vw);
+    flex: none;
+    margin-top: 0;
+    transform: none;
+  }
+
+  .tabletArt .artwork .motif .layer:first-child {
+    width: vw(273);
+    height: calc(var(--tablet-center-height) * 1px / var(--base-size) * 100vw);
+  }
+
+  .tabletArt .artwork .motif .layer:nth-of-type(2) {
+    width: vw(549);
+    height: calc(var(--tablet-middle-height) * 1px / var(--base-size) * 100vw);
+  }
+
+  .tabletArt .artwork .motif .layer:last-child {
+    width: vw(824);
+    height: calc(var(--tablet-outer-height) * 1px / var(--base-size) * 100vw);
+  }
+
+  .tabletArt .motif:nth-of-type(1) { --tablet-motif-y: 0; --tablet-motif-height: 5; --tablet-center-height: 5; }
+  .tabletArt .motif:nth-of-type(2) { --tablet-motif-y: 29.5; --tablet-motif-height: 7; --tablet-center-height: 7; --tablet-middle-height: 3; }
+  .tabletArt .motif:nth-of-type(3) { --tablet-motif-y: 59; --tablet-motif-height: 7; --tablet-center-height: 7; --tablet-middle-height: 5; }
+  .tabletArt .motif:nth-of-type(4) { --tablet-motif-y: 88; --tablet-motif-height: 10; --tablet-center-height: 10; --tablet-middle-height: 5; }
+  .tabletArt .motif:nth-of-type(5) { --tablet-motif-y: 116; --tablet-motif-height: 16; --tablet-center-height: 16; --tablet-middle-height: 4; --tablet-outer-height: 2; }
+  .tabletArt .motif:nth-of-type(6) { --tablet-motif-y: 140; --tablet-motif-height: 24; --tablet-center-height: 24; --tablet-middle-height: 8; --tablet-outer-height: 2; }
+  .tabletArt .motif:nth-of-type(7) { --tablet-motif-y: 172; --tablet-motif-height: 24; --tablet-center-height: 24; --tablet-middle-height: 8; --tablet-outer-height: 2; }
+  .tabletArt .motif:nth-of-type(8) { --tablet-motif-y: 204; --tablet-motif-height: 24; --tablet-center-height: 24; --tablet-middle-height: 10; --tablet-outer-height: 4; }
+  .tabletArt .motif:nth-of-type(9) { --tablet-motif-y: 236; --tablet-motif-height: 26; --tablet-center-height: 26; --tablet-middle-height: 15; --tablet-outer-height: 7; }
+  .tabletArt .motif:nth-of-type(10) { --tablet-motif-y: 271; --tablet-motif-height: 26; --tablet-center-height: 26; --tablet-middle-height: 24; --tablet-outer-height: 10; }
+  .tabletArt .motif:nth-of-type(11) { --tablet-motif-y: 305; --tablet-motif-height: 26; --tablet-center-height: 26; --tablet-middle-height: 23; --tablet-outer-height: 10; }
+  .tabletArt .motif:nth-of-type(12) { --tablet-motif-y: 340; --tablet-motif-height: 26; --tablet-center-height: 26; --tablet-middle-height: 23; --tablet-outer-height: 10; }
+  .tabletArt .motif:nth-of-type(13) { --tablet-motif-y: 375; --tablet-motif-height: 26; --tablet-center-height: 26; --tablet-middle-height: 24; --tablet-outer-height: 10; }
+  .tabletArt .motif:nth-of-type(14) { --tablet-motif-y: 409.5; --tablet-motif-height: 26; --tablet-center-height: 26; --tablet-middle-height: 23; --tablet-outer-height: 10; }
+  .tabletArt .motif:nth-of-type(15) { --tablet-motif-y: 444; --tablet-motif-height: 26; --tablet-center-height: 26; --tablet-middle-height: 23; --tablet-outer-height: 10; }
+  .tabletArt .motif:nth-of-type(16) { --tablet-motif-y: 479; --tablet-motif-height: 26; --tablet-center-height: 26; --tablet-middle-height: 16; --tablet-outer-height: 10; }
+  .tabletArt .motif:nth-of-type(17) { --tablet-motif-y: 513.5; --tablet-motif-height: 23; --tablet-center-height: 23; --tablet-middle-height: 10; --tablet-outer-height: 8; }
+  .tabletArt .motif:nth-of-type(18) { --tablet-motif-y: 545.5; --tablet-motif-height: 23; --tablet-center-height: 23; --tablet-middle-height: 7; --tablet-outer-height: 5; }
+  .tabletArt .motif:nth-of-type(19) { --tablet-motif-y: 577.5; --tablet-motif-height: 23; --tablet-center-height: 23; --tablet-middle-height: 7; --tablet-outer-height: 2; }
+  .tabletArt .motif:nth-of-type(20) { --tablet-motif-y: 609.5; --tablet-motif-height: 15; --tablet-center-height: 15; --tablet-middle-height: 4; --tablet-outer-height: 2; }
+  .tabletArt .motif:nth-of-type(21) { --tablet-motif-y: 643; --tablet-motif-height: 10; --tablet-center-height: 10; --tablet-middle-height: 5; }
+  .tabletArt .motif:nth-of-type(22) { --tablet-motif-y: 675; --tablet-motif-height: 7; --tablet-center-height: 7; --tablet-middle-height: 2; }
+  .tabletArt .motif:nth-of-type(23) { --tablet-motif-y: 704; --tablet-motif-height: 8; --tablet-center-height: 8; --tablet-middle-height: 5; }
+  .tabletArt .motif:nth-of-type(24) { --tablet-motif-y: 736; --tablet-motif-height: 5; --tablet-center-height: 5; }
+
+  .tabletArt .artwork .motif .layer {
+    display: block;
+  }
+
+  .tabletArt .artwork .motif:nth-of-type(1) .layer:nth-of-type(2),
+  .tabletArt .artwork .motif:nth-of-type(1) .layer:last-child,
+  .tabletArt .artwork .motif:nth-of-type(24) .layer:nth-of-type(2),
+  .tabletArt .artwork .motif:nth-of-type(24) .layer:last-child,
+  .tabletArt .artwork .motif:nth-of-type(2) .layer:last-child,
+  .tabletArt .artwork .motif:nth-of-type(3) .layer:last-child,
+  .tabletArt .artwork .motif:nth-of-type(4) .layer:last-child,
+  .tabletArt .artwork .motif:nth-of-type(21) .layer:last-child,
+  .tabletArt .artwork .motif:nth-of-type(22) .layer:last-child,
+  .tabletArt .artwork .motif:nth-of-type(23) .layer:last-child {
+    display: none;
+  }
+
+  .legacyArt {
+    display: none;
+  }
 }
 
 @include mobile {
-  .tabletArt { display: block; }
+  .desktopArt {
+    display: none;
+  }
 
   .tabletArt {
+    display: block;
     inset: auto;
-    top: vw(43);
-    left: vw(23.7);
-    width: vw(702.35);
-    height: vw(1006);
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100%;
+  }
+
+  .tabletArt .artwork {
+    top: vw(245);
+    left: vw(40);
+    width: vw(670);
+    height: vw(605);
+  }
+
+  .tabletArt .artwork .motif {
+    top: calc(var(--tablet-motif-y) * 0.40625 * 1px);
+    height: calc(var(--tablet-motif-height) * 0.40625 * 1px);
+  }
+
+  .tabletArt .artwork .motif .layer:first-child {
+    width: vw(223);
+    height: calc(var(--tablet-center-height) * 0.40625 * 1px);
+  }
+
+  .tabletArt .artwork .motif .layer:nth-of-type(2) {
+    width: vw(447);
+    height: calc(var(--tablet-middle-height) * 0.40625 * 1px);
+  }
+
+  .tabletArt .artwork .motif .layer:last-child {
+    width: vw(670);
+    height: calc(var(--tablet-outer-height) * 0.40625 * 1px);
   }
 }

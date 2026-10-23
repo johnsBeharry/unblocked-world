@@ -1,5 +1,62 @@
 # Changelog
 
+## 2026-10-24
+
+- Recorded the 04:07 AM header state as the rollback baseline at the user's request.
+- Added a local change-log rule: every subsequent implementation change must be recorded here and in the local agent instructions before work is continued.
+- Rolled back post-04:07 homepage sticky/footer experiment changes from `HomePage.module.scss` and the shared `ThemeSection` implementation; preserved the 04:07 header change and earlier homepage work.
+- Restored the shared `ThemeSection` animation/pin behavior after confirming that it is part of the intended pre-footer implementation.
+- Restored the homepage shell's non-clipping overflow so the shared `ThemeSection` sticky behavior can operate through the page.
+- Kept the footer in normal document flow and raised its paint layer above sticky theme sections so it scrolls normally without being covered.
+- Added the initial page loader: content is covered and body scrolling is locked until fonts/images are ready, using the centered hero artwork motif's long thin layer as the loading indicator.
+- Updated the loader to a visible two-second blue loading simulation; content remains hidden and the thin artwork layer scales from zero to full width.
+- Kept page content hidden after the loader and added a GSAP artwork-reveal preview with center-out staggered layers plus a draggable progress slider.
+- Synced the artwork progress slider to the GSAP timeline while the center-out reveal plays.
+- Corrected the artwork reveal to animate only `scaleY(0 → 1)` while preserving each layer's configured width.
+- Switched the reveal target to the existing HeroArtwork DOM, hiding non-art content while its original layer geometry animates from the center outward.
+- Fixed the artwork-phase visibility selector to target the HeroArtwork CSS Module classes globally.
+- Added stable artwork data hooks so the loader can reveal the original desktop/tablet artwork without depending on CSS Module hashes.
+- Kept the loader bar's horizontal progress while constraining its thickness to `scaleY(0.5)`.
+- Raised the reveal control above the artwork and faded homepage content to opacity zero during the artwork-focus phase.
+- Extended the artwork-focus whitelist to hide the global header and every hero child except the original artwork wrappers.
+- Kept the loader bar visible throughout the artwork reveal and changed the motif stagger order from the bottom group upward.
+- Reworked the simulation around the actual artwork groups: the middle group's longest layer is the two-second loader, followed by bottom-to-top layer reveals and alternating outer groups.
+- Applied the same non-artwork opacity/visibility mask during the two-second loader phase so only the actual loader layer is visible.
+- Changed outer group sequencing to synchronized pairs: the group above and below the active group animate together at each stagger step.
+- Added artwork-reveal controls for GSAP ease, per-layer duration, and interval stagger between synchronized group steps.
+- Fixed control changes to restart the GSAP artwork timeline from frame zero so new ease, duration, and stagger values visibly take effect.
+- Set the default artwork reveal to `power4.inOut` with a one-second layer duration.
+- Set the default synchronized group stagger to `0.1s`.
+- Added per-layer opacity fading alongside the scale reveal; the loader layer remains immediately visible.
+- Updated the default reveal to `power2.inOut` with a 1.5-second layer duration.
+- Set the loader layer to `scaleY(0.5)`, removed animation controls from the UI, and added staggered text fade-in after loading.
+- Removed the leftover animation-control declaration and unused progress state so the loader component builds cleanly with its simplified UI.
+- Delayed the content visibility phase and staggered text fade-in until the complete artwork reveal timeline finishes.
+- Restored document scrolling when the loading timer completes instead of keeping the body locked after the loader phase.
+- Accelerated the post-artwork text fade-in by reducing the per-text duration and stagger interval.
+- Changed content text entry to slide up 16px while fading in, and removed opacity animation from artwork so artwork reveals use scaleY only.
+- Routed the initial content reveal through the existing line-based `RevealText` helper so each wrapped line slides up independently after artwork completes.
+- Thinned the loader to `scaleY(0.25)`, animated its loading progress from `scaleX(0)` to `scaleX(1)`, then included it in the post-loading `scaleY(1)` artwork reveal; shortened group stagger to `0.06s`.
+- Tuned the Hidden Systems `UNBLOCKED` logo reveal to a `1.6s` duration with a short `24%` slide range and `power2.out`-equivalent easing.
+- Corrected the `6s` timing target to the large Hero `UNBLOCKED` logo from the screenshot, restoring the Hidden Systems text to the shared default reveal.
+- Updated the large Hero `UNBLOCKED` logo reveal to `2s` with `power5.inOut` easing.
+- Tuned the large Hero `UNBLOCKED` logo reveal to `1.6s` with `power4.inOut` easing.
+- Set the large Hero `UNBLOCKED` logo reveal duration to `2s`, keeping `power4.inOut` easing.
+- Shortened the large Hero `UNBLOCKED` logo slide range from `24%` to `12%`.
+- Corrected the scroll-scale target from `ThemeSection` bars to the actual HeroArtwork layers.
+- Added real-time HeroArtwork behavior: each artwork group scales vertically toward `0` as it reaches the viewport top while preserving its width and opacity.
+- Fixed slow-scroll jitter by measuring each artwork group at neutral `scaleY(1)` before applying its scroll-derived scale.
+- Added a subtle `0.12x` downward parallax to the HeroArtwork wrappers during page scroll while keeping the rest of the layout in normal flow.
+- Scoped PageLoader artwork initialization and reveal queries to HeroArtwork so lower-page Submit/Footer artwork remains untouched.
+- Excluded the Footer `UNBLOCKED` brand from the PageLoader content animation so it renders statically.
+- Changed the loader's horizontal scale progress from linear to smooth cubic-style `power2.inOut` easing.
+- Added center-out group `scaleX` shaping: motif groups start from `0.8` at the center through `1` at the outer edges, then animate to `1` during their reveal.
+- Reversed the group shaping direction so artwork groups decrease outward as `0.8`, `0.7`, `0.6`, down to a safe `0.2` minimum before revealing to `1`.
+- Added real-time scroll-driven `scaleX` updates to HeroArtwork groups; groups shrink horizontally along with their top-distance scale as they approach the viewport top.
+- Limited scroll-driven group `scaleX` to a `0.7` minimum and eased updates with short `power2.inOut` tweens so groups stay dynamically visible instead of collapsing flat.
+- Removed artwork-group `scaleX` shaping and scroll updates; HeroArtwork groups now use only the existing scroll-driven `scaleY` behavior. The loader's own horizontal progress remains unchanged.
+- Restored group `scaleX` shaping and reveal animation after loading; scroll-time updates remain `scaleY` only.
+
 ## 2026-10-22
 
 - Finalized the mobile Submission Success responsive state from the supplied 750×1336 mockup, including the corrected pattern origin, five-line confirmation copy, Home anchor, hidden progress/submit overlays, and Explore More CTA spacing.

@@ -27,7 +27,7 @@ export function Footer({ color = FOOTER_COLORS.home, ctaVariant = 'default' }) {
         <SubmitWorkSection {...ctaProps} />
       </div>
       <div className={styles.main}>
-        <p className={styles.brand}>UNBLOCKED</p>
+        <p className={styles.brand} data-page-static>UNBLOCKED</p>
         <p className={`${styles.text} ${styles.question}`}>Question Everything</p>
         <p className={`${styles.text} ${styles.explore}`}>Explore</p>
         <a className={styles.email} href="mailto:hello@unblocked.net">

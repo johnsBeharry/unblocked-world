@@ -1,8 +1,10 @@
 @use '../../../styles/functions' as *;
 
 .header {
-  position: relative;
+  position: fixed;
+  inset: 0;
   z-index: 20;
+  pointer-events: none;
 }
 
 .homeColor { color: #d9d9d9; }
@@ -23,6 +25,10 @@
   white-space: nowrap;
   word-break: break-word;
 }
+
+.nav,
+.home,
+.menu { pointer-events: auto; }
 
 .menu { display: none; }
 

@@ -1,9 +1,27 @@
 .shell {
   width: 100%;
-  overflow: hidden;
+  overflow: visible;
   background: rgb(40, 80, 254);
 }
 
 .canvas {
   width: 100%;
+}
+
+:global(body[data-page-phase='loading']) .canvas [data-name='index'] > :not([data-name='hero']),
+:global(body[data-page-phase='artwork']) .canvas [data-name='index'] > :not([data-name='hero']) {
+  visibility: hidden;
+  opacity: 0;
+}
+
+:global(body[data-page-phase='loading']) .canvas [data-name='hero'] > *,
+:global(body[data-page-phase='artwork']) .canvas [data-name='hero'] > * {
+  visibility: hidden;
+  opacity: 0;
+}
+
+:global(body[data-page-phase='loading']) .canvas [data-name='hero'] [data-hero-artwork],
+:global(body[data-page-phase='artwork']) .canvas [data-name='hero'] [data-hero-artwork] {
+  visibility: visible;
+  opacity: 1;
 }

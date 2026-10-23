@@ -1,28 +1,34 @@
 import React from 'react';
 import styles from './HiddenSystemsSection.module.scss'
+import { RevealText } from '../../../../../components/RevealText/RevealText.jsx'
 
 /** Figma frame 1440 × 1686; original artboard offset top:4890px removed for stacking. */
-export default function HiddenSystemsSection() {
+export default function HiddenSystemsSection({ reveal = true }) {
   return (
     <div className={styles['hidden-systems']} data-name=".">
       <div className={styles['hidden-systems__copy-frame']} data-name="hidden-systems-copy">
       <div className={styles['hidden-systems__node-001']}>
-        <p className={styles['hidden-systems__node-002']}>Making</p>
-        <p className={styles['hidden-systems__node-003']}>Hidden</p>
+        <RevealText as="p" className={styles['hidden-systems__node-002']} enabled={reveal}>Making</RevealText>
+        <RevealText as="p" className={styles['hidden-systems__node-003']} enabled={reveal}>Hidden</RevealText>
       </div>
-      <p className={styles['hidden-systems__node-004']}>(          )</p>
+      <RevealText as="p" className={styles['hidden-systems__node-004']} enabled={reveal}>(          )</RevealText>
       <div className={styles['hidden-systems__node-005']}>
-        <p className={styles['hidden-systems__node-006']}>Systems</p>
-        <p className={styles['hidden-systems__node-007']}>Visible</p>
+        <RevealText as="p" className={styles['hidden-systems__node-006']} enabled={reveal}>Systems</RevealText>
+        <RevealText as="p" className={styles['hidden-systems__node-007']} enabled={reveal}>Visible</RevealText>
       </div>
-      <p className={styles['hidden-systems__node-008']}>(Through art)</p>
-      <p className={styles['hidden-systems__node-009']}>(Through exhibitions)</p>
+      <RevealText as="p" className={styles['hidden-systems__node-008']} enabled={reveal}>(Through art)</RevealText>
+      <RevealText as="p" className={styles['hidden-systems__node-009']} enabled={reveal}>(Through exhibitions)</RevealText>
       <div className={styles['hidden-systems__node-010']}>
-        <p className={styles['hidden-systems__node-011']}>Through public participation. Through questions</p>
-        <p className={styles['hidden-systems__node-012']}>Through people who refuse to treat the current arrangement as permanent.</p>
-        <p className={styles['hidden-systems__mobile-copy']}>Through public participation. Through<br />questions Through people who<br />refuse to treat the current<br />arrangement as permanent.</p>
+        <RevealText as="p" className={styles['hidden-systems__node-011']} enabled={reveal}>Through public participation. Through questions</RevealText>
+        <RevealText as="p" className={styles['hidden-systems__node-012']} enabled={reveal}>Through people who refuse to treat the current arrangement as permanent.</RevealText>
+        <p className={styles['hidden-systems__mobile-copy']}>
+          <RevealText enabled={reveal}>Through public participation. Through</RevealText>
+          <RevealText enabled={reveal}>questions Through people who</RevealText>
+          <RevealText enabled={reveal}>refuse to treat the current</RevealText>
+          <RevealText enabled={reveal}>arrangement as permanent.</RevealText>
+        </p>
       </div>
-      <p className={styles['hidden-systems__node-013']}>UNBLOCKED</p>
+      <RevealText as="p" className={styles['hidden-systems__node-013']} enabled={reveal}>UNBLOCKED</RevealText>
       <div className={styles['hidden-systems__node-014']}>
         <div className={styles['hidden-systems__node-015']}>
           <svg className={styles['hidden-systems__node-016']} fill="none" preserveAspectRatio="none" viewBox="0 0 136.591 169.242">

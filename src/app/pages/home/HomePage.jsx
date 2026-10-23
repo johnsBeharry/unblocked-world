@@ -8,10 +8,12 @@ import EnergySection from './components/energy/EnergySection.jsx'
 import PeersSection from './components/peers/PeersSection.jsx'
 import HiddenSystemsSection from './components/hidden-systems/HiddenSystemsSection.jsx'
 import { Footer } from '../../components/footer/Footer.jsx'
+import { PageLoader } from '../../components/page-loader/PageLoader.jsx'
 
 export function HomePage() {
   return (
     <main>
+      <PageLoader />
       <div id="container">
         <div>
           <div>

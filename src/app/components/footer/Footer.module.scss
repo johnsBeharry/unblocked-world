@@ -1,6 +1,8 @@
 @use '../../../styles/functions' as *;
 
 .footer {
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   color: inherit;

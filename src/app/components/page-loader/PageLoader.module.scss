@@ -1,0 +1,24 @@
+@use '../../../styles/functions' as *;
+
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  background: transparent;
+}
+
+:global(body[data-page-phase='loading']) :global(header),
+:global(body[data-page-phase='artwork']) :global(header),
+:global(body[data-page-phase='loading']) :global([data-name='hero']) > :not([data-hero-artwork]),
+:global(body[data-page-phase='artwork']) :global([data-name='hero']) > :not([data-hero-artwork]) {
+  visibility: hidden;
+  opacity: 0;
+}
+
+:global(body[data-page-phase='loading']) :global([data-name='hero']) > [data-hero-artwork],
+:global(body[data-page-phase='artwork']) :global([data-name='hero']) > [data-hero-artwork] {
+  visibility: visible;
+  opacity: 1;
+}
+

@@ -1,0 +1,51 @@
+.measure {
+  display: block;
+  visibility: hidden;
+  word-break: normal;
+  overflow-wrap: normal;
+}
+
+.measure [data-reveal-word] {
+  white-space: nowrap;
+}
+
+.measure [data-reveal-break] {
+  display: block;
+}
+
+.root {
+  display: block;
+}
+
+.line {
+  display: block;
+  white-space: inherit;
+  overflow: hidden;
+  padding-bottom: 0.2em;
+  margin-bottom: -0.2em;
+}
+
+.lineInner {
+  display: inline-block;
+  white-space: inherit;
+  transform: translateY(var(--reveal-distance, 120%));
+  animation-delay: var(--reveal-delay);
+  will-change: transform;
+}
+
+:global(body[data-page-phase='content']) .active .lineInner {
+  animation: reveal-text var(--reveal-duration, 1s) var(--reveal-ease, cubic-bezier(0.165, 0.84, 0.44, 1)) forwards;
+}
+
+@keyframes reveal-text {
+  to {
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lineInner {
+    animation: none;
+    transform: none;
+  }
+}

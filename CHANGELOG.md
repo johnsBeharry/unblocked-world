@@ -6,6 +6,7 @@
 - Configured Vercel to serve the built client from `dist/client`, matching the project's split client/server build output.
 - Added Vercel rewrites for the client-side page routes so direct navigation does not return a 404.
 - Added the `/api/submissions` Vercel Function so the submit form has a server-side upload handler in production.
+- Fixed production white screen by moving global CSS out of a side-effect-free CSS Module so Vite includes the required root variables and font/reset styles.
 
 ## 2026-10-24
 

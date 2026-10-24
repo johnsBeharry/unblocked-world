@@ -5,6 +5,7 @@
 - Placed hero artwork behind hero copy and navigation with an explicit stacking order, preserving the artwork position and animation.
 - Configured Vercel to serve the built client from `dist/client`, matching the project's split client/server build output.
 - Added Vercel rewrites for the client-side page routes so direct navigation does not return a 404.
+- Added the `/api/submissions` Vercel Function so the submit form has a server-side upload handler in production.
 
 ## 2026-10-24
 

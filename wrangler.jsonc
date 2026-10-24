@@ -1,0 +1,22 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "unblocked-world",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "dist/client",
+    "binding": "ASSETS",
+    // Only exact file matches are served as static; "/" and page routes go to the Worker for SSR.
+    "html_handling": "none",
+    "not_found_handling": "none"
+  },
+  "routes": [
+    { "pattern": "dev.unblocked.world", "custom_domain": true }
+  ],
+  "vars": {
+    "UNBLOCKED_EXTERNAL_API_BASE_URL": "https://unblocked-juding-portal.peakshift.workers.dev/api/v1",
+    "UNBLOCKED_EXTERNAL_CONTEST_SLUG": "ownership-2026"
+  },
+  "observability": { "enabled": true }
+}

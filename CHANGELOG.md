@@ -171,3 +171,8 @@
 - Organized homepage components into role-based folders.
 - Consolidated Ownership, Permanence, Energy, and Peers into the shared ThemeSection wrapper.
 - Removed superseded per-section style files.
+- Fixed the desktop Contact submission layout to match the reference composition, including the form column origin, width, top offset, wrapped introduction, and compact field spacing.
+- Restored the desktop Contact heading typography so the title establishes the correct vertical rhythm for the introduction and fields.
+- Restored the desktop Contact introduction typography and spacing so it wraps and aligns with the reference form.
+- Fixed desktop Contact field rows to use fixed border-box heights so the final field no longer runs into the browser bottom.
+- Added bottom padding to the desktop Contact form so the final divider has breathing room from the viewport edge.

@@ -1,17 +1,23 @@
 @use '../../../../../styles/functions' as *;
 
 .panel { min-height: 100vh; }
-.inner { width: vw(812); margin-left: vw(459); padding-top: vw(236); }
+.inner { width: vw(406); margin-left: vw(229); padding-top: vw(123); padding-bottom: vw(24); }
 .inner h1, .inner p { margin: 0; }
-.field { position: relative; display: grid; align-content: start; gap: vw(7); min-height: vw(116); border-bottom: vw(2) solid rgb(220 145 168 / 0.4); padding-bottom: vw(19); color: #dc91a8; }
+.inner h1 { font-size: vw(40); font-weight: 600; letter-spacing: vw(-1.6); line-height: 1.02; }
+.intro { margin-top: vw(47) !important; font-size: vw(20); font-weight: 500; letter-spacing: vw(-0.8); line-height: 1.02; }
+.form { margin-top: vw(34); }
+.field { position: relative; display: grid; box-sizing: border-box; align-content: start; gap: vw(7); height: vw(72); min-height: vw(72); border-bottom: vw(2) solid rgb(220 145 168 / 0.4); padding-bottom: vw(19); color: #dc91a8; }
+.field:first-child { height: vw(51); min-height: vw(51); gap: vw(5); }
+.field:first-child .fieldLabel { margin-top: vw(-1); }
+.field:first-child .fieldValue { margin-top: vw(0.5); }
 .fieldLabel, .field input, .field select { font: inherit; font-size: vw(20); font-weight: 500; letter-spacing: vw(-0.8); line-height: 1.02; }
 .fieldLabel { margin-top: vw(10); color: rgb(220 145 168 / 0.4); font-size: vw(14); letter-spacing: vw(-0.56); }
 .fieldValue { margin-top: vw(-5); }
-.emptyField { margin-top: vw(48); }
+.emptyField { margin-top: vw(41); }
 .field input, .field select { width: 100%; border: 0; outline: 0; padding: 0; background: transparent; color: #dc91a8; }
 .selectField { color: rgb(220 145 168 / 0.4) !important; }
 .field input::placeholder { color: rgb(220 145 168 / 0.4); opacity: 1; }
-.field select { appearance: none; height: vw(36); }
+.field select { appearance: none; height: auto; margin-top: vw(41); line-height: 1.02; }
 .chevron { position: absolute; right: vw(16); bottom: vw(25); width: vw(16); height: vw(16); border-right: vw(2) solid #dc91a8; border-bottom: vw(2) solid #dc91a8; transform: rotate(45deg); }
 
 @media (min-width: 601px) and (max-width: 864px) and (orientation: portrait) {

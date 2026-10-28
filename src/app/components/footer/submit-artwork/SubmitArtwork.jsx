@@ -1,93 +1,110 @@
 import React from 'react'
+import { gsap } from 'gsap'
+import { ARTWORK_MOTIFS } from './SubmitArtwork.geometry.js'
 import styles from './SubmitArtwork.module.scss'
 
-const ARTWORK_WIDTH = 2720
-const ARTWORK_HEIGHT = 1778
-const MIN_LAYER_HEIGHT = 3.63
-
-// Full artwork geometry, measured from the supplied 2720 x 1778 mockup.
-// Each motif is one animation target. Every visible layer below is one complete
-// rectangle/div; a layer is never split into separate left, center, or right
-// fragments. Layer counts follow the mockup instead of being forced to five.
-const ARTWORK_MOTIFS = [
-  { layers: [[1245, 0, 229, 40], [1172, 4, 376, 33], [686, 17, 1347, 7]] },
-  { layers: [[1178, 142, 363, 53], [1084, 152, 552, 33], [855, 158, 1010, 18], [370, 166, 1980, 7]] },
-  { layers: [[1111, 283, 497, 67], [1030, 290, 660, 54], [902, 300, 915, 27], [673, 307, 1373, 7], [190, 314, 2340, 4]] },
-  { layers: [[1030, 428, 659, 73], [889, 434, 942, 61], [761, 448, 1198, 27], [586, 455, 1548, 19], [103, 463, 2514, 4]] },
-  { layers: [[963, 566, 794, 80], [821, 576, 1077, 48], [694, 590, 1332, 32], [525, 596, 1669, 20], [44, 603, 2631, 7]] },
-  { layers: [[1013, 697, 693, 100], [909, 707, 901, 81], [768, 718, 1184, 47], [639, 731, 1441, 27], [485, 738, 1750, 14], [0, 745, 2719, 6]] },
-  { layers: [[997, 838, 726, 101], [882, 849, 956, 71], [740, 859, 1239, 60], [612, 872, 1495, 34], [485, 879, 1750, 14], [0, 886, 2719, 6]] },
-  { layers: [[1013, 980, 693, 101], [909, 990, 901, 81], [768, 1000, 1184, 47], [639, 1014, 1441, 27], [485, 1021, 1750, 14], [0, 1027, 2719, 7]] },
-  { layers: [[963, 1131, 794, 81], [821, 1141, 1077, 48], [694, 1155, 1332, 27], [525, 1162, 1693, 20], [42, 1168, 2636, 7]] },
-  { layers: [[1030, 1276, 659, 74], [889, 1283, 942, 60], [761, 1296, 1198, 33], [586, 1303, 1548, 27], [103, 1309, 2514, 7]] },
-  { layers: [[1111, 1428, 497, 67], [1030, 1434, 660, 54], [902, 1445, 915, 33], [673, 1452, 1373, 19], [190, 1457, 2340, 7]] },
-  { layers: [[1178, 1583, 363, 53], [1084, 1593, 552, 33], [855, 1599, 1010, 19], [370, 1606, 1980, 7]] },
-  { layers: [[1245, 1737, 229, 40], [1172, 1741, 376, 33], [686, 1754, 1347, 7]] },
-].map((motif) => {
-  const measuredLayers = motif.layers.map(([x, top, width, height]) => ({
-    x,
-    centerY: top + (height / 2),
-    width,
-    height: Math.max(height, MIN_LAYER_HEIGHT),
-  }))
-  const referenceLayer = measuredLayers.reduce((largest, layer) => (
-    layer.height > largest.height ? layer : largest
-  ))
-  const referenceCenterY = referenceLayer.centerY
-  const layers = measuredLayers.map((layer) => ({
-    ...layer,
-    centerY: referenceCenterY,
-  }))
-  const x = Math.min(...layers.map((layer) => layer.x))
-  const y = referenceCenterY - (referenceLayer.height / 2)
-  const right = Math.max(...layers.map((layer) => layer.x + layer.width))
-  const bottom = referenceCenterY + (referenceLayer.height / 2)
-
-  return {
-    x,
-    y,
-    width: right - x,
-    height: bottom - y,
-    layers,
-  }
-})
+const REVEAL_START_GROUP = 1
+const GROUP_SLIDE_DISTANCE = 64
 
 function toCanvasPixels(value) {
   return `${value}px`
 }
 
-export function SubmitArtwork({ className = '' }) {
-  const artworkClassName = [styles.artwork, className].filter(Boolean).join(' ')
-
+function SubmitArtworkMotif({ motif, motifIndex }) {
   return (
-    <div className={artworkClassName} aria-hidden="true">
-      {ARTWORK_MOTIFS.map((motif, motifIndex) => (
+    <div
+      className={styles.motif}
+      data-artwork-motif={motifIndex}
+      style={{
+        left: toCanvasPixels(motif.x),
+        top: toCanvasPixels(motif.y),
+        width: toCanvasPixels(motif.width),
+        height: toCanvasPixels(motif.height),
+      }}
+    >
+      {motif.layers.map((layer, layerIndex) => (
         <div
-          key={motifIndex}
-          className={styles.motif}
-          data-artwork-motif={motifIndex}
+          key={layerIndex}
+          className={styles.layer}
+          data-artwork-layer={`${motifIndex}-${layerIndex}`}
           style={{
-            left: toCanvasPixels(motif.x),
-            top: toCanvasPixels(motif.y),
-            width: toCanvasPixels(motif.width),
-            height: toCanvasPixels(motif.height),
+            left: toCanvasPixels(layer.x - motif.x),
+            top: toCanvasPixels(layer.centerY - motif.y - (layer.height / 2)),
+            width: toCanvasPixels(layer.width),
+            height: toCanvasPixels(layer.height),
           }}
-        >
-          {motif.layers.map((layer, layerIndex) => (
-            <div
-              key={layerIndex}
-              className={styles.layer}
-              data-artwork-layer={`${motifIndex}-${layerIndex}`}
-              style={{
-                left: toCanvasPixels(layer.x - motif.x),
-                top: toCanvasPixels(layer.centerY - motif.y - (layer.height / 2)),
-                width: toCanvasPixels(layer.width),
-                height: toCanvasPixels(layer.height),
-              }}
-            />
-          ))}
-        </div>
+        />
       ))}
     </div>
   )
+}
+
+function SubmitArtworkCanvas({ artworkRef, artworkClassName }) {
+  return (
+    <div ref={artworkRef} className={artworkClassName} aria-hidden="true">
+      {Array.from({ length: ARTWORK_MOTIFS.length }, (_, motifIndex) => (
+        <SubmitArtworkMotif
+          key={motifIndex}
+          motif={ARTWORK_MOTIFS[motifIndex]}
+          motifIndex={motifIndex}
+        />
+      ))}
+    </div>
+  )
+}
+
+export function SubmitArtwork({ className = '', animate = false }) {
+  const artworkRef = React.useRef(null)
+  const artworkClassName = [styles.artwork, className].filter(Boolean).join(' ')
+
+  React.useLayoutEffect(() => {
+    if (!animate || !artworkRef.current) return undefined
+
+    const artwork = artworkRef.current
+    const groups = Array.from(artwork.querySelectorAll('[data-artwork-motif]'))
+    const allLayers = Array.from(artwork.querySelectorAll('[data-artwork-layer]'))
+
+    gsap.set(allLayers, { opacity: 1, scaleY: 1, transformOrigin: 'center center' })
+    gsap.set(groups, { y: GROUP_SLIDE_DISTANCE, scaleY: 0, opacity: 0, transformOrigin: 'center center' })
+
+    let frame = 0
+    const updateReveal = () => {
+      frame = 0
+
+      // Measure neutral geometry first so transforms cannot feed back into the scroll math.
+      gsap.set(groups, { y: 0, scaleY: 1, opacity: 1 })
+      gsap.set(allLayers, { scaleY: 1 })
+
+      const startLine = window.innerHeight * REVEAL_START_GROUP
+      const revealDistance = Math.max(1, window.innerHeight * 0.1)
+
+      groups.forEach((group) => {
+        const groupRect = group.getBoundingClientRect()
+        const groupProgress = gsap.utils.clamp(0, 1, (startLine - groupRect.top) / revealDistance)
+        gsap.set(group, {
+          y: GROUP_SLIDE_DISTANCE * (1 - groupProgress),
+          scaleY: groupProgress,
+          opacity: groupProgress,
+        })
+      })
+    }
+
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(updateReveal)
+    }
+    const onResize = () => updateReveal()
+
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onResize)
+    updateReveal()
+
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onResize)
+      if (frame) cancelAnimationFrame(frame)
+      gsap.killTweensOf([...groups, ...allLayers])
+    }
+  }, [animate])
+
+  return <SubmitArtworkCanvas artworkRef={artworkRef} artworkClassName={artworkClassName} />
 }

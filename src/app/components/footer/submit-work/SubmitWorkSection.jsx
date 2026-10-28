@@ -13,7 +13,7 @@ export default function SubmitWorkSection({
 }) {
   return (
     <section className={`${styles['submit-work']} ${styles['submit-work__el-000']} ${variant === 'poster' ? styles['submit-work--poster'] : ''}`} data-name="-">
-      <SubmitArtwork className={styles['submit-work__legacy-art']} />
+      <SubmitArtwork className={styles['submit-work__legacy-art']} animate />
       <div className={styles['submit-work__el-198']}>
         <span className={styles['submit-work__title-desktop']}>
           <p className={styles['submit-work__el-199']}>{titleLines[0]}</p>

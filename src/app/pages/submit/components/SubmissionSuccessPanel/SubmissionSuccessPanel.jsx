@@ -1,5 +1,6 @@
 import React from 'react'
 import styles from './SubmissionSuccessPanel.module.scss'
+import { RevealText } from '../../../../../components/RevealText/RevealText.jsx'
 
 function SuccessPattern() {
   return (
@@ -33,9 +34,9 @@ export function SubmissionSuccessPanel({ onExplore }) {
       <div className={styles.inner}>
         <SuccessPattern />
         <div className={styles.message}>
-          <h1 id="submission-success-title">Entry Submitted</h1>
-          <p className={styles.copyDesktop}>Thank you for your submission. Your work has<br />been received and is now under review. We'll<br />keep you informed of any updates as the<br />selection process progresses.</p>
-          <p className={styles.copyMobile}>Thank you for your submission. Your<br />work has been received and is now<br />under review. We'll keep you informed<br />of any updates as the selection<br />process progresses.</p>
+          <RevealText as="h1" id="submission-success-title">Entry Submitted</RevealText>
+          <RevealText as="p" className={styles.copyDesktop}>Thank you for your submission. Your work has<br />been received and is now under review. We'll<br />keep you informed of any updates as the<br />selection process progresses.</RevealText>
+          <RevealText as="p" className={styles.copyMobile}>Thank you for your submission. Your<br />work has been received and is now<br />under review. We'll keep you informed<br />of any updates as the selection<br />process progresses.</RevealText>
           <button className={styles.explore} type="button" onClick={onExplore}>Explore More (→)</button>
         </div>
       </div>

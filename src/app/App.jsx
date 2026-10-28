@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from './App.module.scss'
 import { Header, HEADER_COLORS } from './components/header/Header.jsx'
 import { HomePage } from './pages/home/HomePage.jsx'
@@ -9,6 +9,15 @@ import { SmoothScroll } from './components/smooth-scroll/SmoothScroll.jsx'
 
 export function App({ url = '/' }) {
   const path = url.split('?')[0].replace(/\/$/, '') || '/'
+  useEffect(() => {
+    if (path === '/') return undefined
+
+    document.body.dataset.pagePhase = 'content'
+    return () => {
+      delete document.body.dataset.pagePhase
+    }
+  }, [path])
+
   const page = path === '/posters'
     ? <PostersPage />
     : path === '/guidelines'

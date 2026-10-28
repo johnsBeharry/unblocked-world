@@ -3,12 +3,6 @@ import { gsap } from "gsap";
 import heroStyles from "../hero/HeroSection.module.scss";
 import styles from "./HeroArtwork.module.scss";
 
-const HERO_ARTWORK_MOTIFS = [
-  {
-    layers: [...Array(24).keys()].map(() => [0, 0, 0, 0]),
-  },
-];
-
 const ARTWORK_PARALLAX_FACTOR = 0.12;
 
 function HeroDesktopArtwork() {
@@ -51,23 +45,20 @@ export function HeroArtwork() {
       if (document.body.dataset.pagePhase !== 'content') return
 
       gsap.set(artworkWrappers, { y: window.scrollY * ARTWORK_PARALLAX_FACTOR })
+      gsap.killTweensOf(groups)
       gsap.set(groups, { scaleY: 1 })
+      const startDistance = window.innerHeight * 0.1
       const scales = groups.map((group) => {
         const rect = group.getBoundingClientRect()
-        const scaleY = rect.height > 0
-          ? Math.min(1, Math.max(0, rect.top / rect.height))
+        const scaleY = startDistance > 0
+          ? Math.min(1, Math.max(0, rect.top / startDistance))
           : 1
 
         return { group, scaleY }
       })
 
       scales.forEach(({ group, scaleY }) => {
-        gsap.to(group, {
-          scaleY,
-          duration: 0.2,
-          ease: 'power2.inOut',
-          overwrite: 'auto',
-        })
+        gsap.set(group, { scaleY })
       })
     }
 

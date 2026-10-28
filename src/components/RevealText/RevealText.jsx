@@ -56,6 +56,7 @@ export function RevealText({
   duration = 1,
   distance = '120%',
   ease = 'cubic-bezier(0.165, 0.84, 0.44, 1)',
+  play = null,
   ...props
 }) {
   const measureRef = useRef(null)
@@ -97,6 +98,11 @@ export function RevealText({
   useEffect(() => {
     if (!enabled || !lines || !rootRef.current) return undefined
 
+    if (play !== null) {
+      setHasEntered(play)
+      return undefined
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -109,7 +115,7 @@ export function RevealText({
 
     observer.observe(rootRef.current)
     return () => observer.disconnect()
-  }, [enabled, lines])
+  }, [enabled, lines, play])
 
   if (!enabled) return <Tag {...props} className={className}>{children}</Tag>
 

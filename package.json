@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "node --env-file-if-exists=.env server/index.js",
-    "build": "npm run build:client && npm run build:server",
+    "build": "npm run build:client",
     "build:client": "vite build --outDir dist/client",
     "build:server": "vite build --ssr src/entry-server.jsx --outDir dist/server",
     "start": "node --env-file-if-exists=.env server/index.js --prod",

@@ -1,5 +1,6 @@
 import React from 'react'
 import styles from './GuidelineSection.module.scss'
+import { RevealText } from '../../../../../components/RevealText/RevealText.jsx'
 
 export function RuledList({ items, ordered = false, className = '' }) {
   const ListTag = ordered ? 'ol' : 'ul'
@@ -26,8 +27,8 @@ export function RuledList({ items, ordered = false, className = '' }) {
 export function GuidelineSection({ id, title, description, items, ordered = false, className = '' }) {
   return (
     <section id={id} className={`${styles.section} ${description ? styles.withDescription : ''} ${ordered ? styles.submissionProcess : ''} ${className}`} aria-labelledby={`${id}-title`}>
-      <h2 id={`${id}-title`}>{title}</h2>
-      {description && <p className={styles.description}>{description}</p>}
+      <RevealText as="h2" id={`${id}-title`}>{title}</RevealText>
+      {description && <RevealText as="p" className={styles.description}>{description}</RevealText>}
       <RuledList items={items} ordered={ordered} />
     </section>
   )

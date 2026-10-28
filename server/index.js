@@ -75,15 +75,10 @@ app.use(async (req, res, next) => {
   try {
     const url = req.originalUrl
     let template = fs.readFileSync(path.resolve(root, isProd ? 'dist/client/index.html' : 'index.html'), 'utf-8')
-    let render
     if (!isProd) {
       template = await vite.transformIndexHtml(url, template)
-      render = (await vite.ssrLoadModule('/src/entry-server.jsx')).render
-    } else {
-      render = (await import('../dist/server/entry-server.js')).render
     }
-    const appHtml = await render(url)
-    const html = template.replace('<!--ssr-outlet-->', appHtml)
+    const html = template.replace('<!--ssr-outlet-->', '')
     res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
   } catch (error) {
     vite?.ssrFixStacktrace(error)

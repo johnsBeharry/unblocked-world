@@ -1,5 +1,6 @@
 import React from 'react'
 import styles from './ContactInformationPanel.module.scss'
+import { RevealText } from '../../../../../components/RevealText/RevealText.jsx'
 
 const fields = [
   { name: 'full_name', label: 'Full Name', value: 'Andre' },
@@ -15,8 +16,8 @@ export function ContactInformationPanel({ value = {}, onChange }) {
   return (
     <section className={styles.panel} aria-labelledby="contact-title">
       <div className={styles.inner}>
-        <h1 id="contact-title">Contact Information</h1>
-        <p className={styles.intro}>Provide your contact details so we can communicate important updates regarding your submission.</p>
+        <RevealText as="h1" id="contact-title">Contact Information</RevealText>
+        <RevealText as="p" className={styles.intro}>Provide your contact details so we can communicate important updates regarding your submission.</RevealText>
         <form className={styles.form}>
           {fields.map(field => (
             <label className={styles.field} key={field.label}>

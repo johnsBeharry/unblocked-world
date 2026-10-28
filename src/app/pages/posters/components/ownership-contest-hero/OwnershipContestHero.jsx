@@ -1,5 +1,6 @@
 import React from 'react'
 import styles from './OwnershipContestHero.module.scss'
+import { RevealText } from '../../../../../components/RevealText/RevealText.jsx'
 
 const bars = [
   [223.39, 275.55, 155.503, 30.342],
@@ -29,6 +30,18 @@ const toMobileVw = (size) => `${(size / 375) * 100}vw`
 const mobileScaleX = 188.5 / 602
 const mobileScaleY = 240 / 766.609
 
+function PosterTitleReveal({ children, className, label }) {
+  return (
+    <span className={className} aria-label={label}>
+      {Array.from(children).map((character, index) => (
+        <span className={styles.char} key={`${character}-${index}`} aria-hidden="true">
+          <span className={styles.charInner} style={{ '--char-index': index }}>{character === ' ' ? '\u00a0' : character}</span>
+        </span>
+      ))}
+    </span>
+  )
+}
+
 export function OwnershipContestHero({ guidelinesHref, submitHref }) {
   return (
     <section className={styles.hero} data-name="contest-hero" aria-labelledby="ownership-contest-title">
@@ -51,11 +64,15 @@ export function OwnershipContestHero({ guidelinesHref, submitHref }) {
         ))}
       </div>
 
-      <h1 className={styles.title} id="ownership-contest-title">Ownership</h1>
-      <p className={styles.subtitle}>Poster Contest (↓)</p>
-      <p className={styles.dates}>21.02.26—23.09.26</p>
-      <a className={styles.guidelines} href={guidelinesHref}>Submission Guidelines (→)</a>
-      <a className={styles.submit} href={submitHref}>Submit Poster (→)</a>
+      <h1 className={styles.title} id="ownership-contest-title">
+        <PosterTitleReveal className={styles.titleText} label="Ownership">Ownership</PosterTitleReveal>
+      </h1>
+      <p className={styles.subtitle}>
+        <PosterTitleReveal className={styles.subtitleText} label="Poster Contest (↓)">Poster Contest (↓)</PosterTitleReveal>
+      </p>
+      <RevealText as="p" className={styles.dates}>21.02.26—23.09.26</RevealText>
+      <RevealText as="a" className={styles.guidelines} href={guidelinesHref}>Submission Guidelines (→)</RevealText>
+      <RevealText as="a" className={styles.submit} href={submitHref}>Submit Poster (→)</RevealText>
     </section>
   )
 }

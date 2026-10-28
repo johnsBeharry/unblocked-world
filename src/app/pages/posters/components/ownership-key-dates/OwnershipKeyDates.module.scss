@@ -18,7 +18,9 @@
   left: 0;
   display: flex;
   width: 100%;
+  justify-content: center;
   flex-direction: column;
+  gap: 0;
   align-items: center;
   color: #dc91a8;
   font-family: 'Inter Local', sans-serif;
@@ -29,6 +31,8 @@
   letter-spacing: vw(-9.6);
   text-align: center;
 }
+
+.titlePart { white-space: nowrap; }
 
 .intro {
   position: absolute;

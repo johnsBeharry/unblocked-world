@@ -1,4 +1,5 @@
 import React from 'react'
+import { gsap } from 'gsap'
 import styles from './ThemeSection.module.scss'
 import { RevealText } from '../../../../../components/RevealText/RevealText.jsx'
 
@@ -23,6 +24,22 @@ export function ThemeSection({
     const detail = section?.querySelector('[class*="theme-section__copy"]')
     if (!section || !meta || !art || !title || !detail) return undefined
 
+    let artRevealed = false
+    const revealArtwork = () => {
+      if (artRevealed) return
+      artRevealed = true
+      gsap.to(art, {
+        clipPath: 'inset(0 0% 0 0)',
+        duration: 1.2,
+        ease: 'power2.inOut',
+        overwrite: true,
+      })
+    }
+
+    gsap.set(art, {
+      clipPath: 'inset(0 100% 0 0)',
+    })
+
     const sectionStart = section.getBoundingClientRect().top + window.scrollY
     const metaStart = meta.getBoundingClientRect().top + window.scrollY
     const threshold = parseFloat(getComputedStyle(meta).top) || 0
@@ -40,6 +57,11 @@ export function ThemeSection({
       detail.style.setProperty('--theme-detail-y', '0px')
       const detailTop = detail.getBoundingClientRect().top
       const artworkTop = art.getBoundingClientRect().top
+      const artworkCenter = artworkTop + art.getBoundingClientRect().height / 2
+      const viewportCenter = window.innerHeight / 2
+      if (Math.abs(artworkCenter - viewportCenter) <= art.getBoundingClientRect().height * 0.35) {
+        revealArtwork()
+      }
       const question = detail.querySelector('[class*="theme-section__question"]')
       const questionTop = question?.getBoundingClientRect().top ?? detailTop
       const movingQuestionTop = questionTop + earlyDetailAdjust
@@ -64,6 +86,8 @@ export function ThemeSection({
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', updatePin)
       if (frame) cancelAnimationFrame(frame)
+      gsap.killTweensOf(art)
+      gsap.set(art, { clearProps: 'clipPath' })
     }
   }, [])
 

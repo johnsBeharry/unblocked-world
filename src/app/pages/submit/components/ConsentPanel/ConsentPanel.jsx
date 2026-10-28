@@ -1,5 +1,6 @@
 import React from 'react'
 import styles from './ConsentPanel.module.scss'
+import { RevealText } from '../../../../../components/RevealText/RevealText.jsx'
 
 const consents = [
   { name: 'original', label: 'I confirm this is original work and I have the right to submit it.' },
@@ -11,8 +12,8 @@ export function ConsentPanel({ value = {}, onChange, error }) {
   return (
     <section className={styles.panel} aria-labelledby="consent-title">
       <div className={styles.inner}>
-        <h1 id="consent-title">Consent</h1>
-        <p className={styles.intro}>Confirm that your submission complies with<br />the programme guidelines.</p>
+        <RevealText as="h1" id="consent-title">Consent</RevealText>
+        <RevealText as="p" className={styles.intro}>Confirm that your submission complies with<br />the programme guidelines.</RevealText>
         <div className={styles.list}>
           {consents.map((consent, index) => (
             <label className={styles.row} key={consent.label}>

@@ -121,22 +121,20 @@ export function PageLoader({ duration = 2000 }) {
     groupSteps.forEach((groupStep, stepIndex) => {
       groupStep.forEach((groupIndex) => {
         const groups = artworkGroups.get(groupIndex) ?? []
-        const firstDepth = 0
-
         timeline.to(
           groups,
           { scaleX: 1, duration: LAYER_DURATION, ease: REVEAL_EASE },
           stepIndex * GROUP_STAGGER,
         )
 
-        for (let depth = firstDepth; depth < 3; depth += 1) {
+        for (let depth = 0; depth < 3; depth += 1) {
           const layerGroup = getLayerByDepth(groups, depth)
           if (!layerGroup.length) continue
 
           timeline.to(
             layerGroup,
             { scaleX: 1, scaleY: 1, duration: LAYER_DURATION, ease: REVEAL_EASE },
-            stepIndex * GROUP_STAGGER + (depth - firstDepth) * 0.1,
+            stepIndex * GROUP_STAGGER + depth * 0.1,
           )
         }
       })

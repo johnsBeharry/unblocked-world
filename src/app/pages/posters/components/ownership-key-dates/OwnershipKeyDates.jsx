@@ -1,5 +1,6 @@
 import React from 'react'
 import styles from './OwnershipKeyDates.module.scss'
+import { RevealText } from '../../../../../components/RevealText/RevealText.jsx'
 import PermanenceSection from '../../../home/components/permanence/PermanenceSection.jsx'
 import { Footer } from '../../../../components/footer/Footer.jsx'
 
@@ -17,13 +18,13 @@ export function OwnershipKeyDates() {
     <>
       <section className={styles.section} data-name="key-dates" aria-label="Key Dates">
         <h2 className={styles.title}>
-          <span>Sec.07</span>
-          <span>(Key Dates)</span>
+          <RevealText as="span" className={styles.titlePart}>Sec.07</RevealText>
+          <RevealText as="span" className={styles.titlePart}>(Key Dates)</RevealText>
         </h2>
 
-        <p className={styles.intro}>
+        <RevealText as="p" className={styles.intro}>
           The programme unfolds across a series of milestones guiding participants from theme announcement and submission through selection, exhibition, and publication
-        </p>
+        </RevealText>
 
         <div className={styles.timeline}>
           {DATES.map(([number, milestone, date]) => (

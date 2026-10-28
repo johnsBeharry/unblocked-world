@@ -8,6 +8,7 @@ import { PosterDetailsPanel } from './components/PosterDetailsPanel/PosterDetail
 import { ConsentPanel } from './components/ConsentPanel/ConsentPanel.jsx'
 import { SubmissionSuccessPanel } from './components/SubmissionSuccessPanel/SubmissionSuccessPanel.jsx'
 import { useSubmitLenis } from './hooks/useSubmitLenis.js'
+import { RevealText } from '../../../components/RevealText/RevealText.jsx'
 
 const steps = [
   'Review the Ownership theme.',
@@ -169,7 +170,7 @@ export function SubmitPage({ initialStep = 0 }) {
       <section className={styles.identity} aria-label="Ownership theme">
         <a className={styles.homeLink} href="/">(←) Home</a>
         <SubmitArtwork />
-        <h1>Ownership</h1>
+        <RevealText as="h1">Ownership</RevealText>
       </section>
 
       <section className={styles.content} aria-labelledby="submit-title">
@@ -206,16 +207,16 @@ export function SubmitPage({ initialStep = 0 }) {
                   ? <SubmissionSuccessPanel onExplore={() => setStep(0)} />
                 : <div className={styles.contentInner}>
                     <h2 id="submit-title">
-                      <span className={styles.titleDesktop}>Submit to the Poster<br />Contest</span>
-                      <span className={styles.titleMobile}>Submit to the<br />Poster Contest</span>
+                      <RevealText as="span" className={styles.titleDesktop}>Submit to the Poster<br />Contest</RevealText>
+                      <RevealText as="span" className={styles.titleMobile}>Submit to the<br />Poster Contest</RevealText>
                     </h2>
-                    <p className={`${styles.intro} ${styles.introDesktop}`}>Use this page to submit poster work<br />responding to the first theme:<br />Ownership. Before submitting, review the<br />contest overview, Ownership page, and<br />guidelines. Poster Contest Guidelines.</p>
-                    <p className={`${styles.intro} ${styles.introMobile}`}>Use this page to submit poster work responding to the first theme: Ownership. Before submitting, review the contest overview, Ownership page, and guidelines. Poster Contest Guidelines.</p>
-                    <h3>Submission Process</h3>
+                    <RevealText as="p" className={`${styles.intro} ${styles.introDesktop}`}>Use this page to submit poster work<br />responding to the first theme:<br />Ownership. Before submitting, review the<br />contest overview, Ownership page, and<br />guidelines. Poster Contest Guidelines.</RevealText>
+                    <RevealText as="p" className={`${styles.intro} ${styles.introMobile}`}>Use this page to submit poster work responding to the first theme: Ownership. Before submitting, review the contest overview, Ownership page, and guidelines. Poster Contest Guidelines.</RevealText>
+                    <RevealText as="h3">Submission Process</RevealText>
                     <ol>
                       {steps.map(step => <li key={step}>{step}</li>)}
                     </ol>
-                    <h3>Rules and Eligibility</h3>
+                    <RevealText as="h3">Rules and Eligibility</RevealText>
                     <ul>
                       <li>Open to individual and collaborative entries.</li>
                       <li>You can submit more than one poster.</li>

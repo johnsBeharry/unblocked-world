@@ -4,6 +4,7 @@ import { introduction, introductionLines, sections, rounds, unansweredQuestions,
 import { GuidelineSection, RuledList } from '../guideline-section/GuidelineSection.jsx'
 import { JudgingRound } from '../judging-round/JudgingRound.jsx'
 import { FaqAccordion } from '../faq-accordion/FaqAccordion.jsx'
+import { RevealText } from '../../../../../components/RevealText/RevealText.jsx'
 
 function Label({ children }) { return <span className={styles.label}>{children}</span> }
 
@@ -25,10 +26,10 @@ export function GuidelinesContent() {
     <section className={styles.page} data-name="guidelines-content">
       <a href="#submission-process" className={styles.skipLink}>Skip to submission guide</a>
       <header className={styles.header}>
-        <p className={styles.introText}>This page explains how to prepare<br />and submit work for the poster<br />contest. The first theme is<br /><u>Ownership</u>.</p>
+        <RevealText as="p" className={styles.introText}>This page explains how to prepare<br />and submit work for the poster<br />contest. The first theme is<br /><u>Ownership</u>.</RevealText>
         <h1 className={`${styles.headline} ${styles.introHeadline}`}>
-          <span className={styles.introDesktop}>{introduction}</span>
-          <span className={styles.introTablet}>{introductionLines.map((line, index) => <React.Fragment key={line}>{index > 0 && <br />}{line}</React.Fragment>)}</span>
+          <RevealText as="span" className={styles.introDesktop}>{introduction}</RevealText>
+          <RevealText as="span" className={styles.introTablet}>{introductionLines.map((line, index) => <React.Fragment key={line}>{index > 0 && <br />}{line}</React.Fragment>)}</RevealText>
         </h1>
       </header>
       <div className={styles.contentGrid}>
@@ -36,12 +37,12 @@ export function GuidelinesContent() {
         <div className={styles.contentSections}>
           {sections.map(section => <GuidelineSection key={section.id} id={section.id} title={section.title} description={section.description} items={section.items} ordered={section.id === 'submission-process'} />)}
           <section id="judging-process" className={styles.guideSection} aria-labelledby="judging-title">
-            <h2 id="judging-title" className={styles.headline}>Judging Process</h2>
-            <p>The competition review process takes place across four rounds. During each round, submitted posters are reviewed and either progress to the next stage or conclude their journey. Each round represents a different level of selection and feedback.</p>
+            <RevealText as="h2" id="judging-title" className={styles.headline}>Judging Process</RevealText>
+            <RevealText as="p">The competition review process takes place across four rounds. During each round, submitted posters are reviewed and either progress to the next stage or conclude their journey. Each round represents a different level of selection and feedback.</RevealText>
             {rounds.map(round => <JudgingRound key={round.status} {...round} />)}
-            <div className={styles.progressOverview}><h3 className={styles.bold}>Progress Overview</h3><p>Accepted (→) Under Review (→) Shortlisted (→) Selected</p></div>
+            <div className={styles.progressOverview}><RevealText as="h3" className={styles.bold}>Progress Overview</RevealText><RevealText as="p">Accepted (→) Under Review (→) Shortlisted (→) Selected</RevealText></div>
           </section>
-          <section id="after-submission" className={styles.guideSection} aria-labelledby="after-title"><h2 id="after-title" className={styles.headline}>After Submission</h2><p>After submitting, you should receive a confirmation message or email. Please do not close or exit the page while your submission is uploading.</p></section>
+          <section id="after-submission" className={styles.guideSection} aria-labelledby="after-title"><RevealText as="h2" id="after-title" className={styles.headline}>After Submission</RevealText><RevealText as="p">After submitting, you should receive a confirmation message or email. Please do not close or exit the page while your submission is uploading.</RevealText></section>
         </div>
       </div>
       <section className={styles.faqSection} aria-labelledby="faq-title"><h2 id="faq-title"><Label>FAQs</Label></h2><div className={styles.faqContent}>{unansweredQuestions.map(question => <FaqAccordion key={question} question={question} />)}<FaqAccordion question="What do I get if I win?" defaultOpen><p>Winning entries receive recognition across our channels and programme materials, with selected works becoming part of the broader exhibition experience.</p><ul className={styles.prizesList}>{prizes.map(prize => <li key={prize} className={styles.prizeItem}><span aria-hidden="true">•</span>{prize}</li>)}</ul></FaqAccordion></div></section>

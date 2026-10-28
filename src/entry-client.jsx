@@ -1,6 +1,6 @@
 import React from 'react'
-import { hydrateRoot } from 'react-dom/client'
+import { createRoot } from 'react-dom/client'
 import { App } from './app/App.jsx'
 import './styles/Global.scss'
 
-hydrateRoot(document.getElementById('root'), <App url={window.location.pathname} />)
+createRoot(document.getElementById('root')).render(<App url={window.location.pathname} />)

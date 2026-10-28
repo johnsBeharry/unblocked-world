@@ -72,10 +72,11 @@
 
 .member,
 .memberActive {
+  position: relative;
   width: 100%;
   height: vw(57);
-  border-bottom: vw(1) solid rgba(220, 145, 168, 0.35);
-  color: rgba(220, 145, 168, 0.5);
+  border-bottom: 0;
+  color: #dc91a8;
   font-family: 'Inter Local', sans-serif;
   font-size: vw(56);
   font-style: normal;
@@ -83,13 +84,64 @@
   line-height: 1.02;
   letter-spacing: vw(-2.24);
   white-space: nowrap;
+  opacity: 1;
+
+  &::after {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: vw(1);
+    content: '';
+    background: var(--jury-border-color, rgba(220, 145, 168, 0.35));
+    transform: scaleX(1);
+    transform-origin: left center;
+    transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+
+  &::before {
+    position: absolute;
+    z-index: 1;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: vw(1);
+    content: '';
+    background: #dc91a8;
+    transform: scaleX(var(--jury-highlight-scale, 1));
+    transform-origin: right center;
+    pointer-events: none;
+  }
 }
 
 .memberList p { margin: 0 0 vw(8); }
 
+.memberText { display: block; }
+
+.memberMask {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  background: #dc91a8;
+  transform: scaleY(1);
+  transform-origin: bottom center;
+  will-change: transform;
+}
+
+.revealing {
+  .member,
+  .memberActive {
+    color: #dc91a8;
+    opacity: 1;
+  }
+}
+
+.complete { isolation: isolate; }
+
+.hovered::before { transform-origin: left center; }
+
 .memberActive {
   color: #dc91a8;
-  border-bottom-color: rgba(220, 145, 168, 0.75);
 }
 
 .description {

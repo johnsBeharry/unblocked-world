@@ -51,6 +51,26 @@
     transform: translateX(-50%);
   }
 
+  .titleText,
+  .subtitleText {
+    display: block;
+  }
+
+  .char {
+    display: inline-block;
+    overflow: hidden;
+    padding-inline: 0.08em;
+    margin-inline: -0.08em;
+    vertical-align: top;
+  }
+
+  .charInner {
+    display: inline-block;
+    transform: translateY(-110%);
+    animation: poster-title-char 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    animation-delay: calc(var(--char-index) * 0.035s);
+  }
+
   .subtitle {
     top: vw(321);
     left: 50%;
@@ -61,6 +81,11 @@
     text-align: center;
     white-space: nowrap;
     transform: translateX(-50%);
+  }
+
+  .subtitle .charInner {
+    transform: translateY(110%);
+    animation-delay: calc(0.5s + var(--char-index) * 0.02s);
   }
 
   .dates {
@@ -89,6 +114,17 @@
 
   .guidelines { top: vw(1486); left: calc(50% + vw(0.5)); }
   .submit { top: vw(1536); }
+}
+
+@keyframes poster-title-char {
+  to { transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .charInner {
+    animation: none;
+    transform: none;
+  }
 }
 
 @include tablet-portrait {

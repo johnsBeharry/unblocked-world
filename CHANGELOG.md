@@ -2,6 +2,45 @@
 
 ## Unreleased
 
+- Moved Submit artwork's immutable geometry calculation into `SubmitArtwork.geometry.js` so the component file contains only rendering and animation logic.
+- Cleaned confirmed dead code and redundant constants in HeroArtwork, PageLoader, and SubmitArtwork without changing rendered geometry or animation behavior.
+- Ensured all Footer logo masks collapse to scaleY 0 at the exact document bottom so no horizontal mask seams remain when scrolling is fully exhausted.
+- Reduced the Footer bottom scroll buffer to 48px desktop, 40px tablet, and 32px mobile.
+- Added responsive black bottom padding to the Footer so the logo can fully reveal before the user reaches the document end.
+- Reset legacy mask inline y/opacity values to neutral state so hot reload cannot retain the removed slide-up or fade behavior.
+- Removed fade and slide-up from Footer logo masks; each mask now uses only independent bottom-origin scaleY scroll reveal.
+- Changed Footer logo masks to use independent group-style scroll animation per div: neutral measurement, 10vh reveal range, bottom-origin scaleY, fade, and 64px slide-up.
+- Added a ten-strip Footer logo mask that reveals from top to bottom with real-time bottom-origin scaleY as the logo enters and passes through the viewport.
+- Increased the Footer Submit group slide-up distance from 24px to 64px while keeping it scroll-scrubbed in real time.
+- Added a subtle 24px real-time slide-up to each Footer Submit group, synchronized with its group scaleY reveal and fade-in.
+- Corrected Footer Submit reveal to animate each motif group as one unit; child layers now retain neutral geometry and do not animate independently.
+- Removed Footer Submit group `scaleX` animation and added per-layer fade-in synchronized with the bottom-to-top `scaleY` reveal.
+- Fixed the Footer Submit artwork runtime error caused by the removed title trigger ref remaining in the effect dependency list.
+- Changed Footer Submit reveal from one artwork-wide progress to independent per-group Hero-style scroll progress, with each group's layers revealing bottom-to-top.
+- Matched Footer Submit reveal finish distance to Hero's 10vh scroll range so the artwork completes faster after the title trigger.
+- Anchored the Footer Submit reveal to the `Submit Work (→)` title position, starting when its top reaches 90% of the viewport like the supplied start screenshot.
+- Corrected the Submit artwork trigger to start when the root artwork top enters 20% inside the viewport, instead of 20% above it.
+- Changed Footer Submit reveal timing to use the legacy artwork root top position, starting when it reaches 20% above the viewport.
+- Aligned Footer Submit DOM creation with HeroArtwork by generating motif groups through `Array.from`; retained coordinate rows only as immutable geometry data.
+- Matched Footer Submit artwork rendering to the Hero banner's motif component structure while retaining the existing layer DOM attributes and geometry.
+- Simplified Submit artwork geometry data into reusable layer rows while preserving every existing coordinate and rendered size.
+- Moved the footer Submit scroll-reveal trigger from 85% to 90% of the viewport.
+- Lowered the footer Submit scroll-reveal trigger to 85% of the viewport so it begins as the Submit block enters the viewport.
+- Changed the footer Submit artwork reveal to scrub in real time with scroll, starting when each group reaches 40% of the viewport and revealing its layers from bottom to top.
+- Added hero-style GSAP layer reveal to the footer Submit artwork, triggered on viewport entry and starting each motif from its bottom-most layer.
+- Recorded the pre-layer-mask ThemeSection state as the rollback checkpoint for the upcoming stacked section transition.
+- Removed the ThemeSection artwork slide-up while retaining the 1.2s `power2.inOut` left-to-right clip reveal.
+- Added a GSAP-driven Hidden Systems clip-path transition that interpolates to the requested final polygon while remaining synchronized with scroll progress.
+- Preserved the Hidden Systems SVG artwork groups at their original dimensions while allowing only the blue fill canvas to match the live bracket opening.
+- Rebased clip-path interpolation on the live bracket inner opening per animation frame, preventing blue overflow at the start and gray seams while the brackets separate.
+- Constrained the early clip-path interpolation by the widest start-polygon point so no polygon vertex can cross the bracket opening during one-pixel scroll changes.
+- Matched the clip silhouette's horizontal edges directly to the live bracket opening so intermediate frames cannot expose gray seams between the blue fill and either parenthesis.
+- Added a small per-frame blue underlap beneath the black bracket edges to eliminate antialiasing seams without changing the bracket geometry.
+- Removed the bracket underlap after QA found it could expose blue outside the black contour; red-point samples are now exact clip boundaries.
+- Changed the per-frame mask to a full rectangular blue fill sized to the live bracket opening; the black parentheses now define the visible curved silhouette from above.
+- Replaced the opening-only mask with live inner-curve sample points derived from both bracket rects, so the clip follows the marked red-point contour on every scroll frame.
+- Calibrated the Hidden Systems bracket animation against the original static `(          )` glyph layout so the final scroll frame lands on the same left and right positions as the pre-animation design.
+
 - Placed hero artwork behind hero copy and navigation with an explicit stacking order, preserving the artwork position and animation.
 - Configured Vercel to serve the built client from `dist/client`, matching the project's split client/server build output.
 - Added Vercel rewrites for the client-side page routes so direct navigation does not return a 404.
@@ -176,3 +215,99 @@
 - Restored the desktop Contact introduction typography and spacing so it wraps and aligns with the reference form.
 - Fixed desktop Contact field rows to use fixed border-box heights so the final field no longer runs into the browser bottom.
 - Added bottom padding to the desktop Contact form so the final divider has breathing room from the viewport edge.
+- Fixed HeroArtwork scroll scaling to begin within a 10vh top-edge threshold and update directly from the unscaled geometry, eliminating scroll tween glitches.
+- Added scroll-driven Hidden Systems artwork assembly: the large brackets expand from center and the U artwork groups separate from a shared center point into their final positions.
+- Corrected Hidden Systems scroll timing to use the artwork canvas position and center all U groups against the canvas before separation.
+- Restored the Hidden Systems brackets to their full size and clipped the blue artwork canvas to the bracket opening, with the brackets layered above it.
+- Changed the bracket reveal to animate the left and right characters outward from the center without scaling them; the blue mask now opens along the same scroll progress.
+- Implemented the bracket motion with separate left/right glyph translations so the characters visibly travel from the center to their final positions.
+- Replaced the rectangular artwork crop with a scroll-driven polygon mask that follows the curved opening between the brackets.
+- Refined the mask profile so it starts narrow at the top, widens along the bracket curve, and stays wide through the bottom opening.
+- Reworked the mask interpolation to use curved sampled left/right boundaries that expand from the center and resolve to the full blue box at the end.
+- Synced the blue canvas width to the live inner opening between the bracket glyphs so no gap remains between the mask and brackets.
+- Restored the blue canvas to its mockup width and set a non-collapsed initial bracket/mask state so the animation starts like the reference frame instead of forming an X.
+- Replaced the sampled CSS polygon with a shared-coordinate SVG Bézier clipPath for the curved blue silhouette between the bracket edges.
+- Marked the animated bracket glyphs as static loader targets so the content reveal tween cannot overwrite their scroll transforms.
+- Refined the SVG artwork clipPath to reach the bracket opening at the widest middle section, removing the remaining side gaps while preserving the curved top and bottom silhouette.
+- Tightened the final SVG clipPath against the complete inner bracket contour so gray background cannot appear as a gap inside the parentheses.
+- Synchronized the collapsed clipPath coordinates with the bracket's measured inner edge and removed the bottom inset that caused a gray leak in the final frame.
+- Matched the mask coordinate system to the full bracket span while keeping the original SVG group dimensions unchanged, so the curved clip follows the black inner silhouette without gray seams.
+- Recalibrated the Bézier edge points against the same-size mockup overlay so the top and bottom blue boundaries meet the bracket inner edge instead of leaving gray gaps.
+- Widened the shared Bézier silhouette at its top, middle, and bottom contour points after pixel inspection found a remaining 9–19px gray inset in the masking frame.
+- Reverted the temporary full-bracket-width backdrop because it changed the final blue artwork proportions; the canvas is restored to the mockup-defined 296px width and the mask is recalibrated within that original coordinate system.
+- Replaced the guessed SVG Bézier artwork mask with the reference polygon silhouette. The mask now recalculates from the live left/right bracket rects on every scroll frame, keeping the blue artwork tucked beneath the bracket glyphs without changing the original artwork dimensions.
+- Calibrated Hidden Systems bracket motion to the mockup's final center spacing and constrained the per-frame mask against the live outer bounds of both bracket glyphs, preventing blue overflow while the artwork expands.
+- Clamped each live red-point-derived clip coordinate to the actual canvas bounds, removing sub-pixel negative/over-100% vertices that caused blue slivers outside the parentheses during intermediate scroll frames.
+- Restored the live red-point curve geometry and limited the fix to clamping only the final clip percentages, preserving the previously correct curved mask instead of flattening it into a rectangle.
+- Added only a sub-pixel safety clamp against each bracket's outer bounding edge, keeping the red-point curve while removing the visible blue sliver outside the parentheses.
+- Raised the bracket wrapper above the blue canvas so the complete parenthesis silhouette consistently occludes the artwork without changing its geometry.
+- Applied the manually inspected #2-to-#3 correction only to the left clip points: 25% -1 point, 50% -2 points, and 75% -1 point; all other mask coordinates remain live and unchanged.
+- Anchored the blue canvas to the live outer bracket span, matching the inspected `left` center and `width` relationship so the corrected curve cannot expose a blue sliver outside the parentheses.
+- Reverted the temporary outer-span canvas expansion to preserve the mockup artwork width, and pulled only the three leaking left clip points inward by 2/4/2 percentage points.
+- Capped the live blue canvas width at its original mockup width so the opening can animate narrower but cannot become wider than the 296px artwork target near the final frame.
+- Reset stale inline canvas geometry before measuring the mockup baseline, preventing a prior oversized frame from becoming the new maximum width after re-initialization.
+- Kept the blue box edges vertical by using fixed left/right clip anchors across all sampled Y positions; the mask no longer inherits the inward 2/4/2 point correction as a visible box indentation.
+- Restored the right live curve for intermediate widths while keeping the corrected left edge vertical; the right side now reaches straight only when the canvas reaches its final mockup width.
+- Restored the supplied initial narrow oval boundary at scroll progress 0, then interpolated the left edge toward the straight final box edge as the artwork opens.
+- Added the initial bracket separation from the reference frame so the two glyphs no longer stack into an X at progress 0; the separation eases out as they travel to their final positions.
+- Added a 2% initial-only clip inset that fades out by the first quarter of scroll progress, removing the blue antialiasing sliver without changing the established later frames.
+- Applied the existing RevealText component to primary headings, descriptions, labels, links, and submit-flow panels across the posters, guidelines, and submit routes, preserving responsive desktop/mobile text variants and interactive controls.
+- Corrected responsive heading wrappers so desktop/tablet/mobile variants are measured and revealed independently instead of being concatenated by a parent RevealText instance.
+- Fixed RevealText on non-home routes by marking routed pages as `content` phase; posters, guidelines, and submit no longer depend on the home-only PageLoader to start their text animation.
+- Replaced the Posters hero title RevealText with a per-character top-down reveal and delayed the `Poster Contest (↓)` subtitle to a bottom-up reveal beginning halfway through the title timing.
+- Added compensated horizontal breathing room to Posters hero character masks so glyph overhangs remain visible without changing the title or subtitle's overall geometry.
+- Added real-time scroll reveal to the Posters OwnershipBreak artwork: all desktop layers start with the main layer background and hidden `O` glyphs, then scrub glyph position and background colors from the 80% to 20% viewport-top range.
+- Set OwnershipBreak layer CSS fallbacks to the main pink so the initial state is correct before the scroll effect mounts.
+- Corrected OwnershipBreak reveal direction: the center `O` remains fixed while the rear glyphs start stacked at center and scrub horizontally toward their native layer positions; vertical motion was removed.
+- Added center-first OwnershipBreak sequencing: the center glyph scrubs from scale 0.8 to 1, and the nearest rear glyph begins horizontal motion when the center reaches scale 0.9, followed by the outer layers.
+- Made OwnershipBreak background restoration cascade from the currently visible layer above into each next layer, removing mid-transition color seams while preserving each layer's final original color.
+- Synced the final OwnershipBreak layer background to the live color of the layer above throughout the transition, returning it to its own main color only during the final 10% of progress to remove the visible color block.
+- Added an explicit completed-progress clamp so every OwnershipBreak layer always ends on its own original background instead of retaining a cascaded transition color.
+- Split OwnershipBreak background cascades into independent left and right chains so each outer layer follows the inner layer on its own side and resolves to its own original color.
+- Simplified OwnershipBreak into explicit three-layer sequencing: center primary, synchronized left/right second layer, and synchronized left/right third layer inheriting the second layer's current color before resolving to its own original color.
+- Made the three-layer color flow explicit with shared layer timing constants and kept the final position update running before the original-background clamp.
+- Sequenced OwnershipBreak color flow so Layer 3 mirrors Layer 2's live current color until Layer 2 completes at 75% progress, then Layer 3 transitions to its own original color through the final 25%.
+- Fixed the Layer 3 color snap by allowing OwnershipBreak interpolation to consume both generated `rgb(...)` colors and source hex colors in the chained layer flow.
+- Changed OwnershipBreak reveal completion so progress reaches 100% when the parent section top touches the browser top, while preserving the existing 80% viewport start trigger.
+- Replaced OwnershipBreak's manual per-frame interpolation with a GSAP scrubbed timeline for center scale, paired horizontal movement, and sequential color transitions.
+- Synchronized all OwnershipBreak character movement with the primary center layer timeline; left and right rear glyphs now travel concurrently while background color sequencing remains staged.
+- Added a GSAP real-time scroll reveal for OwnershipReferences thumbnails: cards start stacked at the section center and scrub to their original CSS positions, finishing when the section top reaches the browser top without pinning.
+- Changed OwnershipReferences thumbnail reveal to vertical-only GSAP scroll motion; card X positions remain fixed while Y returns to the original CSS position at the section-top finish.
+- Extended OwnershipReferences thumbnail motion past the section-top finish: cards reach original Y at top contact, then continue upward proportionally with further scroll instead of stopping.
+- Fixed the post-top continuation offset so it no longer overrides the initial stacked thumbnail positions before the section reaches the browser viewport.
+- Added per-thumbnail speed profiles for OwnershipReferences: each card uses a distinct GSAP easing and continuation Y factor while all cards still converge exactly to their original positions at section-top contact.
+- Replaced the OwnershipReferences power easing profiles with monotonic custom speed curves so every poster starts moving immediately, keeps a distinct speed profile, and reaches its original position without an endpoint freeze.
+- Added a subtle depth-based pointer parallax to OwnershipReferences image frames: cards respond to mouse movement with different horizontal/vertical amplitudes while preserving the scroll-driven card transforms.
+- Moved OwnershipReferences pointer parallax from image frames to the parent poster containers so the full card moves without changing the artwork crop; scroll-driven Y remains isolated while mouse movement adds only a subtle X offset.
+- Made OwnershipReferences pointer motion proximity-aware: nearby cards receive stronger parent-card magnet movement and realtime scaling up to 1.2x at the card center, then smoothly return to 1x when the pointer leaves.
+- Routed OwnershipReferences pointer tracking through the window so smooth-scroll layers cannot swallow movement events; proximity scale and parent-card magnet movement now reliably update whenever the cursor is inside the section.
+- Added viewport-triggered Jury member sequencing: each name uses the shared RevealText stagger first, followed by independently staggered row-line reveals after the text sequence completes.
+- Aligned each Jury row underline timing to its matching text reveal: the border starts as soon as that row's 0.8s text animation completes instead of waiting for the full name sequence.
+- Synchronized Jury row timing with a controlled RevealText trigger so each member's underline starts immediately after that same member's text animation, rather than relying on separate viewport observers.
+- Reversed the Jury sequence so each border starts first; its matching text now begins after 20% of the 0.5s border reveal, preserving the per-row stagger.
+- Reworked OwnershipJury entry to a GSAP top-to-bottom staggered mask reveal: active-color boxes cover every row initially, scale away per row without opacity changes, then final text and border opacity states apply only after all masks complete.
+- Fixed OwnershipJury reveal state so all rows begin with active color and full opacity under the masks; inactive color/opacity is applied only by the GSAP completion class after every mask has finished.
+- Replaced the post-mask opacity/color snap in OwnershipJury with a GSAP tween, including smooth staggered opacity, text-color, and border-color transitions for inactive rows.
+- Split OwnershipJury borders into a persistent dim base layer and a bright highlight layer; the highlight now scales out right-to-left via GSAP with the text opacity tween for every row, while row hover restores the bright border.
+- Equalized the Jury base border opacity across all rows, including the first active row; only the separate highlight border carries the bright color.
+- Set the OwnershipJury highlight-border scale-out duration to 1.6s for visual review, while leaving the text opacity tween timing unchanged.
+- Isolated Jury text opacity from the row container so bright and base borders never inherit the text fade; border color and highlight scale now run as independent GSAP properties.
+- Made the Jury highlight border appear instantly on row hover with no hover transition; the 1.6s scale animation remains limited to the GSAP reveal sequence.
+- Restored a visible 1.6s hover scale animation for the bright Jury border, expanding from right to left instead of appearing instantly.
+- Changed the Jury hover highlight to scale from left to right while preserving the reveal timeline's right-to-left direction.
+- Set the Jury highlight scale duration to 0.5s and added hover focus behavior: the hovered member text fades to full opacity while all other member text fades to the shared 0.5 opacity.
+- Replaced CSS hover state handling with per-row GSAP pointer handlers so hovered text reliably reaches opacity 1, other text returns to 0.5, and the matching highlight border scales over 0.5s.
+- Locked Jury row opacity at 1 and added a per-row hover origin class so only text fades while hover highlight borders scale left-to-right.
+- Normalized OwnershipJury hover/final text styling: all non-hover rows now use the same #dc91a8 color at opacity 0.5, including the first row; only the hovered row returns to opacity 1.
+- Replaced the OwnershipReferences timeline/continuation override with direct per-card GSAP Y calculations, ensuring every card begins moving immediately from section-bottom contact while preserving individual easing and post-top continuation.
+- Measured OwnershipReferences card offsets from neutral layout geometry (`offsetTop`/`offsetHeight`) so stale transforms cannot make the lower cards appear fixed or stop participating in the scroll motion.
+- Reset OwnershipReferences cards to their native CSS positions at the scroll start and changed the reveal to faster linear per-card vertical speeds as the section enters the viewport.
+- Rebased OwnershipReferences motion so every card returns to its native `y: 0` position exactly when the section top reaches the browser top, then continues with its own realtime speed after that boundary.
+- Removed the pre-top sinusoidal motion that reversed card direction; cards now keep native positioning until top contact and continue with one-way linear scroll motion afterward.
+- Changed OwnershipReferences to continuous section-top-based positioning (`y = sectionTop × speed`), so cards already move before viewport entry, resolve to native position at top contact, and continue past it without a pause or direction reversal.
+- Switched the app entry from SSR hydration to client-only `createRoot` rendering and removed server-side page rendering from the dev/prod request path.
+- Kept the Key Dates title on one line by removing the column flex layout and enforcing no-wrap text.
+- Updated the default build to generate only the client bundle now that SSR is no longer part of the application runtime.
+- Scoped the Key Dates no-wrap title behavior to desktop and restored the intended two-line mobile layout.
+- Split the Key Dates title into responsive reveal parts so desktop renders one line while mobile deterministically renders `Sec.07` above `(Key Dates)`.
+- Matched the currently requested Key Dates reference across viewports by forcing both title parts into a two-line vertical layout.

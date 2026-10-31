@@ -43,11 +43,6 @@ function getGroupSteps(groupIndexes, centerIndex) {
   return steps
 }
 
-function getGroupScaleX(groupIndex, centerIndex) {
-  const distance = Math.abs(groupIndex - centerIndex)
-  return Math.max(0.2, 0.8 - distance * 0.1)
-}
-
 export function PageLoader({ duration = 2000 }) {
   const [loading, setLoading] = React.useState(true)
 
@@ -61,13 +56,7 @@ export function PageLoader({ duration = 2000 }) {
     const allGroups = [...artworkGroups.values()].flat()
 
     gsap.set(allLayers, { opacity: 1, scaleX: 1, scaleY: 0, transformOrigin: 'center center' })
-    allGroups.forEach((group) => {
-      const groupIndex = Number(group.dataset.artworkMotif)
-      gsap.set(group, {
-        scaleX: getGroupScaleX(groupIndex, centerIndex),
-        transformOrigin: 'center center',
-      })
-    })
+    gsap.set(allGroups, { scaleX: 1, transformOrigin: 'center center' })
     gsap.set(loaderLayer, { scaleX: 0, scaleY: 0.25 })
     const loaderTween = gsap.to(loaderLayer, {
       scaleX: 1,
@@ -121,12 +110,6 @@ export function PageLoader({ duration = 2000 }) {
     groupSteps.forEach((groupStep, stepIndex) => {
       groupStep.forEach((groupIndex) => {
         const groups = artworkGroups.get(groupIndex) ?? []
-        timeline.to(
-          groups,
-          { scaleX: 1, duration: LAYER_DURATION, ease: REVEAL_EASE },
-          stepIndex * GROUP_STAGGER,
-        )
-
         for (let depth = 0; depth < 3; depth += 1) {
           const layerGroup = getLayerByDepth(groups, depth)
           if (!layerGroup.length) continue

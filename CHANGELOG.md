@@ -311,3 +311,4 @@
 - Scoped the Key Dates no-wrap title behavior to desktop and restored the intended two-line mobile layout.
 - Split the Key Dates title into responsive reveal parts so desktop renders one line while mobile deterministically renders `Sec.07` above `(Key Dates)`.
 - Matched the currently requested Key Dates reference across viewports by forcing both title parts into a two-line vertical layout.
+- Removed the Hero artwork group-level scaleX reveal; groups now remain at neutral width after loading while layer scaleY/scaleX reveal behavior stays unchanged.

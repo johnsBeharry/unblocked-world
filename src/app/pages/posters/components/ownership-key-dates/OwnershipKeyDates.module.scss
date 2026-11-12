@@ -42,9 +42,7 @@
   transform: translateX(-50%);
   color: #dc91a8;
   font-family: 'Inter Local', sans-serif;
-  font-size: vw(20);
   font-style: normal;
-  font-weight: 500;
   line-height: 1.02;
   letter-spacing: vw(-0.8);
   text-align: center;
@@ -79,8 +77,6 @@
 .number {
   position: absolute;
   left: 0;
-  font-size: vw(20);
-  font-weight: 500;
   letter-spacing: vw(-0.8);
 }
 
@@ -209,7 +205,6 @@
   .milestone,
   .date {
     top: vw(16);
-    font-size: vw(20);
     line-height: 1;
     letter-spacing: vw(-0.8);
   }

@@ -5,7 +5,7 @@
 .hasEntries .inner { padding-top: vw(173); }
 .inner h1, .inner p { margin: 0; }
 .inner h1 { font-size: vw(40); font-weight: 600; letter-spacing: vw(-1.6); line-height: 1.02; }
-.intro { margin-top: vw(47) !important; font-size: vw(20); font-weight: 500; letter-spacing: vw(-0.8); line-height: 1.02; }
+.intro { margin-top: vw(47) !important; letter-spacing: vw(-0.8); line-height: 1.02; }
 .addCard {
   display: grid;
   width: 100%;
@@ -20,7 +20,6 @@
   cursor: pointer;
   font: inherit;
   font-size: vw(16);
-  font-weight: 500;
   letter-spacing: vw(-0.64);
   line-height: 1.02;
 }
@@ -33,8 +32,8 @@
 .entry:first-child .thumbnail { object-position: center 49%; }
 .entryInfo { padding-top: 0; }
 .entryInfo h2, .entryInfo p { margin: 0; }
-.entryInfo h2 { font-size: vw(20); font-weight: 500; letter-spacing: vw(-0.8); line-height: 1.02; }
-.entryInfo p { margin-top: vw(8); font-size: vw(16); font-weight: 500; letter-spacing: vw(-0.64); line-height: 1.02; }
+.entryInfo h2 { letter-spacing: vw(-0.8); line-height: 1.02; }
+.entryInfo p { margin-top: vw(8); font-size: vw(16); letter-spacing: vw(-0.64); line-height: 1.02; }
 .entryInfo p span { margin-inline: vw(1.5); }
 .entryInfo button { border: 0; padding: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; }
 

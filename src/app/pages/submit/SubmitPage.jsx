@@ -9,6 +9,18 @@ import { ConsentPanel } from './components/ConsentPanel/ConsentPanel.jsx'
 import { SubmissionSuccessPanel } from './components/SubmissionSuccessPanel/SubmissionSuccessPanel.jsx'
 import { useSubmitLenis } from './hooks/useSubmitLenis.js'
 import { RevealText } from '../../../components/RevealText/RevealText.jsx'
+import {
+  createEntry,
+  deleteEntry,
+  getContest,
+  requestEmailCode,
+  submitEntries,
+  updateEntry,
+  updateProfile,
+  uploadAsset,
+  uploadPoster,
+  verifyEmailCode,
+} from './api/submitFormApi.js'
 
 const steps = [
   'Review the Ownership theme.',
@@ -70,6 +82,8 @@ export function SubmitPage({ initialStep = 0 }) {
       : []
   ))
   const [contactDraft, setContactDraft] = useState({ full_name: 'Andre' })
+  const [verification, setVerification] = useState({ status: 'idle', code: '', error: '' })
+  const [contest, setContest] = useState(null)
   const [posterDraft, setPosterDraft] = useState({ title: '', posterFiles: [], supportingFiles: [] })
   const [editingEntryId, setEditingEntryId] = useState(null)
   const [saveState, setSaveState] = useState('idle')
@@ -85,6 +99,51 @@ export function SubmitPage({ initialStep = 0 }) {
   const showConsent = step === 4
   const showSuccess = step === 5
 
+  function getErrorMessage(result, fallback) {
+    return result?.body?.error || result?.body?.message || fallback
+  }
+
+  function profileFromContact() {
+    return {
+      name: contactDraft.full_name?.trim(),
+      country: contactDraft.country?.trim(),
+      instagram: contactDraft.instagram?.trim(),
+      bio: [contactDraft.city, contactDraft.website, contactDraft.telephone].filter(Boolean).join(' | '),
+    }
+  }
+
+  async function handleContactNext() {
+    const email = contactDraft.email?.trim().toLowerCase()
+    if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+      setVerification({ status: 'idle', code: '', error: 'Please enter a valid email address.' })
+      return
+    }
+
+    setVerification(current => ({ ...current, status: current.status === 'code_sent' ? 'verifying' : 'sending', error: '' }))
+    try {
+      const contestResult = contest || await getContest()
+      if (!contestResult.ok) throw new Error(getErrorMessage(contestResult, 'Could not load the contest.'))
+      setContest(contestResult.body)
+
+      if (verification.status !== 'code_sent') {
+        const result = await requestEmailCode(email, profileFromContact(), contestResult.body.termsVersion)
+        if (result.status !== 202) throw new Error(getErrorMessage(result, 'Could not send the verification code.'))
+        setVerification({ status: 'code_sent', code: '', error: '' })
+        return
+      }
+
+      if (!/^\d{6}$/.test(verification.code)) throw new Error('Enter the 6-digit verification code.')
+      const result = await verifyEmailCode(email, verification.code)
+      if (!result.ok) throw new Error(getErrorMessage(result, 'That verification code is not valid.'))
+      const profileResult = await updateProfile(profileFromContact(), contestResult.body.termsVersion)
+      if (!profileResult.ok) throw new Error(getErrorMessage(profileResult, 'Could not save your profile.'))
+      setVerification({ status: 'verified', code: '', error: '' })
+      setStep(2)
+    } catch (error) {
+      setVerification(current => ({ ...current, status: current.status === 'verifying' ? 'code_sent' : 'idle', error: error.message }))
+    }
+  }
+
   async function handleSubmission() {
     if (!consent.original || !consent.terms || !consent.privacy) {
       setSubmissionError('Please accept all submission terms before submitting.')
@@ -97,21 +156,11 @@ export function SubmitPage({ initialStep = 0 }) {
 
     setSubmissionState('submitting')
     setSubmissionError('')
-    const formData = new FormData()
-    formData.set('title', posterDraft.title || posterDraft.posterFiles[0].name.replace(/\.[^/.]+$/, ''))
-    formData.set('artist_name', contactDraft.full_name || '')
-    formData.set('artist_email', contactDraft.email || '')
-    formData.set('country', contactDraft.country || '')
-    for (const field of ['concept', 'year_designed', 'designed_for', 'client_name', 'creation_method', 'materials_used', 'digital_programs', 'printing_method']) {
-      if (posterDraft[field]) formData.set(field, posterDraft[field])
-    }
-    formData.append('file', posterDraft.posterFiles[0])
-    for (const asset of posterDraft.supportingFiles || []) formData.append('assets', asset)
-
     try {
-      const response = await fetch('/api/submissions', { method: 'POST', body: formData })
-      const result = await response.json().catch(() => null)
-      if (!response.ok) throw new Error(result?.error || 'Submission failed')
+      if (!contest) throw new Error('Contest details are not available. Please return to contact information and try again.')
+      if (!posterEntries.length || posterEntries.some(entry => !entry.remoteId)) throw new Error('Save at least one poster draft before submitting.')
+      const result = await submitEntries(posterEntries.map(entry => entry.remoteId), contest.consentVersion)
+      if (!result.ok) throw new Error(getErrorMessage(result, 'Submission failed'))
       setSubmissionState('submitted')
       setStep(5)
     } catch (error) {
@@ -144,25 +193,58 @@ export function SubmitPage({ initialStep = 0 }) {
       return
     }
 
+    const posterFile = posterDraft.posterFiles[0]
+    if (posterFile) {
+      const extension = posterFile.name.split('.').pop()?.toLowerCase()
+      const staticFile = ['jpg', 'jpeg', 'png', 'pdf'].includes(extension)
+      const allowed = [...['jpg', 'jpeg', 'png', 'pdf'], 'gif', 'mp4']
+      if (!allowed.includes(extension) || posterFile.size > (staticFile ? 5 : 20) * 1024 * 1024) {
+        setSaveError(staticFile ? 'Poster must be JPG, PNG, or PDF under 5MB.' : 'Motion poster must be GIF or MP4 under 20MB.')
+        setSaveState('error')
+        return
+      }
+    }
+
     setSaveError('')
     setSaveState('saving')
-    await new Promise(resolve => requestAnimationFrame(resolve))
-    const nextEntries = posterDraft.posterFiles.map(file => ({
-      id: `${file.name}-${file.lastModified}`,
-      title,
-      src: URL.createObjectURL(file),
-      file,
-    }))
-    if (editingEntryId) {
-      setPosterEntries(current => current.map(entry => entry.id === editingEntryId
-        ? { ...entry, title, src: nextEntries[0]?.src || entry.src, file: nextEntries[0]?.file || entry.file }
-        : entry))
-    } else {
-      setPosterEntries(current => [...current, ...nextEntries])
+    try {
+      const fields = Object.fromEntries(['title', 'year_designed', 'designed_for', 'client_name', 'creation_method', 'materials_used', 'digital_programs', 'printing_method', 'concept']
+        .map(field => [field, field === 'title' ? title : posterDraft[field] || '']))
+      const remoteId = posterDraft.remoteId || crypto.randomUUID()
+      let result = posterDraft.remoteId
+        ? await updateEntry(remoteId, fields, posterDraft.version)
+        : await createEntry(remoteId, fields)
+      if (!result.ok) throw new Error(getErrorMessage(result, 'Could not save the poster draft.'))
+
+      const version = result.body.version || result.body.entry?.version
+      if (posterFile) {
+        result = await uploadPoster(remoteId, posterFile)
+        if (!result.ok) throw new Error(getErrorMessage(result, 'Could not upload the poster file.'))
+      }
+      for (const asset of posterDraft.supportingFiles || []) {
+        result = await uploadAsset(remoteId, asset)
+        if (!result.ok) throw new Error(getErrorMessage(result, 'Could not upload a supporting asset.'))
+      }
+
+      const previousEntry = posterEntries.find(entry => entry.id === editingEntryId)
+      const nextEntry = {
+        id: editingEntryId || remoteId,
+        remoteId,
+        version: result.body.version || version,
+        title,
+        src: posterFile ? URL.createObjectURL(posterFile) : previousEntry?.src,
+        file: posterFile || previousEntry?.file,
+      }
+      setPosterEntries(current => editingEntryId
+        ? current.map(entry => entry.id === editingEntryId ? { ...entry, ...nextEntry } : entry)
+        : [...current, nextEntry])
+      setSaveState('saved')
+      setEditingEntryId(null)
+      setStep(2)
+    } catch (error) {
+      setSaveState('error')
+      setSaveError(error.message)
     }
-    setSaveState('saved')
-    setEditingEntryId(null)
-    setStep(2)
   }
 
   return (
@@ -184,15 +266,19 @@ export function SubmitPage({ initialStep = 0 }) {
         </div>}
         <div ref={contentScrollRef} className={styles.contentScroll} data-lenis-prevent>
           {showContact
-            ? <ContactInformationPanel value={contactDraft} onChange={changes => setContactDraft(current => ({ ...current, ...changes }))} />
+            ? <ContactInformationPanel value={contactDraft} verification={verification} onVerificationChange={changes => setVerification(current => ({ ...current, ...changes }))} onChange={changes => setContactDraft(current => ({ ...current, ...changes }))} />
             : showPoster
               ? <PosterEntriesPanel entries={posterEntries} onEdit={entry => {
                   setEditingEntryId(entry.id)
-                  setPosterDraft({ title: entry.title, posterFiles: entry.file ? [entry.file] : [], supportingFiles: [] })
+                  setPosterDraft({ title: entry.title, remoteId: entry.remoteId, version: entry.version, posterFiles: entry.file ? [entry.file] : [], supportingFiles: [] })
                   setSaveError('')
                   setSaveState('idle')
                   setStep(3)
-                }} onRemove={id => setPosterEntries(current => current.filter(entry => entry.id !== id))} onAdd={() => {
+                }} onRemove={async id => {
+                  const entry = posterEntries.find(item => item.id === id)
+                  if (entry?.remoteId) await deleteEntry(entry.remoteId)
+                  setPosterEntries(current => current.filter(item => item.id !== id))
+                }} onAdd={() => {
                   setPosterDraft({ title: '', posterFiles: [], supportingFiles: [] })
                   setEditingEntryId(null)
                   setSaveError('')
@@ -230,7 +316,7 @@ export function SubmitPage({ initialStep = 0 }) {
                     <button className={styles.submitLink} type="button" onClick={() => setStep(1)}>Enter Submission (→)</button>
                 </div>}
         </div>
-        {showContact && <SubmitFooterNav nextLabel="Poster" onBack={() => setStep(0)} onNext={() => setStep(2)} />}
+        {showContact && <SubmitFooterNav nextLabel={verification.status === 'code_sent' ? 'Verify email' : 'Send code'} disabled={verification.status === 'sending' || verification.status === 'verifying'} onBack={() => setStep(0)} onNext={handleContactNext} />}
         {showPoster && <SubmitFooterNav nextLabel="Consent" nextLabelMobile="Poster" onBack={() => setStep(1)} onNext={() => setStep(4)} />}
         {showConsent && <SubmitFooterNav nextLabel={submissionState === 'submitting' ? 'Submitting' : 'Submit'} disabled={submissionState === 'submitting'} onBack={() => setStep(2)} onNext={handleSubmission} />}
       </section>

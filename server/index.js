@@ -10,12 +10,57 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const root = path.resolve(__dirname, '..')
 const isProd = process.env.NODE_ENV === 'production' || process.argv.includes('--prod')
 const app = express()
+const clientStaticRoot = path.resolve(root, 'client-static')
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 20 * 1024 * 1024, files: 4, fields: 20, fieldSize: 4000 },
 })
 
 let vite
+app.get('/form/test', (req, res) => res.sendFile(path.join(clientStaticRoot, 'index.html')))
+app.use('/form', express.static(clientStaticRoot, { index: false }))
+
+app.use('/api/forms', express.raw({ type: '*/*', limit: '25mb' }), async (req, res) => {
+  const upstreamOrigin = process.env.UNBLOCKED_FORM_API_ORIGIN || 'https://link.unblocked.world'
+  const upstreamPath = req.originalUrl.replace(/^\/api\/forms/, '') || '/'
+  const requestHeaders = {
+    origin: upstreamOrigin,
+    referer: `${upstreamOrigin}/form/test?v=posters`,
+  }
+
+  for (const name of ['accept', 'content-type', 'cookie', 'if-match', 'user-agent', 'x-file-name']) {
+    const value = req.get(name)
+    if (value) requestHeaders[name] = value
+  }
+
+  try {
+    const upstream = await fetch(`${upstreamOrigin}/api/forms${upstreamPath}`, {
+      method: req.method,
+      headers: requestHeaders,
+      body: ['GET', 'HEAD'].includes(req.method) ? undefined : req.body,
+    })
+
+    res.status(upstream.status)
+    upstream.headers.forEach((value, name) => {
+      if (!['content-encoding', 'content-length', 'set-cookie'].includes(name)) res.setHeader(name, value)
+    })
+
+    const cookies = typeof upstream.headers.getSetCookie === 'function'
+      ? upstream.headers.getSetCookie()
+      : []
+    if (cookies.length) {
+      const localCookies = req.hostname === 'localhost' || req.hostname === '127.0.0.1'
+      res.setHeader('set-cookie', cookies.map(cookie => localCookies
+        ? cookie.replace(/;\s*Domain=[^;]*/ig, '').replace(/;\s*Secure/ig, '').replace(/SameSite=None/ig, 'SameSite=Lax')
+        : cookie))
+    }
+
+    res.send(Buffer.from(await upstream.arrayBuffer()))
+  } catch (error) {
+    res.status(502).json({ error: 'form_api_unavailable', message: error.message })
+  }
+})
+
 if (!isProd) {
   vite = await createViteServer({ root, server: { middlewareMode: true }, appType: 'custom' })
   app.use(vite.middlewares)

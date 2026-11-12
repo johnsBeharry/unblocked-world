@@ -5,13 +5,12 @@ import { HomePage } from './pages/home/HomePage.jsx'
 import { PostersPage } from './pages/posters/PostersPage.jsx'
 import { GuidelinesPage } from './pages/guidelines/GuidelinesPage.jsx'
 import { SubmitPage } from './pages/submit/SubmitPage.jsx'
+import { ClientStaticPreviewPage } from './pages/client-static-preview/ClientStaticPreviewPage.jsx'
 import { SmoothScroll } from './components/smooth-scroll/SmoothScroll.jsx'
 
 export function App({ url = '/' }) {
   const path = url.split('?')[0].replace(/\/$/, '') || '/'
   useEffect(() => {
-    if (path === '/') return undefined
-
     document.body.dataset.pagePhase = 'content'
     return () => {
       delete document.body.dataset.pagePhase
@@ -22,6 +21,8 @@ export function App({ url = '/' }) {
     ? <PostersPage />
     : path === '/guidelines'
       ? <GuidelinesPage />
+      : path === '/client-static'
+        ? <ClientStaticPreviewPage />
       : path === '/submit'
         ? <SubmitPage />
         : path === '/submit/form/consent'
@@ -33,5 +34,7 @@ export function App({ url = '/' }) {
       ? HEADER_COLORS.guidelines
       : HEADER_COLORS.home
 
-  return <div className={styles.app} data-route={path}><SmoothScroll />{!path.startsWith('/submit') && <Header color={headerColor} />}<div>{page}</div></div>
+  const isStandalonePreview = path === '/client-static'
+
+  return <div className={styles.app} data-route={path}>{!isStandalonePreview && <SmoothScroll />}{!path.startsWith('/submit') && !isStandalonePreview && <Header color={headerColor} />}<div>{page}</div></div>
 }

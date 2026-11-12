@@ -163,7 +163,8 @@ export default function HiddenSystemsSection({ reveal = true }) {
           .slice()
           .reverse()
           .map(([y], index) => {
-            const point = curvePoints[leftCurve.length + rightCurve.length - 1 - index];
+            const point =
+              curvePoints[leftCurve.length + rightCurve.length - 1 - index];
             return `${Math.max(0, toClipPercent(point.x) - initialInset)}% ${y * 100}%`;
           }),
       ];

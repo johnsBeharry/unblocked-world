@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Submit — UNBLOCKED</title>
+  <meta name="description" content="Submit your poster to the UNBLOCKED poster contest.">
+  <meta name="theme-color" content="#2449ED">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="/pattern.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./form.css">
+</head>
+<body>
+  <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+  <!-- Shown while offline and while queued changes sync after reconnecting -->
+  <div class="offline-bar" id="offline-bar" role="status" aria-live="polite" hidden></div>
+
+  <main class="page form-page">
+    <div class="logo"><a href="/" aria-label="UNBLOCKED — all links"><img src="/logo.svg" alt="UNBLOCKED" width="964" height="129"></a></div>
+
+    <div class="form-grid">
+      <!-- Left column: home link + step list + who's signed in -->
+      <aside class="side">
+        <a class="text-btn" href="/" id="home-link">(←) Home</a>
+        <ol class="steps" id="steps" hidden>
+          <li><button type="button" data-go="contact"><span class="n">(01)</span> <span class="t" id="step1-label">Join</span></button></li>
+          <li><button type="button" data-go="posters"><span class="n">(02)</span> <span class="t">Posters</span></button></li>
+          <li><button type="button" data-go="submit"><span class="n">(03)</span> <span class="t">Submit</span></button></li>
+        </ol>
+        <p class="whoami" id="whoami" hidden>
+          <span class="who" id="whoami-email"></span>
+          <button type="button" class="link-btn" id="sign-out">(Sign out)</button>
+          <span class="reason" id="sign-out-reason" hidden></span>
+        </p>
+      </aside>
+
+      <div class="views">
+        <!-- Loading / unavailable -->
+        <section class="view" data-view="loading">
+          <p class="lede" id="loading-text">Loading…</p>
+        </section>
+
+        <!-- Intro -->
+        <section class="view" data-view="intro" hidden>
+          <h1 class="view-title">Submit to the Poster Contest</h1>
+          <p class="lede">Use this page to submit poster work responding to the theme: <strong data-theme>Ownership</strong>. Before submitting, review the process and guidelines below.</p>
+
+          <h2 class="sub">Submission Process</h2>
+          <ol class="numbered">
+            <li>Review the <span data-theme>Ownership</span> theme.</li>
+            <li>Create one or more original poster responses.</li>
+            <li>Prepare your files.</li>
+            <li>Join UNBLOCKED and confirm your email with a code we send you. No password needed.</li>
+            <li>Add your posters. Everything saves as you go.</li>
+            <li>Confirm the submission terms and submit.</li>
+            <li>Your posters will then be reviewed by the international jury.</li>
+          </ol>
+
+          <h2 class="sub">Rules and Eligibility</h2>
+          <ul class="squares">
+            <li>Open to individual and collaborative entries.</li>
+            <li id="rule-count">You can submit more than one poster, on the same day or later.</li>
+            <li>Submitted work must be original.</li>
+            <li>Accepted file types: JPG, PNG, PDF, GIF or MP4.</li>
+            <li>Static posters (JPG, PNG, PDF) must be under 5 MB.</li>
+            <li>Motion posters (GIF, MP4) must be under 20 MB.</li>
+            <li>Up to 3 supporting files per poster.</li>
+            <li>Use the file name format: YourName_PosterTitle.</li>
+            <li>Selected work may require additional formats later.</li>
+            <li id="rule-closes" hidden></li>
+          </ul>
+
+          <p class="closed-note" id="closed-note" hidden>Submissions for this contest are currently closed.</p>
+          <a class="apply" href="#contact" id="enter-btn">
+            <span class="big"><span id="enter-label">Enter</span> <span class="arrow" aria-hidden="true">→</span></span>
+            <span class="meta" id="enter-meta">Start your<br>submission</span>
+          </a>
+          <p class="list-note">We keep a record of every entry, including ones you withdraw, for the contest's records.</p>
+        </section>
+
+        <!-- (01) Account & Contact Information. The details are sent with the
+             code request and saved to the account once the email is verified. -->
+        <section class="view" data-view="contact" hidden>
+          <h1 class="view-title" id="contact-title">Join the collective</h1>
+
+          <div id="account-details">
+            <p class="lede" id="contact-lede"></p>
+            <p class="mode-switch" id="mode-switch">
+              <span id="mode-q">Already joined?</span>
+              <button type="button" class="link-btn strong" id="mode-toggle">Sign in</button>
+            </p>
+            <p class="error-note" id="signin-expired" hidden>That link has expired. We can send you a new code.</p>
+
+            <form class="fields" id="contact-form" novalidate>
+              <div class="field email-field" id="email-field">
+                <input id="c-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="200" required placeholder=" ">
+                <label for="c-email">Email Address</label>
+                <span class="verified-tag" id="verified-tag" hidden>Verified</span>
+              </div>
+              <p class="verify-actions" id="email-actions" hidden>
+                <button type="button" class="link-btn" id="change-email">(Change email)</button>
+                <span class="reason" id="change-email-reason" hidden></span>
+              </p>
+
+              <div class="profile-fields" id="profile-fields">
+                <div class="field">
+                  <input id="c-name" name="name" autocomplete="name" maxlength="200" required placeholder=" ">
+                  <label for="c-name">Full Name</label>
+                </div>
+                <div class="field select">
+                  <select id="c-country" name="country" autocomplete="country-name" required>
+                    <option value=""></option>
+                  </select>
+                  <label for="c-country">Country</label>
+                </div>
+                <div class="field">
+                  <input id="c-instagram" name="instagram" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="100" placeholder=" ">
+                  <label for="c-instagram">Instagram (Optional)</label>
+                </div>
+                <div class="field area">
+                  <textarea id="c-bio" name="bio" maxlength="1000" rows="4" placeholder=" "></textarea>
+                  <label for="c-bio">Short Bio (Optional)</label>
+                  <span class="count" id="bio-count">0 / 1000</span>
+                </div>
+
+                <div class="photo-field" id="photo-field">
+                  <button type="button" class="photo-preview" id="photo-preview" aria-label="Choose a profile photo">
+                    <span class="photo-empty" aria-hidden="true">+</span>
+                  </button>
+                  <div class="photo-meta">
+                    <h3>Profile Photo (Optional)</h3>
+                    <p class="hint">JPG, PNG or WebP. Seen by the UNBLOCKED team with your entries.</p>
+                    <p class="actions">
+                      <button type="button" class="link-btn" id="photo-pick">(Add a photo)</button>
+                      <button type="button" class="link-btn" id="photo-remove" hidden>(Remove)</button>
+                    </p>
+                    <p class="verify-msg" id="photo-msg" role="alert" hidden></p>
+                  </div>
+                  <input type="file" id="photo-input" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" hidden>
+                </div>
+
+                <div class="checks terms-check">
+                  <label class="check" id="terms-label"><input type="checkbox" id="c-terms"><span class="box-mark" aria-hidden="true"></span><span>I agree to the <a href="/terms" target="_blank" rel="noopener">Terms of Service</a> and <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a>.<span class="terms-when" id="terms-when"></span></span></label>
+                  <p class="verify-msg" id="terms-msg" role="alert" hidden>Agree to the Terms of Service and Privacy Policy to join.</p>
+                </div>
+              </div>
+            </form>
+
+            <p class="verify-msg" id="send-msg" role="alert" hidden></p>
+          </div>
+
+          <!-- After the code is sent: enter it to verify -->
+          <div class="verify" id="verify" hidden>
+            <p class="lede" id="verify-note"></p>
+            <div class="code-boxes" id="code-boxes" role="group" aria-label="6-digit code">
+              <input inputmode="numeric" autocomplete="one-time-code" aria-label="Digit 1">
+              <input inputmode="numeric" maxlength="1" aria-label="Digit 2">
+              <input inputmode="numeric" maxlength="1" aria-label="Digit 3">
+              <input inputmode="numeric" maxlength="1" aria-label="Digit 4">
+              <input inputmode="numeric" maxlength="1" aria-label="Digit 5">
+              <input inputmode="numeric" maxlength="1" aria-label="Digit 6">
+            </div>
+            <p class="verify-msg" id="verify-msg" role="alert" hidden></p>
+            <p class="verify-actions">
+              <button type="button" class="link-btn" id="resend-code">(Resend code)</button>
+              <span class="sep">·</span> <span class="muted">Or click the link in the email</span>
+              <span class="sep">·</span> <button type="button" class="link-btn" id="other-email">(Edit details)</button>
+            </p>
+          </div>
+          <p class="list-note" id="contact-note" hidden></p>
+        </section>
+
+        <!-- (02) Posters: the artist's home -->
+        <section class="view" data-view="posters" hidden>
+          <h1 class="view-title">Your Entries</h1>
+          <p class="lede" id="posters-meta"></p>
+          <button type="button" class="box add-box" id="add-poster">
+            <span>(+)&nbsp; Add a Poster</span>
+            <span class="hint">or drag files here</span>
+          </button>
+          <p class="closed-note" id="add-blocked" hidden></p>
+          <p class="error-note" id="posters-error" hidden></p>
+
+          <h2 class="sub group-title" id="drafts-title" hidden>In Progress</h2>
+          <ul class="poster-list" id="draft-list"></ul>
+
+          <h2 class="sub group-title" id="sent-title" hidden>Submitted</h2>
+          <ul class="poster-list" id="sent-list"></ul>
+
+          <details class="withdrawn-group" id="withdrawn-group" hidden>
+            <summary class="sub group-title" id="withdrawn-title">Withdrawn</summary>
+            <ul class="poster-list" id="withdrawn-list"></ul>
+          </details>
+
+          <p class="list-note" id="posters-empty" hidden>Nothing here yet. Add your first poster above. It saves as you go, so you can finish it later.</p>
+        </section>
+
+        <!-- Add / edit poster -->
+        <section class="view" data-view="edit" hidden>
+          <h1 class="view-title" id="edit-title">Add a Poster</h1>
+          <div class="conflict" id="edit-conflict" hidden></div>
+          <form class="fields" id="poster-form" novalidate>
+            <div class="field">
+              <input id="p-title" name="title" maxlength="200" required placeholder=" ">
+              <label for="p-title">Poster Title</label>
+            </div>
+            <div class="field select">
+              <select id="p-year" name="year_designed"><option value=""></option></select>
+              <label for="p-year">Year Designed</label>
+            </div>
+            <div class="field">
+              <input id="p-for" name="designed_for" maxlength="500" placeholder=" ">
+              <label for="p-for">Designed For</label>
+            </div>
+            <div class="field">
+              <input id="p-client" name="client_name" maxlength="500" placeholder=" ">
+              <label for="p-client">Client Name</label>
+            </div>
+            <div class="field">
+              <input id="p-method" name="creation_method" maxlength="500" placeholder=" ">
+              <label for="p-method">Creation Method</label>
+            </div>
+            <div class="field">
+              <input id="p-materials" name="materials_used" maxlength="500" placeholder=" ">
+              <label for="p-materials">Materials Used</label>
+            </div>
+            <div class="field">
+              <input id="p-programs" name="digital_programs" maxlength="500" placeholder=" ">
+              <label for="p-programs">Digital Programs Used</label>
+            </div>
+            <div class="field">
+              <input id="p-printing" name="printing_method" maxlength="500" placeholder=" ">
+              <label for="p-printing">Printing Method</label>
+            </div>
+            <div class="field area">
+              <textarea id="p-concept" name="concept" maxlength="4000" rows="6" placeholder=" "></textarea>
+              <label for="p-concept">Poster Concept</label>
+              <span class="count" id="concept-count">0 / 4000</span>
+            </div>
+          </form>
+
+          <div class="box drop" id="file-box" tabindex="0" role="button" aria-label="Poster file: browse or drop a file">
+            <h3>Poster File</h3>
+            <p class="hint">Static: JPG, PNG or PDF under 5 MB.<br>Motion: GIF or MP4 under 20 MB.</p>
+            <div class="file-slot" id="file-slot"></div>
+            <span class="browse">Browse or drop</span>
+            <input type="file" id="file-input" accept=".jpg,.jpeg,.png,.pdf,.gif,.mp4,image/jpeg,image/png,image/gif,application/pdf,video/mp4" hidden>
+          </div>
+
+          <div class="box drop" id="assets-box" tabindex="0" role="button" aria-label="Supporting assets: browse or drop up to 3 files">
+            <h3>Supporting Assets (Optional)</h3>
+            <p class="hint">Up to 3 files — process shots, details, mockups. Same file types and sizes as above.</p>
+            <ul class="asset-list" id="asset-list"></ul>
+            <span class="browse">Browse or drop</span>
+            <input type="file" id="assets-input" accept=".jpg,.jpeg,.png,.pdf,.gif,.mp4,image/jpeg,image/png,image/gif,application/pdf,video/mp4" multiple hidden>
+          </div>
+          <p class="error-note" id="edit-error" hidden></p>
+        </section>
+
+        <!-- (03) Submit -->
+        <section class="view" data-view="submit" hidden>
+          <h1 class="view-title">Submit</h1>
+          <p class="lede">Choose the posters to send to the jury, then confirm the terms. You can come back and submit more later.</p>
+          <ul class="pick-list" id="pick-list"></ul>
+          <div class="checks" id="consent-form">
+            <label class="check"><input type="checkbox" required><span class="box-mark" aria-hidden="true"></span><span>The submitted work is original and I hold the rights to it, or have permission from everyone who does.</span></label>
+            <label class="check"><input type="checkbox" required><span class="box-mark" aria-hidden="true"></span><span>UNBLOCKED may show my submitted work publicly in connection with the contest, with credit to me.</span></label>
+            <label class="check"><input type="checkbox" required><span class="box-mark" aria-hidden="true"></span><span>I have read the contest rules and eligibility.</span></label>
+          </div>
+          <div class="summary" id="summary"></div>
+          <p class="error-note" id="submit-error" hidden></p>
+          <ul class="upload-status" id="upload-status"></ul>
+        </section>
+
+        <!-- Done -->
+        <section class="view done" data-view="done" hidden>
+          <div class="done-art" aria-hidden="true"><img src="/pattern.svg" alt="" width="964" height="675"></div>
+          <h1 class="view-title">Entry Submitted</h1>
+          <p class="lede">Thank you for your submission. Your work has been received and is now under review. We’ve emailed you a receipt, and we’ll keep you informed as the selection progresses.</p>
+          <ul class="refs" id="refs"></ul>
+          <p class="done-actions">
+            <button type="button" class="text-btn" id="another-btn">(+) Submit another poster</button>
+            <button type="button" class="text-btn" id="view-entries-btn">View my entries (→)</button>
+          </p>
+        </section>
+      </div>
+    </div>
+
+    <!-- Bottom navigation (contact / posters / submit) -->
+    <nav class="form-nav" id="form-nav" hidden>
+      <button type="button" class="text-btn" id="nav-back">(←)</button>
+      <span class="nav-hint" id="nav-hint" hidden></span>
+      <button type="button" class="text-btn" id="nav-next">Next (→)</button>
+    </nav>
+
+    <!-- Poster editor bar. The middle shows the save status. -->
+    <nav class="form-nav edit-nav" id="edit-nav" hidden>
+      <button type="button" class="text-btn" id="edit-cancel">(←) All Entries</button>
+      <span class="nav-hint" id="edit-sync" aria-live="polite"></span>
+      <button type="button" class="text-btn" id="edit-save">Save &amp; Continue (→)</button>
+    </nav>
+  </main>
+
+  <div class="drop-overlay" id="drop-overlay" hidden>
+    <p id="drop-text">Drop to add</p>
+  </div>
+
+<script src="./app.js" defer></script>
+</body>
+</html>

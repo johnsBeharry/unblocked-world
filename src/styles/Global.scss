@@ -1,5 +1,12 @@
 @use './functions' as *;
 
+body {
+  font-weight: 500;
+  font-size: vw(20);
+  line-height: 102%;
+  letter-spacing: -4%;
+}
+
 @font-face { font-family:'Inter Local'; src:url('/fonts/Inter_1-english.woff2') format('woff2'); font-weight:400 700; font-style:normal; font-display:swap; }
 
 :root {

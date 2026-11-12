@@ -1,19 +1,18 @@
-import React from 'react'
-import '../../styles/Unblocked.generated.module.scss'
-import styles from './HomePage.module.scss'
-import { HeroSection } from './components/hero/HeroSection.jsx'
-import OwnershipSection from './components/ownership/OwnershipSection.jsx'
-import PermanenceSection from './components/permanence/PermanenceSection.jsx'
-import EnergySection from './components/energy/EnergySection.jsx'
-import PeersSection from './components/peers/PeersSection.jsx'
-import HiddenSystemsSection from './components/hidden-systems/HiddenSystemsSection.jsx'
-import { Footer } from '../../components/footer/Footer.jsx'
-import { PageLoader } from '../../components/page-loader/PageLoader.jsx'
+import React from "react";
+import "../../styles/Unblocked.generated.module.scss";
+import styles from "./HomePage.module.scss";
+import { HeroSection } from "./components/hero/HeroSection.jsx";
+import OwnershipSection from "./components/ownership/OwnershipSection.jsx";
+import PermanenceSection from "./components/permanence/PermanenceSection.jsx";
+import EnergySection from "./components/energy/EnergySection.jsx";
+import PeersSection from "./components/peers/PeersSection.jsx";
+import { ThemeSectionStack } from "./components/theme-section-stack/ThemeSectionStack.jsx";
+import HiddenSystemsSection from "./components/hidden-systems/HiddenSystemsSection.jsx";
+import { Footer } from "../../components/footer/Footer.jsx";
 
 export function HomePage() {
   return (
     <main>
-      <PageLoader />
       <div id="container">
         <div>
           <div>
@@ -22,10 +21,12 @@ export function HomePage() {
                 <div className={styles.canvas}>
                   <div className="relative size-full" data-name="index">
                     <HeroSection />
-                    <OwnershipSection />
-                    <PermanenceSection />
-                    <EnergySection />
-                    <PeersSection />
+                    <ThemeSectionStack>
+                      <PeersSection />
+                      <PermanenceSection />
+                      <EnergySection />
+                      <OwnershipSection />
+                    </ThemeSectionStack>
                     <HiddenSystemsSection />
                     <Footer />
                   </div>
@@ -36,5 +37,5 @@ export function HomePage() {
         </div>
       </div>
     </main>
-  )
+  );
 }

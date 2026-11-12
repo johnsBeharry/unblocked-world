@@ -24,8 +24,6 @@
   p {
     color: #101010;
     font-family: 'Inter Local', sans-serif;
-    font-size: vw(20);
-    font-weight: 500;
     line-height: 1.02;
     letter-spacing: vw(-0.8);
     white-space: nowrap;
@@ -151,9 +149,7 @@
   width: vw(335);
   color: #dc91a8;
   font-family: 'Inter Local', sans-serif;
-  font-size: vw(20);
   font-style: normal;
-  font-weight: 500;
   line-height: 1.02;
   letter-spacing: vw(-0.8);
 }
@@ -227,8 +223,6 @@
       margin: 0;
       color: #dc91a8;
       font-family: 'Inter Local', sans-serif;
-      font-weight: 500;
-      font-size: vw(20);
       line-height: 1;
       letter-spacing: vw(-0.8);
     }
@@ -295,7 +289,6 @@
       color: #dc91a8;
       font-family: 'Inter Local', sans-serif;
       font-size: calc(100vw * 20 / 375);
-      font-weight: 500;
       line-height: 1;
       letter-spacing: calc(100vw * -0.8 / 375);
     }

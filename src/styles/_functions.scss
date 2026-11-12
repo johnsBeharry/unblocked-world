@@ -41,3 +41,9 @@
     @content;
   }
 }
+
+@mixin wideScreen {
+  @media (min-aspect-ratio: 1900 / 945) {
+    @content;
+  }
+}

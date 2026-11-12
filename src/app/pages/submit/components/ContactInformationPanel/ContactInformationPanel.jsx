@@ -12,7 +12,7 @@ const fields = [
   { name: 'website', label: 'Website (Optional)' },
 ]
 
-export function ContactInformationPanel({ value = {}, onChange }) {
+export function ContactInformationPanel({ value = {}, onChange, verification = {}, onVerificationChange }) {
   return (
     <section className={styles.panel} aria-labelledby="contact-title">
       <div className={styles.inner}>
@@ -32,6 +32,25 @@ export function ContactInformationPanel({ value = {}, onChange }) {
               {field.select && <span className={styles.chevron} aria-hidden="true" />}
             </label>
           ))}
+          {verification.status !== 'idle' && (
+            <div className={styles.verification}>
+              <label className={styles.field}>
+                <span className={styles.fieldLabel}>Email Verification Code</span>
+                <input
+                  className={styles.fieldValue}
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
+                  maxLength={6}
+                  value={verification.code || ''}
+                  onChange={event => onVerificationChange?.({ code: event.target.value.replace(/\D/g, '').slice(0, 6) })}
+                  placeholder="6-digit code"
+                />
+              </label>
+              <p className={styles.verificationHint}>Enter the code sent to your email, then continue.</p>
+              {verification.error && <p className={styles.error} role="alert">{verification.error}</p>}
+            </div>
+          )}
+          {verification.status === 'idle' && verification.error && <p className={styles.error} role="alert">{verification.error}</p>}
         </form>
       </div>
     </section>

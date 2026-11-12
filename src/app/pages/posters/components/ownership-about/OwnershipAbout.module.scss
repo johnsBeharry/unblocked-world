@@ -19,7 +19,6 @@
     word-break: break-word;
     font-family: 'Inter Local', sans-serif;
     font-style: normal;
-    font-weight: 500;
     color: #dc91a8;
   }
 
@@ -48,8 +47,6 @@
       flex-shrink: 0;
       word-break: break-word;
       font-family: 'Inter Local', sans-serif;
-      font-size: vw(20);
-      font-weight: 500;
       line-height: 1.02;
       letter-spacing: vw(-0.8);
       color: #202020;
@@ -60,7 +57,6 @@
   .descriptionLeft,
   .descriptionRight {
     width: vw(335);
-    font-size: vw(20);
     line-height: 1.02;
     letter-spacing: vw(-0.8);
   }

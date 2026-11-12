@@ -1,5 +1,5 @@
-import React from 'react'
-import { ThemeSection } from '../theme-section/ThemeSection.jsx'
+import React from "react";
+import { ThemeSection } from "../theme-section/ThemeSection.jsx";
 
 export default function PeersSection() {
   return (
@@ -12,5 +12,5 @@ export default function PeersSection() {
       sideLabel="Hierarchies"
       barCount={17}
     />
-  )
+  );
 }

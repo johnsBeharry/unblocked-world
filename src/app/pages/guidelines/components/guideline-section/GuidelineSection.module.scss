@@ -9,7 +9,7 @@
 .withDescription > .ruledList { margin-top: vw(22.25); }
 .ordered { list-style: none; }
 .unordered { list-style-type: disc; }
-.submissionProcess { font-weight: 500; }
+.submissionProcess { }
 .submissionProcess > .ruledList { margin-top: vw(48.5); }
 .ruledListItem { position: relative; margin-left: vw(30); padding-top: vw(12.5); padding-bottom: 0; border-top: 0; }
 .ruledListItem::before { position: absolute; top: 0; left: vw(-30); width: calc(100% + vw(30)); border-top: vw(1) solid rgba(0, 0, 0, 0.25); content: ''; }

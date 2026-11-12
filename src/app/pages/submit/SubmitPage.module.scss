@@ -2,7 +2,7 @@
 
 .page { position: relative; display: grid; grid-template-columns: 40% 60%; width: 100vw; min-height: 100vh; overflow: hidden; background: #000; color: #dc91a8; font-family: 'Inter Local', sans-serif; }
 .identity { position: relative; min-height: 100vh; overflow: hidden; background: #dc91a8; color: #000; }
-.homeLink { position: absolute; top: vw(20); left: vw(20); z-index: 2; color: inherit; font-size: vw(20); font-weight: 500; letter-spacing: vw(-0.8); line-height: 1.02; text-decoration: none; }
+.homeLink { position: absolute; top: vw(20); left: vw(20); z-index: 2; color: inherit; letter-spacing: vw(-0.8); line-height: 1.02; text-decoration: none; }
 .artwork { position: absolute; top: 50%; left: vw(125); width: vw(326); height: vw(415.141); transform: translateY(-50%); background: #000; }
 .pattern { position: absolute; top: vw(89.65); left: vw(44.97); width: vw(237); height: vw(237); }
 .identity h1 { position: absolute; bottom: vw(33); left: vw(24); margin: 0; font-size: vw(112.123); font-weight: 600; letter-spacing: vw(-6.7274); line-height: 0.9; white-space: nowrap; }
@@ -13,15 +13,15 @@
 .content h2, .content h3, .content p, .content ol { margin: 0; }
 .content h2 { font-size: vw(40); font-weight: 600; letter-spacing: vw(-1.6); line-height: 1.02; }
 .titleMobile { display: none; }
-.intro { margin-top: vw(47) !important; font-size: vw(20); font-weight: 500; letter-spacing: vw(-0.8); line-height: 1.02; }
+.intro { margin-top: vw(47) !important; letter-spacing: vw(-0.8); line-height: 1.02; }
 .introMobile { display: none; }
-.content h3 { margin-top: vw(54) !important; font-size: vw(20); font-weight: 600; letter-spacing: vw(-0.8); line-height: 1.02; }
-.contentInner ol { margin-top: vw(24) !important; padding-left: vw(30); list-style: decimal; font-size: vw(20); font-weight: 500; letter-spacing: vw(-0.8); line-height: 1.6; }
+.content h3 { margin-top: vw(54) !important; font-weight: 600; letter-spacing: vw(-0.8); line-height: 1.02; }
+.contentInner ol { margin-top: vw(24) !important; padding-left: vw(30); list-style: decimal; letter-spacing: vw(-0.8); line-height: 1.6; }
 .contentInner li { padding-left: vw(1); }
-.contentInner ul { margin-top: vw(21) !important; padding-left: vw(30); list-style: disc; font-size: vw(16); font-weight: 500; letter-spacing: vw(-0.70); line-height: 1.62; }
-.submitLink { display: block; width: max-content; margin-top: vw(81); margin-left: vw(108); border: 0; padding: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; font-size: vw(20); font-weight: 500; letter-spacing: vw(-0.8); line-height: 1.02; text-decoration: none; }
+.contentInner ul { margin-top: vw(21) !important; padding-left: vw(30); list-style: disc; font-size: vw(16); letter-spacing: vw(-0.70); line-height: 1.62; }
+.submitLink { display: block; width: max-content; margin-top: vw(81); margin-left: vw(108); border: 0; padding: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; letter-spacing: vw(-0.8); line-height: 1.02; text-decoration: none; }
 .editorActions { position: absolute; top: vw(24); right: vw(24); left: vw(24); z-index: 3; display: flex; justify-content: space-between; color: #dc91a8; }
-.editorActions button { border: 0; padding: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; font-size: vw(20); font-weight: 500; letter-spacing: vw(-0.8); line-height: 1.02; }
+.editorActions button { border: 0; padding: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; letter-spacing: vw(-0.8); line-height: 1.02; }
 .editorActions button:disabled { cursor: wait; opacity: 0.5; }
 .editorStatus { position: absolute; top: vw(28); left: 50%; transform: translateX(-50%); color: inherit; font-size: vw(14); white-space: nowrap; }
 .editing .identity .homeLink { display: none; }

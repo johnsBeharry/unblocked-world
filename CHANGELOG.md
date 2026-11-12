@@ -2,6 +2,34 @@
 
 ## Unreleased
 
+- Restored the homepage animation trigger after removing the startup loader by setting `body[data-page-phase="content"]` from `App` for every route.
+- Changed FooterBrand mask reveal to start at 90% document scroll progress, giving the animation the final 10% of the scroll range before the page end.
+- Added a subtle 12px upward slide to the FooterBrand mask reveal, synchronized with its existing bottom-to-top stagger.
+- Disabled the homepage's initial `PageLoader` mount so the page renders directly without the startup loading overlay.
+- Changed FooterBrand masks from continuous scroll scrubbing to a bottom-of-document-only reveal: masks now scaleY and fade in from opacity 0 to 1 in a bottom-to-top stagger.
+- Tuned FooterBrand mask end scales from measured layout heights so the top mask resolves to approximately 2px and each lower mask grows progressively toward full height.
+- Added the requested global body typography baseline at the start of `Global.scss`: 500 weight, `vw(20)` size, 102% line-height, and -4% tracking, allowing component styles to override it later.
+- Smoothed FooterBrand mask scale updates with a short `power2.out` tween and overwrite behavior.
+- Normalized `BrandLogo` as a reusable decorative SVG with configurable color/class props while preserving its original 177×24 viewBox and path geometry.
+- Replaced the ThemeSection legacy pin/parallax offsets with full-block sticky stacking: each section keeps all of its content visible and calculates its sticky top from the measured header heights of the sections above it.
+- Added a GSAP ScrollTrigger stack coordinator that pins each full ThemeSection block until the stack wrapper's bottom reaches the browser bottom, then releases the whole stack to scroll upward together.
+- Changed the slow upward drift to transform each full pinned ThemeSection group as one unit, keeping its background, header, artwork, metadata, and copy aligned while the stack moves.
+- Matched each pin frame's background to its ThemeSection so the slow group drift cannot expose an empty wrapper gap beneath the moving block.
+- Moved the slow drift from the inner section to the pinned frame itself, keeping each ThemeSection at its fixed height while the complete block is pushed upward naturally with scroll.
+- Stabilized the shared upward drift by moving it into a coordinator ScrollTrigger that runs after the individual pin triggers, preventing competing frame transforms and scroll glitches.
+- Removed the competing pin-time drift transform and restored the stable header-offset pin behavior; the full stack now releases and moves upward naturally from the shared stack-bottom boundary.
+- Reworked ThemeSectionStack to use one GSAP master pin timeline: the rail drifts upward subtly, previous cards collapse to their measured headers, and following cards rise into measured header rows.
+- Restored independent full-block ThemeSection pins with measured header offsets and added only a small active-pin top drift, so the existing push/release behavior remains intact while every active block scrolls upward slowly.
+- Made pin drift local to each ScrollTrigger and extended it to 64px, eliminating the global-progress snap when a block first sticks while giving each pinned block a longer natural upward travel.
+- Applied the optional `ThemeSection` `backgroundColor` prop as an inline background style, allowing parent components to set the section background.
+- Re-ran Permanence visual QA at CSS viewport 1440×640 with DPR2, comparing the native 2880×1280 browser capture directly against the original mockup without resizing; corrected the index anchor back to the 20px CSS source position.
+- Matched the Permanence section copy to the supplied desktop mockup, including `Who owns your life?`, `Dependence`, the ownership description, desktop line breaks, and corrected shared copy/title/artwork positioning.
+- Updated the shared `ThemeSection` desktop layout to the supplied 1440×640 Permanence mockup: compact section height, header/meta alignment, 20px artwork origin, 432.5px artwork box, right-column copy flow, and Permanence artwork colors/geometry.
+- Kept the four homepage theme wrappers on the shared layout so Ownership, Permanence, Energy, and Peers receive the same desktop positioning rules.
+- Updated `client-static/index.html` to load the local `form.css` and `app.js` files from the same folder.
+- Added a `/client-static` preview route that mounts the local static form at `/form/test`; the local preview currently stops at loading because the form API proxy and referenced base assets are not present locally.
+- Consolidated local agent rules by removing duplicate and conflicting non-QA guidance while preserving the complete visual QA protocol.
+- Removed the implementation-specific Hero animation rule from local agent guidance so the rules remain global and reusable.
 - Moved Submit artwork's immutable geometry calculation into `SubmitArtwork.geometry.js` so the component file contains only rendering and animation logic.
 - Cleaned confirmed dead code and redundant constants in HeroArtwork, PageLoader, and SubmitArtwork without changing rendered geometry or animation behavior.
 - Ensured all Footer logo masks collapse to scaleY 0 at the exact document bottom so no horizontal mask seams remain when scrolling is fully exhausted.
@@ -292,6 +320,7 @@
 - Equalized the Jury base border opacity across all rows, including the first active row; only the separate highlight border carries the bright color.
 - Set the OwnershipJury highlight-border scale-out duration to 1.6s for visual review, while leaving the text opacity tween timing unchanged.
 - Isolated Jury text opacity from the row container so bright and base borders never inherit the text fade; border color and highlight scale now run as independent GSAP properties.
+- Added local coding rules requiring reuse-first inspection, efficient nested SCSS, focused logic, temporary JSON content storage, security-by-default practices, and removal of redundant or dead code.
 - Made the Jury highlight border appear instantly on row hover with no hover transition; the 1.6s scale animation remains limited to the GSAP reveal sequence.
 - Restored a visible 1.6s hover scale animation for the bright Jury border, expanding from right to left instead of appearing instantly.
 - Changed the Jury hover highlight to scale from left to right while preserving the reveal timeline's right-to-left direction.
@@ -312,3 +341,7 @@
 - Split the Key Dates title into responsive reveal parts so desktop renders one line while mobile deterministically renders `Sec.07` above `(Key Dates)`.
 - Matched the currently requested Key Dates reference across viewports by forcing both title parts into a two-line vertical layout.
 - Removed the Hero artwork group-level scaleX reveal; groups now remain at neutral width after loading while layer scaleY/scaleX reveal behavior stays unchanged.
+- Started migrating the React submit flow to the official form API contract: server-side same-origin proxy, email-code session, draft entry creation, separate file uploads, and final entry-ID submission.
+- Made contact-step validation errors visible before email verification begins.
+- Preserved an existing poster preview and file when editing metadata without selecting a replacement file.
+- Forwarded the official form origin and referer through the server proxy so Worker origin validation accepts local form requests.

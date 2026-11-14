@@ -1,6 +1,7 @@
 // Auto-converted from provided Tailwind export; all arbitrary values retained.
 // Global Figma top offset vw(6576) deliberately normalized for stacked React sections.
 .submit-work {
+<<<<<<< HEAD
   &,
   *,
   *::before,
@@ -81,6 +82,20 @@
   &__title-mobile {
     display: none;
   }
+=======
+  &, *, *::before, *::after { box-sizing: border-box; }
+  p { margin: 0; }
+  &__el-000 { position: relative; background-color: #2951fe; height: vw(800); overflow: clip; width: vw(1440); }
+  &__el-198 { word-break: break-word; position: absolute; font-family: 'Inter Local', sans-serif; font-weight: 600; line-height: 0; left: calc(50% - vw(5.5)); font-style: normal; color: #d9d9d9; font-size: vw(164); text-align: center; top: calc(50% - vw(55)); letter-spacing: vw(-9.84); white-space: nowrap; transform: translateX(-50%); }
+  &__el-199 { line-height: 0.83; margin-bottom: 0; }
+  &__el-200 { line-height: 0.83; }
+  &__el-201 { word-break: break-word; position: absolute; font-family: 'Inter Local', sans-serif; line-height: 1.02; left: calc(50% + vw(0.5)); font-style: normal; color: #d9d9d9; text-align: center; top: vw(20); letter-spacing: vw(-0.8); white-space: nowrap; transform: translateX(-50%); }
+  &__el-202 { word-break: break-word; position: absolute; font-family: 'Inter Local', sans-serif; line-height: 1.02; left: calc(50% + vw(0.5)); font-style: normal; color: #d9d9d9; text-align: center; top: vw(696); letter-spacing: vw(-0.8); white-space: nowrap; transform: translateX(-50%); }
+  &__mobile-art { display: none; }
+  &__top-label-tablet { display: none; }
+  &__top-label-mobile { display: none; }
+  &__title-mobile { display: none; }
+>>>>>>> origin/main
 
   &--poster &__el-201 {
     top: vw(40);

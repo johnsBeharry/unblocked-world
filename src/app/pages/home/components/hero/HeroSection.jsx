@@ -1,7 +1,10 @@
 import { RevealText } from "../../../../../components/RevealText/RevealText.jsx";
 import { BrandLogo } from "../../../../components/logo/index.jsx";
+<<<<<<< HEAD
 import { HeroArtwork } from "../../../../components/hero-artwork/HeroArtwork.jsx";
 import styles from "./HeroSection.module.scss";
+=======
+>>>>>>> origin/main
 
 export function HeroSection({ reveal = true }) {
   return (

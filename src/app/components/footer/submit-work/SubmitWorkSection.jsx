@@ -16,12 +16,6 @@ export default function SubmitWorkSection({
       className={`${styles["submit-work"]} ${styles["submit-work__el-000"]} ${variant === "poster" ? styles["submit-work--poster"] : ""}`}
       data-name="-"
     >
-      <RevealText
-        className={styles["submit-work__current-theme-label"]}
-        enabled={false}
-      >
-        Current Theme (Ownership)
-      </RevealText>
       <HeroArtwork
         className={styles["submit-work__el-001"]}
         disableScrollAnimation={true}
@@ -29,14 +23,18 @@ export default function SubmitWorkSection({
 
       <div className={styles["submit-work__el-198"]}>
         <span className={styles["submit-work__title-desktop"]}>
-          <p className={styles["submit-work__el-199"]}>{titleLines[0]}</p>
-          <p className={styles["submit-work__el-200"]}>{titleLines[1]}</p>
+          <RevealText as="p" className={styles["submit-work__el-199"]}>
+            {titleLines[0]}
+          </RevealText>
+          <RevealText as="p" className={styles["submit-work__el-200"]}>
+            {titleLines[1]}
+          </RevealText>
         </span>
         {variant === "poster" && (
           <span className={styles["submit-work__title-mobile"]}>
-            <p>Read the</p>
-            <p>Guidelines</p>
-            <p>(→)</p>
+            <RevealText as="p">Read the</RevealText>
+            <RevealText as="p">Guidelines</RevealText>
+            <RevealText as="p">(→)</RevealText>
           </span>
         )}
       </div>
@@ -45,32 +43,38 @@ export default function SubmitWorkSection({
           {variant === "poster" ? (
             <>
               <span className={styles["submit-work__top-label-desktop"]}>
-                {topLabel}
+                <RevealText as="span">{topLabel}</RevealText>
               </span>
               <span className={styles["submit-work__top-label-tablet"]}>
-                Before You Submit. Make sure your work is
-                <br />
-                original, prepared in the correct format, and
-                <br />
-                connected to the current theme.
+                <RevealText as="span">
+                  Before You Submit. Make sure your work is
+                  <br />
+                  original, prepared in the correct format, and
+                  <br />
+                  connected to the current theme.
+                </RevealText>
               </span>
               <span className={styles["submit-work__top-label-mobile"]}>
-                Before You Submit. Make sure your
-                <br />
-                work is original, prepared in the
-                <br />
-                correct format, and connected to the
-                <br />
-                current theme.
+                <RevealText as="span">
+                  Before You Submit. Make sure your
+                  <br />
+                  work is original, prepared in the
+                  <br />
+                  correct format, and connected to the
+                  <br />
+                  current theme.
+                </RevealText>
               </span>
             </>
           ) : (
-            topLabel
+            <RevealText as="span">{topLabel}</RevealText>
           )}
         </p>
       )}
       {showBottomLabel && bottomLabel && (
-        <p className={styles["submit-work__el-202"]}>{bottomLabel}</p>
+        <RevealText as="p" className={styles["submit-work__el-202"]}>
+          {bottomLabel}
+        </RevealText>
       )}
     </section>
   );

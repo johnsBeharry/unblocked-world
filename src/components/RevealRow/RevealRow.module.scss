@@ -1,0 +1,107 @@
+// Layout defaults use :where() (zero specificity) so consumer classes passed
+// via className/contentClassName/lineClassName always win regardless of
+// stylesheet order.
+:where(.row) {
+  position: relative;
+}
+
+// Stationary mask; extended insets keep ascenders/descenders and underlines whole.
+// flow-root: child margins (e.g. an input's margin-top) stay inside the
+// wrappers instead of collapsing through them, so the content box (and any
+// absolutely positioned child) keeps the row's origin while it slides.
+:where(.mask) {
+  display: flow-root;
+  height: 100%;
+}
+
+.mask {
+  clip-path: inset(-0.4em -0.2em);
+}
+
+:where(.content) {
+  display: flow-root;
+  height: 100%;
+}
+
+.content {
+  opacity: 0;
+  transform: translate3d(0, calc(100% + 0.5em), 0);
+  backface-visibility: hidden;
+}
+
+// Row rule; consumers set its position, width and color via lineClassName.
+:where(.line) {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  border-top: vw(1) solid currentColor;
+}
+
+.line {
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+// Native list rows: the marker moves onto the sliding content (the content
+// becomes the list item and keeps the list's counter), so number/bullet and
+// label reveal together. The mask extends left to keep the outside marker.
+:where(li.row) {
+  display: block;
+}
+
+:where(li.row) > :where(.mask) > :where(.content) {
+  display: list-item;
+}
+
+li.row > .mask {
+  clip-path: inset(-0.4em -0.2em -0.4em -3em);
+}
+
+:global(body[data-page-phase='content']) .active {
+  .content {
+    animation:
+      reveal-row 1s cubic-bezier(0.16, 1, 0.3, 1) var(--row-delay) both,
+      reveal-row-fade 0.5s linear var(--row-delay) both;
+  }
+
+  // Rule draws together with the label, on the same curve.
+  .line {
+    animation: reveal-row-line 1s cubic-bezier(0.16, 1, 0.3, 1)
+      var(--row-delay) both;
+  }
+}
+
+@keyframes reveal-row {
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes reveal-row-fade {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes reveal-row-line {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .content,
+  :global(body[data-page-phase='content']) .active .content {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .line,
+  :global(body[data-page-phase='content']) .active .line {
+    animation: none;
+    transform: none;
+  }
+}

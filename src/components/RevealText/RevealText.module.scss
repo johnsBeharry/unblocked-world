@@ -1,5 +1,9 @@
+// Persistent hidden measurer inside the root: full root width and inherited
+// typography, but zero height so it never affects layout or paints.
 .measure {
   display: block;
+  height: 0;
+  overflow: hidden;
   visibility: hidden;
   word-break: normal;
   overflow-wrap: normal;
@@ -17,35 +21,72 @@
   display: block;
 }
 
+// Line mask. clip-path with negative insets extends the mask beyond the line box
+// in em, so glyph ascenders/descenders and negative-tracking overhang are never
+// cut, even when the inherited line-height is tighter than the font size.
+// It does not affect layout (unlike padding/margin compensation).
 .line {
   display: block;
   white-space: inherit;
-  overflow: hidden;
-  padding-bottom: 0.2em;
-  margin-bottom: -0.2em;
+  clip-path: inset(-0.4em -0.2em -0.4em -0.2em);
 }
 
+// Hidden start sits a full line plus 1.1em below, which always clears the
+// extended mask regardless of line-height.
+// Lines are already split by measurement (re-measured on resize/font load), so
+// a rendered line must never re-wrap: sub-pixel width differences would
+// otherwise push its last word onto an orphan line.
 .lineInner {
   display: inline-block;
-  white-space: inherit;
-  transform: translateY(var(--reveal-distance, 120%));
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate3d(0, var(--reveal-distance, calc(100% + 1.1em)), 0);
   animation-delay: var(--reveal-delay);
-  will-change: transform;
+  animation-fill-mode: both;
+  backface-visibility: hidden;
 }
 
+// Long expo-out slide with a short fade: the staggered line-mask reveal
+// used on award-winning editorial sites.
 :global(body[data-page-phase='content']) .active .lineInner {
-  animation: reveal-text var(--reveal-duration, 1s) var(--reveal-ease, cubic-bezier(0.165, 0.84, 0.44, 1)) forwards;
+  will-change: transform, opacity;
+  animation-name: reveal-text, reveal-fade;
+  animation-duration: var(--reveal-duration, 1.2s), calc(var(--reveal-duration, 1.2s) * 0.5);
+  animation-timing-function: var(--reveal-ease, cubic-bezier(0.16, 1, 0.3, 1)), linear;
+}
+
+// fade={false}: pure mask slide, no opacity.
+.noFade .lineInner {
+  opacity: 1;
+}
+
+:global(body[data-page-phase='content']) .active.noFade .lineInner {
+  animation-name: reveal-text;
 }
 
 @keyframes reveal-text {
   to {
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
   }
+}
+
+@keyframes reveal-fade {
+  to {
+    opacity: 1;
+  }
+}
+
+// Re-split lines after the reveal already ran: show them settled, no replay.
+:global(body) .root.instant .lineInner {
+  animation: none;
+  opacity: 1;
+  transform: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .lineInner {
     animation: none;
+    opacity: 1;
     transform: none;
   }
 }

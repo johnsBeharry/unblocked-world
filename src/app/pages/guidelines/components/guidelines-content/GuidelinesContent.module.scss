@@ -11,8 +11,9 @@
 .stickyNavigation { position: sticky; top: vw(20); }
 .label { display: inline-block; padding: 0 vw(4); background: var(--ink); color: var(--paper); line-height: 1; }
 .navigation { display: flex; flex-direction: column; gap: vw(4); margin-top: vw(60); }
-.navLink { width: fit-content; text-decoration: none; &:focus-visible { outline: vw(2) solid var(--ink); outline-offset: vw(4); } }
-.navLinkActive { color: var(--ink); }.navLinkInactive { color: rgba(39, 39, 39, 0.5); }
+.navLink { position: relative; width: fit-content; color: rgba(39, 39, 39, 0.5); text-decoration: none; &:focus-visible { outline: vw(2) solid var(--ink); outline-offset: vw(4); } }
+// Dark copy of the label, revealed left-to-right by its section scroll progress.
+.navFill { position: absolute; inset: 0; color: var(--ink); white-space: nowrap; pointer-events: none; clip-path: inset(-0.3em calc((1 - var(--nav-progress, 0)) * 100%) -0.3em 0); }
 .contentSections { min-width: 0; > * + * { margin-top: vw(100); } > .guideSection:nth-child(2) { margin-top: vw(99.5); } > .guideSection:nth-child(3) { margin-top: vw(100.5); } > .guideSection:nth-child(4) { margin-top: vw(100.5); } > .guideSection:nth-child(5) { margin-top: vw(83.6); } > .guideSection:nth-child(6) { margin-top: vw(100.5); } > .guideSection:nth-child(7) { margin-top: vw(121.8); } }
 .guideSection { scroll-margin-top: vw(20); > * + * { margin-top: vw(40); } }
 :global(#judging-process) > article:first-of-type { margin-top: vw(35.5); }
@@ -25,7 +26,10 @@
 .progressOverview { padding-top: vw(11.5); border-top: vw(1) solid rgba(0, 0, 0, 0.25); }
 .progressOverview > p { margin-top: vw(6); }
 .faqSection { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: vw(20); margin-top: vw(199.4); padding-top: vw(20); border-top: vw(1) solid var(--ink); }.faqSection h2 { margin: 0; }.faqSection > h2 .label { }.faqContent { min-width: 0; > * + * { margin-top: vw(20); } }
-.prizesList { margin: 0; padding: 0 0 0 vw(10); list-style: none; > * + * { margin-top: vw(12.5); } }.prizeItem { display: flex; gap: vw(12); padding-top: vw(10); border-top: vw(1) solid rgba(0, 0, 0, 0.25); }
+.prizesList { margin: 0; padding: 0 0 0 vw(10); list-style: none; > * + * { margin-top: vw(12.5); } }.prizeItem { padding-top: vw(10); border-top: vw(1) solid transparent; }
+// Transparent border keeps the row geometry; RevealRow draws the visible rule over it.
+.prizeContent { display: flex; gap: vw(12); }
+.prizeRule { top: vw(-1); color: rgba(0, 0, 0, 0.25); }
 
 @include tablet-portrait {
   .page {

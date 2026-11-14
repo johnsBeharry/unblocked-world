@@ -11,10 +11,12 @@
 .submissionProcess { }
 .submissionProcess > .ruledList { margin-top: vw(48.5); }
 .ruledListItem { position: relative; margin-left: vw(30); padding-top: vw(12.5); padding-bottom: 0; border-top: 0; }
-.ruledListItem::before { position: absolute; top: 0; left: vw(-30); width: calc(100% + vw(30)); border-top: vw(1) solid rgba(0, 0, 0, 0.25); content: ''; }
-.submissionProcess .ruledListItem::before { top: vw(-8.5); }
-.orderedItem { display: flex; align-items: flex-start; margin-left: vw(5); gap: vw(12); }
-.orderedItem::before { left: vw(-5); width: calc(100% + vw(5)); }
+// Row rule drawn by RevealRow after the row text.
+.rule { top: 0; left: vw(-30); width: calc(100% + vw(30)); color: rgba(0, 0, 0, 0.25); }
+.submissionProcess .rule { top: vw(-8.5); }
+.orderedItem { margin-left: vw(5); }
+.orderedContent { display: flex; align-items: flex-start; gap: vw(12); }
+.orderedItem .rule { left: vw(-5); width: calc(100% + vw(5)); }
 .listMarker { min-width: 0; flex: 0 0 vw(13.5); }
 .orderedItem:nth-child(n + 10) .listMarker { min-width: 0; flex-basis: auto; }
 .orderedItem:nth-child(10) .listMarker { flex-basis: vw(27.1); }
@@ -32,7 +34,7 @@
   .section > .ruledList { margin-top: vw(40.25); }
   .withDescription > .ruledList { margin-top: vw(22.25); }
   .submissionProcess > .ruledList { margin-top: vw(48.5); }
-  .submissionProcess .ruledListItem::before { top: vw(-17); }
+  .submissionProcess .rule { top: vw(-17); }
   .ordered > * + * { margin-top: vw(38.2); }
   .ordered .ruledListItem { padding-top: vw(9); }
   .ruledListItem { margin-left: vw(60); }

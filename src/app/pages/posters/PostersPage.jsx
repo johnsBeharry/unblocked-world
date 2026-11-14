@@ -9,6 +9,8 @@ import { OwnershipProgramme } from "./components/ownership-programme/OwnershipPr
 import { OwnershipJury } from "./components/ownership-jury/OwnershipJury.jsx";
 import { OwnershipHowItWorks } from "./components/ownership-how-it-works/OwnershipHowItWorks.jsx";
 import { OwnershipKeyDates } from "./components/ownership-key-dates/OwnershipKeyDates.jsx";
+import { OwnershipComingNext } from "./components/ownership-coming-next/OwnershipComingNext.jsx";
+import { Footer } from "../../components/footer/Footer.jsx";
 
 export function PostersPage() {
   return (
@@ -24,6 +26,8 @@ export function PostersPage() {
           <OwnershipJury />
           <OwnershipHowItWorks />
           <OwnershipKeyDates />
+          <OwnershipComingNext />
+          <Footer color="#d9d9d9" ctaVariant="poster" />
         </div>
       </div>
     </main>

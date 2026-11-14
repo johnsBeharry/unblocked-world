@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from './ContactInformationPanel.module.scss'
 import { RevealText } from '../../../../../components/RevealText/RevealText.jsx'
+import { RevealRow } from '../../../../../components/RevealRow/RevealRow.jsx'
 
 const fields = [
   { name: 'full_name', label: 'Full Name', value: 'Andre' },
@@ -20,7 +21,7 @@ export function ContactInformationPanel({ value = {}, onChange, verification = {
         <RevealText as="p" className={styles.intro}>Provide your contact details so we can communicate important updates regarding your submission.</RevealText>
         <form className={styles.form}>
           {fields.map(field => (
-            <label className={styles.field} key={field.label}>
+            <RevealRow as="label" className={styles.field} contentClassName={styles.fieldContent} lineClassName={styles.fieldRule} key={field.label}>
               {field.value
                 ? <>
                     <span className={styles.fieldLabel}>{field.label}</span>
@@ -30,11 +31,11 @@ export function ContactInformationPanel({ value = {}, onChange, verification = {
                   ? <select className={`${styles.emptyField} ${styles.selectField}`} aria-label={field.label} value={value[field.name] || ''} onChange={event => onChange?.({ [field.name]: event.target.value })}><option value="">{field.label}</option></select>
                   : <input className={styles.emptyField} aria-label={field.label} placeholder={field.label} value={value[field.name] || ''} onChange={event => onChange?.({ [field.name]: event.target.value })} />}
               {field.select && <span className={styles.chevron} aria-hidden="true" />}
-            </label>
+            </RevealRow>
           ))}
           {verification.status !== 'idle' && (
             <div className={styles.verification}>
-              <label className={styles.field}>
+              <RevealRow as="label" className={styles.field} contentClassName={styles.fieldContent} lineClassName={styles.fieldRule}>
                 <span className={styles.fieldLabel}>Email Verification Code</span>
                 <input
                   className={styles.fieldValue}
@@ -45,8 +46,8 @@ export function ContactInformationPanel({ value = {}, onChange, verification = {
                   onChange={event => onVerificationChange?.({ code: event.target.value.replace(/\D/g, '').slice(0, 6) })}
                   placeholder="6-digit code"
                 />
-              </label>
-              <p className={styles.verificationHint}>Enter the code sent to your email, then continue.</p>
+              </RevealRow>
+              <RevealText as="p" className={styles.verificationHint}>Enter the code sent to your email, then continue.</RevealText>
               {verification.error && <p className={styles.error} role="alert">{verification.error}</p>}
             </div>
           )}

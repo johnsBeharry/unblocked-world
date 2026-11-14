@@ -1,5 +1,9 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "./RevealText.module.scss";
+
+gsap.registerPlugin(ScrollTrigger);
 
 function getWords(value) {
   return value.split(/\n/).flatMap((line, lineIndex, lines) => {
@@ -72,6 +76,7 @@ export function RevealText({
   ease = "cubic-bezier(0.16, 1, 0.3, 1)",
   play = null,
   fade = true,
+  highlight = false,
   ...props
 }) {
   const measureRef = useRef(null);
@@ -162,6 +167,23 @@ export function RevealText({
     return () => observer.disconnect();
   }, [enabled, lines, play]);
 
+  // highlight: words brighten one by one with scroll (0.2 → 1 opacity), driven
+  // by a single scrubbed progress value; the per-word curve lives in CSS.
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!enabled || !highlight || !lines || !root) return undefined;
+    const setProgress = (self) =>
+      root.style.setProperty("--reveal-progress", self.progress.toFixed(4));
+    const trigger = ScrollTrigger.create({
+      trigger: root,
+      start: "top 80%",
+      end: "bottom 55%",
+      onUpdate: setProgress,
+      onRefresh: setProgress,
+    });
+    return () => trigger.kill();
+  }, [enabled, highlight, lines]);
+
   if (!enabled)
     return (
       <Tag {...props} className={className}>
@@ -169,11 +191,25 @@ export function RevealText({
       </Tag>
     );
 
+  // Running word index across lines, for the highlight wave.
+  const wordOffsets = (lines ?? []).reduce(
+    (offsets, line, index) => [
+      ...offsets,
+      index ? offsets[index - 1] + lines[index - 1].length : 0,
+    ],
+    [],
+  );
+
   return (
     <Tag
       {...props}
       ref={rootRef}
-      className={`${className} ${styles.root} ${hasEntered ? styles.active : ""} ${instant ? styles.instant : ""} ${fade ? "" : styles.noFade}`}
+      className={`${className} ${styles.root} ${hasEntered ? styles.active : ""} ${instant ? styles.instant : ""} ${fade ? "" : styles.noFade} ${highlight ? styles.highlight : ""}`}
+      style={
+        highlight
+          ? { ...props.style, "--reveal-words": lines?.flat().length ?? 0 }
+          : props.style
+      }
     >
       {lines?.map((line, index) => (
         <span
@@ -190,7 +226,16 @@ export function RevealText({
           <span className={styles.lineInner} data-page-reveal-line-inner="true">
             {line.map((word, wordIndex) => (
               <React.Fragment key={`${word.text}-${wordIndex}`}>
-                <span>{word.text}</span>
+                <span
+                  className={highlight ? styles.word : undefined}
+                  style={
+                    highlight
+                      ? { "--word-index": wordOffsets[index] + wordIndex }
+                      : undefined
+                  }
+                >
+                  {word.text}
+                </span>
                 {word.spaceAfter || (wordIndex < line.length - 1 ? " " : null)}
               </React.Fragment>
             ))}

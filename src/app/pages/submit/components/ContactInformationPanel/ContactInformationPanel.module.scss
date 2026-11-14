@@ -4,7 +4,7 @@
 .inner h1, .inner p { margin: 0; }
 .inner h1 { font-size: vw(40); font-weight: 600; letter-spacing: vw(-1.6); line-height: 1.02; }
 .intro { margin-top: vw(47) !important; letter-spacing: vw(-0.8); line-height: 1.02; }
-.form { margin-top: vw(34); }
+.form { position: relative; margin-top: vw(34); }
 // Transparent border keeps the field geometry; RevealRow draws the visible rule
 // over it together with the label. Padding lives on the revealed content so the
 // chevron keeps the same containing box while the content slides.
@@ -15,14 +15,17 @@
 .field:first-child .fieldContent { gap: vw(5); }
 .field:first-child .fieldLabel { margin-top: vw(-1); }
 .field:first-child .fieldValue { margin-top: vw(0.5); }
-.fieldLabel, .field input, .field select { font: inherit; letter-spacing: vw(-0.8); line-height: 1.02; }
+.fieldLabel, .field input, .field .selectField { font: inherit; letter-spacing: vw(-0.8); line-height: 1.02; }
 .fieldLabel { margin-top: vw(10); color: rgb(220 145 168 / 0.4); font-size: vw(14); letter-spacing: vw(-0.56); }
 .fieldValue { margin-top: vw(-5); }
 .emptyField { margin-top: vw(41); }
-.field input, .field select { width: 100%; border: 0; outline: 0; padding: 0; background: transparent; color: #dc91a8; }
-.selectField { color: rgb(220 145 168 / 0.4) !important; }
+.field input, .field .selectField { width: 100%; border: 0; outline: 0; padding: 0; background: transparent; color: #dc91a8; }
+// Dropdown trigger (SelectPanel button): placeholder colour until a value is chosen.
+.field .selectField { cursor: pointer; text-align: left; }
+.field .selectField:disabled { cursor: not-allowed; }
+.field .selectEmpty { color: rgb(220 145 168 / 0.4); }
 .field input::placeholder { color: rgb(220 145 168 / 0.4); opacity: 1; }
-.field select { appearance: none; height: auto; margin-top: vw(41); line-height: 1.02; }
+.field .selectField { appearance: none; height: auto; margin-top: vw(41); line-height: 1.02; }
 .chevron { position: absolute; right: vw(16); bottom: vw(25); width: vw(16); height: vw(16); border-right: vw(2) solid #dc91a8; border-bottom: vw(2) solid #dc91a8; transform: rotate(45deg); }
 .verification { display: grid; gap: vw(8); margin-top: vw(24); }
 .verificationHint { margin: 0; font-size: vw(14); }
@@ -59,7 +62,7 @@
   .fieldLabel { margin-top: 0; }
   .fieldValue { margin-top: 0; }
   .emptyField { margin-top: vw(39); }
-  .field select { height: auto; margin-top: vw(41); line-height: 1.02; }
+  .field .selectField { height: auto; margin-top: vw(41); line-height: 1.02; }
   .chevron { right: vw(8); bottom: vw(18); width: vw(8); height: vw(8); border-right-width: vw(1); border-bottom-width: vw(1); }
 }
 
@@ -98,8 +101,8 @@
   .fieldLabel { margin-top: 0; }
   .fieldValue { margin-top: 0; }
   .fieldLabel { font-size: vw(28); letter-spacing: vw(-1.12); }
-  .field input, .field select { font-size: vw(40); letter-spacing: vw(-1.6); }
+  .field input, .field .selectField { font-size: vw(40); letter-spacing: vw(-1.6); }
   .emptyField { margin-top: vw(79); }
-  .field select { height: auto; margin-top: vw(41); line-height: 1.02; }
+  .field .selectField { height: auto; margin-top: vw(41); line-height: 1.02; }
   .chevron { right: vw(8); bottom: vw(18); width: vw(8); height: vw(8); border-right-width: vw(1); border-bottom-width: vw(1); }
 }

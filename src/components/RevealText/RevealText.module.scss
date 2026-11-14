@@ -64,6 +64,21 @@
   animation-name: reveal-text;
 }
 
+// highlight: scroll-linked word fill. Each word brightens over a soft
+// window of --highlight-span words as --reveal-progress goes 0 → 1.
+.highlight .word {
+  --highlight-span: 4;
+
+  opacity: clamp(
+    0.2,
+    calc(
+      (var(--reveal-progress, 0) * (var(--reveal-words) + var(--highlight-span)) - var(--word-index)) /
+        var(--highlight-span)
+    ),
+    1
+  );
+}
+
 @keyframes reveal-text {
   to {
     transform: translate3d(0, 0, 0);
@@ -84,6 +99,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .highlight .word {
+    opacity: 1;
+  }
+
   .lineInner {
     animation: none;
     opacity: 1;

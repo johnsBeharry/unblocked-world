@@ -5,7 +5,7 @@ import { RevealText } from '../../../../../components/RevealText/RevealText.jsx'
 export function OwnershipProgramme() {
   return (
     <section className={styles.section} data-name="programme" aria-label="About the Programme">
-      <RevealText as="p" className={styles.intro}>
+      <RevealText highlight as="p" className={styles.intro}>
         A creative programme bringing together diverse perspectives through participation, visual expression, public dialogue, and the collective exploration of ideas that shape culture and society.
       </RevealText>
 

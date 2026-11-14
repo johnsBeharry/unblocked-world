@@ -2,6 +2,27 @@
 
 ## Unreleased
 
+- Submit dropdown panel is now pinned to the bottom of the browser, slides up smoothly when opened and fades out when closed. The City field stays locked until a country is chosen.
+- Submit form dropdowns (Country, City, Year Designed) now open a full option panel over the form, with the field title, a Close link and ruled option rows. Country lists all countries, City lists the main cities of the chosen country (with an "Other" option to type a city), and Year Designed lists 2026 to 1950. City data is based on GeoNames (CC BY 4.0).
+- Header now slides up out of view while scrolling down and slides back in as soon as you scroll up (always visible at the top of the page and when tabbing into it).
+- Header links are now vertically centred in the 60px header bar at every screen size.
+- Header now has a 60px background bar that takes the colour of the section underneath while scrolling, and its text switches to dark on light sections (and back to the light colour on dark ones) for better contrast.
+- Homepage hero artwork now grows with scroll until it is 36px from the left and right edges of the screen, reaching that size while it is still in view (by the time its top meets the top of the screen), and never grows past it.
+- Submit Work section artwork now uses the same intro as the homepage hero: when it scrolls into view, the lines fade in thin and then thicken from the bottom rows upward (replaces the centre-out opening).
+- Homepage artwork intro: the lines now start thickening while they are still fading in, removing the visible pause between the two steps.
+- Homepage intro (about 3s): the UNBLOCKED logo drops into place from above, the header links drop in one after another, the artwork appears as thin lines that thicken from the bottom rows upward, and the two links under the logo rise in.
+- Submit page artwork now starts when the black column is 80% of the way in and opens with a quick ease-out, so it reads as pushed by the column instead of waiting for it.
+- Submit page artwork now enters after the black column: the box is revealed by a mask from right to left, then the bars grow from flat to full size while fading in.
+- Submit page artwork: all bars now fade in together as thin hairlines while the box scales in, then thicken together to their full size.
+- Submit page artwork bars now unfold from flat lines to their full thickness (top/bottom arms vertically, left/right arms horizontally) instead of growing in length.
+- Submit page artwork entry: the black box scales in from its centre, then the plus pattern opens from the middle, with the bars nearest the centre growing first on all four arms and the thinnest outer bars last.
+- Submit page entry: on desktop the page now arrives fully pink (matching the page curtain), the black column slides in from the right, and the content text reveals as it settles. On tablet portrait and mobile, where the page is all black, the page curtain is black and the text reveals directly.
+- Page curtain now appears only when moving to another page (20 strips closing from bottom to top in the next page's colour); pages load without a curtain so their content animations are fully visible.
+- Loader and page transitions are now a strip curtain in each page's hero colour (same strip concept as the footer logo reveal): on load it opens from top to bottom, and when moving to another page it closes from bottom to top in that page's colour before navigating. Replaces the earlier counter panel.
+- Submit Work section artwork now responds to scrolling: as the section enters, its bars open from the centre outward (thin line first, then the thicker layers, centre rows first), following the scroll in both directions, and the artwork drifts slightly slower than the title for depth. Mobile and tablet portrait, which show no artwork here, are unchanged.
+- New intro loader: on the first visit of a session a dark panel shows the UNBLOCKED label, a counter that follows real loading progress and a thin bar that fills, then folds away and lifts like a curtain while the page reveals underneath. Later page loads only lift the curtain, and internal links lower it before navigating, so moving between pages feels continuous with no white flash. Reduced-motion users skip it.
+- Smoother scroll-linked motion: smooth scrolling and scroll-driven animations now run on the same animation clock, so scrubbed effects follow the scroll without lag.
+- Large statements (Guidelines introduction; Posters About, Creative Exploration and Programme intros) now brighten word by word as they are scrolled through.
 - Fixed a 1px blue line that could appear between stacked theme sections on the homepage while scrolling: each stacked section now has a hidden 2px backfill in its own color that only shows where the browser would otherwise leave a sub-pixel seam.
 - Hidden Systems headline intro refined to match the mockup: pure mask slides with no fade on a `power2.inOut` curve, and the bracketed artwork row now moves as one unit — the brackets and the blue box (with the artwork kept inside it) travel the same distance and are cut at the same line.
 - Hidden Systems: removed the scroll-tracked bracket and artwork assembly; the brackets, blue box and artwork now sit in their final layout and only take part in the headline intro. Bracket spacing now always uses the loaded font (it could previously settle slightly too wide when measured before the font loaded).

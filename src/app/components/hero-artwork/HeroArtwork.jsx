@@ -1,8 +1,23 @@
 import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import React from "react";
 import styles from "./HeroArtwork.module.scss";
+import { addArtworkIntro, prepareArtworkIntro } from "./artworkIntro.js";
 
-const ARTWORK_PARALLAX_FACTOR = 0.12;
+gsap.registerPlugin(ScrollTrigger);
+
+// Scroll: the artwork moves up faster than the page (parallax) and grows until
+// it is SIDE_SPACE from the viewport edges:
+// max scale = (viewport width − 2 × SIDE_SPACE) / artwork width (≈1.87 at
+// 1440, ≈1.90 at 1920). It reaches max scale exactly when its top reaches the
+// viewport top, so the full size is seen while it is still on screen.
+const ARTWORK_PARALLAX_Y = 0.4;
+const ARTWORK_SIDE_SPACE = 36;
+// scrollReveal: same artwork intro as the home hero (hairlines fade in, then
+// thicken bottom → top), played once when the artwork enters the viewport,
+// plus a slow drift while the section scrolls past.
+const REVEAL_START = "top 85%";
+const PARALLAX_PERCENT = 6;
 
 function HeroDesktopArtwork() {
   return (
@@ -36,7 +51,10 @@ function TabletArtwork() {
   );
 }
 
-export function HeroArtwork({ disableScrollAnimation = false }) {
+export function HeroArtwork({
+  disableScrollAnimation = false,
+  scrollReveal = false,
+}) {
   const artworkRef = React.useRef(null);
 
   React.useEffect(() => {
@@ -60,17 +78,71 @@ export function HeroArtwork({ disableScrollAnimation = false }) {
 
     if (disableScrollAnimation) {
       resetArtwork();
-      return undefined;
+      if (!scrollReveal) return undefined;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+        return undefined;
+
+      const intro = prepareArtworkIntro(artworkRoot);
+      const reveal = addArtworkIntro(
+        gsap.timeline({ paused: true, onComplete: intro.settle }),
+        intro,
+      );
+      const revealTrigger = ScrollTrigger.create({
+        trigger: artworkRoot,
+        start: REVEAL_START,
+        once: true,
+        onEnter: () => reveal.play(),
+      });
+
+      // Depth: the artwork drifts slower than the copy above it.
+      const drift = gsap.fromTo(
+        artworkRoot,
+        { yPercent: PARALLAX_PERCENT },
+        {
+          yPercent: -PARALLAX_PERCENT,
+          ease: "none",
+          scrollTrigger: {
+            trigger: artworkRoot,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        },
+      );
+
+      return () => {
+        revealTrigger.kill();
+        reveal.kill();
+        intro.settle();
+        drift.scrollTrigger?.kill();
+        drift.kill();
+        resetArtwork();
+      };
     }
 
     let frame = 0;
+    let neutralTop = 0;
+    // Measure in neutral geometry (no transforms) to avoid feedback.
+    const measureNeutral = () => {
+      gsap.set(artworkWrappers, { y: 0, scale: 1 });
+      neutralTop = artworkRoot.getBoundingClientRect().top + window.scrollY;
+    };
     const updateLayerScale = () => {
       frame = 0;
       if (document.body.dataset.pagePhase !== "content") return;
 
+      const maxScale = Math.max(
+        1,
+        (window.innerWidth - 2 * ARTWORK_SIDE_SPACE) /
+          (artworkRoot.offsetWidth || 1),
+      );
+      // Scroll at which the artwork top meets the viewport top (it travels
+      // 1 + PARALLAX_Y px per scrolled px).
+      const growDistance = Math.max(1, neutralTop / (1 + ARTWORK_PARALLAX_Y));
+      const progress = Math.min(1, Math.max(0, window.scrollY / growDistance));
       gsap.set(artworkWrappers, {
-        y: window.scrollY * -0.4,
-        scale: 1 + window.scrollY * ARTWORK_PARALLAX_FACTOR * 0.004,
+        y: window.scrollY * -ARTWORK_PARALLAX_Y,
+        scale: 1 + (maxScale - 1) * progress,
       });
       gsap.killTweensOf(groups);
       gsap.set(groups, { scaleY: 1 });
@@ -93,7 +165,10 @@ export function HeroArtwork({ disableScrollAnimation = false }) {
     const onScroll = () => {
       if (!frame) frame = requestAnimationFrame(updateLayerScale);
     };
-    const onResize = () => updateLayerScale();
+    const onResize = () => {
+      measureNeutral();
+      updateLayerScale();
+    };
     const phaseObserver = new MutationObserver(updateLayerScale);
 
     phaseObserver.observe(document.body, {
@@ -102,6 +177,7 @@ export function HeroArtwork({ disableScrollAnimation = false }) {
     });
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onResize);
+    measureNeutral();
     updateLayerScale();
 
     return () => {
@@ -110,7 +186,7 @@ export function HeroArtwork({ disableScrollAnimation = false }) {
       window.removeEventListener("resize", onResize);
       if (frame) cancelAnimationFrame(frame);
     };
-  }, [disableScrollAnimation]);
+  }, [disableScrollAnimation, scrollReveal]);
 
   return (
     <>

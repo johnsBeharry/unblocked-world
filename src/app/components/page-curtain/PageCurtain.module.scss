@@ -1,0 +1,25 @@
+// Full-screen strip curtain, shown only while leaving a page.
+// --strips is set from PageCurtain (STRIPS).
+.curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  pointer-events: auto;
+}
+
+.hidden {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+// Each strip overlaps the next by 1px so no seam shows while closed.
+.strip {
+  position: absolute;
+  top: calc(100% / var(--strips) * var(--strip-index));
+  left: 0;
+  width: 100%;
+  height: calc(100% / var(--strips) + 1px);
+  background: var(--curtain-color, #2850fe);
+  transform: scaleY(0);
+  transform-origin: 50% 100%;
+}

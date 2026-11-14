@@ -1,7 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from './ContactInformationPanel.module.scss'
 import { RevealText } from '../../../../../components/RevealText/RevealText.jsx'
 import { RevealRow } from '../../../../../components/RevealRow/RevealRow.jsx'
+import { SelectPanel } from '../SelectPanel/SelectPanel.jsx'
+import countries from '../../data/countries.json'
+import citiesByCountry from '../../data/cities.json'
+
+const OTHER_CITY = 'Other (type your city)'
 
 const fields = [
   { name: 'full_name', label: 'Full Name', value: 'Andre' },
@@ -14,6 +19,31 @@ const fields = [
 ]
 
 export function ContactInformationPanel({ value = {}, onChange, verification = {}, onVerificationChange }) {
+  // City list follows the selected country; "Other" switches to free text.
+  const [typedCity, setTypedCity] = useState(false)
+  const cities = value.country ? [...(citiesByCountry[value.country] ?? []), OTHER_CITY] : []
+  const selectProps = {
+    country: {
+      options: countries,
+      onChange: country => {
+        setTypedCity(false)
+        const keepCity = (citiesByCountry[country] ?? []).includes(value.city)
+        onChange?.({ country, ...(keepCity ? {} : { city: '' }) })
+      },
+    },
+    city: {
+      options: cities,
+      // Locked until a country is chosen (its list depends on it).
+      disabled: !value.country,
+      onChange: city => {
+        if (city === OTHER_CITY) {
+          setTypedCity(true)
+          onChange?.({ city: '' })
+        } else onChange?.({ city })
+      },
+    },
+  }
+
   return (
     <section className={styles.panel} aria-labelledby="contact-title">
       <div className={styles.inner}>
@@ -27,10 +57,12 @@ export function ContactInformationPanel({ value = {}, onChange, verification = {
                     <span className={styles.fieldLabel}>{field.label}</span>
                     <input className={styles.fieldValue} aria-label={field.label} value={value[field.name] ?? field.value} onChange={event => onChange?.({ [field.name]: event.target.value })} />
                   </>
-                : field.select
-                  ? <select className={`${styles.emptyField} ${styles.selectField}`} aria-label={field.label} value={value[field.name] || ''} onChange={event => onChange?.({ [field.name]: event.target.value })}><option value="">{field.label}</option></select>
+                : field.select && !(field.name === 'city' && typedCity)
+                  ? <SelectPanel label={field.label} value={value[field.name] || ''} triggerClassName={`${styles.emptyField} ${styles.selectField}`} emptyClassName={styles.selectEmpty} {...selectProps[field.name]} />
+                  : field.name === 'city' && typedCity
+                  ? <input className={styles.emptyField} aria-label={field.label} placeholder="Type your city" autoFocus value={value.city || ''} onChange={event => onChange?.({ city: event.target.value })} />
                   : <input className={styles.emptyField} aria-label={field.label} placeholder={field.label} value={value[field.name] || ''} onChange={event => onChange?.({ [field.name]: event.target.value })} />}
-              {field.select && <span className={styles.chevron} aria-hidden="true" />}
+              {field.select && !(field.name === 'city' && typedCity) && <span className={styles.chevron} aria-hidden="true" />}
             </RevealRow>
           ))}
           {verification.status !== 'idle' && (

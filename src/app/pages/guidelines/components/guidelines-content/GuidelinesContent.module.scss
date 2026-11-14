@@ -26,10 +26,14 @@
 .progressOverview { padding-top: vw(11.5); border-top: vw(1) solid rgba(0, 0, 0, 0.25); }
 .progressOverview > p { margin-top: vw(6); }
 .faqSection { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: vw(20); margin-top: vw(199.4); padding-top: vw(20); border-top: vw(1) solid var(--ink); }.faqSection h2 { margin: 0; }.faqSection > h2 .label { }.faqContent { min-width: 0; > * + * { margin-top: vw(20); } }
+<<<<<<< HEAD
 .prizesList { margin: 0; padding: 0 0 0 vw(10); list-style: none; > * + * { margin-top: vw(12.5); } }.prizeItem { padding-top: vw(10); border-top: vw(1) solid transparent; }
 // Transparent border keeps the row geometry; RevealRow draws the visible rule over it.
 .prizeContent { display: flex; gap: vw(12); }
 .prizeRule { top: vw(-1); color: rgba(0, 0, 0, 0.25); }
+=======
+.prizesList { margin: 0; padding: 0 0 0 vw(10); list-style: none; > * + * { margin-top: vw(12.5); } }.prizeItem { display: flex; gap: vw(12); padding-top: vw(10); border-top: vw(1) solid rgba(0, 0, 0, 0.25); }
+>>>>>>> origin/main
 
 @include tablet-portrait {
   .page {

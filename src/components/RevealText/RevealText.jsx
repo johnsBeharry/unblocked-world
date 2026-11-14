@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+=======
+import React, { useEffect, useRef, useState } from "react";
+>>>>>>> origin/main
 import styles from "./RevealText.module.scss";
 
 function getWords(value) {
@@ -47,6 +51,7 @@ function getLineGroups(words) {
 
   if (current.length) groups.push(current);
   return groups;
+<<<<<<< HEAD
 }
 
 function sameLines(a, b) {
@@ -58,6 +63,8 @@ function sameLines(a, b) {
         line.every((word, wordIndex) => word.text === b[index][wordIndex].text),
     )
   );
+=======
+>>>>>>> origin/main
 }
 
 export function RevealText({
@@ -66,16 +73,24 @@ export function RevealText({
   className = "",
   enabled = true,
   delay = 0,
+<<<<<<< HEAD
   stagger = 0.1,
   duration = 1.2,
   distance = "calc(100% + 1.1em)",
   ease = "cubic-bezier(0.16, 1, 0.3, 1)",
+=======
+  stagger = 0.08,
+  duration = 1,
+  distance = "120%",
+  ease = "cubic-bezier(0.165, 0.84, 0.44, 1)",
+>>>>>>> origin/main
   play = null,
   fade = true,
   ...props
 }) {
   const measureRef = useRef(null);
   const rootRef = useRef(null);
+<<<<<<< HEAD
   const linesRef = useRef(null);
   const enteredRef = useRef(false);
   const [lines, setLines] = useState(null);
@@ -85,12 +100,18 @@ export function RevealText({
   const [instant, setInstant] = useState(false);
   const text = getText(children);
   enteredRef.current = hasEntered;
+=======
+  const [lines, setLines] = useState(null);
+  const [hasEntered, setHasEntered] = useState(false);
+  const text = getText(children);
+>>>>>>> origin/main
 
   // The hidden measurer stays mounted inside the root, so lines are re-measured
   // whenever the font finishes loading or the container width changes. The
   // first measure runs before paint, so the measurer is never visible.
   useLayoutEffect(() => {
     if (!enabled) {
+<<<<<<< HEAD
       linesRef.current = null;
       setLines(null);
       setHasEntered(false);
@@ -133,14 +154,48 @@ export function RevealText({
       cancelAnimationFrame(frame);
       resizeObserver.disconnect();
       document.fonts?.removeEventListener?.("loadingdone", schedule);
+=======
+      setLines(null);
+      setHasEntered(false);
+      return undefined;
+    }
+
+    let frame;
+    const measure = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        if (!measureRef.current) return;
+        const words = [
+          ...measureRef.current.querySelectorAll(
+            "[data-reveal-word], [data-reveal-break]",
+          ),
+        ];
+        setLines(getLineGroups(words));
+      });
+    };
+
+    measure();
+    window.addEventListener("resize", measure);
+    document.fonts?.ready.then(() => {
+      measure();
+      requestAnimationFrame(measure);
+      requestAnimationFrame(() => requestAnimationFrame(measure));
+    });
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("resize", measure);
+>>>>>>> origin/main
     };
   }, [enabled, text]);
 
   useEffect(() => {
+<<<<<<< HEAD
     if (!hasEntered) setInstant(false);
   }, [hasEntered]);
 
   useEffect(() => {
+=======
+>>>>>>> origin/main
     if (!enabled || !lines || !rootRef.current) return undefined;
 
     if (play !== null) {
@@ -163,19 +218,56 @@ export function RevealText({
   }, [enabled, lines, play]);
 
   if (!enabled)
+<<<<<<< HEAD
+    return (
+      <Tag {...props} className={className}>
+        {children}
+      </Tag>
+    );
+=======
     return (
       <Tag {...props} className={className}>
         {children}
       </Tag>
     );
 
+  if (!lines) {
+    return (
+      <Tag
+        {...props}
+        ref={measureRef}
+        className={`${className} ${styles.measure}`}
+      >
+        {getWords(text).map((word, index, words) => (
+          <React.Fragment key={`${word.type}-${word.text ?? ""}-${index}`}>
+            {word.type === "break" ? (
+              <span data-reveal-break="true" />
+            ) : (
+              <span data-reveal-word="true" data-space-after={word.spaceAfter}>
+                {word.text}
+              </span>
+            )}
+            {word.type === "word" && word.spaceAfter}
+          </React.Fragment>
+        ))}
+      </Tag>
+    );
+  }
+>>>>>>> origin/main
+
   return (
     <Tag
       {...props}
       ref={rootRef}
+<<<<<<< HEAD
       className={`${className} ${styles.root} ${hasEntered ? styles.active : ""} ${instant ? styles.instant : ""} ${fade ? "" : styles.noFade}`}
     >
       {lines?.map((line, index) => (
+=======
+      className={`${className} ${styles.root} ${hasEntered ? styles.active : ""}`}
+    >
+      {lines.map((line, index) => (
+>>>>>>> origin/main
         <span
           className={styles.line}
           data-page-reveal-line="true"

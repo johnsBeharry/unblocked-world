@@ -26,9 +26,191 @@ export default function HiddenSystemsSection({ reveal = true }) {
       },
       { rootMargin: "0px 0px -25% 0px", threshold: 0 },
     );
+<<<<<<< HEAD
     observer.observe(headline);
     return () => observer.disconnect();
   }, [reveal]);
+=======
+    const bracketRight = section?.querySelector(
+      "[data-hidden-systems-bracket-right]",
+    );
+    const canvas = section?.querySelector("[data-hidden-systems-canvas]");
+    const artwork = Array.from(
+      section?.querySelectorAll("[data-hidden-systems-art]") ?? [],
+    );
+    if (
+      !section ||
+      !bracket ||
+      !bracketLeft ||
+      !bracketRight ||
+      !canvas ||
+      artwork.length === 0
+    )
+      return undefined;
+
+    // Preserve the original static `(          )` layout as the animation
+    // target. Measuring the real glyphs avoids inventing a bracket offset.
+    const measure = document.createElement("p");
+    measure.className = styles["hidden-systems__node-004"];
+    measure.textContent = "(          )";
+    measure.style.visibility = "hidden";
+    measure.style.pointerEvents = "none";
+    measure.style.whiteSpace = "pre";
+    measure.style.transform = "translate(-50%, 0)";
+    section.appendChild(measure);
+    const measureText = measure.firstChild;
+    const leftRange = document.createRange();
+    leftRange.setStart(measureText, 0);
+    leftRange.setEnd(measureText, 1);
+    const rightRange = document.createRange();
+    rightRange.setStart(measureText, measureText.length - 1);
+    rightRange.setEnd(measureText, measureText.length);
+    const leftTarget = leftRange.getBoundingClientRect();
+    const rightTarget = rightRange.getBoundingClientRect();
+    measure.remove();
+    bracketLeft.style.transform = "translateX(-50%)";
+    bracketRight.style.transform = "translateX(-50%)";
+    const neutralLeft = bracketLeft.getBoundingClientRect();
+    const neutralRight = bracketRight.getBoundingClientRect();
+    const neutralCenter = (neutralLeft.left + neutralRight.right) / 2;
+    const bracketTargetOffset = {
+      left: leftTarget.left + leftTarget.width / 2 - neutralCenter,
+      right: rightTarget.left + rightTarget.width / 2 - neutralCenter,
+    };
+
+    // Remove a previous frame's inline geometry before measuring the source
+    // mockup width; otherwise HMR/re-initialization would reuse an oversized
+    // dynamic canvas as the new maximum.
+    canvas.style.removeProperty("width");
+    canvas.style.removeProperty("left");
+    canvas.style.removeProperty("clip-path");
+    const anchor = canvas.getBoundingClientRect();
+    const anchorCenter = anchor.top + anchor.height / 2;
+    const mockupCanvasWidth = anchor.width;
+    const offsets = artwork.map((item) => {
+      const rect = item.getBoundingClientRect();
+      return anchorCenter - (rect.top + rect.height / 2);
+    });
+    // Normalized red-point samples from the bracket inner curves. The x
+    // values are resolved against each bracket's live rect on every frame.
+    const leftCurve = [
+      [0, 0.64],
+      [0.25, 0.34],
+      [0.5, 0.24],
+      [0.75, 0.34],
+      [1, 0.64],
+    ];
+    const rightCurve = [
+      [0, 0.36],
+      [0.25, 0.66],
+      [0.5, 0.76],
+      [0.75, 0.66],
+      [1, 0.36],
+    ];
+    // Keep the initial frame open like the supplied reference instead of
+    // stacking both glyphs at the exact same center point. The 0.76 factor is
+    // the measured opening span between the two initial middle curve points.
+    const initialBracketOffset = neutralLeft.width * 0.76;
+    const setClipPath = gsap.quickSetter(canvas, "clipPath");
+    let frame = 0;
+
+    const update = () => {
+      frame = 0;
+      const rect = canvas.getBoundingClientRect();
+      const triggerStart = window.innerHeight * 0.85;
+      const triggerEnd = window.innerHeight * 0.4;
+      const progress = Math.min(
+        1,
+        Math.max(0, (triggerStart - rect.top) / (triggerStart - triggerEnd)),
+      );
+
+      section.style.setProperty("--hidden-systems-art-progress", `${progress}`);
+      const bracketProgress = progress;
+      const openingOffset = initialBracketOffset * (1 - bracketProgress);
+      bracketLeft.style.transform = `translateX(calc(-50% + ${-openingOffset + bracketTargetOffset.left * bracketProgress}px))`;
+      bracketRight.style.transform = `translateX(calc(-50% + ${openingOffset + bracketTargetOffset.right * bracketProgress}px))`;
+      const leftRect = bracketLeft.getBoundingClientRect();
+      const rightRect = bracketRight.getBoundingClientRect();
+      const sectionRect = section.getBoundingClientRect();
+      // Keep the live curve intact, but prevent its extrema from escaping the
+      // actual outer bracket bounds by a sub-pixel antialiasing seam.
+      const edgeSafety = Math.max(0.5, 1 / window.devicePixelRatio);
+      const curvePoints = [
+        ...leftCurve.map(([y, x]) => ({
+          x: Math.max(
+            leftRect.left + edgeSafety,
+            leftRect.left + leftRect.width * x,
+          ),
+          y,
+        })),
+        ...rightCurve.map(([y, x]) => ({
+          x: Math.min(
+            rightRect.right - edgeSafety,
+            rightRect.left + rightRect.width * x,
+          ),
+          y,
+        })),
+      ];
+      const curveLeft = Math.min(...curvePoints.map(({ x }) => x));
+      const curveRight = Math.max(...curvePoints.map(({ x }) => x));
+      const curveCenter = (curveLeft + curveRight) / 2;
+      const canvasWidth = Math.min(
+        mockupCanvasWidth,
+        Math.max(1, curveRight - curveLeft),
+      );
+      canvas.style.width = `${canvasWidth}px`;
+      canvas.style.left = `${curveCenter - sectionRect.left}px`;
+      const canvasRect = canvas.getBoundingClientRect();
+      const toClipPercent = (x) =>
+        Math.min(
+          100,
+          Math.max(0, ((x - canvasRect.left) / canvasRect.width) * 100),
+        );
+      // Start from the supplied narrow oval boundary. As the canvas opens,
+      // the left edge transitions to the straight mockup box edge; the right
+      // edge remains on its live curve until the final width is reached.
+      const boxLeft = toClipPercent(curvePoints[0].x);
+      const initialInset = Math.max(0, 2 * (1 - Math.min(progress * 4, 1)));
+      const clipPoints = [
+        ...leftCurve.map(([y], index) => {
+          const curveX = toClipPercent(curvePoints[index].x);
+          const x = curveX + (boxLeft - curveX) * progress;
+          return `${Math.min(100, x + initialInset)}% ${y * 100}%`;
+        }),
+        ...rightCurve
+          .slice()
+          .reverse()
+          .map(([y], index) => {
+            const point =
+              curvePoints[leftCurve.length + rightCurve.length - 1 - index];
+            return `${Math.max(0, toClipPercent(point.x) - initialInset)}% ${y * 100}%`;
+          }),
+      ];
+      setClipPath(`polygon(${clipPoints.join(", ")})`);
+
+      artwork.forEach((item, index) => {
+        item.style.setProperty(
+          "--hidden-systems-art-y",
+          `${offsets[index] * (1 - progress)}px`,
+        );
+      });
+    };
+
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", update);
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", update);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, []);
+>>>>>>> origin/main
 
   return (
     <div

@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+@use "../../../../../styles/functions" as *;
+>>>>>>> origin/main
 
 // Shared layout for the four homepage theme sections.
 // Values are based on the supplied Permanence section; colors and artwork
@@ -20,6 +24,7 @@
 
   @include wideScreen {
     height: 100vh;
+<<<<<<< HEAD
   }
 
   &__content {
@@ -41,6 +46,29 @@
     letter-spacing: -6%;
   }
 
+=======
+  }
+
+  &__content {
+    display: flex;
+    height: inherit;
+    color: #101010;
+    position: relative;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  &__pin-header {
+    display: grid;
+    grid-template-columns: 1fr vw(690);
+    padding: vw(20) vw(20) 0;
+    font-weight: 600;
+    font-size: vw(100);
+    line-height: 90%;
+    letter-spacing: -6%;
+  }
+
+>>>>>>> origin/main
   &__pin-meta {
     bottom: 0;
     width: 100%;
@@ -86,6 +114,7 @@
       }
     }
   }
+<<<<<<< HEAD
 }
 
 .frame {
@@ -112,6 +141,16 @@
   }
 }
 
+=======
+}
+
+.frame {
+  position: relative;
+  width: 100%;
+  height: vw(640);
+}
+
+>>>>>>> origin/main
 @include compact-portrait {
   .frame {
     height: vw(1336);

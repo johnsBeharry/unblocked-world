@@ -98,6 +98,7 @@
   height: 100%;
   display: flex;
   color: #dc91a8;
+<<<<<<< HEAD
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -130,6 +131,16 @@
     letter-spacing: -0.04em;
     mix-blend-mode: difference;
   }
+=======
+  font-family: 'Inter Local', sans-serif;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: vw(-0.8);
+  text-align: center;
+  word-break: break-word;
+  transform: translateX(-50%);
+  mix-blend-mode: difference;
+>>>>>>> origin/main
 }
 
 @include tablet-portrait {

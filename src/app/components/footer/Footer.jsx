@@ -9,7 +9,6 @@ export const FOOTER_COLORS = { home: "#d9d9d9", poster: "#d9d9d9" };
 const BRAND_MASK_COUNT = 14;
 const BRAND_MASK_REVEAL_STAGGER = 0.03;
 const BRAND_MASK_SLIDE_Y = 20;
-const BRAND_MASK_REVEAL_START = 0.9;
 
 function FooterBrand() {
   const brandRef = React.useRef(null);
@@ -18,12 +17,18 @@ function FooterBrand() {
     if (!brandRef.current) return undefined;
 
     const brand = brandRef.current;
+    const footer = brand.closest("footer");
+    const footerEnd = footer?.querySelector("[data-footer-end]");
     const masks = Array.from(
       brand.querySelectorAll("[data-footer-brand-mask]"),
     );
-    let frame = 0;
     let revealStarted = false;
-    gsap.set(masks, { y: 0, scaleY: 0, opacity: 0, y: BRAND_MASK_SLIDE_Y });
+    let revealTimeline;
+    gsap.set(masks, {
+      y: BRAND_MASK_SLIDE_Y,
+      scaleY: 0,
+      opacity: 0,
+    });
 
     const finalScales = masks.map((mask, index) => {
       const height = Math.max(1, mask.offsetHeight);
@@ -36,7 +41,7 @@ function FooterBrand() {
       if (revealStarted) return;
       revealStarted = true;
 
-      gsap
+      revealTimeline = gsap
         .timeline({ defaults: { ease: "power2.out" } })
         .to([...masks].reverse(), {
           scaleY: (_, mask) => finalScales[masks.indexOf(mask)],
@@ -49,30 +54,25 @@ function FooterBrand() {
         });
     };
 
-    const checkBottom = () => {
-      frame = 0;
-      const maxScroll = Math.max(
-        1,
-        document.documentElement.scrollHeight - window.innerHeight,
-      );
-      const scrollProgress = window.scrollY / maxScroll;
-      if (scrollProgress >= BRAND_MASK_REVEAL_START) revealAtBottom();
-    };
+    if (!footerEnd) return undefined;
 
-    const onScroll = () => {
-      if (!frame) frame = requestAnimationFrame(checkBottom);
-    };
-    const onResize = () => checkBottom();
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onResize);
-    checkBottom();
+    const footerObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) revealAtBottom();
+      },
+      { threshold: 0 },
+    );
+    footerObserver.observe(footerEnd);
 
     return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onResize);
-      if (frame) cancelAnimationFrame(frame);
+      footerObserver.disconnect();
+      revealTimeline?.kill();
       gsap.killTweensOf(masks);
+      gsap.set(masks, {
+        y: 0,
+        scaleY: 0,
+        opacity: 0,
+      });
     };
   }, []);
 
@@ -117,7 +117,7 @@ export function Footer({ color = FOOTER_COLORS.home, ctaVariant = "default" }) {
       <FooterBrand />
 
       <div className={styles.cta}>
-        <SubmitWorkSection {...ctaProps} />
+        <SubmitWorkSection {...ctaProps} showBottomLabel={true} />
       </div>
       <div className={styles.main}>
         <div
@@ -187,6 +187,11 @@ export function Footer({ color = FOOTER_COLORS.home, ctaVariant = "default" }) {
           <div className={`${styles.copyright}`}>© Copyright&nbsp;2026</div>
         </div>
       </div>
+      <span
+        className={styles.footerEndSentinel}
+        data-footer-end
+        aria-hidden="true"
+      />
     </footer>
   );
 }

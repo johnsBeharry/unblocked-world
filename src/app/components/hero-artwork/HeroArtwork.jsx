@@ -1,6 +1,5 @@
-import React from "react";
 import { gsap } from "gsap";
-import heroStyles from "../hero/HeroSection.module.scss";
+import React from "react";
 import styles from "./HeroArtwork.module.scss";
 
 const ARTWORK_PARALLAX_FACTOR = 0.12;
@@ -37,15 +36,32 @@ function TabletArtwork() {
   );
 }
 
-export function HeroArtwork() {
+export function HeroArtwork({ disableScrollAnimation = false }) {
+  const artworkRef = React.useRef(null);
+
   React.useEffect(() => {
-    const artworkWrappers = Array.from(
-      document.querySelectorAll("[data-hero-artwork]"),
-    );
+    const artworkRoot = artworkRef.current;
+    if (!artworkRoot) return undefined;
+
+    const artworkWrappers = [
+      artworkRoot,
+      ...artworkRoot.querySelectorAll("[data-hero-artwork]"),
+    ];
     const groups = Array.from(
-      document.querySelectorAll("[data-hero-artwork] [data-artwork-motif]"),
+      artworkRoot.querySelectorAll("[data-artwork-motif]"),
     );
     if (!artworkWrappers.length || !groups.length) return undefined;
+
+    const resetArtwork = () => {
+      gsap.killTweensOf([...artworkWrappers, ...groups]);
+      gsap.set(artworkWrappers, { y: 0, scale: 1 });
+      gsap.set(groups, { scaleY: 1 });
+    };
+
+    if (disableScrollAnimation) {
+      resetArtwork();
+      return undefined;
+    }
 
     let frame = 0;
     const updateLayerScale = () => {
@@ -94,11 +110,12 @@ export function HeroArtwork() {
       window.removeEventListener("resize", onResize);
       if (frame) cancelAnimationFrame(frame);
     };
-  }, []);
+  }, [disableScrollAnimation]);
 
   return (
     <>
       <div
+        ref={artworkRef}
         className={styles.desktopArt}
         data-hero-artwork="desktop"
         aria-hidden="true"

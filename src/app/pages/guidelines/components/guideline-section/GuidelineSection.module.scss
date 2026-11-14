@@ -1,4 +1,3 @@
-@use '../../../../../styles/functions' as *;
 
 .section { scroll-margin-top: vw(20); > * + * { margin-top: vw(40); } }
 .section h2 { margin: 0; font-size: vw(40); font-weight: 600; line-height: 1.02; letter-spacing: vw(-1.6); }

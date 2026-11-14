@@ -9,10 +9,7 @@ import { ConsentPanel } from './components/ConsentPanel/ConsentPanel.jsx'
 import { SubmissionSuccessPanel } from './components/SubmissionSuccessPanel/SubmissionSuccessPanel.jsx'
 import { useSubmitLenis } from './hooks/useSubmitLenis.js'
 import { RevealText } from '../../../components/RevealText/RevealText.jsx'
-<<<<<<< HEAD
 import { RevealRow } from '../../../components/RevealRow/RevealRow.jsx'
-=======
->>>>>>> origin/main
 import {
   createEntry,
   deleteEntry,

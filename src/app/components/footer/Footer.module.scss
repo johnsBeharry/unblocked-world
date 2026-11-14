@@ -1,13 +1,8 @@
-<<<<<<< HEAD
-=======
-@use "../../../styles/functions" as *;
->>>>>>> origin/main
 
 .footer {
   height: auto;
   position: relative;
 
-<<<<<<< HEAD
   .footerEndSentinel {
     position: absolute;
     right: 0;
@@ -18,8 +13,6 @@
     pointer-events: none;
   }
 
-=======
->>>>>>> origin/main
   .brandReveal {
     left: 0;
     bottom: 0;
@@ -39,12 +32,9 @@
       .brandMask {
         height: vw(20);
         background-color: #fff;
-<<<<<<< HEAD
         opacity: 0;
         transform: scaleY(0);
         transform-origin: center center;
-=======
->>>>>>> origin/main
       }
     }
   }

@@ -2,7 +2,6 @@
 
 ## Unreleased
 
-<<<<<<< HEAD
 - Fixed a 1px blue line that could appear between stacked theme sections on the homepage while scrolling: each stacked section now has a hidden 2px backfill in its own color that only shows where the browser would otherwise leave a sub-pixel seam.
 - Hidden Systems headline intro refined to match the mockup: pure mask slides with no fade on a `power2.inOut` curve, and the bracketed artwork row now moves as one unit — the brackets and the blue box (with the artwork kept inside it) travel the same distance and are cut at the same line.
 - Hidden Systems: removed the scroll-tracked bracket and artwork assembly; the brackets, blue box and artwork now sit in their final layout and only take part in the headline intro. Bracket spacing now always uses the loaded font (it could previously settle slightly too wide when measured before the font loaded).
@@ -48,8 +47,6 @@
 - Added the `HeroArtwork` `disableScrollAnimation` prop; when enabled, the component skips scroll/resize animation setup and resets artwork transforms to their neutral state.
 - Made `src/styles/_functions.scss` available to every SCSS module through Vite Sass `additionalData`, then removed the repeated per-module `@use` imports.
 - Moved `HeroArtwork` into `src/app/components/hero-artwork` so it can be reused by homepage and other app-level components without page-specific coupling; preserved its JSX, SCSS, geometry, and animation behavior.
-=======
->>>>>>> origin/main
 - Restored the homepage animation trigger after removing the startup loader by setting `body[data-page-phase="content"]` from `App` for every route.
 - Changed FooterBrand mask reveal to start at 90% document scroll progress, giving the animation the final 10% of the scroll range before the page end.
 - Added a subtle 12px upward slide to the FooterBrand mask reveal, synchronized with its existing bottom-to-top stagger.
@@ -393,11 +390,8 @@
 - Made contact-step validation errors visible before email verification begins.
 - Preserved an existing poster preview and file when editing metadata without selecting a replacement file.
 - Forwarded the official form origin and referer through the server proxy so Worker origin validation accepts local form requests.
-<<<<<<< HEAD
 - Removed the legacy hard-coded SubmitWorkSection `Current Theme (Ownership)` label that rendered alongside the configurable `topLabel`, eliminating the duplicate footer label while preserving RevealText's hidden measurement layer.
 - Added the SubmitPage bottom gradient overlay for the Enter Submission CTA, matching the 496px × 114px centered desktop treatment and keeping the button above the overlay; mobile retains its full-width bottom fade.
 - Fixed the SubmitPage Enter Submission CTA to remain viewport-fixed while the content column scrolls, with desktop placement centered in the right content column and responsive tablet/mobile centering.
 - Added bottom breathing room to SubmitPage content (`vw(138)` on desktop/tablet) so the final content can scroll clear of the fixed CTA and gradient overlay.
-=======
->>>>>>> origin/main
-- Removed the duplicate page-local HeroArtwork files introduced during branch integration; the app-level reusable HeroArtwork remains the single source used by HeroSection and SubmitWorkSection.
+- Removed duplicate page-local HeroArtwork files after branch integration; the app-level reusable HeroArtwork remains the single source used by HeroSection and SubmitWorkSection.

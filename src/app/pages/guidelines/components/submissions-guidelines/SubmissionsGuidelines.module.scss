@@ -38,10 +38,12 @@
   p {
     margin: 0;
   }
-  span {
-    display: inline-block;
-    margin-left: vw(10);
-  }
+}
+
+// Responsive copy variants; RevealText sits inside each so its line wrappers
+// keep their own display rules.
+.compact {
+  display: none;
 }
 
 .artwork {
@@ -68,11 +70,14 @@
     letter-spacing: vw(-6.72);
     line-height: 0.9;
     transform: translateX(-50%);
+  }
 
-    span {
-      display: block;
-      margin-left: 0;
-    }
+  .wide {
+    display: none;
+  }
+
+  .compact {
+    display: block;
   }
 
   .artwork {
@@ -95,11 +100,14 @@
     letter-spacing: calc(100vw * -2.5 / 375);
     line-height: 0.9;
     transform: translateX(-50%);
+  }
 
-    span {
-      display: block;
-      margin-left: 0;
-    }
+  .wide {
+    display: none;
+  }
+
+  .compact {
+    display: block;
   }
 
   .artwork {

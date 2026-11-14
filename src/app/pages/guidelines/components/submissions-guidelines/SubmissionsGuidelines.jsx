@@ -8,9 +8,16 @@ export function SubmissionsGuidelines() {
 
       <div className={styles.heading}>
         <RevealText as="p">Submissions</RevealText>
-        <RevealText as="p">
-          Guidelines <span>(↓)</span>
-        </RevealText>
+        <p className={styles.wide}>
+          <RevealText as="span">Guidelines (↓)</RevealText>
+        </p>
+        <p className={styles.compact}>
+          <RevealText as="span">
+            Guidelines
+            <br />
+            (↓)
+          </RevealText>
+        </p>
       </div>
     </section>
   );

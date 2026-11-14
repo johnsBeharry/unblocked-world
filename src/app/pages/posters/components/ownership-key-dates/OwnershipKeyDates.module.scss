@@ -54,15 +54,26 @@
   width: vw(1400);
 }
 
+// Transparent border keeps the row geometry; RevealRow draws the visible
+// rule over it after the row text reveals.
 .row {
+  position: relative;
+  width: 100%;
+  height: vw(73);
+  border-top: vw(1) solid transparent;
+  color: #dc91a8;
+  font-family: 'Inter Local', sans-serif;
+}
+
+.rowContent {
   position: relative;
   display: flex;
   align-items: center;
-  width: 100%;
-  height: vw(73);
-  border-top: vw(1) solid rgba(220, 145, 168, 0.75);
-  color: #dc91a8;
-  font-family: 'Inter Local', sans-serif;
+}
+
+.rowRule {
+  top: vw(-1);
+  color: rgba(220, 145, 168, 0.75);
 }
 
 .number,
@@ -100,7 +111,7 @@
     letter-spacing: calc(100vw * -3.36 / 375);
     transform: translateX(-1px);
 
-    span {
+    > span {
       white-space: nowrap;
 
       &:nth-child(2) {
@@ -127,8 +138,9 @@
     &:nth-child(4) {
       height: calc(100vw * 80 / 375);
     }
-    align-items: flex-start;
   }
+
+  .rowContent { align-items: flex-start; }
 
   .number { display: none; }
 
@@ -182,7 +194,7 @@
     letter-spacing: vw(-7.2);
     transform: translateX(vw(-3));
 
-    span:nth-child(2) {
+    > span:nth-child(2) {
       transform: translateY(vw(-1)) scaleY(1.06);
       transform-origin: center top;
     }
@@ -196,8 +208,9 @@
 
   .row {
     height: vw(64);
-    align-items: flex-start;
   }
+
+  .rowContent { align-items: flex-start; }
 
   .number { display: none; }
 

@@ -9,6 +9,7 @@ import { ConsentPanel } from './components/ConsentPanel/ConsentPanel.jsx'
 import { SubmissionSuccessPanel } from './components/SubmissionSuccessPanel/SubmissionSuccessPanel.jsx'
 import { useSubmitLenis } from './hooks/useSubmitLenis.js'
 import { RevealText } from '../../../components/RevealText/RevealText.jsx'
+import { RevealRow } from '../../../components/RevealRow/RevealRow.jsx'
 import {
   createEntry,
   deleteEntry,
@@ -300,18 +301,18 @@ export function SubmitPage({ initialStep = 0 }) {
                     <RevealText as="p" className={`${styles.intro} ${styles.introMobile}`}>Use this page to submit poster work responding to the first theme: Ownership. Before submitting, review the contest overview, Ownership page, and guidelines. Poster Contest Guidelines.</RevealText>
                     <RevealText as="h3">Submission Process</RevealText>
                     <ol>
-                      {steps.map(step => <li key={step}>{step}</li>)}
+                      {steps.map(step => <RevealRow key={step} line={false}>{step}</RevealRow>)}
                     </ol>
                     <RevealText as="h3">Rules and Eligibility</RevealText>
                     <ul>
-                      <li>Open to individual and collaborative entries.</li>
-                      <li>You can submit more than one poster.</li>
-                      <li>Submitted work must be original.</li>
-                      <li>Accepted file types: JPG, PNG, PDF, GIF, or MP4.</li>
-                      <li>Static posters should be under 5MB.</li>
-                      <li>Motion posters should be under 20MB.</li>
-                      <li>Use the file name format: YourName_PosterTitle.</li>
-                      <li>Selected work may require additional formats later.</li>
+                      <RevealRow line={false}>Open to individual and collaborative entries.</RevealRow>
+                      <RevealRow line={false}>You can submit more than one poster.</RevealRow>
+                      <RevealRow line={false}>Submitted work must be original.</RevealRow>
+                      <RevealRow line={false}>Accepted file types: JPG, PNG, PDF, GIF, or MP4.</RevealRow>
+                      <RevealRow line={false}>Static posters should be under 5MB.</RevealRow>
+                      <RevealRow line={false}>Motion posters should be under 20MB.</RevealRow>
+                      <RevealRow line={false}>Use the file name format: YourName_PosterTitle.</RevealRow>
+                      <RevealRow line={false}>Selected work may require additional formats later.</RevealRow>
                     </ul>
                     <button className={styles.submitLink} type="button" onClick={() => setStep(1)}>Enter Submission (→)</button>
                 </div>}

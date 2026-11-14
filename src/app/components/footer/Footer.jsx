@@ -1,6 +1,7 @@
 import React from "react";
 import { gsap } from "gsap";
 import styles from "./Footer.module.scss";
+import { RevealText } from "../../../components/RevealText/RevealText.jsx";
 import SubmitWorkSection from "./submit-work/SubmitWorkSection.jsx";
 import { BrandLogo } from "../logo/index.jsx";
 
@@ -126,7 +127,9 @@ export function Footer({ color = FOOTER_COLORS.home, ctaVariant = "default" }) {
           <BrandLogo />
 
           <div>
-            <p className={`${styles.text} ${styles.label}`}>Explore</p>
+            <RevealText as="p" className={`${styles.text} ${styles.label}`}>
+              Explore
+            </RevealText>
             <div className={styles.menu}>
               <a
                 className={`${styles.text} ${styles.ownership}`}
@@ -147,7 +150,9 @@ export function Footer({ color = FOOTER_COLORS.home, ctaVariant = "default" }) {
           </div>
 
           <div>
-            <p className={`${styles.text} ${styles.label}`}>Social</p>
+            <RevealText as="p" className={`${styles.text} ${styles.label}`}>
+              Social
+            </RevealText>
 
             <div className={styles.menu}>
               <a
@@ -167,16 +172,16 @@ export function Footer({ color = FOOTER_COLORS.home, ctaVariant = "default" }) {
           </div>
         </div>
         <div className={`${styles["main__content"]}`}>
-          <p className={`${styles.text} ${styles.description}`}>
+          <RevealText as="p" className={`${styles.text} ${styles.description}`}>
             Exploring ownership, permanence, energy and peers through art,
             design and culture. Built through participation, dialogue and
             creative expression.
-          </p>
+          </RevealText>
 
           <div>
-            <p className={`${styles.text} ${styles.label}`}>
+            <RevealText as="p" className={`${styles.text} ${styles.label}`}>
               Question Everything
-            </p>
+            </RevealText>
             <div className={styles.menu}>
               <a className={styles.email} href="mailto:hello@unblocked.net">
                 (hello@unblocked.net)
@@ -184,7 +189,9 @@ export function Footer({ color = FOOTER_COLORS.home, ctaVariant = "default" }) {
             </div>
           </div>
 
-          <div className={`${styles.copyright}`}>© Copyright&nbsp;2026</div>
+          <RevealText as="div" className={styles.copyright}>
+            © Copyright&nbsp;2026
+          </RevealText>
         </div>
       </div>
       <span

@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from './PosterDetailsPanel.module.scss'
 import { RevealText } from '../../../../../components/RevealText/RevealText.jsx'
+import { RevealRow } from '../../../../../components/RevealRow/RevealRow.jsx'
 
 const fields = [
   { name: 'title', label: 'Poster Title' },
@@ -22,12 +23,12 @@ export function PosterDetailsPanel({ draft = {}, onDraftChange, error }) {
         <RevealText as="p" className={styles.intro}>Upload your poster submission and any supporting information required for review.</RevealText>
         <form className={styles.form}>
           {fields.map(field => (
-            <label className={styles.field} key={field.label}>
+            <RevealRow as="label" className={styles.field} lineClassName={styles.fieldRule} key={field.label}>
               {field.select
                 ? <select aria-label={field.label} value={draft[field.name] || ''} onChange={event => onDraftChange?.({ [field.name]: event.target.value })}><option value="">{field.label}</option>{Array.from({ length: 77 }, (_, index) => 2026 - index).map(year => <option key={year} value={year}>{year}</option>)}</select>
                 : <input aria-label={field.label} placeholder={field.label} value={draft[field.name] || ''} onChange={event => onDraftChange?.({ [field.name]: event.target.value })} />}
               {field.select && <span className={styles.chevron} aria-hidden="true" />}
-            </label>
+            </RevealRow>
           ))}
           <div className={styles.uploadDivider} aria-hidden="true" />
           <label className={styles.uploadCard}>

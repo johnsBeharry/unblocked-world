@@ -1,209 +1,54 @@
 import React from "react";
-import { gsap } from "gsap";
 import styles from "./HiddenSystemsSection.module.scss";
 import { RevealText } from "../../../../../components/RevealText/RevealText.jsx";
 
+// Headline intro (mockup): Making → Hidden → ( U ) row + side labels →
+// Systems → Visible, each sliding up inside its own stationary mask.
+const INTRO_STAGGER = 0.15;
+// Pure mask slide (no opacity) on a GSAP power2.inOut curve, per mockup.
+const INTRO_EASE = "cubic-bezier(0.455, 0.03, 0.515, 0.955)";
+const introDelay = (step) => step * INTRO_STAGGER;
+
 /** Figma frame 1440 × 1686; original artboard offset top:4890px removed for stacking. */
 export default function HiddenSystemsSection({ reveal = true }) {
-  const sectionRef = React.useRef(null);
+  const headlineRef = React.useRef(null);
+  const [introPlay, setIntroPlay] = React.useState(false);
 
+  // One shared trigger so the headline rows stagger as a single sequence.
   React.useEffect(() => {
-    const section = sectionRef.current;
-    const bracket = section?.querySelector("[data-hidden-systems-bracket]");
-    const bracketLeft = section?.querySelector(
-      "[data-hidden-systems-bracket-left]",
+    const headline = headlineRef.current;
+    if (!reveal || !headline) return undefined;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setIntroPlay(true);
+        observer.disconnect();
+      },
+      { rootMargin: "0px 0px -25% 0px", threshold: 0 },
     );
-    const bracketRight = section?.querySelector(
-      "[data-hidden-systems-bracket-right]",
-    );
-    const canvas = section?.querySelector("[data-hidden-systems-canvas]");
-    const artwork = Array.from(
-      section?.querySelectorAll("[data-hidden-systems-art]") ?? [],
-    );
-    if (
-      !section ||
-      !bracket ||
-      !bracketLeft ||
-      !bracketRight ||
-      !canvas ||
-      artwork.length === 0
-    )
-      return undefined;
-
-    // Preserve the original static `(          )` layout as the animation
-    // target. Measuring the real glyphs avoids inventing a bracket offset.
-    const measure = document.createElement("p");
-    measure.className = styles["hidden-systems__node-004"];
-    measure.textContent = "(          )";
-    measure.style.visibility = "hidden";
-    measure.style.pointerEvents = "none";
-    measure.style.whiteSpace = "pre";
-    measure.style.transform = "translate(-50%, 0)";
-    section.appendChild(measure);
-    const measureText = measure.firstChild;
-    const leftRange = document.createRange();
-    leftRange.setStart(measureText, 0);
-    leftRange.setEnd(measureText, 1);
-    const rightRange = document.createRange();
-    rightRange.setStart(measureText, measureText.length - 1);
-    rightRange.setEnd(measureText, measureText.length);
-    const leftTarget = leftRange.getBoundingClientRect();
-    const rightTarget = rightRange.getBoundingClientRect();
-    measure.remove();
-    bracketLeft.style.transform = "translateX(-50%)";
-    bracketRight.style.transform = "translateX(-50%)";
-    const neutralLeft = bracketLeft.getBoundingClientRect();
-    const neutralRight = bracketRight.getBoundingClientRect();
-    const neutralCenter = (neutralLeft.left + neutralRight.right) / 2;
-    const bracketTargetOffset = {
-      left: leftTarget.left + leftTarget.width / 2 - neutralCenter,
-      right: rightTarget.left + rightTarget.width / 2 - neutralCenter,
-    };
-
-    // Remove a previous frame's inline geometry before measuring the source
-    // mockup width; otherwise HMR/re-initialization would reuse an oversized
-    // dynamic canvas as the new maximum.
-    canvas.style.removeProperty("width");
-    canvas.style.removeProperty("left");
-    canvas.style.removeProperty("clip-path");
-    const anchor = canvas.getBoundingClientRect();
-    const anchorCenter = anchor.top + anchor.height / 2;
-    const mockupCanvasWidth = anchor.width;
-    const offsets = artwork.map((item) => {
-      const rect = item.getBoundingClientRect();
-      return anchorCenter - (rect.top + rect.height / 2);
-    });
-    // Normalized red-point samples from the bracket inner curves. The x
-    // values are resolved against each bracket's live rect on every frame.
-    const leftCurve = [
-      [0, 0.64],
-      [0.25, 0.34],
-      [0.5, 0.24],
-      [0.75, 0.34],
-      [1, 0.64],
-    ];
-    const rightCurve = [
-      [0, 0.36],
-      [0.25, 0.66],
-      [0.5, 0.76],
-      [0.75, 0.66],
-      [1, 0.36],
-    ];
-    // Keep the initial frame open like the supplied reference instead of
-    // stacking both glyphs at the exact same center point. The 0.76 factor is
-    // the measured opening span between the two initial middle curve points.
-    const initialBracketOffset = neutralLeft.width * 0.76;
-    const setClipPath = gsap.quickSetter(canvas, "clipPath");
-    let frame = 0;
-
-    const update = () => {
-      frame = 0;
-      const rect = canvas.getBoundingClientRect();
-      const triggerStart = window.innerHeight * 0.85;
-      const triggerEnd = window.innerHeight * 0.4;
-      const progress = Math.min(
-        1,
-        Math.max(0, (triggerStart - rect.top) / (triggerStart - triggerEnd)),
-      );
-
-      section.style.setProperty("--hidden-systems-art-progress", `${progress}`);
-      const bracketProgress = progress;
-      const openingOffset = initialBracketOffset * (1 - bracketProgress);
-      bracketLeft.style.transform = `translateX(calc(-50% + ${-openingOffset + bracketTargetOffset.left * bracketProgress}px))`;
-      bracketRight.style.transform = `translateX(calc(-50% + ${openingOffset + bracketTargetOffset.right * bracketProgress}px))`;
-      const leftRect = bracketLeft.getBoundingClientRect();
-      const rightRect = bracketRight.getBoundingClientRect();
-      const sectionRect = section.getBoundingClientRect();
-      // Keep the live curve intact, but prevent its extrema from escaping the
-      // actual outer bracket bounds by a sub-pixel antialiasing seam.
-      const edgeSafety = Math.max(0.5, 1 / window.devicePixelRatio);
-      const curvePoints = [
-        ...leftCurve.map(([y, x]) => ({
-          x: Math.max(
-            leftRect.left + edgeSafety,
-            leftRect.left + leftRect.width * x,
-          ),
-          y,
-        })),
-        ...rightCurve.map(([y, x]) => ({
-          x: Math.min(
-            rightRect.right - edgeSafety,
-            rightRect.left + rightRect.width * x,
-          ),
-          y,
-        })),
-      ];
-      const curveLeft = Math.min(...curvePoints.map(({ x }) => x));
-      const curveRight = Math.max(...curvePoints.map(({ x }) => x));
-      const curveCenter = (curveLeft + curveRight) / 2;
-      const canvasWidth = Math.min(
-        mockupCanvasWidth,
-        Math.max(1, curveRight - curveLeft),
-      );
-      canvas.style.width = `${canvasWidth}px`;
-      canvas.style.left = `${curveCenter - sectionRect.left}px`;
-      const canvasRect = canvas.getBoundingClientRect();
-      const toClipPercent = (x) =>
-        Math.min(
-          100,
-          Math.max(0, ((x - canvasRect.left) / canvasRect.width) * 100),
-        );
-      // Start from the supplied narrow oval boundary. As the canvas opens,
-      // the left edge transitions to the straight mockup box edge; the right
-      // edge remains on its live curve until the final width is reached.
-      const boxLeft = toClipPercent(curvePoints[0].x);
-      const initialInset = Math.max(0, 2 * (1 - Math.min(progress * 4, 1)));
-      const clipPoints = [
-        ...leftCurve.map(([y], index) => {
-          const curveX = toClipPercent(curvePoints[index].x);
-          const x = curveX + (boxLeft - curveX) * progress;
-          return `${Math.min(100, x + initialInset)}% ${y * 100}%`;
-        }),
-        ...rightCurve
-          .slice()
-          .reverse()
-          .map(([y], index) => {
-            const point =
-              curvePoints[leftCurve.length + rightCurve.length - 1 - index];
-            return `${Math.max(0, toClipPercent(point.x) - initialInset)}% ${y * 100}%`;
-          }),
-      ];
-      setClipPath(`polygon(${clipPoints.join(", ")})`);
-
-      artwork.forEach((item, index) => {
-        item.style.setProperty(
-          "--hidden-systems-art-y",
-          `${offsets[index] * (1 - progress)}px`,
-        );
-      });
-    };
-
-    const onScroll = () => {
-      if (!frame) frame = requestAnimationFrame(update);
-    };
-
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", update);
-
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", update);
-      if (frame) cancelAnimationFrame(frame);
-    };
-  }, []);
+    observer.observe(headline);
+    return () => observer.disconnect();
+  }, [reveal]);
 
   return (
-    <div ref={sectionRef} className={styles["hidden-systems"]} data-name=".">
+    <div
+      className={`${styles["hidden-systems"]} ${reveal ? styles["hidden-systems--intro"] : ""} ${introPlay ? styles["hidden-systems--intro-play"] : ""}`}
+      style={{ "--hidden-systems-intro-delay": `${introDelay(2)}s` }}
+      data-name="."
+    >
       <div
         className={styles["hidden-systems__copy-frame"]}
         data-name="hidden-systems-copy"
       >
-        <div className={styles["hidden-systems__node-001"]}>
+        <div ref={headlineRef} className={styles["hidden-systems__node-001"]}>
           <RevealText
             as="p"
             className={styles["hidden-systems__node-002"]}
             enabled={reveal}
+            play={introPlay}
+            fade={false}
+            ease={INTRO_EASE}
+            delay={introDelay(0)}
           >
             Making
           </RevealText>
@@ -211,6 +56,10 @@ export default function HiddenSystemsSection({ reveal = true }) {
             as="p"
             className={styles["hidden-systems__node-003"]}
             enabled={reveal}
+            play={introPlay}
+            fade={false}
+            ease={INTRO_EASE}
+            delay={introDelay(1)}
           >
             Hidden
           </RevealText>
@@ -220,6 +69,7 @@ export default function HiddenSystemsSection({ reveal = true }) {
           data-hidden-systems-bracket
           aria-hidden="true"
         >
+          {/* Static `(          )` layout; spans exist only for the intro slide. */}
           <span
             className={styles["hidden-systems__node-004-left"]}
             data-hidden-systems-bracket-left
@@ -227,6 +77,7 @@ export default function HiddenSystemsSection({ reveal = true }) {
           >
             (
           </span>
+          {"          "}
           <span
             className={styles["hidden-systems__node-004-right"]}
             data-hidden-systems-bracket-right
@@ -240,6 +91,10 @@ export default function HiddenSystemsSection({ reveal = true }) {
             as="p"
             className={styles["hidden-systems__node-006"]}
             enabled={reveal}
+            play={introPlay}
+            fade={false}
+            ease={INTRO_EASE}
+            delay={introDelay(3)}
           >
             Systems
           </RevealText>
@@ -247,6 +102,10 @@ export default function HiddenSystemsSection({ reveal = true }) {
             as="p"
             className={styles["hidden-systems__node-007"]}
             enabled={reveal}
+            play={introPlay}
+            fade={false}
+            ease={INTRO_EASE}
+            delay={introDelay(4)}
           >
             Visible
           </RevealText>
@@ -255,6 +114,10 @@ export default function HiddenSystemsSection({ reveal = true }) {
           as="p"
           className={styles["hidden-systems__node-008"]}
           enabled={reveal}
+          play={introPlay}
+          fade={false}
+          ease={INTRO_EASE}
+          delay={introDelay(2)}
         >
           (Through art)
         </RevealText>
@@ -262,6 +125,10 @@ export default function HiddenSystemsSection({ reveal = true }) {
           as="p"
           className={styles["hidden-systems__node-009"]}
           enabled={reveal}
+          play={introPlay}
+          fade={false}
+          ease={INTRO_EASE}
+          delay={introDelay(2)}
         >
           (Through exhibitions)
         </RevealText>
@@ -301,93 +168,96 @@ export default function HiddenSystemsSection({ reveal = true }) {
         >
           UNBLOCKED
         </RevealText>
-        <div
-          className={styles["hidden-systems__node-014"]}
-          data-hidden-systems-canvas
-        >
+        {/* Stationary mask: cut line at the blue box bottom, shared with the brackets. */}
+        <div className={styles["hidden-systems__canvas-mask"]}>
           <div
-            className={styles["hidden-systems__node-015"]}
-            data-hidden-systems-art
+            className={styles["hidden-systems__node-014"]}
+            data-hidden-systems-canvas
           >
-            <svg
-              className={styles["hidden-systems__node-016"]}
-              fill="none"
-              preserveAspectRatio="none"
-              viewBox="0 0 136.591 169.242"
+            <div
+              className={styles["hidden-systems__node-015"]}
+              data-hidden-systems-art
             >
-              <g id="Group 98">
-                <rect
-                  fill="var(--fill-0, #2850FE)"
-                  height="169.242"
-                  id="Rectangle 104"
-                  width="136.591"
-                />
-                <path
-                  d="M27.916 10.8945V110.688C27.916 118.055 29.5356 124.667 32.8164 130.476L32.8223 130.485C36.1546 136.29 40.8614 140.857 46.9053 144.173L46.915 144.178C52.9893 147.457 60.1335 149.062 68.2871 149.062C76.4896 149.062 83.6588 147.457 89.7344 144.178L89.7393 144.176C95.8351 140.86 100.523 136.291 103.757 130.476C107.038 124.667 108.657 118.055 108.657 110.688V10.8945H129.086V112.606C129.086 122.999 126.724 132.182 122.039 140.204L121.578 140.978C116.581 149.139 109.554 155.584 100.447 160.312C91.363 164.979 80.6599 167.342 68.2871 167.342C55.9689 167.342 45.2922 164.98 36.208 160.315H36.209C27.3823 155.733 20.5088 149.539 15.5439 141.733L15.0693 140.974C10.0795 132.771 7.56445 123.332 7.56445 112.606V10.8945H27.916Z"
-                  fill="var(--fill-0, #D9D9D9)"
-                  id="U"
-                  stroke="var(--stroke-0, #2850FE)"
-                  strokeWidth="3.36681"
-                />
-              </g>
-            </svg>
-          </div>
-          <div
-            className={styles["hidden-systems__node-020"]}
-            data-hidden-systems-art
-          >
-            <svg
-              className={styles["hidden-systems__node-021"]}
-              fill="none"
-              preserveAspectRatio="none"
-              viewBox="0 0 143.276 168.885"
-            >
-              <g id="Group 97">
-                <rect
-                  fill="var(--fill-0, #2850FE)"
-                  height="168.714"
-                  id="Rectangle 104"
-                  width="143.276"
-                />
-                <path
-                  d="M32.0059 10.0059V110.547C32.0059 117.801 33.5995 124.283 36.8096 129.967L36.8125 129.973C40.0739 135.654 44.6797 140.124 50.6074 143.376L50.6123 143.379C56.5569 146.588 63.5738 148.174 71.6289 148.174C79.7339 148.174 86.7763 146.588 92.7217 143.379L92.7236 143.378C98.7051 140.125 103.29 135.651 106.451 129.961L106.45 129.96C109.658 124.278 111.251 117.799 111.251 110.547V10.0059H133.176V112.466C133.176 123.315 130.63 132.891 125.561 141.224C120.487 149.511 113.353 156.049 104.131 160.837C94.922 165.567 84.0976 167.949 71.6289 167.949C59.2119 167.949 48.4117 165.567 39.2021 160.837C30.2683 156.198 23.2942 149.918 18.2549 141.995L17.7734 141.224C12.7041 132.891 10.1582 123.315 10.1582 112.466V10.0059H32.0059Z"
-                  fill="var(--fill-0, #D9D9D9)"
-                  id="U"
-                  stroke="var(--stroke-0, #2850FE)"
-                  strokeWidth="1.87045"
-                />
-              </g>
-            </svg>
-          </div>
-          <div
-            className={styles["hidden-systems__node-025"]}
-            data-hidden-systems-art
-          >
-            <svg
-              className={styles["hidden-systems__node-026"]}
-              fill="none"
-              preserveAspectRatio="none"
-              viewBox="0 0 143.622 183.381"
-            >
-              <g id="Group 96">
-                <rect
-                  fill="var(--fill-0, #2850FE)"
-                  height="177.954"
-                  id="Rectangle 104"
-                  width="143.622"
-                />
-                <g id="U">
-                  <path
-                    d="M33.1151 125.043C33.1151 132.156 34.6761 138.476 37.7977 144.003C40.9704 149.53 45.4477 153.88 51.2303 157.053C57.0129 160.174 63.8707 161.734 71.8026 161.734C79.7855 161.734 86.6685 160.174 92.451 157.053C98.2847 153.88 102.736 149.53 105.806 144.003C108.928 138.476 110.489 132.156 110.489 125.043V44.5157H134.285V126.962C134.285 137.964 131.701 147.713 126.532 156.208C121.364 164.652 114.097 171.304 104.732 176.165C95.3676 180.975 84.3911 183.381 71.8026 183.381C59.2651 183.381 48.3138 180.975 38.9491 176.165C29.5844 171.304 22.3177 164.652 17.1493 156.208C11.9807 147.713 9.39633 137.964 9.39633 126.962V44.5157H33.1151V125.043Z"
-                    fill="var(--fill-0, #D9D9D9)"
+              <svg
+                className={styles["hidden-systems__node-016"]}
+                fill="none"
+                preserveAspectRatio="none"
+                viewBox="0 0 136.591 169.242"
+              >
+                <g id="Group 98">
+                  <rect
+                    fill="var(--fill-0, #2850FE)"
+                    height="169.242"
+                    id="Rectangle 104"
+                    width="136.591"
                   />
                   <path
-                    d="M33.1151 125.043C33.1151 132.156 34.6761 138.476 37.7977 144.003C40.9704 149.53 45.4477 153.88 51.2303 157.053C57.0129 160.174 63.8707 161.734 71.8026 161.734C79.7855 161.734 86.6685 160.174 92.451 157.053C98.2847 153.88 102.736 149.53 105.806 144.003C108.928 138.476 110.489 132.156 110.489 125.043V44.5157H134.285V126.962C134.285 137.964 131.701 147.713 126.532 156.208C121.364 164.652 114.097 171.304 104.732 176.165C95.3676 180.975 84.3911 183.381 71.8026 183.381C59.2651 183.381 48.3138 180.975 38.9491 176.165C29.5844 171.304 22.3177 164.652 17.1493 156.208C11.9807 147.713 9.39633 137.964 9.39633 126.962V44.5157H33.1151V125.043Z"
+                    d="M27.916 10.8945V110.688C27.916 118.055 29.5356 124.667 32.8164 130.476L32.8223 130.485C36.1546 136.29 40.8614 140.857 46.9053 144.173L46.915 144.178C52.9893 147.457 60.1335 149.062 68.2871 149.062C76.4896 149.062 83.6588 147.457 89.7344 144.178L89.7393 144.176C95.8351 140.86 100.523 136.291 103.757 130.476C107.038 124.667 108.657 118.055 108.657 110.688V10.8945H129.086V112.606C129.086 122.999 126.724 132.182 122.039 140.204L121.578 140.978C116.581 149.139 109.554 155.584 100.447 160.312C91.363 164.979 80.6599 167.342 68.2871 167.342C55.9689 167.342 45.2922 164.98 36.208 160.315H36.209C27.3823 155.733 20.5088 149.539 15.5439 141.733L15.0693 140.974C10.0795 132.771 7.56445 123.332 7.56445 112.606V10.8945H27.916Z"
+                    fill="var(--fill-0, #D9D9D9)"
+                    id="U"
                     stroke="var(--stroke-0, #2850FE)"
+                    strokeWidth="3.36681"
                   />
                 </g>
-              </g>
-            </svg>
+              </svg>
+            </div>
+            <div
+              className={styles["hidden-systems__node-020"]}
+              data-hidden-systems-art
+            >
+              <svg
+                className={styles["hidden-systems__node-021"]}
+                fill="none"
+                preserveAspectRatio="none"
+                viewBox="0 0 143.276 168.885"
+              >
+                <g id="Group 97">
+                  <rect
+                    fill="var(--fill-0, #2850FE)"
+                    height="168.714"
+                    id="Rectangle 104"
+                    width="143.276"
+                  />
+                  <path
+                    d="M32.0059 10.0059V110.547C32.0059 117.801 33.5995 124.283 36.8096 129.967L36.8125 129.973C40.0739 135.654 44.6797 140.124 50.6074 143.376L50.6123 143.379C56.5569 146.588 63.5738 148.174 71.6289 148.174C79.7339 148.174 86.7763 146.588 92.7217 143.379L92.7236 143.378C98.7051 140.125 103.29 135.651 106.451 129.961L106.45 129.96C109.658 124.278 111.251 117.799 111.251 110.547V10.0059H133.176V112.466C133.176 123.315 130.63 132.891 125.561 141.224C120.487 149.511 113.353 156.049 104.131 160.837C94.922 165.567 84.0976 167.949 71.6289 167.949C59.2119 167.949 48.4117 165.567 39.2021 160.837C30.2683 156.198 23.2942 149.918 18.2549 141.995L17.7734 141.224C12.7041 132.891 10.1582 123.315 10.1582 112.466V10.0059H32.0059Z"
+                    fill="var(--fill-0, #D9D9D9)"
+                    id="U"
+                    stroke="var(--stroke-0, #2850FE)"
+                    strokeWidth="1.87045"
+                  />
+                </g>
+              </svg>
+            </div>
+            <div
+              className={styles["hidden-systems__node-025"]}
+              data-hidden-systems-art
+            >
+              <svg
+                className={styles["hidden-systems__node-026"]}
+                fill="none"
+                preserveAspectRatio="none"
+                viewBox="0 0 143.622 183.381"
+              >
+                <g id="Group 96">
+                  <rect
+                    fill="var(--fill-0, #2850FE)"
+                    height="177.954"
+                    id="Rectangle 104"
+                    width="143.622"
+                  />
+                  <g id="U">
+                    <path
+                      d="M33.1151 125.043C33.1151 132.156 34.6761 138.476 37.7977 144.003C40.9704 149.53 45.4477 153.88 51.2303 157.053C57.0129 160.174 63.8707 161.734 71.8026 161.734C79.7855 161.734 86.6685 160.174 92.451 157.053C98.2847 153.88 102.736 149.53 105.806 144.003C108.928 138.476 110.489 132.156 110.489 125.043V44.5157H134.285V126.962C134.285 137.964 131.701 147.713 126.532 156.208C121.364 164.652 114.097 171.304 104.732 176.165C95.3676 180.975 84.3911 183.381 71.8026 183.381C59.2651 183.381 48.3138 180.975 38.9491 176.165C29.5844 171.304 22.3177 164.652 17.1493 156.208C11.9807 147.713 9.39633 137.964 9.39633 126.962V44.5157H33.1151V125.043Z"
+                      fill="var(--fill-0, #D9D9D9)"
+                    />
+                    <path
+                      d="M33.1151 125.043C33.1151 132.156 34.6761 138.476 37.7977 144.003C40.9704 149.53 45.4477 153.88 51.2303 157.053C57.0129 160.174 63.8707 161.734 71.8026 161.734C79.7855 161.734 86.6685 160.174 92.451 157.053C98.2847 153.88 102.736 149.53 105.806 144.003C108.928 138.476 110.489 132.156 110.489 125.043V44.5157H134.285V126.962C134.285 137.964 131.701 147.713 126.532 156.208C121.364 164.652 114.097 171.304 104.732 176.165C95.3676 180.975 84.3911 183.381 71.8026 183.381C59.2651 183.381 48.3138 180.975 38.9491 176.165C29.5844 171.304 22.3177 164.652 17.1493 156.208C11.9807 147.713 9.39633 137.964 9.39633 126.962V44.5157H33.1151V125.043Z"
+                      stroke="var(--stroke-0, #2850FE)"
+                    />
+                  </g>
+                </g>
+              </svg>
+            </div>
           </div>
         </div>
       </div>

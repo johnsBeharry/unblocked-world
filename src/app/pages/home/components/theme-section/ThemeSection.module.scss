@@ -92,6 +92,24 @@
   position: relative;
   width: 100%;
   height: vw(640);
+
+  // Must mirror the section height so stacked frames never overlap.
+  @include wideScreen {
+    height: 100vh;
+  }
+
+  // Seam backfill below stacked frames (set by ThemeSectionStack); the next
+  // frame paints over it, so it only shows where a compositor seam would.
+  &[data-theme-section-backfill]::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: inherit;
+    pointer-events: none;
+  }
 }
 
 @include compact-portrait {

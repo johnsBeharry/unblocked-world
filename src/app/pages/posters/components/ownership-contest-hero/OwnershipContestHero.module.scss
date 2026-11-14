@@ -1,4 +1,3 @@
-
 .hero {
   position: relative;
   width: vw(1440);
@@ -7,8 +6,16 @@
   background: #000;
   box-sizing: border-box;
 
-  &, *, *::before, *::after { box-sizing: border-box; }
-  p, h1 { margin: 0; }
+  &,
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+  p,
+  h1 {
+    margin: 0;
+  }
 
   .art {
     position: absolute;
@@ -17,8 +24,18 @@
     width: vw(602);
     height: vw(766.609);
     transform: translate(-50%, -50%);
-    background: #dc91a8;
   }
+
+  // Animated layer: .art keeps the centering transform at every breakpoint,
+  // GSAP slides/fades this inner box after the subtitle reveal finishes.
+  // Hidden from first paint so it never flashes before its turn.
+  .artBox {
+    position: absolute;
+    inset: 0;
+    background: #dc91a8;
+    opacity: 0;
+  }
+
 
   .bar {
     position: absolute;
@@ -30,9 +47,13 @@
     background: #000;
   }
 
-  .title, .subtitle, .dates, .guidelines, .submit {
+  .title,
+  .subtitle,
+  .dates,
+  .guidelines,
+  .submit {
     position: absolute;
-    font-family: 'Inter Local', sans-serif;
+    font-family: "Inter Local", sans-serif;
     font-style: normal;
     font-weight: 600;
     word-break: break-word;
@@ -55,19 +76,50 @@
     display: block;
   }
 
+  // Each glyph sits in a stationary mask (.char) whose edge opens, while the
+  // glyph itself (.charInner) travels a short 30% inside it. The mask never
+  // moves with the glyph. Final mask extends past the line box so descenders
+  // and parentheses stay whole, and keeps the glyph side-bearing room.
+  // The opening edge always travels with the glyph (as in a fixed-window
+  // reveal), and characters overlap as one wave (refs: ~0.01-0.03s per char).
+  // Title: glyph drops from above, mask opens top-to-bottom.
+  // Both start only once fonts are ready (.ready) so no frames are dropped.
   .char {
+    --char-duration: 0.84s;
+    --char-stagger: 0.03s;
+    --char-start: 0s;
+    --char-ease: cubic-bezier(0.455, 0.03, 0.515, 0.955); // GSAP power2.inOut
+
     display: inline-block;
-    overflow: hidden;
-    padding-inline: 0.08em;
-    margin-inline: -0.08em;
+    // Zero-height window parked at the extended top edge: glyph tops are never
+    // cut; the window opens downward from there.
+    clip-path: inset(-0.4em -0.08em calc(100% + 0.4em) -0.08em);
     vertical-align: top;
   }
 
   .charInner {
     display: inline-block;
-    transform: translateY(-110%);
-    animation: poster-title-char 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-    animation-delay: calc(var(--char-index) * 0.035s);
+    transform: translate3d(0, -30%, 0);
+    backface-visibility: hidden;
+  }
+
+  &.ready .char,
+  &.ready .charInner {
+    animation-duration: var(--char-duration);
+    animation-timing-function: var(--char-ease);
+    animation-fill-mode: both;
+    animation-delay: calc(
+      var(--char-start) + var(--char-index) * var(--char-stagger)
+    );
+  }
+
+  &.ready .char {
+    animation-name: poster-char-mask;
+  }
+
+  &.ready .charInner {
+    will-change: transform;
+    animation-name: poster-char-move;
   }
 
   .subtitle {
@@ -82,9 +134,19 @@
     transform: translateX(-50%);
   }
 
+  // Subtitle: glyph rises a short 30%, stationary mask opens bottom-to-top,
+  // entering while the title wave is still settling.
+  .subtitle .char {
+    --char-duration: 0.7s;
+    --char-stagger: 0.018s;
+    --char-start: 0.45s;
+
+    // Mirrored: window parked at the extended bottom edge, opens upward.
+    clip-path: inset(calc(100% + 0.4em) -0.08em -0.4em -0.08em);
+  }
+
   .subtitle .charInner {
-    transform: translateY(110%);
-    animation-delay: calc(0.5s + var(--char-index) * 0.02s);
+    transform: translate3d(0, 30%, 0);
   }
 
   .dates {
@@ -97,7 +159,8 @@
     white-space: nowrap;
   }
 
-  .guidelines, .submit {
+  .guidelines,
+  .submit {
     left: 50%;
     color: rgba(244, 169, 192, 0.5);
     font-size: vw(40);
@@ -111,16 +174,43 @@
     transform: translateX(-50%);
   }
 
-  .guidelines { top: vw(1486); left: calc(50% + vw(0.5)); }
-  .submit { top: vw(1536); }
+  .guidelines {
+    top: vw(1486);
+    left: calc(50% + vw(0.5));
+  }
+  .submit {
+    top: vw(1536);
+  }
 }
 
-@keyframes poster-title-char {
-  to { transform: translateY(0); }
+// Shared by title and subtitle. Final inset matches the outer .char mask so
+// descenders and parentheses stay whole.
+// Final mask inset; only the opening edge animates, the mask stays in place.
+@keyframes poster-char-mask {
+  to {
+    clip-path: inset(-0.4em -0.08em);
+  }
+}
+
+@keyframes poster-char-move {
+  to {
+    transform: translate3d(0, 0, 0);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .charInner {
+  .hero .artBox {
+    opacity: 1;
+  }
+
+  .hero .char,
+  .hero.ready .char {
+    animation: none;
+    clip-path: inset(-0.4em -0.08em);
+  }
+
+  .hero .charInner,
+  .hero.ready .charInner {
     animation: none;
     transform: none;
   }
@@ -181,8 +271,14 @@
     color: #7a5460;
   }
 
-  .hero .guidelines { top: vw(1021); left: calc(50% - vw(0.75)); }
-  .hero .submit { top: vw(1071.5); left: calc(50% + vw(0.5)); }
+  .hero .guidelines {
+    top: vw(1021);
+    left: calc(50% - vw(0.75));
+  }
+  .hero .submit {
+    top: vw(1071.5);
+    left: calc(50% + vw(0.5));
+  }
 }
 
 @include mobile {
@@ -241,6 +337,10 @@
     line-height: 0.9;
   }
 
-  .hero .guidelines { top: calc(100vw * 544 / 375); }
-  .hero .submit { top: calc(100vw * 573 / 375); }
+  .hero .guidelines {
+    top: calc(100vw * 544 / 375);
+  }
+  .hero .submit {
+    top: calc(100vw * 573 / 375);
+  }
 }

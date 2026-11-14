@@ -2,6 +2,26 @@
 
 ## Unreleased
 
+- Changed FooterBrand reveal triggering from scroll-progress checks to a footer-end sentinel observed by `IntersectionObserver`; the mask animation now starts only when the Footer bottom reaches the browser bottom.
+- Fixed the FooterBrand initial render flash by defining hidden mask opacity and scale in SCSS before the mount effect runs; lines now remain invisible until the 80% scroll trigger.
+- Fixed the FooterBrand one-shot reveal lifecycle: masks now reset per page mount, the timeline is fully cleaned up on route changes, layout/font readiness is rechecked, and the reveal starts at 80% document scroll progress (20% before the bottom).
+- Switched `OwnershipJury` descriptions to the shared `RevealText` component with per-line wrappers and active-slot `play` control.
+- Added six jury-specific description states to `OwnershipJury`; the active description reveals on jury-slot changes and supports a `descriptions` prop with the existing copy as a safe fallback.
+- Updated `OwnershipJury` label state so completed and active jury names stay at opacity 1, while only future names remain at 0.5; reverse scrolling fades names back when they become future slots again.
+- Added an overwrite-safe fade transition when the active `OwnershipJury` label changes, preserving direct scroll control for its progress bar and portrait curtain clip.
+- Moved the `OwnershipJury` base border and scrubbed progress bar from below each name to above its label while preserving the same scroll timing.
+- Changed `OwnershipJury` to render one portrait layer per jury member, begin the next portrait curtain transition at 70% of each equal slot, and derive the total pinned distance as six viewport heights (`600vh`).
+- Extended the `OwnershipJury` pinned scroll sequence to `300vh` and added a multi-layer blind-fold curtain mask over the portrait, with bottom-to-top mask strips scaling away in real time with scroll progress.
+- Reworked `OwnershipJury` into a desktop pinned `ScrollTrigger` sequence over `200vh`: each jury row receives an equal scroll-time progress bar, name opacity activates at row start, and the portrait reveals with a scroll-scrubbed vertical blind-fold scale.
+- Corrected the `OwnershipReferences` pin release threshold to 20% above the browser bottom (`80%` viewport height from the top), matching the supplied reference position.
+- Made the `OwnershipReferences` pin end distance account for each poster's parallax speed, releasing only after the slowest/farthest poster's bottom edge has crossed above the 20% viewport threshold.
+- Changed the `OwnershipReferences` pin end marker to the bottom edge of the farthest poster at `20%` viewport-top, keeping the pinned phase active until that poster has fully cleared the threshold.
+- Kept `OwnershipReferences` posters moving during the pinned phase by deriving their parallax position from the natural scroll distance relative to the ScrollTrigger start instead of the pinned section's fixed viewport top.
+- Fixed `OwnershipReferences` pin cleanup and changed its ScrollTrigger end boundary to release when the last poster reaches 20% from the top of the viewport.
+- Scoped `HeroArtwork` scroll animation queries to each component instance, preventing the homepage Hero animation from transforming the static Footer artwork.
+- Added the `HeroArtwork` `disableScrollAnimation` prop; when enabled, the component skips scroll/resize animation setup and resets artwork transforms to their neutral state.
+- Made `src/styles/_functions.scss` available to every SCSS module through Vite Sass `additionalData`, then removed the repeated per-module `@use` imports.
+- Moved `HeroArtwork` into `src/app/components/hero-artwork` so it can be reused by homepage and other app-level components without page-specific coupling; preserved its JSX, SCSS, geometry, and animation behavior.
 - Restored the homepage animation trigger after removing the startup loader by setting `body[data-page-phase="content"]` from `App` for every route.
 - Changed FooterBrand mask reveal to start at 90% document scroll progress, giving the animation the final 10% of the scroll range before the page end.
 - Added a subtle 12px upward slide to the FooterBrand mask reveal, synchronized with its existing bottom-to-top stagger.

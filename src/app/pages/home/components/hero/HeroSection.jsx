@@ -1,8 +1,7 @@
-import React from "react";
-import styles from "./HeroSection.module.scss";
-import { HeroArtwork } from "../hero-artwork/HeroArtwork.jsx";
 import { RevealText } from "../../../../../components/RevealText/RevealText.jsx";
 import { BrandLogo } from "../../../../components/logo/index.jsx";
+import { HeroArtwork } from "../../../../components/hero-artwork/HeroArtwork.jsx";
+import styles from "./HeroSection.module.scss";
 
 export function HeroSection({ reveal = true }) {
   return (

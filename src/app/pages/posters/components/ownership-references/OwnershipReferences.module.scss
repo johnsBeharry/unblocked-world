@@ -1,47 +1,50 @@
-@use '../../../../../styles/functions' as *;
-
 .references {
   position: relative;
   width: vw(1440);
-  height: vw(1000);
+  max-height: vw(1000);
+  height: 100vh;
   overflow: clip;
   background: #000;
 
-  &, *, *::before, *::after { box-sizing: border-box; }
-  p { margin: 0; }
-}
-
-.heading {
-  position: absolute;
-  top: calc(50% - vw(200));
-  left: 50%;
-  color: #dc91a8;
-  font-family: 'Inter Local', sans-serif;
-  font-size: vw(164);
-  font-style: normal;
-  font-weight: 600;
-  line-height: 0;
-  letter-spacing: vw(-9.84);
-  text-align: center;
-  white-space: nowrap;
-  word-break: break-word;
-  transform: translateX(-50%);
-  mix-blend-mode: difference;
-
-  p { line-height: .9; }
+  &,
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+  p {
+    margin: 0;
+  }
 }
 
 .poster {
   position: absolute;
   width: vw(335);
   overflow: clip;
+  z-index: 5;
   background: #3b3b3b;
 }
 
-.poster1 { top: vw(108); left: vw(20); height: vw(473.855); }
-.poster2 { top: vw(765); left: calc(16.67% + vw(17)); height: vw(474.067); }
-.poster3 { top: vw(188); left: calc(50% + vw(10)); height: vw(474.029); }
-.poster4 { top: vw(848); left: calc(66.67% + vw(7)); height: vw(471.071); }
+.poster1 {
+  top: vw(108);
+  left: vw(20);
+  height: vw(473.855);
+}
+.poster2 {
+  top: vw(765);
+  left: calc(16.67% + vw(17));
+  height: vw(474.067);
+}
+.poster3 {
+  top: vw(188);
+  left: calc(50% + vw(10));
+  height: vw(474.029);
+}
+.poster4 {
+  top: vw(848);
+  left: calc(66.67% + vw(7));
+  height: vw(471.071);
+}
 
 .imageFrame {
   position: absolute;
@@ -89,20 +92,44 @@
   transform: translate(-50%, -50%);
 }
 
-.description {
+.textContainer {
   position: absolute;
-  top: vw(640);
-  left: calc(50% - vw(0.5));
-  width: vw(335);
+  width: 100%;
+  height: 100%;
+  display: flex;
   color: #dc91a8;
-  font-family: 'Inter Local', sans-serif;
-  font-style: normal;
-  line-height: 1.02;
-  letter-spacing: vw(-0.8);
-  text-align: center;
-  word-break: break-word;
-  transform: translateX(-50%);
-  mix-blend-mode: difference;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .heading {
+    z-index: 2;
+    position: relative;
+    font-size: vw(164);
+    font-style: normal;
+    font-weight: 600;
+    line-height: 0;
+    letter-spacing: -0.06em;
+    text-align: center;
+    white-space: nowrap;
+    word-break: break-word;
+    mix-blend-mode: difference;
+
+    p {
+      line-height: 0.9;
+    }
+  }
+
+  .description {
+    margin-top: vw(44);
+    width: vw(335);
+    font-size: vw(20);
+    line-height: 1.02;
+    text-align: center;
+    word-break: break-word;
+    letter-spacing: -0.04em;
+    mix-blend-mode: difference;
+  }
 }
 
 @include tablet-portrait {

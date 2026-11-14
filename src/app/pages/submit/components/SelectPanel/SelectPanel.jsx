@@ -20,6 +20,7 @@ export function SelectPanel({
 }) {
   const triggerRef = useRef(null)
   const panelRef = useRef(null)
+  const overlayRef = useRef(null)
   const listId = useId()
   const [open, setOpen] = useState(false)
   const closingRef = useRef(null)
@@ -33,7 +34,7 @@ export function SelectPanel({
       return
     }
     if (closingRef.current) return
-    closingRef.current = gsap.to(panel, {
+    closingRef.current = gsap.to([panel, overlayRef.current], {
       opacity: 0, duration: 0.3, ease: 'power1.out',
       onComplete: () => {
         closingRef.current = null
@@ -86,8 +87,10 @@ export function SelectPanel({
       yPercent: 0, duration: 0.8, ease: 'power3.out',
       onComplete: () => gsap.set(panel, { clearProps: 'transform' }),
     })
+    const dim = gsap.fromTo(overlayRef.current, { opacity: 0 }, { opacity: 1, duration: 0.5, ease: 'power1.out' })
     return () => {
       tween.kill()
+      dim.kill()
       closingRef.current?.kill()
       closingRef.current = null
     }
@@ -123,6 +126,9 @@ export function SelectPanel({
         {value || label}
       </button>
       {open && createPortal(
+        <>
+        {/* Dim layer (#00000066); clicking it closes the panel. */}
+        <div ref={overlayRef} className={styles.overlay} aria-hidden="true" />
         <div ref={panelRef} className={styles.panel} data-lenis-prevent>
           <div className={styles.header}>
             <p className={styles.title}>{label}</p>
@@ -147,7 +153,8 @@ export function SelectPanel({
           ) : (
             <p className={styles.empty}>{emptyMessage}</p>
           )}
-        </div>,
+        </div>
+        </>,
         document.body,
       )}
     </>

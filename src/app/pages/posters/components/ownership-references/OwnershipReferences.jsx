@@ -55,12 +55,16 @@ export function OwnershipReferences() {
         ease: "power3.out",
       }),
     );
-    const mouseScale = posters.map((poster) =>
-      gsap.quickTo(poster, "scale", {
-        duration: 0.5,
-        ease: "power3.out",
-      }),
-    );
+    // quickTo needs individual properties (the `scale` alias cannot be
+    // reset and only warns), so scaleX and scaleY move together.
+    const mouseScale = posters.map((poster) => {
+      const toX = gsap.quickTo(poster, "scaleX", { duration: 0.5, ease: "power3.out" });
+      const toY = gsap.quickTo(poster, "scaleY", { duration: 0.5, ease: "power3.out" });
+      return (value) => {
+        toX(value);
+        toY(value);
+      };
+    });
     let posterProfiles = [];
     let pinTrigger;
     let frame;

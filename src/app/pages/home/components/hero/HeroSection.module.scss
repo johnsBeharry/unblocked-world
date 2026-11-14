@@ -1,4 +1,3 @@
-
 .hero {
   position: relative;
   height: vw(1508);
@@ -37,5 +36,96 @@
     width: vw(690);
     position: absolute;
     grid-template-columns: 1fr 1fr;
+  }
+
+  // Compact-portrait copy (tablet/mobile mockups); desktop keeps .content.
+  .intro {
+    display: none;
+  }
+}
+
+// Explore Themes is a desktop-only CTA.
+@include tablet {
+  .hero .explore-themes-link {
+    display: none;
+  }
+}
+
+@include mobile {
+  .hero .explore-themes-link {
+    display: none;
+  }
+}
+
+// Tablet/mobile portrait mockups (864 × 1238 and 375 × 668): full-width logo,
+// compact artwork below it, then heading, copy and Submit Work stacked.
+@include compact-portrait {
+  .hero {
+    height: vw(1238);
+
+    svg {
+      top: vw(60);
+      width: vw(824);
+    }
+
+    .submit-work-link {
+      top: vw(1178);
+    }
+
+    .content {
+      display: none;
+    }
+
+    // Block flow (not grid): a grid track would grow to the nowrap
+    // RevealText lines and change the line breaks.
+    .intro {
+      display: block;
+      top: vw(990);
+      left: vw(20);
+      width: vw(335);
+      position: absolute;
+      line-height: 100%;
+
+      p {
+        margin: vw(24) 0 0;
+      }
+    }
+
+    .intro__title {
+      margin: 0;
+      font-size: inherit;
+      font-weight: 600;
+      line-height: inherit;
+    }
+  }
+}
+
+@include mobile {
+  .hero {
+    height: vw(1336);
+    // Mobile text is 20px; re-declare line-height so it is not the
+    // inherited 10px body value.
+    font-size: vw(40);
+    line-height: 102%;
+
+    svg {
+      top: vw(120);
+      width: vw(670);
+    }
+
+    .submit-work-link {
+      top: vw(1256);
+      left: vw(40);
+    }
+
+    .intro {
+      top: vw(880);
+      left: vw(40);
+      width: vw(670);
+
+      p {
+        margin-top: vw(48);
+      }
+    }
   }
 }

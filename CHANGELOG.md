@@ -2,6 +2,30 @@
 
 ## Unreleased
 
+- Fixed a blue strip below the footer on mobile and the copyright line that never appeared: text at the very bottom of the page now reveals when you reach the end.
+- Mobile footer now matches the latest design: UNBLOCKED logo at the top, corrected spacing between the logo, introduction and link groups, and the copyright row 20px from the bottom. The Submit Work section above the footer is unchanged.
+- Mobile menu now closes smoothly: the links fade up and out, then the curtain strips retract upward before the page is revealed.
+- Posters page References: the posters now grow slightly as the pointer approaches them, as intended (the effect was not applied before).
+- Fixed a thin yellow line under the last theme section on tablet and mobile.
+- Posters page References section on mobile and tablet now follows the new design and fills the full screen: four posters in the corners (with the right crops), the large centred "Sec.03 (References)" title and the description beneath it. Previously the mobile layout rendered at half size and the tablet title was oversized and off-centre.
+- Fixed the homepage introduction text on mobile and tablet appearing instantly without its reveal animation when the font finished loading during the opening animation; it now reveals together with the heading.
+- Removed animation warnings on the homepage (opening animation settings and the Submit Work artwork on tablet and mobile); all text reveals verified on mobile, tablet and desktop.
+- Theme sections on mobile: the question now uses the same 20px size as the description and wraps onto two lines when it is long.
+- Mobile footer follows the new design: larger 20px text, the introduction at the top, Explore and Socials side by side, Question Everything with the email, and the copyright with a "(↑)" back-to-top link on the bottom row; the brand strip animation now sits below the content. The "Social" label is now "Socials".
+- Theme sections on mobile: descriptions use the full width again.
+- Theme sections on tablet and mobile now always pin with their top edge at the top of the screen (the number and title are no longer cut off), and tablet sections use the visible screen height.
+- Theme sections on tablet and mobile now pin simply: each section sticks as soon as its top reaches the top of the screen and the next one slides over it, without the slow drift or stacked headers used on desktop.
+- Theme sections on tablet: long questions now wrap onto two lines within their own column, aligned with the top of the description.
+- Homepage theme sections now fill the full screen height on tablets.
+- Homepage theme sections (Ownership, Permanence, Energy, Peers) now have proper tablet and mobile layouts: number and title stacked, the label row and rule, a full-width artwork box, and the question and description below it (side by side on tablet, stacked on mobile). Tablet follows the new design; long titles and questions now fit on phones instead of running off-screen.
+- Description line breaks meant for desktop no longer appear on tablet and mobile, so the text wraps naturally there.
+- Header background is now hidden at the top of every page and only fades in after scrolling more than 5px, so it never covers the UNBLOCKED logo in the hero (desktop, tablet and mobile).
+- Tablet header links are now positioned exactly as in the design.
+- Homepage hero on tablet and mobile (portrait) now follows the new design: the UNBLOCKED logo spans the full width, the artwork sits below it, followed by the heading "The World Isn’t Inevitable", a short introduction and the Submit Work link. The artwork proportions were corrected to match the design, and the copy now plays with the opening animation instead of waiting for a scroll. Explore Themes stays desktop-only. The desktop layout is unchanged.
+- Submit flow now follows the official submission form: steps are Join, Posters and Submit; the overview lists the current process and rules; Join asks for email, full name, country, Instagram, a short bio, an optional profile photo and agreement to the Terms of Service and Privacy Policy (with a sign-in option for returning artists and a six-digit code with resend and edit options); Your Entries supports drag and drop and groups posters into In Progress and Submitted; Add a Poster uses the official limits, a longer concept field with a character counter, the official file guidance and up to 3 supporting files; Submit lets you choose which posters to send and confirm the three submission terms; the confirmation screen offers to submit another poster or view your entries. Telephone, city and website fields were removed.
+- Fixed email code verification failing with "Could not load the contest" on the second step.
+- Submit page: every step (Contact, Poster Entries, Add a Poster, Consent, Success) now leaves room at the bottom so its last fields and buttons stay fully visible above the bottom fade when scrolled to the end, on desktop and mobile.
+- Submit dropdown panel now dims the page behind it with a 40% black overlay that fades in and out with the panel; clicking the overlay closes the panel.
 - Submit dropdown panel is now pinned to the bottom of the browser, slides up smoothly when opened and fades out when closed. The City field stays locked until a country is chosen.
 - Submit form dropdowns (Country, City, Year Designed) now open a full option panel over the form, with the field title, a Close link and ruled option rows. Country lists all countries, City lists the main cities of the chosen country (with an "Other" option to type a city), and Year Designed lists 2026 to 1950. City data is based on GeoNames (CC BY 4.0).
 - Header now slides up out of view while scrolling down and slides back in as soon as you scroll up (always visible at the top of the page and when tabbing into it).
@@ -416,3 +440,12 @@
 - Fixed the SubmitPage Enter Submission CTA to remain viewport-fixed while the content column scrolls, with desktop placement centered in the right content column and responsive tablet/mobile centering.
 - Added bottom breathing room to SubmitPage content (`vw(138)` on desktop/tablet) so the final content can scroll clear of the fixed CTA and gradient overlay.
 - Removed duplicate page-local HeroArtwork files after branch integration; the app-level reusable HeroArtwork remains the single source used by HeroSection and SubmitWorkSection.
+- Added the mobile fullscreen navigation menu with centered route links, Close/Escape handling, body-scroll locking, and the Question Everything contact footer.
+- Matched the mobile menu link typography to the supplied Inter Semi Bold specification with 600 weight, 90% leading, -4% tracking, and centered alignment.
+- Added a bottom-to-top strip curtain before the mobile menu content reveal, then staggered the menu links and contact copy through the shared RevealText component; reopening resets and replays the sequence.
+- Changed mobile menu close behavior to fade the revealed content out briefly before unmounting the overlay, while leaving the opening curtain sequence unchanged.
+- Updated mobile menu theming to use each route's Header color, removed close fade-out, preserved the menu under the higher PageCurtain during internal navigation, and stopped Lenis plus body scrolling while open.
+- Reworked the mobile Footer layout to match the supplied reference and hid the animated brand curtain lines on mobile while preserving the desktop footer treatment.
+- Corrected mobile Footer spacing by restoring the top logo inset and anchoring the copyright/back-to-top row near the bottom edge of the footer reference.
+- Tightened mobile Footer vertical rhythm and aligned the copyright/back-to-top grid content to the bottom edge to remove the remaining visible spacing ghost.
+- Fixed the mobile Footer bottom-row selector so copyright and back-to-top alignment actually applies to the second `.main__content` child.

@@ -51,9 +51,12 @@ function TabletArtwork() {
   );
 }
 
+// compactArtwork: also render the compact-portrait (tablet/mobile) artwork,
+// shown instead of the desktop one at those breakpoints (home hero only).
 export function HeroArtwork({
   disableScrollAnimation = false,
   scrollReveal = false,
+  compactArtwork = false,
 }) {
   const artworkRef = React.useRef(null);
 
@@ -198,6 +201,7 @@ export function HeroArtwork({
       >
         <HeroDesktopArtwork />
       </div>
+      {compactArtwork && <TabletArtwork />}
     </>
   );
 }

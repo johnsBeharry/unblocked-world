@@ -13,7 +13,9 @@
   white-space: nowrap;
 }
 
-.measure [data-reveal-break] {
+// Zero specificity: a consumer class on a responsive <br> (display: none at
+// some breakpoints) always wins.
+:where(.measure [data-reveal-break]) {
   display: block;
 }
 

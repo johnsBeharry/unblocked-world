@@ -10,6 +10,8 @@
 // like the page curtain; GSAP then wipes the black column in from the right.
 .introPending { background: #dc91a8; }
 .introPending .content { clip-path: inset(0% 0% 0% 100%); }
+// Bottom fade over the form column. Every step keeps its last content above it:
+// bottom padding vw(138) desktop/tablet (114 fade + 24), vw(260) mobile.
 .content::after { position: absolute; z-index: 1; bottom: 0; left: 50%; width: vw(496); height: vw(114); pointer-events: none; content: ''; transform: translateX(-50%); background: linear-gradient(180deg, rgb(0 0 0 / 0) 0%, #000 30.26%); }
 .contentScroll { height: 100%; overflow-y: auto; overscroll-behavior: contain; scroll-behavior: smooth; scrollbar-width: none; }
 .contentScroll::-webkit-scrollbar { display: none; }
@@ -18,7 +20,6 @@
 .content h2 { font-size: vw(40); font-weight: 600; letter-spacing: vw(-1.6); line-height: 1.02; }
 .titleMobile { display: none; }
 .intro { margin-top: vw(47) !important; letter-spacing: vw(-0.8); line-height: 1.02; }
-.introMobile { display: none; }
 .content h3 { margin-top: vw(54) !important; font-weight: 600; letter-spacing: vw(-0.8); line-height: 1.02; }
 .contentInner ol { margin-top: vw(24) !important; padding-left: vw(30); list-style: decimal; letter-spacing: vw(-0.8); line-height: 1.6; }
 .contentInner li { padding-left: vw(1); }
@@ -58,8 +59,6 @@
   .contentInner { width: vw(660); margin-left: vw(40); padding-top: vw(206); padding-bottom: vw(260); }
   .titleDesktop { display: none; }
   .titleMobile { display: inline; }
-  .introDesktop { display: none; }
-  .introMobile { display: block; }
   .content h2 { font-size: vw(80); letter-spacing: vw(-3.2); }
   .intro { margin-top: vw(94) !important; font-size: vw(40); letter-spacing: vw(-1.6); }
   .content h3 { margin-top: vw(108) !important; font-size: vw(40); letter-spacing: vw(-1.6); }

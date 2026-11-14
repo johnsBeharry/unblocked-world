@@ -19,6 +19,7 @@ export default function SubmitWorkSection({
       <HeroArtwork
         className={styles["submit-work__el-001"]}
         disableScrollAnimation={true}
+        scrollReveal
       />
 
       <div className={styles["submit-work__el-198"]}>

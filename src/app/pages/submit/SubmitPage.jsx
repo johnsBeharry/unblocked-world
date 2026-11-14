@@ -1,4 +1,5 @@
-import React, { useRef, useState } from 'react'
+import React, { useLayoutEffect, useRef, useState } from 'react'
+import { gsap } from 'gsap'
 import styles from './SubmitPage.module.scss'
 import { ContactInformationPanel } from './components/ContactInformationPanel/ContactInformationPanel.jsx'
 import { SubmitProgress } from './components/SubmitProgress/SubmitProgress.jsx'
@@ -8,6 +9,7 @@ import { PosterDetailsPanel } from './components/PosterDetailsPanel/PosterDetail
 import { ConsentPanel } from './components/ConsentPanel/ConsentPanel.jsx'
 import { SubmissionSuccessPanel } from './components/SubmissionSuccessPanel/SubmissionSuccessPanel.jsx'
 import { useSubmitLenis } from './hooks/useSubmitLenis.js'
+import { useSubmitIntro } from './hooks/useSubmitIntro.js'
 import { RevealText } from '../../../components/RevealText/RevealText.jsx'
 import { RevealRow } from '../../../components/RevealRow/RevealRow.jsx'
 import {
@@ -46,9 +48,56 @@ const demoPosterEntries = [
   },
 ]
 
-function SubmitArtwork() {
+// Entry, once the black column is 80% of the way in: the box is revealed by
+// a mask moving right → left, then every bar grows from flat (scale 0 on its
+// thickness axis: top/bottom arms vertically, left/right arms horizontally) to
+// full size while fading in. Never short → long.
+// Ease-out so the box moves at once, carrying on the panel's momentum (it
+// reads as pushed by the panel instead of waiting for it).
+const ART_BOX = { duration: 0.9, ease: 'power3.out' }
+const ART_BAR = { duration: 0.9, ease: 'power2.inOut' }
+const ART_BARS_AT = 0.75 // bars start as the box mask settles
+const BOX_HIDDEN = 'inset(0% 0% 0% 100%)'
+const BOX_SHOWN = 'inset(0% 0% 0% 0%)'
+
+// Thickness axis = shorter side of the bar's own (untransformed) box; this holds
+// for the rotate(±90) rects of the side arms too.
+const thicknessAxis = (bar) => {
+  const box = bar.getBBox()
+  return box.width > box.height ? 'scaleY' : 'scaleX'
+}
+
+const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+// The entry timeline is built paused before paint and handed to the page via
+// `introRef`; useSubmitIntro plays it at the right moment of the panel slide.
+function SubmitArtwork({ introRef }) {
+  const artworkRef = useRef(null)
+
+  useLayoutEffect(() => {
+    const artwork = artworkRef.current
+    if (!artwork || reducedMotion()) return undefined
+    const bars = Array.from(artwork.querySelectorAll('svg path, svg rect'))
+    gsap.set(artwork, { clipPath: BOX_HIDDEN })
+    bars.forEach((bar) => gsap.set(bar, { [thicknessAxis(bar)]: 0, opacity: 0, transformOrigin: '50% 50%' }))
+    const timeline = gsap.timeline({ paused: true })
+      // Drop the finished mask so the box edges render exactly as without it.
+      .to(artwork, { clipPath: BOX_SHOWN, ...ART_BOX, onComplete: () => gsap.set(artwork, { clearProps: 'clipPath' }) })
+      .to(bars, { scaleX: 1, scaleY: 1, opacity: 1, ...ART_BAR }, ART_BOX.duration * ART_BARS_AT)
+    introRef.current = timeline
+
+    return () => {
+      timeline.kill()
+      if (introRef.current === timeline) introRef.current = null
+      // Restore values only: clearing props would also drop the bars' own
+      // SVG rotate() transforms.
+      gsap.set(artwork, { clearProps: 'clipPath' })
+      gsap.set(bars, { scaleX: 1, scaleY: 1, opacity: 1 })
+    }
+  }, [introRef])
+
   return (
-    <div className={styles.artwork} aria-hidden="true">
+    <div ref={artworkRef} className={styles.artwork} aria-hidden="true">
       <svg className={styles.pattern} width="237" height="237" viewBox="0 0 237 237" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M75.9941 59.5742H160.203V76.0053H75.9941V59.5742Z" fill="#DC91A8" />
         <rect x="75.9941" y="39.0312" width="84.2092" height="12.3233" fill="#DC91A8" />
@@ -94,6 +143,9 @@ export function SubmitPage({ initialStep = 0 }) {
   const [submissionError, setSubmissionError] = useState('')
   const contentScrollRef = useRef(null)
   useSubmitLenis(contentScrollRef, step)
+  const contentRef = useRef(null)
+  const artIntroRef = useRef(null)
+  const introPending = useSubmitIntro(contentRef, artIntroRef)
   const showContact = step === 1
   const showPoster = step === 2
   const showPosterDetails = step === 3
@@ -249,14 +301,14 @@ export function SubmitPage({ initialStep = 0 }) {
   }
 
   return (
-    <main className={`${styles.page} ${showPosterDetails ? styles.editing : ''} ${showSuccess ? styles.success : ''}`} data-name="submit-index">
+    <main className={`${styles.page} ${showPosterDetails ? styles.editing : ''} ${showSuccess ? styles.success : ''} ${introPending ? styles.introPending : ''}`} data-name="submit-index">
       <section className={styles.identity} aria-label="Ownership theme">
         <a className={styles.homeLink} href="/">(←) Home</a>
-        <SubmitArtwork />
+        <SubmitArtwork introRef={artIntroRef} />
         <RevealText as="h1">Ownership</RevealText>
       </section>
 
-      <section className={styles.content} aria-labelledby="submit-title">
+      <section ref={contentRef} className={styles.content} aria-labelledby="submit-title">
         {step > 0 && !showSuccess && !showPosterDetails && <SubmitProgress activeStep={showConsent ? 3 : step} compact />}
         {showPosterDetails && <SubmitProgress activeStep={2} compact lineOnly />}
         {showSuccess && <SubmitProgress activeStep={3} compact lineOnly hideBar />}

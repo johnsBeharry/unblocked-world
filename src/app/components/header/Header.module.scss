@@ -4,17 +4,39 @@
   inset: 0;
   z-index: 20;
   pointer-events: none;
+  transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+// Scrolling down: the 60px bar and its items slide up out of view.
+.scrolledAway {
+  transform: translateY(-60px);
+}
+
+// Bar behind the header items; its background follows the section underneath
+// (set by Header.jsx).
+.bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px; // fixed per user, all breakpoints
+  pointer-events: none;
+  transition: background-color 0.25s linear;
 }
 
 .homeColor { color: #d9d9d9; }
 .posterColor { color: #f4a9c0; }
 .guidelinesColor { color: #fff0f0; }
 
+// Items are vertically centred in the 60px bar.
 .nav,
 .home,
 .menu {
   position: absolute;
-  top: vw(20);
+  top: 0;
+  height: 60px;
+  display: flex;
+  align-items: center;
   color: inherit;
   font-family: 'Inter Local', sans-serif;
   letter-spacing: vw(-0.8);
@@ -29,10 +51,12 @@
 
 .menu { display: none; }
 
+@include mobile {
+  .menu { display: flex; }
+}
+
 .nav {
   right: vw(20);
-  display: flex;
-  align-items: center;
   gap: vw(56);
   align-content: stretch;
 }
@@ -70,7 +94,6 @@
 
   .home,
   .menu {
-    top: vw(40);
     font-size: vw(40);
     letter-spacing: vw(-1.6);
     line-height: 1;
@@ -80,7 +103,6 @@
 
   .menu {
     position: absolute;
-    display: block;
     right: vw(42);
     border: 0;
     padding: 0;
@@ -89,5 +111,33 @@
     cursor: pointer;
     font-family: 'Inter Local', sans-serif;
     white-space: nowrap;
+  }
+}
+
+// Light section underneath: dark text (outranks the route colour classes).
+.nav,
+.home,
+.menu {
+  transition: color 0.25s linear;
+}
+
+.header.onLight .nav,
+.header.onLight .home,
+.header.onLight .menu {
+  color: #101010;
+}
+
+// Intro target: inline-block so it can be translated inside its link.
+.header [data-header-intro] {
+  display: inline-block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header,
+  .bar,
+  .nav,
+  .home,
+  .menu {
+    transition: none;
   }
 }

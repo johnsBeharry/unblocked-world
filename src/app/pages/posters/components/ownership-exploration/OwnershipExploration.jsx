@@ -7,8 +7,8 @@ export function OwnershipExploration() {
     <section className={styles.section} data-name="exploration">
       <div className={styles.intro}>
         <p>
-          <RevealText as="span" className={styles.desktopCopy}>This theme invites creatives to question assumptions about control, authority, freedom, and the relationship between individuals and the things they claim as their own.</RevealText>
-          <RevealText as="span" className={styles.tabletCopy}>This theme invites creatives to question<br />assumptions about control, authority,<br />freedom, and the relationship between<br />individuals and the things they claim as their<br />own.</RevealText>
+          <RevealText highlight as="span" className={styles.desktopCopy}>This theme invites creatives to question assumptions about control, authority, freedom, and the relationship between individuals and the things they claim as their own.</RevealText>
+          <RevealText highlight as="span" className={styles.tabletCopy}>This theme invites creatives to question<br />assumptions about control, authority,<br />freedom, and the relationship between<br />individuals and the things they claim as their<br />own.</RevealText>
         </p>
       </div>
       <div className={styles.label}><RevealText as="p">Sec. 02 (Creative Exploration)</RevealText></div>

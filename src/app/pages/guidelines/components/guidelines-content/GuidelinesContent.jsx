@@ -52,8 +52,8 @@ export function GuidelinesContent() {
       <header className={styles.header}>
         <RevealText as="p" className={styles.introText}>This page explains how to prepare<br />and submit work for the poster<br />contest. The first theme is<br /><u>Ownership</u>.</RevealText>
         <h1 className={`${styles.headline} ${styles.introHeadline}`}>
-          <RevealText as="span" className={styles.introDesktop}>{introduction}</RevealText>
-          <RevealText as="span" className={styles.introTablet}>{introductionLines.map((line, index) => <React.Fragment key={line}>{index > 0 && <br />}{line}</React.Fragment>)}</RevealText>
+          <RevealText highlight as="span" className={styles.introDesktop}>{introduction}</RevealText>
+          <RevealText highlight as="span" className={styles.introTablet}>{introductionLines.map((line, index) => <React.Fragment key={line}>{index > 0 && <br />}{line}</React.Fragment>)}</RevealText>
         </h1>
       </header>
       <div className={styles.contentGrid}>

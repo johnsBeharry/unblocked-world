@@ -19,11 +19,7 @@
 .contentInner ol { margin-top: vw(24) !important; padding-left: vw(30); list-style: decimal; letter-spacing: vw(-0.8); line-height: 1.6; }
 .contentInner li { padding-left: vw(1); }
 .contentInner ul { margin-top: vw(21) !important; padding-left: vw(30); list-style: disc; font-size: vw(16); letter-spacing: vw(-0.70); line-height: 1.62; }
-<<<<<<< HEAD
 .submitLink { position: fixed; z-index: 2; bottom: vw(24); left: 70%; display: block; width: max-content; margin: 0; border: 0; padding: 0; transform: translateX(-50%); background: transparent; color: inherit; cursor: pointer; font: inherit; letter-spacing: vw(-0.8); line-height: 1.02; text-decoration: none; }
-=======
-.submitLink { display: block; width: max-content; margin-top: vw(81); margin-left: vw(108); border: 0; padding: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; letter-spacing: vw(-0.8); line-height: 1.02; text-decoration: none; }
->>>>>>> origin/main
 .editorActions { position: absolute; top: vw(24); right: vw(24); left: vw(24); z-index: 3; display: flex; justify-content: space-between; color: #dc91a8; }
 .editorActions button { border: 0; padding: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; letter-spacing: vw(-0.8); line-height: 1.02; }
 .editorActions button:disabled { cursor: wait; opacity: 0.5; }

@@ -35,11 +35,7 @@ export function ContactInformationPanel({ value = {}, onChange, verification = {
           ))}
           {verification.status !== 'idle' && (
             <div className={styles.verification}>
-<<<<<<< HEAD
               <RevealRow as="label" className={styles.field} contentClassName={styles.fieldContent} lineClassName={styles.fieldRule}>
-=======
-              <label className={styles.field}>
->>>>>>> origin/main
                 <span className={styles.fieldLabel}>Email Verification Code</span>
                 <input
                   className={styles.fieldValue}
@@ -50,13 +46,8 @@ export function ContactInformationPanel({ value = {}, onChange, verification = {
                   onChange={event => onVerificationChange?.({ code: event.target.value.replace(/\D/g, '').slice(0, 6) })}
                   placeholder="6-digit code"
                 />
-<<<<<<< HEAD
               </RevealRow>
               <RevealText as="p" className={styles.verificationHint}>Enter the code sent to your email, then continue.</RevealText>
-=======
-              </label>
-              <p className={styles.verificationHint}>Enter the code sent to your email, then continue.</p>
->>>>>>> origin/main
               {verification.error && <p className={styles.error} role="alert">{verification.error}</p>}
             </div>
           )}

@@ -19,6 +19,13 @@ const INTRO = {
   artwork: 1, // shared artwork intro (hairlines → thicken), ends ~2.85s
   links: 1.6, // RevealText delay; 1.2s line reveal ends at ~2.8s
 };
+// Copy on the first screen plays with the intro instead of waiting for the
+// viewport observer (on tablet/mobile it sits in the bottom 10% of the view,
+// where the observer would hold it until the user scrolls).
+const firstScreen = { delay: INTRO.links, play: true };
+
+// Timeline position (`at`) is not a tween property; GSAP warns about it.
+const tween = ({ at, ...vars }) => vars;
 
 function useHeroIntro(rootRef, enabled) {
   useLayoutEffect(() => {
@@ -35,7 +42,6 @@ function useHeroIntro(rootRef, enabled) {
       document.querySelectorAll("[data-header-intro]"),
     );
     const headerLinks = headerLabels.map((label) => label.parentElement);
-    const artwork = root.querySelector("[data-hero-artwork]");
 
     // Hidden state before first paint. Each layer starts as a ~1px line.
     gsap.set(logo, { yPercent: -105 });
@@ -48,7 +54,8 @@ function useHeroIntro(rootRef, enabled) {
       }),
     );
     gsap.set(headerLabels, { yPercent: -110 });
-    const artworkIntro = prepareArtworkIntro(artwork);
+    // Only the visible artwork (desktop or compact) has measurable rows.
+    const artworkIntro = prepareArtworkIntro(root);
     // Settled: drop leftover transforms so everything renders exactly as
     // static (the logo path and the layers have no transforms of their own).
     const settle = () => {
@@ -58,12 +65,12 @@ function useHeroIntro(rootRef, enabled) {
     };
     const timeline = gsap
       .timeline({ onComplete: settle })
-      .to(logo, { yPercent: 0, ...INTRO.logo }, INTRO.logo.at)
+      .to(logo, { yPercent: 0, ...tween(INTRO.logo) }, INTRO.logo.at)
       .to(
         headerLabels,
         {
           yPercent: 0,
-          ...INTRO.header,
+          ...tween(INTRO.header),
           onComplete: () => gsap.set(headerLinks, { clearProps: "clipPath" }),
         },
         INTRO.header.at,
@@ -90,7 +97,7 @@ export function HeroSection({ reveal = true }) {
           className={styles["submit-work-link"]}
           href="/submit"
           enabled={reveal}
-          delay={INTRO.links}
+          {...firstScreen}
         >
           Submit Work (→)
         </RevealText>
@@ -100,9 +107,24 @@ export function HeroSection({ reveal = true }) {
           data-explore-themes
           href="#ownership"
           enabled={reveal}
-          delay={INTRO.links}
+          {...firstScreen}
         >
           (↓) Explore Themes
+        </RevealText>
+      </div>
+      <div className={styles["intro"]}>
+        <RevealText
+          as="h2"
+          className={styles["intro__title"]}
+          enabled={reveal}
+          {...firstScreen}
+        >
+          The World Isn’t Inevitable
+        </RevealText>
+        <RevealText as="p" enabled={reveal} {...firstScreen}>
+          Everything around us was designed by someone. The systems. The
+          platforms. The institutions. The incentives. The habits. They were
+          built. Which means they can be questioned.
         </RevealText>
       </div>
       <div className={styles["content"]}>
@@ -117,7 +139,7 @@ export function HeroSection({ reveal = true }) {
           something different.
         </RevealText>
       </div>
-      <HeroArtwork />
+      <HeroArtwork compactArtwork />
     </div>
   );
 }

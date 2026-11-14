@@ -1,3 +1,11 @@
+// Full-screen dim layer behind the panel.
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 29;
+  background: #00000066;
+}
+
 // Option panel pinned to the bottom of the browser, aligned with the form
 // column (reference: Country dropdown, 1440 × 918 → top at 327px).
 // --form-left / --form-width are set from the form's live position.

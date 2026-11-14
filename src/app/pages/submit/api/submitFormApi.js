@@ -29,14 +29,21 @@ async function upload(method, path, file) {
 }
 
 export function getContest() { return request('GET', '/contest') }
-export function requestEmailCode(email, profile, termsVersion) {
-  return request('POST', '/codes', { email, profile: {
-    name: profile.name,
-    country: profile.country,
-    instagram: profile.instagram,
-    bio: profile.bio,
-    acceptTerms: termsVersion,
-  } })
+// Join sends the profile (and an optional base64 JPEG photo) with the code
+// request; signing in sends only the email.
+export function requestEmailCode(email, profile, termsVersion, photo) {
+  const payload = { email }
+  if (profile) {
+    payload.profile = {
+      name: profile.name,
+      country: profile.country,
+      instagram: profile.instagram,
+      bio: profile.bio,
+      acceptTerms: termsVersion,
+    }
+    if (photo) payload.photo = photo
+  }
+  return request('POST', '/codes', payload)
 }
 export function verifyEmailCode(email, code) { return request('POST', '/session', { email, code }) }
 export function updateProfile(profile, termsVersion) {

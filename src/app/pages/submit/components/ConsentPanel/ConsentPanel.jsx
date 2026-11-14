@@ -1,28 +1,39 @@
 import React from 'react'
 import styles from './ConsentPanel.module.scss'
 import { RevealText } from '../../../../../components/RevealText/RevealText.jsx'
+import { CheckboxRow } from '../CheckboxRow/CheckboxRow.jsx'
 
-const consents = [
-  { name: 'original', label: 'I confirm this is original work and I have the right to submit it.' },
-  { name: 'terms', label: 'I accept the submission terms.' },
-  { name: 'privacy', label: 'I accept the privacy policy.' },
+// Submit step (copy follows the reference form): pick the posters to send,
+// then accept the three required confirmations.
+export const CONSENTS = [
+  { name: 'original', label: 'The submitted work is original and I hold the rights to it, or have permission from everyone who does.' },
+  { name: 'publicity', label: 'UNBLOCKED may show my submitted work publicly in connection with the contest, with credit to me.' },
+  { name: 'rules', label: 'I have read the contest rules and eligibility.' },
 ]
 
-export function ConsentPanel({ value = {}, onChange, error }) {
+export function ConsentPanel({ entries = [], picked = {}, onPickChange, value = {}, onChange, error }) {
   return (
     <section className={styles.panel} aria-labelledby="consent-title">
       <div className={styles.inner}>
-        <RevealText as="h1" id="consent-title">Consent</RevealText>
-        <RevealText as="p" className={styles.intro}>Confirm that your submission complies with<br />the programme guidelines.</RevealText>
-        <div className={styles.list}>
-          {consents.map((consent, index) => (
-            <label className={styles.row} key={consent.label}>
-              <input type="checkbox" checked={Boolean(value[consent.name] ?? index === 0)} onChange={event => onChange?.({ [consent.name]: event.target.checked })} />
-              <span>{consent.label}</span>
-            </label>
+        <RevealText as="h1" id="consent-title">Submit</RevealText>
+        <RevealText as="p" className={styles.intro}>Choose the posters to send to the jury, then confirm the terms. You can come back and submit more later.</RevealText>
+        {entries.length > 0 && (
+          <div className={styles.list} role="group" aria-label="Posters to submit">
+            {entries.map(entry => (
+              <CheckboxRow key={entry.id} checked={Boolean(picked[entry.id])} onChange={checked => onPickChange?.({ [entry.id]: checked })}>
+                {entry.title}
+              </CheckboxRow>
+            ))}
+          </div>
+        )}
+        <div className={styles.list} role="group" aria-label="Submission terms">
+          {CONSENTS.map(consent => (
+            <CheckboxRow key={consent.name} required checked={Boolean(value[consent.name])} onChange={checked => onChange?.({ [consent.name]: checked })}>
+              {consent.label}
+            </CheckboxRow>
           ))}
         </div>
-        {error && <p role="alert">{error}</p>}
+        {error && <p className={styles.error} role="alert">{error}</p>}
       </div>
     </section>
   )

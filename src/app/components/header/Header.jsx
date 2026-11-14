@@ -1,4 +1,7 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useLayoutEffect, useRef } from 'react'
+import { gsap } from 'gsap'
+import { RevealText } from '../../../components/RevealText/RevealText.jsx'
+import { getLenis } from '../smooth-scroll/SmoothScroll.jsx'
 import styles from './Header.module.scss'
 
 export const HEADER_COLORS = {
@@ -37,12 +40,15 @@ function backgroundAt(x, y) {
 }
 
 const HIDE_AFTER = 60 // always shown near the top of the page
+const BAR_AFTER = 5 // bar background only after scrolling past this
 const SCROLL_DELTA = 6 // ignore tiny scroll movements (no flicker)
+const MENU_CURTAIN_STRIPS = 20
 
 // Header bar takes the colour of the section underneath; its text switches to
-// dark when that gives better contrast than the route's light colour. It also
-// slides away while scrolling down and returns on scroll up.
-function useAdaptiveHeader(headerRef, barRef, lightText, { onLightClass, hiddenClass }) {
+// dark when that gives better contrast than the route's light colour. The bar
+// is transparent at the top of the page (≤ BAR_AFTER px). The header slides
+// away while scrolling down and returns on scroll up.
+function useAdaptiveHeader(headerRef, barRef, lightText, { onLightClass, hiddenClass, barVisibleClass }) {
   useEffect(() => {
     const header = headerRef.current
     const bar = barRef.current
@@ -64,6 +70,7 @@ function useAdaptiveHeader(headerRef, barRef, lightText, { onLightClass, hiddenC
     const update = () => {
       frame = 0
       updateVisibility()
+      bar.classList.toggle(barVisibleClass, window.scrollY > BAR_AFTER)
       const background = backgroundAt(2, bar.offsetHeight / 2)
       if (background === last) return
       last = background
@@ -87,7 +94,7 @@ function useAdaptiveHeader(headerRef, barRef, lightText, { onLightClass, hiddenC
       window.removeEventListener('resize', schedule)
       window.removeEventListener('load', schedule)
     }
-  }, [headerRef, barRef, lightText, onLightClass, hiddenClass])
+  }, [headerRef, barRef, lightText, onLightClass, hiddenClass, barVisibleClass])
 }
 
 // Each label sits in a `data-header-intro` span so a page intro (home hero)
@@ -95,9 +102,16 @@ function useAdaptiveHeader(headerRef, barRef, lightText, { onLightClass, hiddenC
 export function Header({ color = HEADER_COLORS.home }) {
   const headerRef = useRef(null)
   const barRef = useRef(null)
+  const menuCurtainRef = useRef(null)
+  const menuContentRef = useRef(null)
+  const closingRef = useRef(null)
+  const [menuOpen, setMenuOpen] = React.useState(false)
+  const [menuRevealed, setMenuRevealed] = React.useState(false)
+  const [menuClosing, setMenuClosing] = React.useState(false)
   useAdaptiveHeader(headerRef, barRef, color, {
     onLightClass: styles.onLight,
     hiddenClass: styles.scrolledAway,
+    barVisibleClass: styles.barVisible,
   })
 
   const colorClass = color === HEADER_COLORS.poster
@@ -106,16 +120,124 @@ export function Header({ color = HEADER_COLORS.home }) {
       ? styles.guidelinesColor
       : styles.homeColor
 
+  useEffect(() => {
+    if (!menuOpen) return undefined
+
+    const closeOnEscape = (event) => {
+      if (event.key === 'Escape') closeMenu()
+    }
+    const lenis = getLenis()
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    lenis?.stop()
+    document.addEventListener('keydown', closeOnEscape)
+
+    return () => {
+      document.body.style.overflow = previousOverflow
+      lenis?.start()
+      document.removeEventListener('keydown', closeOnEscape)
+    }
+  }, [menuOpen])
+
+  // Close mirrors the open: the copy lifts and fades, then the strips retract
+  // upward from the bottom one; the menu unmounts (and scroll unlocks) only
+  // when the curtain is gone.
+  const closeMenu = () => {
+    if (closingRef.current) return
+    const strips = Array.from(menuCurtainRef.current?.children ?? [])
+    if (!strips.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setMenuOpen(false)
+      return
+    }
+    gsap.killTweensOf(strips)
+    setMenuClosing(true)
+    closingRef.current = gsap
+      .timeline({
+        onComplete: () => {
+          closingRef.current = null
+          setMenuClosing(false)
+          setMenuOpen(false)
+        },
+      })
+      .to(menuContentRef.current, { autoAlpha: 0, y: -16, duration: 0.35, ease: 'power2.in' }, 0)
+      .to(strips, {
+        scaleY: 0,
+        transformOrigin: '50% 0%',
+        duration: 0.55,
+        stagger: { each: 0.02, from: 'end' },
+        ease: 'power2.inOut',
+      }, 0.15)
+  }
+
+  useEffect(() => () => closingRef.current?.kill(), [])
+
+  useLayoutEffect(() => {
+    if (!menuOpen) {
+      setMenuRevealed(false)
+      return undefined
+    }
+
+    const strips = Array.from(menuCurtainRef.current?.children ?? [])
+    if (!strips.length) return undefined
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reducedMotion) {
+      gsap.set(strips, { scaleY: 1 })
+      setMenuRevealed(true)
+      return undefined
+    }
+
+    gsap.set(strips, { scaleY: 0 })
+    const curtain = gsap.to(strips, {
+      scaleY: 1,
+      transformOrigin: '50% 100%',
+      duration: 0.5,
+      stagger: 0.02,
+      ease: 'power2.inOut',
+      onComplete: () => setMenuRevealed(true),
+    })
+
+    return () => curtain.kill()
+  }, [menuOpen])
+
   return (
-    <header ref={headerRef} className={styles.header} aria-label="Primary navigation">
+    <header ref={headerRef} className={`${styles.header} ${menuOpen ? styles.menuOpen : ''}`} aria-label="Primary navigation">
       <span ref={barRef} className={styles.bar} aria-hidden="true" />
+      {menuOpen && (
+        <div className={styles.mobileMenu} id="mobile-menu" role="dialog" aria-label="Mobile navigation" style={{ '--mobile-menu-color': color }}>
+          <div ref={menuCurtainRef} className={styles.mobileMenuCurtain} aria-hidden="true">
+            {Array.from({ length: MENU_CURTAIN_STRIPS }, (_, index) => (
+              <span key={index} className={styles.mobileMenuStrip} style={{ '--strip-index': index }} />
+            ))}
+          </div>
+          <div ref={menuContentRef} className={`${styles.mobileMenuContent} ${menuRevealed ? styles.mobileMenuContentReady : ''}`}>
+            <nav className={styles.mobileMenuLinks} aria-label="Mobile links">
+              <RevealText as="a" href="/posters" play={menuRevealed} delay={0} duration={0.8}>Poster</RevealText>
+              <RevealText as="a" href="/guidelines" play={menuRevealed} delay={0.08} duration={0.8}>Guidelines</RevealText>
+              <RevealText as="a" href="/submit" play={menuRevealed} delay={0.16} duration={0.8}>Submit (→)</RevealText>
+            </nav>
+            <div className={styles.mobileMenuContact}>
+              <RevealText as="p" play={menuRevealed} delay={0.32} duration={0.7}>Question Everything</RevealText>
+              <RevealText as="a" href="mailto:hello@unblocked.net" play={menuRevealed} delay={0.38} duration={0.7}>(hello@unblocked.net)</RevealText>
+            </div>
+          </div>
+        </div>
+      )}
       <nav className={`${styles.nav} ${colorClass}`}>
         <a className={styles.navItem} href="/posters"><span data-header-intro>Poster</span></a>
         <a className={styles.navItem} href="/guidelines"><span data-header-intro>Guidelines</span></a>
         <a className={styles.navItem} href="/submit"><span data-header-intro>Submit (→)</span></a>
       </nav>
       <a className={`${styles.home} ${colorClass}`} href="/"><span data-header-intro>Home</span></a>
-      <button className={`${styles.menu} ${colorClass}`} type="button"><span data-header-intro>Menu</span></button>
+      <button
+        className={`${styles.menu} ${colorClass}`}
+        type="button"
+        aria-controls="mobile-menu"
+        aria-expanded={menuOpen && !menuClosing}
+        onClick={() => menuOpen ? closeMenu() : setMenuOpen(true)}
+      >
+        <span data-header-intro>{menuOpen && !menuClosing ? 'Close' : 'Menu'}</span>
+      </button>
     </header>
   )
 }

@@ -135,7 +135,9 @@
 @include tablet-portrait {
   .references {
     width: 100vw;
-    height: vw(1237);
+    height: 100vh;
+    height: 100svh; // full page (user request)
+    max-height: none;
   }
 
   .poster {
@@ -196,16 +198,18 @@
     object-fit: fill;
   }
 
-  .heading {
-    top: vw(460);
-    left: calc(50% - vw(3));
+  // Same selector as the base rule so the tablet values actually apply.
+  // margin-right = -letter-spacing: the trailing negative spacing after the
+  // last glyph would otherwise push the centred title right by half of it.
+  .textContainer .heading {
     font-size: vw(120);
     letter-spacing: vw(-7.2);
+    margin-right: vw(7.2);
     mix-blend-mode: normal;
   }
 
-  .description {
-    top: vw(719);
+  .textContainer .description {
+    margin-top: vw(44);
     width: vw(335);
     letter-spacing: vw(-0.8);
     mix-blend-mode: normal;
@@ -215,38 +219,43 @@
 @include mobile {
   .references {
     width: 100vw;
-    height: vw(668);
+    height: 100vh;
+    height: 100svh;
+    max-height: none;
   }
 
   .poster {
-    width: vw(158);
     background: transparent;
   }
 
   .poster1 {
-    top: 0;
-    left: vw(20);
-    height: vw(200);
+    top: vw(68);
+    left: vw(396);
+    width: vw(314);
+    height: vw(444);
   }
 
+  // All posters keep the tablet aspect (~0.71); the top-left one starts
+  // above the section and is cut by its top edge, as in the mockup.
   .poster2 {
-    top: vw(34);
-    left: vw(198);
-    height: vw(223);
-    width: vw(157);
+    top: vw(990);
+    left: vw(40);
+    width: vw(316);
+    height: vw(446);
   }
 
   .poster3 {
-    top: vw(495);
-    left: vw(20);
-    height: vw(273);
+    top: vw(-48);
+    left: vw(40);
+    width: vw(316);
+    height: vw(446);
   }
 
   .poster4 {
-    top: vw(552);
-    left: vw(198);
-    height: vw(216);
-    width: vw(157);
+    top: vw(1104);
+    left: vw(396);
+    width: vw(314);
+    height: vw(444);
   }
 
   .imageFrame1,
@@ -266,26 +275,40 @@
     object-fit: cover;
   }
 
-  .imageFrame1 img,
-  .imageFrame3 img {
-    transform: translateY(vw(-4));
+  // Image crops measured from the mockup (frame larger than the poster,
+  // centred horizontally, shifted up).
+  .imageFrame1 {
+    top: vw(-114);
+    height: vw(679);
   }
 
-  .heading {
-    top: vw(232);
-    left: 50%;
-    font-size: vw(56);
-    line-height: 0;
-    letter-spacing: vw(-3.36);
+  .imageFrame2 {
+    top: vw(-15);
+    left: vw(-19);
+    width: vw(354);
+    height: vw(472);
+  }
+
+  .imageFrame4 {
+    top: vw(-117);
+    left: vw(-14);
+    width: vw(342);
+    height: vw(684);
+  }
+
+  .textContainer .heading {
+    font-size: vw(112);
+    letter-spacing: vw(-6.72);
+    margin-right: vw(6.72);
     mix-blend-mode: normal;
   }
 
-  .description {
-    top: vw(376);
-    left: 50%;
-    width: vw(335);
-    line-height: 1.02;
-    letter-spacing: vw(-0.8);
+  .textContainer .description {
+    margin-top: vw(88);
+    width: vw(670);
+    font-size: vw(40);
+    line-height: 100%;
+    letter-spacing: vw(-1.6);
     mix-blend-mode: normal;
   }
 }

@@ -1,7 +1,9 @@
-
 // Shared layout for the four homepage theme sections.
 // Values are based on the supplied Permanence section; colors and artwork
 // are switched through section modifiers.
+// Tablet values follow the 864 × 1238 Ownership mockup. The tablet mixin
+// (max-width: 864px) also covers mobile, so mobile blocks only override what
+// differs (no mobile mockup yet: stacked to fit 375px).
 
 .theme-section {
   --theme-bg: #43a772;
@@ -22,6 +24,17 @@
     height: 100vh;
   }
 
+  // Full screen on tablet (the 864 × 1238 mockup is one viewport).
+  @include tablet {
+    width: 100%;
+    height: 100vh;
+    height: 100svh; // visible height, without mobile browser bars
+  }
+
+  @include mobile {
+    height: vw(1336);
+  }
+
   &__content {
     display: flex;
     height: inherit;
@@ -39,6 +52,15 @@
     font-size: vw(100);
     line-height: 90%;
     letter-spacing: -6%;
+
+    @include tablet {
+      grid-template-columns: 1fr;
+    }
+
+    @include mobile {
+      padding: vw(40) vw(40) 0;
+      font-size: vw(120);
+    }
   }
 
   &__pin-meta {
@@ -47,22 +69,57 @@
     padding: vw(20);
     flex: 0 0 vw(340);
 
+    @include tablet {
+      flex: none;
+      line-height: 100%;
+    }
+
+    @include mobile {
+      padding: vw(40);
+      font-size: vw(40);
+    }
+
     &-header {
       display: flex;
       justify-content: space-between;
       outline: none;
       padding-bottom: vw(20);
       border-bottom: 1px solid var(--theme-ink);
+
+      @include mobile {
+        padding-bottom: vw(40);
+      }
     }
+
     &-detail {
       display: grid;
       padding: vw(20) 0 0;
       grid-template-columns: 1fr vw(690);
 
+      // minmax(0, …): the track must not grow to RevealText's nowrap lines.
+      @include tablet {
+        grid-template-columns: minmax(0, 1fr);
+        row-gap: vw(180);
+      }
+
+      @include mobile {
+        row-gap: vw(80);
+        padding: vw(40) 0 0;
+      }
+
       .content__rule {
         width: vw(433);
         height: vw(280);
         background-color: #101010;
+
+        @include tablet {
+          width: 100%;
+          height: vw(498);
+        }
+
+        @include mobile {
+          height: vw(405);
+        }
       }
 
       .content-wrap {
@@ -70,20 +127,66 @@
         flex-direction: column;
         justify-content: space-between;
 
+        // Fixed columns: a long question wraps to 2+ lines inside the left
+        // column (minmax(0, …) so RevealText's nowrap lines cannot widen it).
+        @include tablet {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) vw(402);
+          column-gap: vw(20);
+          align-items: start;
+        }
+
+        @include mobile {
+          display: flex;
+          gap: vw(48);
+        }
+
         &__question-wrap {
           font-weight: 600;
           font-size: vw(40);
+
+          // Own line-height: the meta's 100% resolves to the 20px copy size.
+          @include tablet {
+            line-height: 100%;
+            flex: 0 0 auto;
+          }
+
+          // Mobile mockup: 20px (same as the copy), long questions wrap to
+          // 2 lines at full width.
+          @include mobile {
+            font-size: vw(40);
+          }
         }
 
         &__description-wrap {
           width: 100%;
           max-width: vw(453);
+
+          @include tablet {
+            width: vw(402);
+            flex: 0 0 vw(402);
+          }
+
+          // Stacked full width (undo the tablet column).
+          @include mobile {
+            width: 100%;
+            max-width: none;
+            flex: none;
+          }
         }
 
         p {
           display: block;
         }
       }
+    }
+  }
+
+  // Desktop-only line breaks inside descriptions.
+  &__desktop-break,
+  &__mobile-break {
+    @include tablet {
+      display: none;
     }
   }
 }
@@ -98,10 +201,19 @@
     height: 100vh;
   }
 
+  @include tablet {
+    height: 100vh;
+    height: 100svh;
+  }
+
+  @include mobile {
+    height: vw(1336);
+  }
+
   // Seam backfill below stacked frames (set by ThemeSectionStack); the next
   // frame paints over it, so it only shows where a compositor seam would.
   &[data-theme-section-backfill]::after {
-    content: '';
+    content: "";
     position: absolute;
     top: 100%;
     left: 0;
@@ -109,11 +221,5 @@
     height: 2px;
     background: inherit;
     pointer-events: none;
-  }
-}
-
-@include compact-portrait {
-  .frame {
-    height: vw(1336);
   }
 }

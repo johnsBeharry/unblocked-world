@@ -1,11 +1,10 @@
-
 .progress {
   position: absolute;
   inset: 0;
   z-index: 2;
   pointer-events: none;
   color: #dc91a8;
-  font-family: 'Inter Local', sans-serif;
+  font-family: "Inter Local", sans-serif;
 }
 
 .progressBar {
@@ -26,16 +25,22 @@
   gap: vw(18);
   margin: 0;
   padding: 0;
-  list-style: none;
-  font-size: vw(40);
-  letter-spacing: vw(-1.6);
+  font-weight: 500;
+  font-size: vw(20);
+  letter-spacing: -0.04em;
   line-height: 1.02;
 }
 
-.progress li { color: rgb(220 145 168 / 0.4); }
-.progress li.active { color: #dc91a8; }
+.progress li {
+  color: rgb(220 145 168 / 0.4);
+}
+.progress li.active {
+  color: #dc91a8;
+}
 
-.compact .progressBar { height: vw(2); }
+.compact .progressBar {
+  height: vw(2);
+}
 .compact ol {
   top: vw(20);
   left: vw(22);
@@ -43,11 +48,18 @@
   letter-spacing: vw(-0.8);
 }
 
-.lineOnly ol { display: none; }
-.hideBar .progressBar { display: none; }
+.lineOnly ol {
+  display: none;
+}
+.hideBar .progressBar {
+  display: none;
+}
 
 @media (min-width: 601px) and (max-width: 864px) and (orientation: portrait) {
-  .progressBar { width: vw(229); height: vw(2); }
+  .progressBar {
+    width: vw(229);
+    height: vw(2);
+  }
   .progress ol {
     top: vw(18.5);
     left: vw(20);
@@ -55,14 +67,24 @@
     letter-spacing: vw(-0.8);
   }
 
-  .compact.posterStep ol { top: vw(110.25); gap: vw(11.85); }
-  .compact.posterStep li.active { letter-spacing: vw(-0.75); }
+  .compact.posterStep ol {
+    top: vw(110.25);
+    gap: vw(11.85);
+  }
+  .compact.posterStep li.active {
+    letter-spacing: vw(-0.75);
+  }
 }
 
 @include mobile {
-  .progress { position: fixed; }
+  .progress {
+    position: fixed;
+  }
 
-  .progressBar { width: vw(132); height: vw(2); }
+  .progressBar {
+    width: vw(132);
+    height: vw(2);
+  }
 
   .progress ol {
     top: vw(40);
@@ -74,7 +96,11 @@
     line-height: 1;
   }
 
-  .progress.lineOnly ol { display: none; }
+  .progress.lineOnly ol {
+    display: none;
+  }
 
-  .progress li:not(.active) { display: none; }
+  .progress li:not(.active) {
+    display: none;
+  }
 }

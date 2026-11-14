@@ -24,16 +24,34 @@ import {
   uploadPoster,
   verifyEmailCode,
 } from './api/submitFormApi.js'
+import { PHOTO_TYPES, blobToBase64, shrinkPhoto } from './api/profilePhoto.js'
+import { CONSENTS } from './components/ConsentPanel/ConsentPanel.jsx'
+import { MAX_SUPPORTING_FILES } from './components/PosterDetailsPanel/PosterDetailsPanel.jsx'
 
+// Overview copy follows the reference form.
 const steps = [
   'Review the Ownership theme.',
   'Create one or more original poster responses.',
   'Prepare your files.',
-  'Complete the submission form.',
+  'Join UNBLOCKED and confirm your email with a code we send you. No password needed.',
+  'Add your posters. Everything saves as you go.',
+  'Confirm the submission terms and submit.',
   'Your posters will then be reviewed by the international jury.',
-  'Confirm the submission terms.',
-  'Submit your entry.',
 ]
+
+const rules = [
+  'Open to individual and collaborative entries.',
+  'You can submit more than one poster, on the same day or later.',
+  'Submitted work must be original.',
+  'Accepted file types: JPG, PNG, PDF, GIF or MP4.',
+  'Static posters (JPG, PNG, PDF) must be under 5 MB.',
+  'Motion posters (GIF, MP4) must be under 20 MB.',
+  'Up to 3 supporting files per poster.',
+  'Use the file name format: YourName_PosterTitle.',
+  'Selected work may require additional formats later.',
+]
+
+const EMAIL_PATTERN = /^\S+@\S+\.\S+$/
 
 const demoPosterEntries = [
   {
@@ -131,14 +149,16 @@ export function SubmitPage({ initialStep = 0 }) {
       ? demoPosterEntries
       : []
   ))
-  const [contactDraft, setContactDraft] = useState({ full_name: 'Andre' })
+  const [contactDraft, setContactDraft] = useState({})
+  const [joinMode, setJoinMode] = useState('join')
   const [verification, setVerification] = useState({ status: 'idle', code: '', error: '' })
   const [contest, setContest] = useState(null)
   const [posterDraft, setPosterDraft] = useState({ title: '', posterFiles: [], supportingFiles: [] })
   const [editingEntryId, setEditingEntryId] = useState(null)
   const [saveState, setSaveState] = useState('idle')
   const [saveError, setSaveError] = useState('')
-  const [consent, setConsent] = useState({ original: true, terms: false, privacy: false })
+  const [consent, setConsent] = useState({})
+  const [picked, setPicked] = useState({})
   const [submissionState, setSubmissionState] = useState('idle')
   const [submissionError, setSubmissionError] = useState('')
   const contentScrollRef = useRef(null)
@@ -158,28 +178,84 @@ export function SubmitPage({ initialStep = 0 }) {
 
   function profileFromContact() {
     return {
-      name: contactDraft.full_name?.trim(),
+      name: contactDraft.name?.trim(),
       country: contactDraft.country?.trim(),
       instagram: contactDraft.instagram?.trim(),
-      bio: [contactDraft.city, contactDraft.website, contactDraft.telephone].filter(Boolean).join(' | '),
+      bio: contactDraft.bio?.trim(),
+    }
+  }
+
+  // Join validation (reference copy); signing in only needs the email.
+  function contactError(email) {
+    if (!email) return 'Add your email'
+    if (!EMAIL_PATTERN.test(email)) return 'Check this email address'
+    if (joinMode !== 'join') return ''
+    if (!contactDraft.name?.trim()) return 'Add your full name'
+    if (!contactDraft.country) return 'Choose your country'
+    if (!contactDraft.terms) return 'Agree to the Terms of Service and Privacy Policy to join.'
+    return ''
+  }
+
+  // Contest details (terms/consent versions), loaded once and cached.
+  async function loadContest() {
+    if (contest) return contest
+    const result = await getContest()
+    if (!result.ok) throw new Error(getErrorMessage(result, 'Could not load the contest.'))
+    setContest(result.body)
+    return result.body
+  }
+
+  async function sendCode(email, termsVersion) {
+    const joining = joinMode === 'join'
+    const photo = joining && contactDraft.photo?.blob ? await blobToBase64(contactDraft.photo.blob) : undefined
+    return requestEmailCode(email, joining ? profileFromContact() : null, termsVersion, photo)
+  }
+
+  async function handlePhotoChange(file) {
+    if (!file) {
+      if (contactDraft.photo?.url) URL.revokeObjectURL(contactDraft.photo.url)
+      setContactDraft(current => ({ ...current, photo: null }))
+      return
+    }
+    if (!PHOTO_TYPES.includes(file.type)) {
+      setVerification(current => ({ ...current, error: 'Profile photo must be JPG, PNG or WebP.' }))
+      return
+    }
+    const blob = await shrinkPhoto(file)
+    if (!blob) {
+      setVerification(current => ({ ...current, error: 'That photo could not be read.' }))
+      return
+    }
+    if (contactDraft.photo?.url) URL.revokeObjectURL(contactDraft.photo.url)
+    setContactDraft(current => ({ ...current, photo: { blob, url: URL.createObjectURL(blob) } }))
+  }
+
+  async function handleResend() {
+    const email = contactDraft.email?.trim().toLowerCase()
+    try {
+      const { termsVersion } = await loadContest()
+      const result = await sendCode(email, termsVersion)
+      if (result.status !== 202) throw new Error(getErrorMessage(result, 'Could not send the verification code.'))
+      setVerification(current => ({ ...current, code: '', error: 'We sent you a new code.' }))
+    } catch (error) {
+      setVerification(current => ({ ...current, error: error.message }))
     }
   }
 
   async function handleContactNext() {
     const email = contactDraft.email?.trim().toLowerCase()
-    if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
-      setVerification({ status: 'idle', code: '', error: 'Please enter a valid email address.' })
+    const invalid = verification.status !== 'code_sent' && contactError(email)
+    if (invalid) {
+      setVerification({ status: 'idle', code: '', error: invalid })
       return
     }
 
     setVerification(current => ({ ...current, status: current.status === 'code_sent' ? 'verifying' : 'sending', error: '' }))
     try {
-      const contestResult = contest || await getContest()
-      if (!contestResult.ok) throw new Error(getErrorMessage(contestResult, 'Could not load the contest.'))
-      setContest(contestResult.body)
+      const { termsVersion } = await loadContest()
 
       if (verification.status !== 'code_sent') {
-        const result = await requestEmailCode(email, profileFromContact(), contestResult.body.termsVersion)
+        const result = await sendCode(email, termsVersion)
         if (result.status !== 202) throw new Error(getErrorMessage(result, 'Could not send the verification code.'))
         setVerification({ status: 'code_sent', code: '', error: '' })
         return
@@ -188,8 +264,10 @@ export function SubmitPage({ initialStep = 0 }) {
       if (!/^\d{6}$/.test(verification.code)) throw new Error('Enter the 6-digit verification code.')
       const result = await verifyEmailCode(email, verification.code)
       if (!result.ok) throw new Error(getErrorMessage(result, 'That verification code is not valid.'))
-      const profileResult = await updateProfile(profileFromContact(), contestResult.body.termsVersion)
-      if (!profileResult.ok) throw new Error(getErrorMessage(profileResult, 'Could not save your profile.'))
+      if (joinMode === 'join') {
+        const profileResult = await updateProfile(profileFromContact(), termsVersion)
+        if (!profileResult.ok) throw new Error(getErrorMessage(profileResult, 'Could not save your profile.'))
+      }
       setVerification({ status: 'verified', code: '', error: '' })
       setStep(2)
     } catch (error) {
@@ -197,13 +275,16 @@ export function SubmitPage({ initialStep = 0 }) {
     }
   }
 
+  const inProgressEntries = posterEntries.filter(entry => !entry.submitted)
+
   async function handleSubmission() {
-    if (!consent.original || !consent.terms || !consent.privacy) {
-      setSubmissionError('Please accept all submission terms before submitting.')
+    const chosen = inProgressEntries.filter(entry => picked[entry.id])
+    if (!chosen.length) {
+      setSubmissionError('Choose at least one poster to submit.')
       return
     }
-    if (!posterDraft.posterFiles?.[0]) {
-      setSubmissionError('Please add a poster file before submitting.')
+    if (!CONSENTS.every(item => consent[item.name])) {
+      setSubmissionError('Please confirm all three terms before submitting.')
       return
     }
 
@@ -211,9 +292,14 @@ export function SubmitPage({ initialStep = 0 }) {
     setSubmissionError('')
     try {
       if (!contest) throw new Error('Contest details are not available. Please return to contact information and try again.')
-      if (!posterEntries.length || posterEntries.some(entry => !entry.remoteId)) throw new Error('Save at least one poster draft before submitting.')
-      const result = await submitEntries(posterEntries.map(entry => entry.remoteId), contest.consentVersion)
+      const unsaved = chosen.find(entry => !entry.remoteId)
+      if (unsaved) throw new Error(`“${unsaved.title}” hasn’t saved yet. Fix it in your entries, then try again.`)
+      const result = await submitEntries(chosen.map(entry => entry.remoteId), contest.consentVersion)
       if (!result.ok) throw new Error(getErrorMessage(result, 'Submission failed'))
+      const sent = new Set(chosen.map(entry => entry.id))
+      setPosterEntries(current => current.map(entry => sent.has(entry.id) ? { ...entry, submitted: true } : entry))
+      setPicked({})
+      setConsent({})
       setSubmissionState('submitted')
       setStep(5)
     } catch (error) {
@@ -240,8 +326,8 @@ export function SubmitPage({ initialStep = 0 }) {
       setSaveState('error')
       return
     }
-    if ((posterDraft.supportingFiles || []).length > 3) {
-      setSaveError('You can add up to 3 supporting assets.')
+    if ((posterDraft.supportingFiles || []).length > MAX_SUPPORTING_FILES) {
+      setSaveError(`You can add up to ${MAX_SUPPORTING_FILES} supporting files.`)
       setSaveState('error')
       return
     }
@@ -313,13 +399,27 @@ export function SubmitPage({ initialStep = 0 }) {
         {showPosterDetails && <SubmitProgress activeStep={2} compact lineOnly />}
         {showSuccess && <SubmitProgress activeStep={3} compact lineOnly hideBar />}
         {showPosterDetails && <div className={styles.editorActions}>
-          <button type="button" disabled={saveState === 'saving'} onClick={() => { setSaveError(''); setSaveState('idle'); setStep(2) }}>Cancel</button>
-          <button type="button" disabled={saveState === 'saving'} onClick={handlePosterSave}>{saveState === 'saving' ? 'Saving…' : 'Save'}</button>
+          <button type="button" disabled={saveState === 'saving'} onClick={() => { setSaveError(''); setSaveState('idle'); setStep(2) }}>(←) All Entries</button>
+          <button type="button" disabled={saveState === 'saving'} onClick={handlePosterSave}>{saveState === 'saving' ? 'Saving…' : 'Save & Continue (→)'}</button>
           <span className={styles.editorStatus} role="status" aria-live="polite">{saveState === 'saving' ? 'Saving poster…' : ''}</span>
         </div>}
         <div ref={contentScrollRef} className={styles.contentScroll} data-lenis-prevent>
           {showContact
-            ? <ContactInformationPanel value={contactDraft} verification={verification} onVerificationChange={changes => setVerification(current => ({ ...current, ...changes }))} onChange={changes => setContactDraft(current => ({ ...current, ...changes }))} />
+            ? <ContactInformationPanel
+                value={contactDraft}
+                mode={joinMode}
+                onModeChange={mode => { setJoinMode(mode); setVerification({ status: 'idle', code: '', error: '' }) }}
+                verification={verification}
+                onVerificationChange={changes => setVerification(current => ({ ...current, ...changes }))}
+                onChange={changes => {
+                  setContactDraft(current => ({ ...current, ...changes }))
+                  // Editing clears a previous validation message.
+                  setVerification(current => (current.error ? { ...current, error: '' } : current))
+                }}
+                onPhotoChange={handlePhotoChange}
+                onResend={handleResend}
+                onEditDetails={() => setVerification({ status: 'idle', code: '', error: '' })}
+              />
             : showPoster
               ? <PosterEntriesPanel entries={posterEntries} onEdit={entry => {
                   setEditingEntryId(entry.id)
@@ -331,8 +431,8 @@ export function SubmitPage({ initialStep = 0 }) {
                   const entry = posterEntries.find(item => item.id === id)
                   if (entry?.remoteId) await deleteEntry(entry.remoteId)
                   setPosterEntries(current => current.filter(item => item.id !== id))
-                }} onAdd={() => {
-                  setPosterDraft({ title: '', posterFiles: [], supportingFiles: [] })
+                }} onAdd={(files = []) => {
+                  setPosterDraft({ title: '', posterFiles: files.slice(0, 1), supportingFiles: files.slice(1, 1 + MAX_SUPPORTING_FILES) })
                   setEditingEntryId(null)
                   setSaveError('')
                   setSaveState('idle')
@@ -341,36 +441,42 @@ export function SubmitPage({ initialStep = 0 }) {
               : showPosterDetails
                 ? <PosterDetailsPanel draft={posterDraft} error={saveError} onDraftChange={changes => { setSaveError(''); setSaveState('idle'); setPosterDraft(current => ({ ...current, ...changes })) }} />
                 : showConsent
-                  ? <ConsentPanel value={consent} onChange={changes => setConsent(current => ({ ...current, ...changes }))} error={submissionError} />
+                  ? <ConsentPanel entries={inProgressEntries} picked={picked} onPickChange={changes => setPicked(current => ({ ...current, ...changes }))} value={consent} onChange={changes => setConsent(current => ({ ...current, ...changes }))} error={submissionError} />
                   : showSuccess
-                  ? <SubmissionSuccessPanel onExplore={() => setStep(0)} />
+                  ? <SubmissionSuccessPanel
+                      onSubmitAnother={() => {
+                        setPosterDraft({ title: '', posterFiles: [], supportingFiles: [] })
+                        setEditingEntryId(null)
+                        setSaveError('')
+                        setSaveState('idle')
+                        setStep(3)
+                      }}
+                      onViewEntries={() => setStep(2)}
+                    />
                 : <div className={styles.contentInner}>
                     <h2 id="submit-title">
                       <RevealText as="span" className={styles.titleDesktop}>Submit to the Poster<br />Contest</RevealText>
                       <RevealText as="span" className={styles.titleMobile}>Submit to the<br />Poster Contest</RevealText>
                     </h2>
-                    <RevealText as="p" className={`${styles.intro} ${styles.introDesktop}`}>Use this page to submit poster work<br />responding to the first theme:<br />Ownership. Before submitting, review the<br />contest overview, Ownership page, and<br />guidelines. Poster Contest Guidelines.</RevealText>
-                    <RevealText as="p" className={`${styles.intro} ${styles.introMobile}`}>Use this page to submit poster work responding to the first theme: Ownership. Before submitting, review the contest overview, Ownership page, and guidelines. Poster Contest Guidelines.</RevealText>
+                    <RevealText as="p" className={styles.intro}>Use this page to submit poster work responding to the theme: Ownership. Before submitting, review the process and guidelines below.</RevealText>
                     <RevealText as="h3">Submission Process</RevealText>
                     <ol>
                       {steps.map(step => <RevealRow key={step} line={false}>{step}</RevealRow>)}
                     </ol>
                     <RevealText as="h3">Rules and Eligibility</RevealText>
                     <ul>
-                      <RevealRow line={false}>Open to individual and collaborative entries.</RevealRow>
-                      <RevealRow line={false}>You can submit more than one poster.</RevealRow>
-                      <RevealRow line={false}>Submitted work must be original.</RevealRow>
-                      <RevealRow line={false}>Accepted file types: JPG, PNG, PDF, GIF, or MP4.</RevealRow>
-                      <RevealRow line={false}>Static posters should be under 5MB.</RevealRow>
-                      <RevealRow line={false}>Motion posters should be under 20MB.</RevealRow>
-                      <RevealRow line={false}>Use the file name format: YourName_PosterTitle.</RevealRow>
-                      <RevealRow line={false}>Selected work may require additional formats later.</RevealRow>
+                      {rules.map(rule => <RevealRow key={rule} line={false}>{rule}</RevealRow>)}
                     </ul>
                     <button className={styles.submitLink} type="button" onClick={() => setStep(1)}>Enter Submission (→)</button>
                 </div>}
         </div>
-        {showContact && <SubmitFooterNav nextLabel={verification.status === 'code_sent' ? 'Verify email' : 'Send code'} disabled={verification.status === 'sending' || verification.status === 'verifying'} onBack={() => setStep(0)} onNext={handleContactNext} />}
-        {showPoster && <SubmitFooterNav nextLabel="Consent" nextLabelMobile="Poster" onBack={() => setStep(1)} onNext={() => setStep(4)} />}
+        {showContact && <SubmitFooterNav nextLabel={verification.status === 'sending' ? 'Sending…' : verification.status === 'verifying' ? 'Checking…' : 'Next'} disabled={verification.status === 'sending' || verification.status === 'verifying'} onBack={() => setStep(0)} onNext={handleContactNext} />}
+        {showPoster && <SubmitFooterNav nextLabel="Next" onBack={() => setStep(1)} onNext={() => {
+          // Every in-progress poster starts ticked on the Submit step.
+          setPicked(Object.fromEntries(inProgressEntries.map(entry => [entry.id, true])))
+          setSubmissionError('')
+          setStep(4)
+        }} />}
         {showConsent && <SubmitFooterNav nextLabel={submissionState === 'submitting' ? 'Submitting' : 'Submit'} disabled={submissionState === 'submitting'} onBack={() => setStep(2)} onNext={handleSubmission} />}
       </section>
     </main>

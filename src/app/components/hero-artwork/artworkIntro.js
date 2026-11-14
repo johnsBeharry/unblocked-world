@@ -25,13 +25,18 @@ export function prepareArtworkIntro(root) {
       transformOrigin: "50% 50%",
     });
   });
-  const settle = () =>
-    gsap.set(layers, { clearProps: "transform,opacity" });
+  // Nothing to animate when the artwork is hidden at this breakpoint (e.g.
+  // the Submit Work artwork on tablet/mobile); skip instead of tweening an
+  // empty target.
+  const settle = () => {
+    if (layers.length) gsap.set(layers, { clearProps: "transform,opacity" });
+  };
   return { rows, layers, settle };
 }
 
 // Adds the intro to `timeline` starting at `at` (seconds).
 export function addArtworkIntro(timeline, { rows, layers }, at = 0) {
+  if (!layers.length) return timeline;
   timeline.to(layers, { opacity: 1, ...FADE }, at);
   const rowStep = THICKEN.spread / Math.max(1, rows.length - 1);
   [...rows].reverse().forEach((row, index) => {

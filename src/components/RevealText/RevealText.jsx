@@ -5,13 +5,34 @@ import styles from "./RevealText.module.scss";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Plain <br> = forced break; <br className> = responsive break, encoded as
+// "\u0001className\u0002", which the consumer can hide per breakpoint with CSS.
+const BREAK = /\n|\u0001([^\u0002]*)\u0002/g;
+
 function getWords(value) {
-  return value.split(/\n/).flatMap((line, lineIndex, lines) => {
-    const words = [...line.matchAll(/(\S+)(\s*)/g)].map(
-      ([, text, spaceAfter]) => ({ type: "word", text, spaceAfter }),
+  const words = [];
+  const pushText = (chunk) => {
+    // Space right after a break belongs to the word before it, so the words
+    // stay apart when a responsive break is hidden.
+    const previous = words[words.length - 2];
+    if (/^\s/.test(chunk) && words.at(-1)?.type === "break" && previous && !previous.spaceAfter)
+      previous.spaceAfter = " ";
+    words.push(
+      ...[...chunk.matchAll(/(\S+)(\s*)/g)].map(([, text, spaceAfter]) => ({
+        type: "word",
+        text,
+        spaceAfter,
+      })),
     );
-    return lineIndex < lines.length - 1 ? [...words, { type: "break" }] : words;
-  });
+  };
+  let last = 0;
+  for (const match of value.matchAll(BREAK)) {
+    pushText(value.slice(last, match.index));
+    words.push({ type: "break", className: match[1] });
+    last = match.index + match[0].length;
+  }
+  pushText(value.slice(last));
+  return words;
 }
 
 function getText(value) {
@@ -20,9 +41,22 @@ function getText(value) {
     return String(value);
   if (Array.isArray(value)) return value.map(getText).join("");
   if (React.isValidElement(value)) {
-    return value.type === "br" ? "\n" : getText(value.props.children);
+    if (value.type === "br")
+      return value.props.className
+        ? `\u0001${value.props.className}\u0002`
+        : "\n";
+    return getText(value.props.children);
   }
   return "";
+}
+
+// True once the entrance animation of the current lines has finished (the
+// line animations are CSS, gated by the page phase).
+function hasPlayed(root) {
+  if (document.body.dataset.pagePhase !== "content") return false;
+  const inner = root.querySelector("[data-page-reveal-line-inner]");
+  const animations = inner?.getAnimations?.() ?? [];
+  return animations.length > 0 && animations.every((a) => a.playState === "finished");
 }
 
 function getLineGroups(words) {
@@ -32,6 +66,8 @@ function getLineGroups(words) {
 
   words.forEach((word) => {
     if (word.hasAttribute("data-reveal-break")) {
+      // Responsive break hidden at this breakpoint (display: none).
+      if (!word.getClientRects().length) return;
       if (current.length) groups.push(current);
       current = [];
       previousTop = null;
@@ -83,6 +119,11 @@ export function RevealText({
   const rootRef = useRef(null);
   const linesRef = useRef(null);
   const enteredRef = useRef(false);
+  // When pending lines are re-split (font swap during the delay), their CSS
+  // animations restart; shift the delay by the time already elapsed so the
+  // entrance keeps its original schedule.
+  const enteredAtRef = useRef(0);
+  const [elapsed, setElapsed] = useState(0);
   const [lines, setLines] = useState(null);
   const [hasEntered, setHasEntered] = useState(false);
   // Lines re-split after the text has already been revealed render without
@@ -115,7 +156,14 @@ export function RevealText({
       ]);
       const previous = linesRef.current;
       if (previous && sameLines(previous, next)) return;
-      if (previous && enteredRef.current) setInstant(true);
+      // Skip the replay only when the entrance has really finished; a
+      // re-split while it is still pending (e.g. `play` set on mount, then the
+      // font loads during the delay) must still animate.
+      if (previous && enteredRef.current) {
+        if (hasPlayed(root)) setInstant(true);
+        else if (enteredAtRef.current !== null)
+          setElapsed((performance.now() - enteredAtRef.current) / 1000);
+      }
       linesRef.current = next;
       setLines(next);
     };
@@ -143,6 +191,11 @@ export function RevealText({
 
   useEffect(() => {
     if (!hasEntered) setInstant(false);
+    // Animations only run in the content phase; an entry before it has no
+    // schedule to keep yet.
+    enteredAtRef.current =
+      document.body.dataset.pagePhase === "content" ? performance.now() : null;
+    setElapsed(0);
   }, [hasEntered]);
 
   useEffect(() => {
@@ -153,18 +206,46 @@ export function RevealText({
       return undefined;
     }
 
+    const root = rootRef.current;
+    let done = false;
+    const enter = () => {
+      if (done) return;
+      done = true;
+      setHasEntered(true);
+      cleanup();
+    };
+    // Normal trigger: the top 90% of the viewport.
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setHasEntered(true);
-          observer.disconnect();
-        }
-      },
+      ([entry]) => entry.isIntersecting && enter(),
       { rootMargin: "0px 0px -10% 0px", threshold: 0 },
     );
+    // Text in the bottom 10% at the very end of the page (e.g. the footer
+    // copyright) can never scroll higher; while it is on screen, play it once
+    // the page is scrolled to the end.
+    const atPageEnd = () =>
+      window.scrollY + window.innerHeight >=
+      document.documentElement.scrollHeight - 2;
+    const checkEnd = () => atPageEnd() && enter();
+    let watchingEnd = false;
+    const onScreen = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !watchingEnd) {
+        watchingEnd = true;
+        window.addEventListener("scroll", checkEnd, { passive: true });
+        checkEnd();
+      } else if (!entry.isIntersecting && watchingEnd) {
+        watchingEnd = false;
+        window.removeEventListener("scroll", checkEnd);
+      }
+    });
+    const cleanup = () => {
+      observer.disconnect();
+      onScreen.disconnect();
+      window.removeEventListener("scroll", checkEnd);
+    };
 
-    observer.observe(rootRef.current);
-    return () => observer.disconnect();
+    observer.observe(root);
+    onScreen.observe(root);
+    return cleanup;
   }, [enabled, lines, play]);
 
   // highlight: words brighten one by one with scroll (0.2 → 1 opacity), driven
@@ -217,7 +298,7 @@ export function RevealText({
           data-page-reveal-line="true"
           key={`${line.map((word) => word.text).join(" ")}-${index}`}
           style={{
-            "--reveal-delay": `${delay + index * stagger}s`,
+            "--reveal-delay": `${delay - elapsed + index * stagger}s`,
             "--reveal-duration": `${duration}s`,
             "--reveal-distance": distance,
             "--reveal-ease": ease,
@@ -247,7 +328,7 @@ export function RevealText({
         {getWords(text).map((word, index) => (
           <React.Fragment key={`${word.type}-${word.text ?? ""}-${index}`}>
             {word.type === "break" ? (
-              <span data-reveal-break="true" />
+              <span data-reveal-break="true" className={word.className} />
             ) : (
               <span data-reveal-word="true" data-space-after={word.spaceAfter}>
                 {word.text}

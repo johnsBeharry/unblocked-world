@@ -28,16 +28,19 @@ function SuccessPattern() {
   )
 }
 
-export function SubmissionSuccessPanel({ onExplore }) {
+// Copy and actions follow the reference form.
+export function SubmissionSuccessPanel({ onSubmitAnother, onViewEntries }) {
   return (
     <section className={styles.panel} aria-labelledby="submission-success-title">
       <div className={styles.inner}>
         <SuccessPattern />
         <div className={styles.message}>
           <RevealText as="h1" id="submission-success-title">Entry Submitted</RevealText>
-          <RevealText as="p" className={styles.copyDesktop}>Thank you for your submission. Your work has<br />been received and is now under review. We'll<br />keep you informed of any updates as the<br />selection process progresses.</RevealText>
-          <RevealText as="p" className={styles.copyMobile}>Thank you for your submission. Your<br />work has been received and is now<br />under review. We'll keep you informed<br />of any updates as the selection<br />process progresses.</RevealText>
-          <button className={styles.explore} type="button" onClick={onExplore}>Explore More (→)</button>
+          <RevealText as="p" className={styles.copy}>Thank you for your submission. Your work has been received and is now under review. We’ve emailed you a receipt, and we’ll keep you informed as the selection progresses.</RevealText>
+          <p className={styles.actions}>
+            <button className={styles.explore} type="button" onClick={onSubmitAnother}>(+) Submit another poster</button>
+            <button className={styles.explore} type="button" onClick={onViewEntries}>View my entries (→)</button>
+          </p>
         </div>
       </div>
     </section>

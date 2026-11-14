@@ -126,6 +126,15 @@ export function Footer({ color = FOOTER_COLORS.home, ctaVariant = "default" }) {
         >
           <BrandLogo />
 
+          <RevealText
+            as="p"
+            className={`${styles.text} ${styles.description} ${styles["mobile-description"]}`}
+          >
+            Exploring ownership, permanence, energy and peers through art,
+            design and culture. Built through participation, dialogue and
+            creative expression.
+          </RevealText>
+
           <div>
             <RevealText as="p" className={`${styles.text} ${styles.label}`}>
               Explore
@@ -151,7 +160,7 @@ export function Footer({ color = FOOTER_COLORS.home, ctaVariant = "default" }) {
 
           <div>
             <RevealText as="p" className={`${styles.text} ${styles.label}`}>
-              Social
+              Socials
             </RevealText>
 
             <div className={styles.menu}>
@@ -167,19 +176,41 @@ export function Footer({ color = FOOTER_COLORS.home, ctaVariant = "default" }) {
               </a>
             </div>
           </div>
-          <div className={`${styles.backToTop}`}>
+
+          <div className={`${styles["mobile-question"]}`}>
+            <RevealText as="p" className={`${styles.text} ${styles.label}`}>
+              Question Everything
+            </RevealText>
+            <div className={styles.menu}>
+              <a className={styles.email} href="mailto:hello@unblocked.net">
+                (hello@unblocked.net)
+              </a>
+            </div>
+          </div>
+          <div className={`${styles.backToTop} ${styles["desktop"]}`}>
             <a href="#top">Back to Top (↑)</a>
           </div>
         </div>
         <div className={`${styles["main__content"]}`}>
-          <RevealText as="p" className={`${styles.text} ${styles.description}`}>
+          <div className={`${styles.backToTop}`}>
+            <a href="#top">
+              <span className={styles.backToTopLabel}>Back to Top </span>(↑)
+            </a>
+          </div>
+          <RevealText
+            as="p"
+            className={`${styles.text} ${styles.description} ${styles["desktop"]}`}
+          >
             Exploring ownership, permanence, energy and peers through art,
             design and culture. Built through participation, dialogue and
             creative expression.
           </RevealText>
 
-          <div>
-            <RevealText as="p" className={`${styles.text} ${styles.label}`}>
+          <div className={`${styles["desktop"]}`}>
+            <RevealText
+              as="p"
+              className={`${styles.text} ${styles.label} ${styles["desktop"]}`}
+            >
               Question Everything
             </RevealText>
             <div className={styles.menu}>

@@ -6,6 +6,10 @@ import styles from "./ThemeSectionStack.module.scss";
 gsap.registerPlugin(ScrollTrigger);
 
 const getDriftDistance = () => window.innerHeight * 0.6;
+// Tablet + mobile (full-screen sections): plain pin, every section sticks when
+// its top meets the browser top and the next one slides over it; no header
+// offsets and no drift.
+const PLAIN_PIN_QUERY = "(max-width: 864px)"; // same as the SCSS tablet mixin
 const clamp01 = (v) => Math.min(1, Math.max(0, v));
 
 export function ThemeSectionStack({ children }) {
@@ -28,10 +32,16 @@ export function ThemeSectionStack({ children }) {
           .querySelector('[class*="theme-section__pin-header"]')
           ?.getBoundingClientRect().height ?? 0;
 
-      const baseTop = (k) => (k === 0 ? 0 : headerH(sections[k - 1]));
+      let plain = false;
+      const baseTop = (k) =>
+        k === 0 || plain ? 0 : headerH(sections[k - 1]);
       const isTall = (k) => frames[k].offsetHeight > window.innerHeight + 1;
+      // Plain pin always sticks at the browser top, even when a frame is a
+      // little taller than the visible viewport (mobile browser bars).
       const pinTop = (k) =>
-        isTall(k) ? window.innerHeight - frames[k].offsetHeight : baseTop(k);
+        !plain && isTall(k)
+          ? window.innerHeight - frames[k].offsetHeight
+          : baseTop(k);
       const flowTop = (k) =>
         frames.slice(0, k).reduce((t, f) => t + f.offsetHeight, 0);
       // px section k yang ketutup di bawah viewport saat pin di bawah header
@@ -43,7 +53,7 @@ export function ThemeSectionStack({ children }) {
       // Section yang overflow (mis. fullscreen) geser sebesar overflow-nya,
       // jadi naik sampai full visible sebelum section berikutnya masuk.
       const weight = (k) => {
-        if (k >= last || isTall(k) || (k > 0 && isTall(k - 1))) return 0;
+        if (plain || k >= last || isTall(k) || (k > 0 && isTall(k - 1))) return 0;
         return overflow(k) || (k >= 1 ? baseTop(k) : 0);
       };
 
@@ -54,6 +64,8 @@ export function ThemeSectionStack({ children }) {
       let exact = false;
 
       const measure = () => {
+        plain = window.matchMedia(PLAIN_PIN_QUERY).matches;
+        if (plain) gsap.set(frames, { y: 0 });
         frames.forEach((frame, k) => {
           frame.style.position = "sticky";
           frame.style.top = `${pinTop(k)}px`;
@@ -65,7 +77,13 @@ export function ThemeSectionStack({ children }) {
           // compositor can snap neighbours apart and expose a 1px seam of the
           // page background. Frames with a next frame get a 2px backfill
           // below them (see ThemeSection `.frame`); the next frame covers it.
-          frame.toggleAttribute("data-theme-section-backfill", k < last);
+          // Plain pin: every frame ends at the same stack bottom on release,
+          // so a backfill would poke out below the last section; the next
+          // frame always covers the previous one fully, so none is needed.
+          frame.toggleAttribute(
+            "data-theme-section-backfill",
+            !plain && k < last,
+          );
         });
         stackTop = stack.getBoundingClientRect().top + window.scrollY;
         // scroll (relatif ke top stack) saat section k mulai ke-pin

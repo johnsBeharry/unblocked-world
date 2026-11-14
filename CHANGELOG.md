@@ -400,3 +400,4 @@
 - Added bottom breathing room to SubmitPage content (`vw(138)` on desktop/tablet) so the final content can scroll clear of the fixed CTA and gradient overlay.
 =======
 >>>>>>> origin/main
+- Removed the duplicate page-local HeroArtwork files introduced during branch integration; the app-level reusable HeroArtwork remains the single source used by HeroSection and SubmitWorkSection.

@@ -43,9 +43,10 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: vw(610);
-  height: vw(610);
-  mix-blend-mode: luminosity;
+  // Same box as the frame so portrait photos stay centred (a wider square
+  // layer pushed the face off the right edge).
+  width: 100%;
+  height: 100%;
 
   img {
     position: absolute;
@@ -55,7 +56,6 @@
     height: 100%;
     max-width: none;
     object-fit: cover;
-    opacity: 0.75;
     pointer-events: none;
   }
 }
@@ -182,9 +182,6 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        mix-blend-mode: luminosity;
-        filter: brightness(0.6);
-        opacity: 0.75;
         pointer-events: none;
       }
     }
@@ -292,9 +289,6 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      mix-blend-mode: luminosity;
-      filter: brightness(0.6);
-      opacity: 0.75;
       pointer-events: none;
     }
   }

@@ -36,7 +36,7 @@
 
       .brandMask {
         height: vw(20);
-        background-color: #fff;
+        background-color: #d9d9d9;
         opacity: 0;
         transform: scaleY(0);
         transform-origin: center center;
@@ -53,6 +53,7 @@
     overflow: clip;
     padding: 0 vw(20);
     background-color: #000000;
+    letter-spacing: -2%; // desktop and mobile mockups
 
     @include tablet {
       height: vw(1000);
@@ -68,9 +69,11 @@
       flex-direction: column;
     }
 
+    // Desktop mockup (1440): Explore / Question Everything start at the
+    // centre (720), Socials at 967, Back to Top / copyright right-aligned.
     &__content {
       display: grid;
-      grid-template-columns: 1fr vw(246) vw(288) vw(188);
+      grid-template-columns: vw(700) vw(247) 1fr auto;
       height: 100%;
       padding: vw(20) 0;
       height: vw(583);
@@ -80,6 +83,11 @@
       }
 
       .mobile-question {
+        display: none;
+      }
+
+      // Copyright-row "(↑)" for tablet/mobile; desktop keeps the top-row link.
+      .mobile-back-to-top {
         display: none;
       }
 
@@ -97,13 +105,16 @@
         .mobile-question {
           display: block;
         }
+
+        .mobile-back-to-top {
+          display: block;
+        }
       }
 
       @include mobile {
         row-gap: vw(96);
         column-gap: vw(40);
         padding: vw(40) 0 0;
-        letter-spacing: -2%;
         align-content: start;
         flex: 1 1 auto;
 

@@ -1,4 +1,3 @@
-
 .tabletArt {
   position: absolute;
   inset: 0;
@@ -608,7 +607,9 @@
 }
 
 @function mobile-art($value) {
-  @return calc(#{$value} * 0.8125px / var(--base-size) * var(--viewport-scale, 1) * 100vw);
+  @return calc(
+    #{$value} * 0.8125px / var(--base-size) * var(--viewport-scale, 1) * 100vw
+  );
 }
 
 @include mobile {

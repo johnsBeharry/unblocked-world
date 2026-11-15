@@ -13,9 +13,9 @@ export function OwnershipAbout() {
         <RevealText as="p">Sec. 01 (About the Theme)</RevealText>
       </div>
       <p className={styles.descriptionLeft}>
-        <RevealText as="span" className={styles.desktopCopy}>We mistake access for ownership. We mistake convenience for control. We mistake permission for freedom. What happens when the things that matter most no longer belong to us?</RevealText>
+        <RevealText as="span" className={styles.desktopCopy}>Ownership is the first theme of UNBLOCKED, inviting artists, designers, and creative thinkers to explore one of the most enduring ideas in human society. While ownership is often associated with property and assets, it also influences how we understand autonomy, stewardship, access, memory, and personal agency.</RevealText>
         <RevealText as="span" className={styles.landscapeCopy}>Ownership is the first theme of UNBLOCKED,<br />inviting artists, designers, and creative<br />thinkers to explore one of the most enduring<br />ideas in human society. While ownership is<br />often associated with property and assets, it<br />also influences how we understand<br />autonomy, stewardship, access, memory,<br />and personal agency.</RevealText>
-        <RevealText as="span" className={styles.mobileCopy}>We mistake access for ownership. We<br />mistake convenience for control. We<br />mistake permission for freedom.<br />What happens when the things that<br />matter most no longer belong to us?</RevealText>
+        <RevealText as="span" className={styles.mobileCopy}>Ownership is the first theme of<br />UNBLOCKED, inviting artists,<br />designers, and creative thinkers to<br />explore one of the most enduring<br />ideas in human society. While<br />ownership is often associated with<br />property and assets, it also<br />influences how we understand<br />autonomy, stewardship, access,<br />memory, and personal agency.</RevealText>
       </p>
       <p className={styles.descriptionRight}>
         <RevealText as="span" className={styles.desktopCopy}>This open call encourages participants to move beyond conventional definitions and examine ownership through cultural, emotional, philosophical, and creative perspectives. The goal is not to communicate a single answer, but to expand the conversation through original visual expression and thoughtful interpretation.</RevealText>

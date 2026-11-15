@@ -192,7 +192,7 @@ export function Footer({ color = FOOTER_COLORS.home, ctaVariant = "default" }) {
           </div>
         </div>
         <div className={`${styles["main__content"]}`}>
-          <div className={`${styles.backToTop}`}>
+          <div className={`${styles.backToTop} ${styles["mobile-back-to-top"]}`}>
             <a href="#top">
               <span className={styles.backToTopLabel}>Back to Top </span>(↑)
             </a>

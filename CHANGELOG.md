@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+- Grants programs section now includes Cultural Work and Open System cards with responsive layout, and the Grants page includes the shared Footer.
+- Added the `/grants` page with responsive Home/Menu header, editorial grant copy, scrolling progress marquee, and code-native purple geometric artwork for desktop and mobile.
+- Split the Grants hero into its own page component, matching the existing homepage section architecture.
+- Grants desktop header now uses Home plus Open Calls, Grants, Guidelines, and Submit (→); the mobile overlay uses the same current labels, and the intro copy now lives inside GrantsHero.
+- Posters page jury: each jury member now has their own portrait, shown in its natural colours and centred in the frame (placeholder photos from Unsplash until the final portraits are supplied). Mobile jury cards show each member's own name, photo and description.
+- Desktop footer restored to the design: Back to Top appears once at the top right, the description, Question Everything and copyright sit in the bottom row again, columns line up with the design and the strip lines are light grey.
+- Posters page References: the lower posters are no longer cut off on narrower desktop screens.
+- Homepage theme sections now render in top-to-bottom numbering order: 01 Ownership, 02 Permanence, 03 Energy, 04 Peers.
+- Synced live site copy for Home, Posters, and Guidelines: corrected the Permanence/Energy theme text, restored the full Ownership and Creative Exploration descriptions, and normalized the Guidelines prize currency display. The `/submit` page was intentionally left unchanged.
 - Fixed a blue strip below the footer on mobile and the copyright line that never appeared: text at the very bottom of the page now reveals when you reach the end.
 - Mobile footer now matches the latest design: UNBLOCKED logo at the top, corrected spacing between the logo, introduction and link groups, and the copyright row 20px from the bottom. The Submit Work section above the footer is unchanged.
 - Mobile menu now closes smoothly: the links fade up and out, then the curtain strips retract upward before the page is revealed.

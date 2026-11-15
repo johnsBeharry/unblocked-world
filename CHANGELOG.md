@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Grants page now opens correctly on the live site when visited directly or refreshed, the mobile menu Grants link works, and the page transition into Grants uses the page's dark colour.
 - Grants People section mobile layout: centred two-line header and one person card per row. The Grants page no longer scrolls sideways on phones.
 - Grants Residencies section mobile layout: centred introduction, quote and attribution sized for small screens, as in the mobile design.
 - Grants Selection section mobile layout: two-line title, introduction, and the three steps stacked with a line under each, as in the mobile design.

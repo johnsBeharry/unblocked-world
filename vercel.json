@@ -4,6 +4,7 @@
   "rewrites": [
     { "source": "/posters", "destination": "/index.html" },
     { "source": "/guidelines", "destination": "/index.html" },
+    { "source": "/grants", "destination": "/index.html" },
     { "source": "/submit", "destination": "/index.html" },
     { "source": "/submit/form/consent", "destination": "/index.html" }
   ]

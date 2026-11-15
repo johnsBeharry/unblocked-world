@@ -4,6 +4,7 @@ const CURTAIN_COLORS = {
   '/': '#2850fe',
   '/posters': '#000000',
   '/guidelines': '#101010',
+  '/grants': '#101010',
   '/submit': '#dc91a8',
 }
 

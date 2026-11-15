@@ -279,7 +279,7 @@ export function Header({ color = HEADER_COLORS.home }) {
               </RevealText>
               <RevealText
                 as="a"
-                href="/grantds"
+                href="/grants"
                 play={menuRevealed}
                 delay={0.08}
                 duration={0.8}

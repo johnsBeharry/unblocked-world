@@ -1,7 +1,8 @@
 .references {
   position: relative;
   width: vw(1440);
-  max-height: vw(1000);
+  // Always one full viewport: a max-height shorter than the screen cut the
+  // lower posters flat in the middle of the page on narrower desktops.
   height: 100vh;
   overflow: clip;
   background: #000;
@@ -137,7 +138,6 @@
     width: 100vw;
     height: 100vh;
     height: 100svh; // full page (user request)
-    max-height: none;
   }
 
   .poster {
@@ -221,7 +221,6 @@
     width: 100vw;
     height: 100vh;
     height: 100svh;
-    max-height: none;
   }
 
   .poster {

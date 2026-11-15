@@ -22,10 +22,10 @@ export function HomePage() {
                   <div className="relative size-full" data-name="index">
                     <HeroSection />
                     <ThemeSectionStack>
-                      <PeersSection />
+                      <OwnershipSection />
                       <PermanenceSection />
                       <EnergySection />
-                      <OwnershipSection />
+                      <PeersSection />
                     </ThemeSectionStack>
                     <HiddenSystemsSection />
                     <Footer />

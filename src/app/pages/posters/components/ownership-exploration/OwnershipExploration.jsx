@@ -14,11 +14,11 @@ export function OwnershipExploration() {
       <div className={styles.label}><RevealText as="p">Sec. 02 (Creative Exploration)</RevealText></div>
       <p className={styles.descriptionLeft}>
         <RevealText as="span" className={styles.desktopCopy}>Creative exploration often begins with questions rather than conclusions. What distinguishes ownership from access? What responsibilities come with control? What can truly be owned, and what remains beyond possession?</RevealText>
-        <RevealText as="span" className={styles.tabletCopy}>Ownership is the first theme of UNBLOCKED,<br />inviting artists, designers, and creative<br />thinkers to explore one of the most enduring<br />ideas in human society. While ownership is<br />often associated with property and assets, it<br />also influences how we understand<br />autonomy, stewardship, access, memory,<br />and personal agency.</RevealText>
+        <RevealText as="span" className={styles.tabletCopy}>Creative exploration often begins with questions rather than conclusions. What distinguishes ownership from access? What responsibilities come with control? What can truly be owned, and what remains beyond possession?</RevealText>
       </p>
       <p className={styles.descriptionRight}>
         <RevealText as="span" className={styles.desktopCopy}>Participants are encouraged to pursue unexpected directions and develop work that introduces curiosity, reflection, and discussion. Whether conceptual, abstract, narrative, or experimental, submissions should show meaningful engagement with the theme while offering a distinctive perspective.</RevealText>
-        <RevealText as="span" className={styles.tabletCopy}>This open call encourages participants to<br />move beyond conventional definitions and<br />examine ownership through cultural,<br />emotional, philosophical, and creative<br />perspectives. The goal is not to communicate<br />a single answer, but to expand the<br />conversation through original visual<br />expression and thoughtful interpretation.</RevealText>
+        <RevealText as="span" className={styles.tabletCopy}>Participants are encouraged to pursue unexpected directions and develop work that introduces curiosity, reflection, and discussion. Whether conceptual, abstract, narrative, or experimental, submissions should show meaningful engagement with the theme while offering a distinctive perspective.</RevealText>
       </p>
       <div className={styles.rule} data-name="line" aria-hidden="true">
         <div className={styles.ruleInset}>

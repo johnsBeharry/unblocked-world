@@ -6,8 +6,16 @@ import { RevealText } from "../../../../../components/RevealText/RevealText.jsx"
 
 gsap.registerPlugin(ScrollTrigger);
 
-const DEFAULT_PHOTO =
-  "/UNBLOCKED-poster_files/d356dbbf2d02f78c903bcc39b1a7ff95ac05d5a7.d356dbbf.png";
+// One portrait per jury member, shown as-is (no blend). Placeholders until
+// the real photos arrive; sources in public/UNBLOCKED-poster_files/jury.
+const JURY_PHOTOS = [
+  "/UNBLOCKED-poster_files/jury/jury-01-kyle-fletcher.jpg",
+  "/UNBLOCKED-poster_files/jury/jury-02-johns-beharry.jpg",
+  "/UNBLOCKED-poster_files/jury/jury-03-lewis-webber.jpg",
+  "/UNBLOCKED-poster_files/jury/jury-04-liam-hartwell.jpg",
+  "/UNBLOCKED-poster_files/jury/jury-05-caleb-winters.jpg",
+  "/UNBLOCKED-poster_files/jury/jury-06-ava-sinclair.jpg",
+];
 
 const JURY_MEMBERS = [
   "Kyle Fletcher",
@@ -69,7 +77,7 @@ const applyClip = (el, value) => {
 };
 
 export function OwnershipJury({
-  photoSrc = DEFAULT_PHOTO,
+  photoSrc = JURY_PHOTOS,
   descriptions = DEFAULT_JURY_DESCRIPTIONS,
 }) {
   const memberListRef = useRef(null);
@@ -248,16 +256,10 @@ export function OwnershipJury({
         {MOBILE_JURY_CARDS.map((card) => (
           <article className={styles.mobileCard} key={card}>
             <div className={styles.mobileImageFrame}>
-              <img
-                src={Array.isArray(photoSrc) ? photoSrc[0] : photoSrc}
-                alt=""
-              />
+              <img src={photoSources[card] || photoSources[0]} alt="" />
             </div>
-            <RevealText as="h2">Kyle Fletcher</RevealText>
-            <RevealText as="p">
-              Head of Brand Creative at Cash App, with experience shaping
-              cultural work across music, identity, and visual systems.
-            </RevealText>
+            <RevealText as="h2">{JURY_MEMBERS[card]}</RevealText>
+            <RevealText as="p">{descriptionSources[card]}</RevealText>
           </article>
         ))}
       </div>

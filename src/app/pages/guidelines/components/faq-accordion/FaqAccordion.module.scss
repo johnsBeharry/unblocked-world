@@ -1,4 +1,3 @@
-@use '../../../../../styles/functions' as *;
 
 .summary { display: flex; align-items: flex-start; justify-content: space-between; gap: vw(20); margin: 0; padding-bottom: vw(18.5); border-bottom: vw(1) solid rgba(0, 0, 0, 0.25); cursor: pointer; list-style: none; font-size: vw(25); font-weight: 600; line-height: 1.02; letter-spacing: vw(-1); }
 .summary::-webkit-details-marker { display: none; }

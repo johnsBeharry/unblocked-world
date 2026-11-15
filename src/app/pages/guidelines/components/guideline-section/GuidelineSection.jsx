@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from './GuidelineSection.module.scss'
 import { RevealText } from '../../../../../components/RevealText/RevealText.jsx'
+import { RevealRow } from '../../../../../components/RevealRow/RevealRow.jsx'
 
 export function RuledList({ items, ordered = false, className = '' }) {
   const ListTag = ordered ? 'ol' : 'ul'
@@ -14,10 +15,15 @@ export function RuledList({ items, ordered = false, className = '' }) {
           : <a href={item.href}>{text}</a>
 
         return (
-          <li key={`${index}-${text}`} className={`${styles.ruledListItem} ${ordered ? styles.orderedItem : ''}`}>
+          <RevealRow
+            key={`${index}-${text}`}
+            className={`${styles.ruledListItem} ${ordered ? styles.orderedItem : ''}`}
+            contentClassName={ordered ? styles.orderedContent : ''}
+            lineClassName={styles.rule}
+          >
             {ordered && <span className={styles.listMarker} aria-hidden="true">{index + 1}.</span>}
             <span className={styles.listText}>{content}</span>
-          </li>
+          </RevealRow>
         )
       })}
     </ListTag>

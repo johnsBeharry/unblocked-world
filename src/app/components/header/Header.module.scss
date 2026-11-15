@@ -1,29 +1,63 @@
-@use '../../../styles/functions' as *;
 
 .header {
   position: fixed;
   inset: 0;
   z-index: 20;
   pointer-events: none;
+  transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.menuOpen {
+  transform: none;
+}
+
+// Scrolling down: the 60px bar and its items slide up out of view.
+.scrolledAway {
+  transform: translateY(-60px);
+}
+
+// Bar behind the header items; its background follows the section underneath
+// (set by Header.jsx).
+.bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px; // fixed per user, all breakpoints
+  pointer-events: none;
+  opacity: 0;
+  transition: background-color 0.25s linear, opacity 0.3s linear;
+}
+
+// At the top of the page (scroll ≤ 5px) the bar is transparent so it never
+// covers the hero logo; it fades in once the page is scrolled.
+.barVisible {
+  opacity: 1;
 }
 
 .homeColor { color: #d9d9d9; }
 .posterColor { color: #f4a9c0; }
 .guidelinesColor { color: #fff0f0; }
 
+// Items are vertically centred in the 60px bar.
 .nav,
 .home,
 .menu {
   position: absolute;
-  top: vw(20);
+  top: 0;
+  height: 60px;
+  display: flex;
+  align-items: center;
   color: inherit;
   font-family: 'Inter Local', sans-serif;
-  font-size: vw(20);
-  font-weight: 500;
   letter-spacing: vw(-0.8);
   line-height: 1.02;
   white-space: nowrap;
   word-break: break-word;
+}
+
+.mobileMenu {
+  display: none;
 }
 
 .nav,
@@ -32,10 +66,12 @@
 
 .menu { display: none; }
 
+@include mobile {
+  .menu { display: flex; }
+}
+
 .nav {
   right: vw(20);
-  display: flex;
-  align-items: center;
   gap: vw(56);
   align-content: stretch;
 }
@@ -64,8 +100,13 @@
 .home.guidelinesColor,
 .menu.guidelinesColor { color: #fff0f0; }
 
+// Tablet-portrait mockup (864 × 1238): labels at 480.5 / 595 / 745, the
+// last ending 21.5px from the right edge.
 @include compact-portrait {
-  .nav { gap: vw(58); }
+  .nav {
+    right: vw(21.5);
+    gap: vw(57.5);
+  }
 }
 
 @include mobile {
@@ -73,7 +114,6 @@
 
   .home,
   .menu {
-    top: vw(40);
     font-size: vw(40);
     letter-spacing: vw(-1.6);
     line-height: 1;
@@ -83,7 +123,6 @@
 
   .menu {
     position: absolute;
-    display: block;
     right: vw(42);
     border: 0;
     padding: 0;
@@ -91,7 +130,139 @@
     color: inherit;
     cursor: pointer;
     font-family: 'Inter Local', sans-serif;
-    font-weight: 500;
     white-space: nowrap;
+    z-index: 2;
+  }
+
+  .mobileMenu {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    display: flex;
+    min-height: 100dvh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: vw(80) vw(40) vw(40);
+    overflow: hidden;
+    background: transparent;
+    color: var(--mobile-menu-color, #d9d9d9);
+    pointer-events: auto;
+  }
+
+  .mobileMenuCurtain {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .mobileMenuStrip {
+    position: absolute;
+    top: calc(100% / 20 * var(--strip-index));
+    left: 0;
+    width: 100%;
+    height: calc(100% / 20 + 1px);
+    background: #000;
+    transform: scaleY(0);
+    transform-origin: 50% 100%;
+  }
+
+  .mobileMenuContent {
+    position: relative;
+    z-index: 2;
+    visibility: hidden;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+  }
+
+  .mobileMenuContentReady {
+    visibility: visible;
+  }
+
+  .mobileMenuLinks {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    width: 100%;
+    font-family: 'Inter Local', Inter, sans-serif;
+    font-size: vw(112);
+    font-style: normal;
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 90%;
+    text-align: center;
+  }
+
+  .mobileMenuLinks a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .mobileMenuContact {
+    position: absolute;
+    right: vw(40);
+    bottom: vw(40);
+    left: vw(40);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: vw(40);
+    letter-spacing: -0.04em;
+    line-height: 1;
+    text-align: center;
+  }
+
+  .mobileMenuContact p,
+  .mobileMenuContact a {
+    margin: 0;
+  }
+
+  .mobileMenuContact :global(.root) {
+    display: block;
+  }
+
+  .mobileMenuContact p {
+    color: var(--mobile-menu-color, #d9d9d9);
+    opacity: 0.5;
+  }
+
+  .mobileMenuContact a {
+    color: var(--mobile-menu-color, #d9d9d9);
+    text-decoration: none;
+  }
+}
+
+// Light section underneath: dark text (outranks the route colour classes).
+.nav,
+.home,
+.menu {
+  transition: color 0.25s linear;
+}
+
+.header.onLight .nav,
+.header.onLight .home,
+.header.onLight .menu {
+  color: #101010;
+}
+
+// Intro target: inline-block so it can be translated inside its link.
+.header [data-header-intro] {
+  display: inline-block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header,
+  .bar,
+  .nav,
+  .home,
+  .menu {
+    transition: none;
   }
 }

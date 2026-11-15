@@ -2,6 +2,124 @@
 
 ## Unreleased
 
+- Fixed a blue strip below the footer on mobile and the copyright line that never appeared: text at the very bottom of the page now reveals when you reach the end.
+- Mobile footer now matches the latest design: UNBLOCKED logo at the top, corrected spacing between the logo, introduction and link groups, and the copyright row 20px from the bottom. The Submit Work section above the footer is unchanged.
+- Mobile menu now closes smoothly: the links fade up and out, then the curtain strips retract upward before the page is revealed.
+- Posters page References: the posters now grow slightly as the pointer approaches them, as intended (the effect was not applied before).
+- Fixed a thin yellow line under the last theme section on tablet and mobile.
+- Posters page References section on mobile and tablet now follows the new design and fills the full screen: four posters in the corners (with the right crops), the large centred "Sec.03 (References)" title and the description beneath it. Previously the mobile layout rendered at half size and the tablet title was oversized and off-centre.
+- Fixed the homepage introduction text on mobile and tablet appearing instantly without its reveal animation when the font finished loading during the opening animation; it now reveals together with the heading.
+- Removed animation warnings on the homepage (opening animation settings and the Submit Work artwork on tablet and mobile); all text reveals verified on mobile, tablet and desktop.
+- Theme sections on mobile: the question now uses the same 20px size as the description and wraps onto two lines when it is long.
+- Mobile footer follows the new design: larger 20px text, the introduction at the top, Explore and Socials side by side, Question Everything with the email, and the copyright with a "(↑)" back-to-top link on the bottom row; the brand strip animation now sits below the content. The "Social" label is now "Socials".
+- Theme sections on mobile: descriptions use the full width again.
+- Theme sections on tablet and mobile now always pin with their top edge at the top of the screen (the number and title are no longer cut off), and tablet sections use the visible screen height.
+- Theme sections on tablet and mobile now pin simply: each section sticks as soon as its top reaches the top of the screen and the next one slides over it, without the slow drift or stacked headers used on desktop.
+- Theme sections on tablet: long questions now wrap onto two lines within their own column, aligned with the top of the description.
+- Homepage theme sections now fill the full screen height on tablets.
+- Homepage theme sections (Ownership, Permanence, Energy, Peers) now have proper tablet and mobile layouts: number and title stacked, the label row and rule, a full-width artwork box, and the question and description below it (side by side on tablet, stacked on mobile). Tablet follows the new design; long titles and questions now fit on phones instead of running off-screen.
+- Description line breaks meant for desktop no longer appear on tablet and mobile, so the text wraps naturally there.
+- Header background is now hidden at the top of every page and only fades in after scrolling more than 5px, so it never covers the UNBLOCKED logo in the hero (desktop, tablet and mobile).
+- Tablet header links are now positioned exactly as in the design.
+- Homepage hero on tablet and mobile (portrait) now follows the new design: the UNBLOCKED logo spans the full width, the artwork sits below it, followed by the heading "The World Isn’t Inevitable", a short introduction and the Submit Work link. The artwork proportions were corrected to match the design, and the copy now plays with the opening animation instead of waiting for a scroll. Explore Themes stays desktop-only. The desktop layout is unchanged.
+- Submit flow now follows the official submission form: steps are Join, Posters and Submit; the overview lists the current process and rules; Join asks for email, full name, country, Instagram, a short bio, an optional profile photo and agreement to the Terms of Service and Privacy Policy (with a sign-in option for returning artists and a six-digit code with resend and edit options); Your Entries supports drag and drop and groups posters into In Progress and Submitted; Add a Poster uses the official limits, a longer concept field with a character counter, the official file guidance and up to 3 supporting files; Submit lets you choose which posters to send and confirm the three submission terms; the confirmation screen offers to submit another poster or view your entries. Telephone, city and website fields were removed.
+- Fixed email code verification failing with "Could not load the contest" on the second step.
+- Submit page: every step (Contact, Poster Entries, Add a Poster, Consent, Success) now leaves room at the bottom so its last fields and buttons stay fully visible above the bottom fade when scrolled to the end, on desktop and mobile.
+- Submit dropdown panel now dims the page behind it with a 40% black overlay that fades in and out with the panel; clicking the overlay closes the panel.
+- Submit dropdown panel is now pinned to the bottom of the browser, slides up smoothly when opened and fades out when closed. The City field stays locked until a country is chosen.
+- Submit form dropdowns (Country, City, Year Designed) now open a full option panel over the form, with the field title, a Close link and ruled option rows. Country lists all countries, City lists the main cities of the chosen country (with an "Other" option to type a city), and Year Designed lists 2026 to 1950. City data is based on GeoNames (CC BY 4.0).
+- Header now slides up out of view while scrolling down and slides back in as soon as you scroll up (always visible at the top of the page and when tabbing into it).
+- Header links are now vertically centred in the 60px header bar at every screen size.
+- Header now has a 60px background bar that takes the colour of the section underneath while scrolling, and its text switches to dark on light sections (and back to the light colour on dark ones) for better contrast.
+- Homepage hero artwork now grows with scroll until it is 36px from the left and right edges of the screen, reaching that size while it is still in view (by the time its top meets the top of the screen), and never grows past it.
+- Submit Work section artwork now uses the same intro as the homepage hero: when it scrolls into view, the lines fade in thin and then thicken from the bottom rows upward (replaces the centre-out opening).
+- Homepage artwork intro: the lines now start thickening while they are still fading in, removing the visible pause between the two steps.
+- Homepage intro (about 3s): the UNBLOCKED logo drops into place from above, the header links drop in one after another, the artwork appears as thin lines that thicken from the bottom rows upward, and the two links under the logo rise in.
+- Submit page artwork now starts when the black column is 80% of the way in and opens with a quick ease-out, so it reads as pushed by the column instead of waiting for it.
+- Submit page artwork now enters after the black column: the box is revealed by a mask from right to left, then the bars grow from flat to full size while fading in.
+- Submit page artwork: all bars now fade in together as thin hairlines while the box scales in, then thicken together to their full size.
+- Submit page artwork bars now unfold from flat lines to their full thickness (top/bottom arms vertically, left/right arms horizontally) instead of growing in length.
+- Submit page artwork entry: the black box scales in from its centre, then the plus pattern opens from the middle, with the bars nearest the centre growing first on all four arms and the thinnest outer bars last.
+- Submit page entry: on desktop the page now arrives fully pink (matching the page curtain), the black column slides in from the right, and the content text reveals as it settles. On tablet portrait and mobile, where the page is all black, the page curtain is black and the text reveals directly.
+- Page curtain now appears only when moving to another page (20 strips closing from bottom to top in the next page's colour); pages load without a curtain so their content animations are fully visible.
+- Loader and page transitions are now a strip curtain in each page's hero colour (same strip concept as the footer logo reveal): on load it opens from top to bottom, and when moving to another page it closes from bottom to top in that page's colour before navigating. Replaces the earlier counter panel.
+- Submit Work section artwork now responds to scrolling: as the section enters, its bars open from the centre outward (thin line first, then the thicker layers, centre rows first), following the scroll in both directions, and the artwork drifts slightly slower than the title for depth. Mobile and tablet portrait, which show no artwork here, are unchanged.
+- New intro loader: on the first visit of a session a dark panel shows the UNBLOCKED label, a counter that follows real loading progress and a thin bar that fills, then folds away and lifts like a curtain while the page reveals underneath. Later page loads only lift the curtain, and internal links lower it before navigating, so moving between pages feels continuous with no white flash. Reduced-motion users skip it.
+- Smoother scroll-linked motion: smooth scrolling and scroll-driven animations now run on the same animation clock, so scrubbed effects follow the scroll without lag.
+- Large statements (Guidelines introduction; Posters About, Creative Exploration and Programme intros) now brighten word by word as they are scrolled through.
+- Fixed a 1px blue line that could appear between stacked theme sections on the homepage while scrolling: each stacked section now has a hidden 2px backfill in its own color that only shows where the browser would otherwise leave a sub-pixel seam.
+- Hidden Systems headline intro refined to match the mockup: pure mask slides with no fade on a `power2.inOut` curve, and the bracketed artwork row now moves as one unit — the brackets and the blue box (with the artwork kept inside it) travel the same distance and are cut at the same line.
+- Hidden Systems: removed the scroll-tracked bracket and artwork assembly; the brackets, blue box and artwork now sit in their final layout and only take part in the headline intro. Bracket spacing now always uses the loaded font (it could previously settle slightly too wide when measured before the font loaded).
+- Hidden Systems headline intro: "Making", "Hidden", the bracketed artwork row (with its side labels), "Systems" and "Visible" now slide up one after another inside fixed masks as a single staggered sequence; the scroll-driven bracket and artwork assembly is unchanged.
+- Submit form fields (Contact Information, email verification code, Add a Poster) now use the same row reveal as lists: each field's label/placeholder slides up together with its underline drawing in, field by field from top to bottom. Field layout is unchanged.
+- List row rules now draw together with their labels instead of after them.
+- Guidelines section navigation: instead of switching the active label to the darker color, a dark copy of each label is revealed left-to-right in step with how far that section has been scrolled; completed sections stay fully dark and the last section completes at the page end.
+- New list row reveal for every list (Guidelines lists, FAQ prizes, Key Dates, Submit process and rules): each row's number or bullet and its label slide up together inside a mask, then the row rule draws in from the left. Rows that have not revealed yet stay fully hidden (no stray numbers, bullets or rules), visible rows reveal top-to-bottom in one staggered wave, and links inside rows keep working. Final layout is unchanged.
+- Fixed the Key Dates "(Key Dates)" title on tablet/mobile: its scale adjustment was applied twice (to the title part and again to a word inside the line reveal), and the mobile size override distorted line measurement; it now targets only the title part.
+- Fixed the Guidelines hero "Submissions Guidelines (↓)" title sitting left of center on desktop: a broad span rule was restyling the line reveal's internal wrappers. The desktop one-line and tablet/mobile stacked "(↓)" layouts are now explicit responsive variants.
+- Applied the shared line reveal to remaining body text on all pages: Key Dates rows, footer labels/description/copyright, the footer call-to-action title and labels, Guidelines section/FAQ labels, plain list items, judging status, prize copy, Submit page process and rules lists, and the email verification hint. Links, buttons and form controls are intentionally left unwrapped.
+- Fixed shared line reveal splitting: lines are now re-measured after fonts load and whenever the container width changes (previously the first, often pre-font, measurement was kept), so lines no longer overflow, get clipped or leave orphan words; re-splits after a reveal show settled text instead of replaying.
+- Posters hero artwork box now fades and slides up right after the "Poster Contest" subtitle finishes, as one sequence with the title (no scroll needed); replaces the earlier curtain reveal.
+- Posters hero reveal: glyph tops (title) and bottoms (subtitle) are no longer flattened at the start, as the reveal window now opens from the edge of the extended mask; durations shortened by 30% (title 0.84s, subtitle 0.7s).
+- Switched the Posters hero title and subtitle reveal easing to a GSAP `power2.inOut` equivalent for a softer start and landing.
+- Refined the Posters hero reveal to a more elegant, reference-style motion: each mask now opens in the same direction the glyph travels, and characters overlap as one tighter wave (title 1.2s / 0.03s stagger, subtitle 1s / 0.018s stagger from 0.45s, shared expo-out curve).
+- Fixed the Posters hero clip-mask reveal moving together with the glyphs: each character's mask now stays in place while only its edge opens, and the glyph travels its short 30% inside it.
+- Posters hero "Ownership" title now uses the same clip-mask reveal as the subtitle, mirrored: each glyph drops a short 30% from above with no rotation while its mask opens from the bottom.
+- Softened the Posters hero subtitle entrance: characters now rise a short 30% with no rotation while a clip mask opens over each glyph, instead of flying in from far below.
+- Refined the Posters hero title animation: characters now start only after fonts are ready, then swing in from their masks on a longer expo-out curve with heavier overlap (title 1.6s / 0.055s stagger, subtitle 1.4s / 0.03s stagger starting at 0.7s) for a smoother cascading reveal.
+- Fixed the Posters hero title reveal cutting off descenders (the "p" in "Ownership") and the subtitle parentheses: the per-character mask now extends beyond the line box while keeping the glyph side-bearing room and the existing timing.
+- Reworked the shared text line reveal: the line mask now extends beyond each line box so ascenders, descenders and tightly tracked last glyphs are never cut (fixing clipped theme questions), lines start fully hidden regardless of line-height, and the motion uses a longer expo-out slide (1.2s, 0.1s stagger) with a short fade.
+- Homepage theme sections that do not fit below the stacked section headers (e.g. full-height sections at 1920×911) keep the stacked-header pin, then the active and previous sections scroll up together until the active section is fully visible; only then does the next section enter and stack below its header.
+- Fixed homepage theme sections overlapping on wide screens (e.g. 1920×911): the stack frame now uses the same full-viewport height as its section, so each next section starts only after the previous one ends.
+- Added the `OwnershipComingNext` Permanence teaser section to the Posters page below Key Dates, matching the 1440×800 desktop mockup: green copy column with "Coming Next" label, title and description, plus a dark artwork panel with three stepped bar columns.
+- Changed FooterBrand reveal triggering from scroll-progress checks to a footer-end sentinel observed by `IntersectionObserver`; the mask animation now starts only when the Footer bottom reaches the browser bottom.
+- Fixed the FooterBrand initial render flash by defining hidden mask opacity and scale in SCSS before the mount effect runs; lines now remain invisible until the 80% scroll trigger.
+- Fixed the FooterBrand one-shot reveal lifecycle: masks now reset per page mount, the timeline is fully cleaned up on route changes, layout/font readiness is rechecked, and the reveal starts at 80% document scroll progress (20% before the bottom).
+- Switched `OwnershipJury` descriptions to the shared `RevealText` component with per-line wrappers and active-slot `play` control.
+- Added six jury-specific description states to `OwnershipJury`; the active description reveals on jury-slot changes and supports a `descriptions` prop with the existing copy as a safe fallback.
+- Updated `OwnershipJury` label state so completed and active jury names stay at opacity 1, while only future names remain at 0.5; reverse scrolling fades names back when they become future slots again.
+- Added an overwrite-safe fade transition when the active `OwnershipJury` label changes, preserving direct scroll control for its progress bar and portrait curtain clip.
+- Moved the `OwnershipJury` base border and scrubbed progress bar from below each name to above its label while preserving the same scroll timing.
+- Changed `OwnershipJury` to render one portrait layer per jury member, begin the next portrait curtain transition at 70% of each equal slot, and derive the total pinned distance as six viewport heights (`600vh`).
+- Extended the `OwnershipJury` pinned scroll sequence to `300vh` and added a multi-layer blind-fold curtain mask over the portrait, with bottom-to-top mask strips scaling away in real time with scroll progress.
+- Reworked `OwnershipJury` into a desktop pinned `ScrollTrigger` sequence over `200vh`: each jury row receives an equal scroll-time progress bar, name opacity activates at row start, and the portrait reveals with a scroll-scrubbed vertical blind-fold scale.
+- Corrected the `OwnershipReferences` pin release threshold to 20% above the browser bottom (`80%` viewport height from the top), matching the supplied reference position.
+- Made the `OwnershipReferences` pin end distance account for each poster's parallax speed, releasing only after the slowest/farthest poster's bottom edge has crossed above the 20% viewport threshold.
+- Changed the `OwnershipReferences` pin end marker to the bottom edge of the farthest poster at `20%` viewport-top, keeping the pinned phase active until that poster has fully cleared the threshold.
+- Kept `OwnershipReferences` posters moving during the pinned phase by deriving their parallax position from the natural scroll distance relative to the ScrollTrigger start instead of the pinned section's fixed viewport top.
+- Fixed `OwnershipReferences` pin cleanup and changed its ScrollTrigger end boundary to release when the last poster reaches 20% from the top of the viewport.
+- Scoped `HeroArtwork` scroll animation queries to each component instance, preventing the homepage Hero animation from transforming the static Footer artwork.
+- Added the `HeroArtwork` `disableScrollAnimation` prop; when enabled, the component skips scroll/resize animation setup and resets artwork transforms to their neutral state.
+- Made `src/styles/_functions.scss` available to every SCSS module through Vite Sass `additionalData`, then removed the repeated per-module `@use` imports.
+- Moved `HeroArtwork` into `src/app/components/hero-artwork` so it can be reused by homepage and other app-level components without page-specific coupling; preserved its JSX, SCSS, geometry, and animation behavior.
+- Restored the homepage animation trigger after removing the startup loader by setting `body[data-page-phase="content"]` from `App` for every route.
+- Changed FooterBrand mask reveal to start at 90% document scroll progress, giving the animation the final 10% of the scroll range before the page end.
+- Added a subtle 12px upward slide to the FooterBrand mask reveal, synchronized with its existing bottom-to-top stagger.
+- Disabled the homepage's initial `PageLoader` mount so the page renders directly without the startup loading overlay.
+- Changed FooterBrand masks from continuous scroll scrubbing to a bottom-of-document-only reveal: masks now scaleY and fade in from opacity 0 to 1 in a bottom-to-top stagger.
+- Tuned FooterBrand mask end scales from measured layout heights so the top mask resolves to approximately 2px and each lower mask grows progressively toward full height.
+- Added the requested global body typography baseline at the start of `Global.scss`: 500 weight, `vw(20)` size, 102% line-height, and -4% tracking, allowing component styles to override it later.
+- Smoothed FooterBrand mask scale updates with a short `power2.out` tween and overwrite behavior.
+- Normalized `BrandLogo` as a reusable decorative SVG with configurable color/class props while preserving its original 177×24 viewBox and path geometry.
+- Replaced the ThemeSection legacy pin/parallax offsets with full-block sticky stacking: each section keeps all of its content visible and calculates its sticky top from the measured header heights of the sections above it.
+- Added a GSAP ScrollTrigger stack coordinator that pins each full ThemeSection block until the stack wrapper's bottom reaches the browser bottom, then releases the whole stack to scroll upward together.
+- Changed the slow upward drift to transform each full pinned ThemeSection group as one unit, keeping its background, header, artwork, metadata, and copy aligned while the stack moves.
+- Matched each pin frame's background to its ThemeSection so the slow group drift cannot expose an empty wrapper gap beneath the moving block.
+- Moved the slow drift from the inner section to the pinned frame itself, keeping each ThemeSection at its fixed height while the complete block is pushed upward naturally with scroll.
+- Stabilized the shared upward drift by moving it into a coordinator ScrollTrigger that runs after the individual pin triggers, preventing competing frame transforms and scroll glitches.
+- Removed the competing pin-time drift transform and restored the stable header-offset pin behavior; the full stack now releases and moves upward naturally from the shared stack-bottom boundary.
+- Reworked ThemeSectionStack to use one GSAP master pin timeline: the rail drifts upward subtly, previous cards collapse to their measured headers, and following cards rise into measured header rows.
+- Restored independent full-block ThemeSection pins with measured header offsets and added only a small active-pin top drift, so the existing push/release behavior remains intact while every active block scrolls upward slowly.
+- Made pin drift local to each ScrollTrigger and extended it to 64px, eliminating the global-progress snap when a block first sticks while giving each pinned block a longer natural upward travel.
+- Applied the optional `ThemeSection` `backgroundColor` prop as an inline background style, allowing parent components to set the section background.
+- Re-ran Permanence visual QA at CSS viewport 1440×640 with DPR2, comparing the native 2880×1280 browser capture directly against the original mockup without resizing; corrected the index anchor back to the 20px CSS source position.
+- Matched the Permanence section copy to the supplied desktop mockup, including `Who owns your life?`, `Dependence`, the ownership description, desktop line breaks, and corrected shared copy/title/artwork positioning.
+- Updated the shared `ThemeSection` desktop layout to the supplied 1440×640 Permanence mockup: compact section height, header/meta alignment, 20px artwork origin, 432.5px artwork box, right-column copy flow, and Permanence artwork colors/geometry.
+- Kept the four homepage theme wrappers on the shared layout so Ownership, Permanence, Energy, and Peers receive the same desktop positioning rules.
+- Updated `client-static/index.html` to load the local `form.css` and `app.js` files from the same folder.
+- Added a `/client-static` preview route that mounts the local static form at `/form/test`; the local preview currently stops at loading because the form API proxy and referenced base assets are not present locally.
+- Consolidated local agent rules by removing duplicate and conflicting non-QA guidance while preserving the complete visual QA protocol.
+- Removed the implementation-specific Hero animation rule from local agent guidance so the rules remain global and reusable.
 - Moved Submit artwork's immutable geometry calculation into `SubmitArtwork.geometry.js` so the component file contains only rendering and animation logic.
 - Cleaned confirmed dead code and redundant constants in HeroArtwork, PageLoader, and SubmitArtwork without changing rendered geometry or animation behavior.
 - Ensured all Footer logo masks collapse to scaleY 0 at the exact document bottom so no horizontal mask seams remain when scrolling is fully exhausted.
@@ -292,6 +410,7 @@
 - Equalized the Jury base border opacity across all rows, including the first active row; only the separate highlight border carries the bright color.
 - Set the OwnershipJury highlight-border scale-out duration to 1.6s for visual review, while leaving the text opacity tween timing unchanged.
 - Isolated Jury text opacity from the row container so bright and base borders never inherit the text fade; border color and highlight scale now run as independent GSAP properties.
+- Added local coding rules requiring reuse-first inspection, efficient nested SCSS, focused logic, temporary JSON content storage, security-by-default practices, and removal of redundant or dead code.
 - Made the Jury highlight border appear instantly on row hover with no hover transition; the 1.6s scale animation remains limited to the GSAP reveal sequence.
 - Restored a visible 1.6s hover scale animation for the bright Jury border, expanding from right to left instead of appearing instantly.
 - Changed the Jury hover highlight to scale from left to right while preserving the reveal timeline's right-to-left direction.
@@ -312,3 +431,21 @@
 - Split the Key Dates title into responsive reveal parts so desktop renders one line while mobile deterministically renders `Sec.07` above `(Key Dates)`.
 - Matched the currently requested Key Dates reference across viewports by forcing both title parts into a two-line vertical layout.
 - Removed the Hero artwork group-level scaleX reveal; groups now remain at neutral width after loading while layer scaleY/scaleX reveal behavior stays unchanged.
+- Started migrating the React submit flow to the official form API contract: server-side same-origin proxy, email-code session, draft entry creation, separate file uploads, and final entry-ID submission.
+- Made contact-step validation errors visible before email verification begins.
+- Preserved an existing poster preview and file when editing metadata without selecting a replacement file.
+- Forwarded the official form origin and referer through the server proxy so Worker origin validation accepts local form requests.
+- Removed the legacy hard-coded SubmitWorkSection `Current Theme (Ownership)` label that rendered alongside the configurable `topLabel`, eliminating the duplicate footer label while preserving RevealText's hidden measurement layer.
+- Added the SubmitPage bottom gradient overlay for the Enter Submission CTA, matching the 496px × 114px centered desktop treatment and keeping the button above the overlay; mobile retains its full-width bottom fade.
+- Fixed the SubmitPage Enter Submission CTA to remain viewport-fixed while the content column scrolls, with desktop placement centered in the right content column and responsive tablet/mobile centering.
+- Added bottom breathing room to SubmitPage content (`vw(138)` on desktop/tablet) so the final content can scroll clear of the fixed CTA and gradient overlay.
+- Removed duplicate page-local HeroArtwork files after branch integration; the app-level reusable HeroArtwork remains the single source used by HeroSection and SubmitWorkSection.
+- Added the mobile fullscreen navigation menu with centered route links, Close/Escape handling, body-scroll locking, and the Question Everything contact footer.
+- Matched the mobile menu link typography to the supplied Inter Semi Bold specification with 600 weight, 90% leading, -4% tracking, and centered alignment.
+- Added a bottom-to-top strip curtain before the mobile menu content reveal, then staggered the menu links and contact copy through the shared RevealText component; reopening resets and replays the sequence.
+- Changed mobile menu close behavior to fade the revealed content out briefly before unmounting the overlay, while leaving the opening curtain sequence unchanged.
+- Updated mobile menu theming to use each route's Header color, removed close fade-out, preserved the menu under the higher PageCurtain during internal navigation, and stopped Lenis plus body scrolling while open.
+- Reworked the mobile Footer layout to match the supplied reference and hid the animated brand curtain lines on mobile while preserving the desktop footer treatment.
+- Corrected mobile Footer spacing by restoring the top logo inset and anchoring the copyright/back-to-top row near the bottom edge of the footer reference.
+- Tightened mobile Footer vertical rhythm and aligned the copyright/back-to-top grid content to the bottom edge to remove the remaining visible spacing ghost.
+- Fixed the mobile Footer bottom-row selector so copyright and back-to-top alignment actually applies to the second `.main__content` child.

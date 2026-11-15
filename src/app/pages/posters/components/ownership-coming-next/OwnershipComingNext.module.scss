@@ -1,0 +1,70 @@
+.next {
+  position: relative;
+  width: vw(1440);
+  height: vw(800);
+  overflow: clip;
+  background: #34bd5f;
+  box-sizing: border-box;
+
+  &, *, *::before, *::after { box-sizing: border-box; }
+  p, h2 { margin: 0; }
+
+  .art {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    background: #101010;
+  }
+
+  .bar {
+    position: absolute;
+    display: block;
+    left: var(--bar-left);
+    top: var(--bar-top);
+    width: vw(123);
+    height: var(--bar-height);
+    background: #34bd5f;
+  }
+
+  .label, .title, .description {
+    position: absolute;
+    left: vw(20);
+    font-family: 'Inter Local', sans-serif;
+    font-style: normal;
+    white-space: nowrap;
+  }
+
+  .label {
+    top: vw(40);
+    height: vw(24);
+    width: vw(124);
+    padding-left: vw(4);
+    background: #101010;
+    color: #34bd5f;
+    font-size: vw(20);
+    font-weight: 500;
+    line-height: vw(24);
+    letter-spacing: -0.04em;
+  }
+
+  .title {
+    top: vw(73);
+    color: #101010;
+    font-size: vw(100);
+    font-weight: 600;
+    line-height: 0.9;
+    letter-spacing: -0.06em;
+    right: vw(20); // full-width line box so RevealText clipping keeps the last glyph
+  }
+
+  .description {
+    top: vw(259);
+    color: #272727;
+    font-size: vw(20);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+}

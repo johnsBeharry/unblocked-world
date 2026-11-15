@@ -1,4 +1,5 @@
-import React, { useRef, useState } from 'react'
+import React, { useLayoutEffect, useRef, useState } from 'react'
+import { gsap } from 'gsap'
 import styles from './SubmitPage.module.scss'
 import { ContactInformationPanel } from './components/ContactInformationPanel/ContactInformationPanel.jsx'
 import { SubmitProgress } from './components/SubmitProgress/SubmitProgress.jsx'
@@ -8,17 +9,49 @@ import { PosterDetailsPanel } from './components/PosterDetailsPanel/PosterDetail
 import { ConsentPanel } from './components/ConsentPanel/ConsentPanel.jsx'
 import { SubmissionSuccessPanel } from './components/SubmissionSuccessPanel/SubmissionSuccessPanel.jsx'
 import { useSubmitLenis } from './hooks/useSubmitLenis.js'
+import { useSubmitIntro } from './hooks/useSubmitIntro.js'
 import { RevealText } from '../../../components/RevealText/RevealText.jsx'
+import { RevealRow } from '../../../components/RevealRow/RevealRow.jsx'
+import {
+  createEntry,
+  deleteEntry,
+  getContest,
+  requestEmailCode,
+  submitEntries,
+  updateEntry,
+  updateProfile,
+  uploadAsset,
+  uploadPoster,
+  verifyEmailCode,
+} from './api/submitFormApi.js'
+import { PHOTO_TYPES, blobToBase64, shrinkPhoto } from './api/profilePhoto.js'
+import { CONSENTS } from './components/ConsentPanel/ConsentPanel.jsx'
+import { MAX_SUPPORTING_FILES } from './components/PosterDetailsPanel/PosterDetailsPanel.jsx'
 
+// Overview copy follows the reference form.
 const steps = [
   'Review the Ownership theme.',
   'Create one or more original poster responses.',
   'Prepare your files.',
-  'Complete the submission form.',
+  'Join UNBLOCKED and confirm your email with a code we send you. No password needed.',
+  'Add your posters. Everything saves as you go.',
+  'Confirm the submission terms and submit.',
   'Your posters will then be reviewed by the international jury.',
-  'Confirm the submission terms.',
-  'Submit your entry.',
 ]
+
+const rules = [
+  'Open to individual and collaborative entries.',
+  'You can submit more than one poster, on the same day or later.',
+  'Submitted work must be original.',
+  'Accepted file types: JPG, PNG, PDF, GIF or MP4.',
+  'Static posters (JPG, PNG, PDF) must be under 5 MB.',
+  'Motion posters (GIF, MP4) must be under 20 MB.',
+  'Up to 3 supporting files per poster.',
+  'Use the file name format: YourName_PosterTitle.',
+  'Selected work may require additional formats later.',
+]
+
+const EMAIL_PATTERN = /^\S+@\S+\.\S+$/
 
 const demoPosterEntries = [
   {
@@ -33,9 +66,56 @@ const demoPosterEntries = [
   },
 ]
 
-function SubmitArtwork() {
+// Entry, once the black column is 80% of the way in: the box is revealed by
+// a mask moving right → left, then every bar grows from flat (scale 0 on its
+// thickness axis: top/bottom arms vertically, left/right arms horizontally) to
+// full size while fading in. Never short → long.
+// Ease-out so the box moves at once, carrying on the panel's momentum (it
+// reads as pushed by the panel instead of waiting for it).
+const ART_BOX = { duration: 0.9, ease: 'power3.out' }
+const ART_BAR = { duration: 0.9, ease: 'power2.inOut' }
+const ART_BARS_AT = 0.75 // bars start as the box mask settles
+const BOX_HIDDEN = 'inset(0% 0% 0% 100%)'
+const BOX_SHOWN = 'inset(0% 0% 0% 0%)'
+
+// Thickness axis = shorter side of the bar's own (untransformed) box; this holds
+// for the rotate(±90) rects of the side arms too.
+const thicknessAxis = (bar) => {
+  const box = bar.getBBox()
+  return box.width > box.height ? 'scaleY' : 'scaleX'
+}
+
+const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+// The entry timeline is built paused before paint and handed to the page via
+// `introRef`; useSubmitIntro plays it at the right moment of the panel slide.
+function SubmitArtwork({ introRef }) {
+  const artworkRef = useRef(null)
+
+  useLayoutEffect(() => {
+    const artwork = artworkRef.current
+    if (!artwork || reducedMotion()) return undefined
+    const bars = Array.from(artwork.querySelectorAll('svg path, svg rect'))
+    gsap.set(artwork, { clipPath: BOX_HIDDEN })
+    bars.forEach((bar) => gsap.set(bar, { [thicknessAxis(bar)]: 0, opacity: 0, transformOrigin: '50% 50%' }))
+    const timeline = gsap.timeline({ paused: true })
+      // Drop the finished mask so the box edges render exactly as without it.
+      .to(artwork, { clipPath: BOX_SHOWN, ...ART_BOX, onComplete: () => gsap.set(artwork, { clearProps: 'clipPath' }) })
+      .to(bars, { scaleX: 1, scaleY: 1, opacity: 1, ...ART_BAR }, ART_BOX.duration * ART_BARS_AT)
+    introRef.current = timeline
+
+    return () => {
+      timeline.kill()
+      if (introRef.current === timeline) introRef.current = null
+      // Restore values only: clearing props would also drop the bars' own
+      // SVG rotate() transforms.
+      gsap.set(artwork, { clearProps: 'clipPath' })
+      gsap.set(bars, { scaleX: 1, scaleY: 1, opacity: 1 })
+    }
+  }, [introRef])
+
   return (
-    <div className={styles.artwork} aria-hidden="true">
+    <div ref={artworkRef} className={styles.artwork} aria-hidden="true">
       <svg className={styles.pattern} width="237" height="237" viewBox="0 0 237 237" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M75.9941 59.5742H160.203V76.0053H75.9941V59.5742Z" fill="#DC91A8" />
         <rect x="75.9941" y="39.0312" width="84.2092" height="12.3233" fill="#DC91A8" />
@@ -69,49 +149,157 @@ export function SubmitPage({ initialStep = 0 }) {
       ? demoPosterEntries
       : []
   ))
-  const [contactDraft, setContactDraft] = useState({ full_name: 'Andre' })
+  const [contactDraft, setContactDraft] = useState({})
+  const [joinMode, setJoinMode] = useState('join')
+  const [verification, setVerification] = useState({ status: 'idle', code: '', error: '' })
+  const [contest, setContest] = useState(null)
   const [posterDraft, setPosterDraft] = useState({ title: '', posterFiles: [], supportingFiles: [] })
   const [editingEntryId, setEditingEntryId] = useState(null)
   const [saveState, setSaveState] = useState('idle')
   const [saveError, setSaveError] = useState('')
-  const [consent, setConsent] = useState({ original: true, terms: false, privacy: false })
+  const [consent, setConsent] = useState({})
+  const [picked, setPicked] = useState({})
   const [submissionState, setSubmissionState] = useState('idle')
   const [submissionError, setSubmissionError] = useState('')
   const contentScrollRef = useRef(null)
   useSubmitLenis(contentScrollRef, step)
+  const contentRef = useRef(null)
+  const artIntroRef = useRef(null)
+  const introPending = useSubmitIntro(contentRef, artIntroRef)
   const showContact = step === 1
   const showPoster = step === 2
   const showPosterDetails = step === 3
   const showConsent = step === 4
   const showSuccess = step === 5
 
-  async function handleSubmission() {
-    if (!consent.original || !consent.terms || !consent.privacy) {
-      setSubmissionError('Please accept all submission terms before submitting.')
+  function getErrorMessage(result, fallback) {
+    return result?.body?.error || result?.body?.message || fallback
+  }
+
+  function profileFromContact() {
+    return {
+      name: contactDraft.name?.trim(),
+      country: contactDraft.country?.trim(),
+      instagram: contactDraft.instagram?.trim(),
+      bio: contactDraft.bio?.trim(),
+    }
+  }
+
+  // Join validation (reference copy); signing in only needs the email.
+  function contactError(email) {
+    if (!email) return 'Add your email'
+    if (!EMAIL_PATTERN.test(email)) return 'Check this email address'
+    if (joinMode !== 'join') return ''
+    if (!contactDraft.name?.trim()) return 'Add your full name'
+    if (!contactDraft.country) return 'Choose your country'
+    if (!contactDraft.terms) return 'Agree to the Terms of Service and Privacy Policy to join.'
+    return ''
+  }
+
+  // Contest details (terms/consent versions), loaded once and cached.
+  async function loadContest() {
+    if (contest) return contest
+    const result = await getContest()
+    if (!result.ok) throw new Error(getErrorMessage(result, 'Could not load the contest.'))
+    setContest(result.body)
+    return result.body
+  }
+
+  async function sendCode(email, termsVersion) {
+    const joining = joinMode === 'join'
+    const photo = joining && contactDraft.photo?.blob ? await blobToBase64(contactDraft.photo.blob) : undefined
+    return requestEmailCode(email, joining ? profileFromContact() : null, termsVersion, photo)
+  }
+
+  async function handlePhotoChange(file) {
+    if (!file) {
+      if (contactDraft.photo?.url) URL.revokeObjectURL(contactDraft.photo.url)
+      setContactDraft(current => ({ ...current, photo: null }))
       return
     }
-    if (!posterDraft.posterFiles?.[0]) {
-      setSubmissionError('Please add a poster file before submitting.')
+    if (!PHOTO_TYPES.includes(file.type)) {
+      setVerification(current => ({ ...current, error: 'Profile photo must be JPG, PNG or WebP.' }))
+      return
+    }
+    const blob = await shrinkPhoto(file)
+    if (!blob) {
+      setVerification(current => ({ ...current, error: 'That photo could not be read.' }))
+      return
+    }
+    if (contactDraft.photo?.url) URL.revokeObjectURL(contactDraft.photo.url)
+    setContactDraft(current => ({ ...current, photo: { blob, url: URL.createObjectURL(blob) } }))
+  }
+
+  async function handleResend() {
+    const email = contactDraft.email?.trim().toLowerCase()
+    try {
+      const { termsVersion } = await loadContest()
+      const result = await sendCode(email, termsVersion)
+      if (result.status !== 202) throw new Error(getErrorMessage(result, 'Could not send the verification code.'))
+      setVerification(current => ({ ...current, code: '', error: 'We sent you a new code.' }))
+    } catch (error) {
+      setVerification(current => ({ ...current, error: error.message }))
+    }
+  }
+
+  async function handleContactNext() {
+    const email = contactDraft.email?.trim().toLowerCase()
+    const invalid = verification.status !== 'code_sent' && contactError(email)
+    if (invalid) {
+      setVerification({ status: 'idle', code: '', error: invalid })
+      return
+    }
+
+    setVerification(current => ({ ...current, status: current.status === 'code_sent' ? 'verifying' : 'sending', error: '' }))
+    try {
+      const { termsVersion } = await loadContest()
+
+      if (verification.status !== 'code_sent') {
+        const result = await sendCode(email, termsVersion)
+        if (result.status !== 202) throw new Error(getErrorMessage(result, 'Could not send the verification code.'))
+        setVerification({ status: 'code_sent', code: '', error: '' })
+        return
+      }
+
+      if (!/^\d{6}$/.test(verification.code)) throw new Error('Enter the 6-digit verification code.')
+      const result = await verifyEmailCode(email, verification.code)
+      if (!result.ok) throw new Error(getErrorMessage(result, 'That verification code is not valid.'))
+      if (joinMode === 'join') {
+        const profileResult = await updateProfile(profileFromContact(), termsVersion)
+        if (!profileResult.ok) throw new Error(getErrorMessage(profileResult, 'Could not save your profile.'))
+      }
+      setVerification({ status: 'verified', code: '', error: '' })
+      setStep(2)
+    } catch (error) {
+      setVerification(current => ({ ...current, status: current.status === 'verifying' ? 'code_sent' : 'idle', error: error.message }))
+    }
+  }
+
+  const inProgressEntries = posterEntries.filter(entry => !entry.submitted)
+
+  async function handleSubmission() {
+    const chosen = inProgressEntries.filter(entry => picked[entry.id])
+    if (!chosen.length) {
+      setSubmissionError('Choose at least one poster to submit.')
+      return
+    }
+    if (!CONSENTS.every(item => consent[item.name])) {
+      setSubmissionError('Please confirm all three terms before submitting.')
       return
     }
 
     setSubmissionState('submitting')
     setSubmissionError('')
-    const formData = new FormData()
-    formData.set('title', posterDraft.title || posterDraft.posterFiles[0].name.replace(/\.[^/.]+$/, ''))
-    formData.set('artist_name', contactDraft.full_name || '')
-    formData.set('artist_email', contactDraft.email || '')
-    formData.set('country', contactDraft.country || '')
-    for (const field of ['concept', 'year_designed', 'designed_for', 'client_name', 'creation_method', 'materials_used', 'digital_programs', 'printing_method']) {
-      if (posterDraft[field]) formData.set(field, posterDraft[field])
-    }
-    formData.append('file', posterDraft.posterFiles[0])
-    for (const asset of posterDraft.supportingFiles || []) formData.append('assets', asset)
-
     try {
-      const response = await fetch('/api/submissions', { method: 'POST', body: formData })
-      const result = await response.json().catch(() => null)
-      if (!response.ok) throw new Error(result?.error || 'Submission failed')
+      if (!contest) throw new Error('Contest details are not available. Please return to contact information and try again.')
+      const unsaved = chosen.find(entry => !entry.remoteId)
+      if (unsaved) throw new Error(`“${unsaved.title}” hasn’t saved yet. Fix it in your entries, then try again.`)
+      const result = await submitEntries(chosen.map(entry => entry.remoteId), contest.consentVersion)
+      if (!result.ok) throw new Error(getErrorMessage(result, 'Submission failed'))
+      const sent = new Set(chosen.map(entry => entry.id))
+      setPosterEntries(current => current.map(entry => sent.has(entry.id) ? { ...entry, submitted: true } : entry))
+      setPicked({})
+      setConsent({})
       setSubmissionState('submitted')
       setStep(5)
     } catch (error) {
@@ -138,62 +326,113 @@ export function SubmitPage({ initialStep = 0 }) {
       setSaveState('error')
       return
     }
-    if ((posterDraft.supportingFiles || []).length > 3) {
-      setSaveError('You can add up to 3 supporting assets.')
+    if ((posterDraft.supportingFiles || []).length > MAX_SUPPORTING_FILES) {
+      setSaveError(`You can add up to ${MAX_SUPPORTING_FILES} supporting files.`)
       setSaveState('error')
       return
     }
 
+    const posterFile = posterDraft.posterFiles[0]
+    if (posterFile) {
+      const extension = posterFile.name.split('.').pop()?.toLowerCase()
+      const staticFile = ['jpg', 'jpeg', 'png', 'pdf'].includes(extension)
+      const allowed = [...['jpg', 'jpeg', 'png', 'pdf'], 'gif', 'mp4']
+      if (!allowed.includes(extension) || posterFile.size > (staticFile ? 5 : 20) * 1024 * 1024) {
+        setSaveError(staticFile ? 'Poster must be JPG, PNG, or PDF under 5MB.' : 'Motion poster must be GIF or MP4 under 20MB.')
+        setSaveState('error')
+        return
+      }
+    }
+
     setSaveError('')
     setSaveState('saving')
-    await new Promise(resolve => requestAnimationFrame(resolve))
-    const nextEntries = posterDraft.posterFiles.map(file => ({
-      id: `${file.name}-${file.lastModified}`,
-      title,
-      src: URL.createObjectURL(file),
-      file,
-    }))
-    if (editingEntryId) {
-      setPosterEntries(current => current.map(entry => entry.id === editingEntryId
-        ? { ...entry, title, src: nextEntries[0]?.src || entry.src, file: nextEntries[0]?.file || entry.file }
-        : entry))
-    } else {
-      setPosterEntries(current => [...current, ...nextEntries])
+    try {
+      const fields = Object.fromEntries(['title', 'year_designed', 'designed_for', 'client_name', 'creation_method', 'materials_used', 'digital_programs', 'printing_method', 'concept']
+        .map(field => [field, field === 'title' ? title : posterDraft[field] || '']))
+      const remoteId = posterDraft.remoteId || crypto.randomUUID()
+      let result = posterDraft.remoteId
+        ? await updateEntry(remoteId, fields, posterDraft.version)
+        : await createEntry(remoteId, fields)
+      if (!result.ok) throw new Error(getErrorMessage(result, 'Could not save the poster draft.'))
+
+      const version = result.body.version || result.body.entry?.version
+      if (posterFile) {
+        result = await uploadPoster(remoteId, posterFile)
+        if (!result.ok) throw new Error(getErrorMessage(result, 'Could not upload the poster file.'))
+      }
+      for (const asset of posterDraft.supportingFiles || []) {
+        result = await uploadAsset(remoteId, asset)
+        if (!result.ok) throw new Error(getErrorMessage(result, 'Could not upload a supporting asset.'))
+      }
+
+      const previousEntry = posterEntries.find(entry => entry.id === editingEntryId)
+      const nextEntry = {
+        id: editingEntryId || remoteId,
+        remoteId,
+        version: result.body.version || version,
+        title,
+        src: posterFile ? URL.createObjectURL(posterFile) : previousEntry?.src,
+        file: posterFile || previousEntry?.file,
+      }
+      setPosterEntries(current => editingEntryId
+        ? current.map(entry => entry.id === editingEntryId ? { ...entry, ...nextEntry } : entry)
+        : [...current, nextEntry])
+      setSaveState('saved')
+      setEditingEntryId(null)
+      setStep(2)
+    } catch (error) {
+      setSaveState('error')
+      setSaveError(error.message)
     }
-    setSaveState('saved')
-    setEditingEntryId(null)
-    setStep(2)
   }
 
   return (
-    <main className={`${styles.page} ${showPosterDetails ? styles.editing : ''} ${showSuccess ? styles.success : ''}`} data-name="submit-index">
+    <main className={`${styles.page} ${showPosterDetails ? styles.editing : ''} ${showSuccess ? styles.success : ''} ${introPending ? styles.introPending : ''}`} data-name="submit-index">
       <section className={styles.identity} aria-label="Ownership theme">
         <a className={styles.homeLink} href="/">(←) Home</a>
-        <SubmitArtwork />
+        <SubmitArtwork introRef={artIntroRef} />
         <RevealText as="h1">Ownership</RevealText>
       </section>
 
-      <section className={styles.content} aria-labelledby="submit-title">
+      <section ref={contentRef} className={styles.content} aria-labelledby="submit-title">
         {step > 0 && !showSuccess && !showPosterDetails && <SubmitProgress activeStep={showConsent ? 3 : step} compact />}
         {showPosterDetails && <SubmitProgress activeStep={2} compact lineOnly />}
         {showSuccess && <SubmitProgress activeStep={3} compact lineOnly hideBar />}
         {showPosterDetails && <div className={styles.editorActions}>
-          <button type="button" disabled={saveState === 'saving'} onClick={() => { setSaveError(''); setSaveState('idle'); setStep(2) }}>Cancel</button>
-          <button type="button" disabled={saveState === 'saving'} onClick={handlePosterSave}>{saveState === 'saving' ? 'Saving…' : 'Save'}</button>
+          <button type="button" disabled={saveState === 'saving'} onClick={() => { setSaveError(''); setSaveState('idle'); setStep(2) }}>(←) All Entries</button>
+          <button type="button" disabled={saveState === 'saving'} onClick={handlePosterSave}>{saveState === 'saving' ? 'Saving…' : 'Save & Continue (→)'}</button>
           <span className={styles.editorStatus} role="status" aria-live="polite">{saveState === 'saving' ? 'Saving poster…' : ''}</span>
         </div>}
         <div ref={contentScrollRef} className={styles.contentScroll} data-lenis-prevent>
           {showContact
-            ? <ContactInformationPanel value={contactDraft} onChange={changes => setContactDraft(current => ({ ...current, ...changes }))} />
+            ? <ContactInformationPanel
+                value={contactDraft}
+                mode={joinMode}
+                onModeChange={mode => { setJoinMode(mode); setVerification({ status: 'idle', code: '', error: '' }) }}
+                verification={verification}
+                onVerificationChange={changes => setVerification(current => ({ ...current, ...changes }))}
+                onChange={changes => {
+                  setContactDraft(current => ({ ...current, ...changes }))
+                  // Editing clears a previous validation message.
+                  setVerification(current => (current.error ? { ...current, error: '' } : current))
+                }}
+                onPhotoChange={handlePhotoChange}
+                onResend={handleResend}
+                onEditDetails={() => setVerification({ status: 'idle', code: '', error: '' })}
+              />
             : showPoster
               ? <PosterEntriesPanel entries={posterEntries} onEdit={entry => {
                   setEditingEntryId(entry.id)
-                  setPosterDraft({ title: entry.title, posterFiles: entry.file ? [entry.file] : [], supportingFiles: [] })
+                  setPosterDraft({ title: entry.title, remoteId: entry.remoteId, version: entry.version, posterFiles: entry.file ? [entry.file] : [], supportingFiles: [] })
                   setSaveError('')
                   setSaveState('idle')
                   setStep(3)
-                }} onRemove={id => setPosterEntries(current => current.filter(entry => entry.id !== id))} onAdd={() => {
-                  setPosterDraft({ title: '', posterFiles: [], supportingFiles: [] })
+                }} onRemove={async id => {
+                  const entry = posterEntries.find(item => item.id === id)
+                  if (entry?.remoteId) await deleteEntry(entry.remoteId)
+                  setPosterEntries(current => current.filter(item => item.id !== id))
+                }} onAdd={(files = []) => {
+                  setPosterDraft({ title: '', posterFiles: files.slice(0, 1), supportingFiles: files.slice(1, 1 + MAX_SUPPORTING_FILES) })
                   setEditingEntryId(null)
                   setSaveError('')
                   setSaveState('idle')
@@ -202,36 +441,42 @@ export function SubmitPage({ initialStep = 0 }) {
               : showPosterDetails
                 ? <PosterDetailsPanel draft={posterDraft} error={saveError} onDraftChange={changes => { setSaveError(''); setSaveState('idle'); setPosterDraft(current => ({ ...current, ...changes })) }} />
                 : showConsent
-                  ? <ConsentPanel value={consent} onChange={changes => setConsent(current => ({ ...current, ...changes }))} error={submissionError} />
+                  ? <ConsentPanel entries={inProgressEntries} picked={picked} onPickChange={changes => setPicked(current => ({ ...current, ...changes }))} value={consent} onChange={changes => setConsent(current => ({ ...current, ...changes }))} error={submissionError} />
                   : showSuccess
-                  ? <SubmissionSuccessPanel onExplore={() => setStep(0)} />
+                  ? <SubmissionSuccessPanel
+                      onSubmitAnother={() => {
+                        setPosterDraft({ title: '', posterFiles: [], supportingFiles: [] })
+                        setEditingEntryId(null)
+                        setSaveError('')
+                        setSaveState('idle')
+                        setStep(3)
+                      }}
+                      onViewEntries={() => setStep(2)}
+                    />
                 : <div className={styles.contentInner}>
                     <h2 id="submit-title">
                       <RevealText as="span" className={styles.titleDesktop}>Submit to the Poster<br />Contest</RevealText>
                       <RevealText as="span" className={styles.titleMobile}>Submit to the<br />Poster Contest</RevealText>
                     </h2>
-                    <RevealText as="p" className={`${styles.intro} ${styles.introDesktop}`}>Use this page to submit poster work<br />responding to the first theme:<br />Ownership. Before submitting, review the<br />contest overview, Ownership page, and<br />guidelines. Poster Contest Guidelines.</RevealText>
-                    <RevealText as="p" className={`${styles.intro} ${styles.introMobile}`}>Use this page to submit poster work responding to the first theme: Ownership. Before submitting, review the contest overview, Ownership page, and guidelines. Poster Contest Guidelines.</RevealText>
+                    <RevealText as="p" className={styles.intro}>Use this page to submit poster work responding to the theme: Ownership. Before submitting, review the process and guidelines below.</RevealText>
                     <RevealText as="h3">Submission Process</RevealText>
                     <ol>
-                      {steps.map(step => <li key={step}>{step}</li>)}
+                      {steps.map(step => <RevealRow key={step} line={false}>{step}</RevealRow>)}
                     </ol>
                     <RevealText as="h3">Rules and Eligibility</RevealText>
                     <ul>
-                      <li>Open to individual and collaborative entries.</li>
-                      <li>You can submit more than one poster.</li>
-                      <li>Submitted work must be original.</li>
-                      <li>Accepted file types: JPG, PNG, PDF, GIF, or MP4.</li>
-                      <li>Static posters should be under 5MB.</li>
-                      <li>Motion posters should be under 20MB.</li>
-                      <li>Use the file name format: YourName_PosterTitle.</li>
-                      <li>Selected work may require additional formats later.</li>
+                      {rules.map(rule => <RevealRow key={rule} line={false}>{rule}</RevealRow>)}
                     </ul>
                     <button className={styles.submitLink} type="button" onClick={() => setStep(1)}>Enter Submission (→)</button>
                 </div>}
         </div>
-        {showContact && <SubmitFooterNav nextLabel="Poster" onBack={() => setStep(0)} onNext={() => setStep(2)} />}
-        {showPoster && <SubmitFooterNav nextLabel="Consent" nextLabelMobile="Poster" onBack={() => setStep(1)} onNext={() => setStep(4)} />}
+        {showContact && <SubmitFooterNav nextLabel={verification.status === 'sending' ? 'Sending…' : verification.status === 'verifying' ? 'Checking…' : 'Next'} disabled={verification.status === 'sending' || verification.status === 'verifying'} onBack={() => setStep(0)} onNext={handleContactNext} />}
+        {showPoster && <SubmitFooterNav nextLabel="Next" onBack={() => setStep(1)} onNext={() => {
+          // Every in-progress poster starts ticked on the Submit step.
+          setPicked(Object.fromEntries(inProgressEntries.map(entry => [entry.id, true])))
+          setSubmissionError('')
+          setStep(4)
+        }} />}
         {showConsent && <SubmitFooterNav nextLabel={submissionState === 'submitting' ? 'Submitting' : 'Submit'} disabled={submissionState === 'submitting'} onBack={() => setStep(2)} onNext={handleSubmission} />}
       </section>
     </main>

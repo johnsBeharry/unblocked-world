@@ -1,0 +1,158 @@
+// Full-screen dim layer behind the panel.
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 29;
+  background: #00000066;
+}
+
+// Option panel pinned to the bottom of the browser, aligned with the form
+// column (reference: Country dropdown, 1440 × 918 → top at 327px).
+// --form-left / --form-width are set from the form's live position.
+.panel {
+  position: fixed;
+  bottom: 0;
+  left: calc(var(--form-left, 0px) - #{vw(44)});
+  z-index: 30;
+  box-sizing: border-box;
+  width: vw(493);
+  height: min(#{vw(591)}, calc(100vh - 40px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 vw(24) vw(24) vw(25);
+  background: #101010;
+  color: #dc91a8;
+  font-family: 'Inter Local', sans-serif;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  box-sizing: border-box;
+  align-items: flex-start;
+  justify-content: space-between;
+  height: vw(76);
+  padding-top: vw(27);
+  border-bottom: vw(2) solid rgb(220 145 168 / 0.5);
+  background: #101010;
+}
+
+.title {
+  margin: 0;
+  font-size: vw(40);
+  font-weight: 600;
+  letter-spacing: vw(-1.6);
+  line-height: 1.02;
+}
+
+.close {
+  margin-top: vw(8);
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  font-size: vw(20);
+  letter-spacing: vw(-0.8);
+  line-height: 1.02;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item + .item {
+  border-top: vw(2) solid rgb(220 145 168 / 0.5);
+}
+
+.option {
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+  width: 100%;
+  height: vw(42);
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  font-size: vw(20);
+  letter-spacing: vw(-0.8);
+  line-height: 1.02;
+  text-align: left;
+
+  &:focus-visible {
+    outline: vw(1) solid currentColor;
+    outline-offset: vw(-1);
+  }
+
+  &[aria-selected='true'] {
+    font-weight: 600;
+  }
+}
+
+.empty {
+  margin: vw(12) 0 0;
+  font-size: vw(20);
+  letter-spacing: vw(-0.8);
+  line-height: 1.02;
+  opacity: 0.6;
+}
+
+// Stacked layouts (unspecified by the reference): full form width.
+@include compact-portrait {
+  .panel {
+    left: var(--form-left, 0px);
+    width: var(--form-width, 100%);
+    height: 60vh;
+    padding: 0 vw(24) vw(24);
+  }
+}
+
+@include mobile {
+  .panel {
+    padding: 0 vw(40) vw(40);
+  }
+
+  .header {
+    height: vw(152);
+    padding-top: vw(54);
+    border-bottom-width: vw(1);
+  }
+
+  .title {
+    font-size: vw(80);
+    letter-spacing: vw(-3.2);
+  }
+
+  .close {
+    margin-top: vw(16);
+    font-size: vw(40);
+    letter-spacing: vw(-1.6);
+  }
+
+  .item + .item {
+    border-top-width: vw(1);
+  }
+
+  .option {
+    height: vw(84);
+    font-size: vw(40);
+    letter-spacing: vw(-1.6);
+  }
+
+  .empty {
+    font-size: vw(40);
+  }
+}

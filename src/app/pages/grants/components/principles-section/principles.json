@@ -1,0 +1,27 @@
+{
+  "label": "Sec. 02  The Principles",
+  "title": "Themes",
+  "description": "These themes are ways to keep systems open to the people using them, rather than locked behind technical language or proprietary platforms.",
+  "themes": [
+    {
+      "id": "ownership",
+      "title": "Ownership",
+      "description": "Control over your work, your tools, and your identity."
+    },
+    {
+      "id": "permanence",
+      "title": "Permanence",
+      "description": "Building on protocols and mediums that outlast closed platforms."
+    },
+    {
+      "id": "energy",
+      "title": "Energy",
+      "description": "Grounding digital systems in physical, verifiable reality."
+    },
+    {
+      "id": "peers",
+      "title": "Peers",
+      "description": "Fostering direct, unmediated collaboration between humans."
+    }
+  ]
+}

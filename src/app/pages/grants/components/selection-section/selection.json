@@ -1,0 +1,25 @@
+{
+  "label": "Sec. 03  How Selection Works",
+  "title": ["Public", "Programme", "Starts 01.2027"],
+  "intro": "Intake will remain open throughout the year, with proposals reviewed and decisions made each quarter.",
+  "steps": [
+    {
+      "id": "intake",
+      "number": "(01)",
+      "title": "One Intake",
+      "description": "Creators describe the work they want to make and the kind of support they need through a single intake form."
+    },
+    {
+      "id": "review",
+      "number": "(02)",
+      "title": "Quarterly Review",
+      "description": "At the end of each quarter, direct grant decisions are made and selected larger proposals are advanced for further development."
+    },
+    {
+      "id": "pathway",
+      "number": "(03)",
+      "title": "Matched Pathway",
+      "description": "Each submission is considered for a direct cultural grant or support developing a larger external funding proposal."
+    }
+  ]
+}

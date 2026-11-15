@@ -1,3 +1,6 @@
+// Mobile values follow the 375 × 1296 mockup (750 × 2592 @2x): the hero
+// becomes one flow column (title, marquee, intro, artwork, copy) with 20px
+// gaps. Tablet has no mockup yet.
 .hero {
   height: auto;
   width: 100vw;
@@ -10,6 +13,12 @@
     top: vw(193);
     position: absolute;
 
+    // First title line box at 60px.
+    @include mobile {
+      position: static;
+      padding-top: vw(122);
+    }
+
     .main-title {
       width: 100%;
       padding: 0 vw(20);
@@ -19,42 +28,95 @@
       line-height: 90%;
       letter-spacing: -6%;
 
+      // Three left-aligned lines, 41px pitch.
+      @include mobile {
+        padding: 0 vw(40);
+        font-size: vw(80);
+        line-height: 102%;
+        letter-spacing: -4%;
+      }
+
       &:nth-of-type(2) {
         text-align: center;
+
+        @include mobile {
+          text-align: left;
+        }
       }
 
       &:nth-of-type(3) {
         text-align: right;
+
+        @include mobile {
+          text-align: left;
+        }
       }
     }
   }
 
+  // Infinite "Progress ≠ inevitability" line. The track holds two identical
+  // groups; GSAP moves it by one group width and wraps, so the loop is
+  // seamless. Direction follows the scroll direction (GrantsHero.jsx).
   .marquee {
-    top: vw(351);
-    color: #be14ab;
     position: absolute;
-
+    top: vw(351);
+    left: 0;
+    width: 100%;
+    overflow: clip;
+    color: #be14ab;
     font-weight: 600;
     font-size: vw(20);
     line-height: 102%;
     letter-spacing: -4%;
 
-    .marqueeTrack {
+    // Line box at 210px (27.6px below the title).
+    @include mobile {
+      position: static;
+      margin-top: vw(51.2);
+      font-size: vw(40);
+    }
+
+    &__track {
+      display: flex;
+      width: max-content;
+      will-change: transform;
+    }
+
+    // Trailing padding equals the item gap so the seam between the two
+    // groups has the same spacing as the items.
+    &__group {
+      display: flex;
+      flex: none;
+      gap: vw(24);
+      padding-right: vw(24);
+
+      @include mobile {
+        gap: vw(54);
+        padding-right: vw(54);
+      }
+    }
+
+    &__item {
       display: flex;
       gap: vw(24);
+      white-space: nowrap;
 
-      .marquee-item {
-        &__content {
-          gap: vw(24);
-          display: flex;
-          white-space: nowrap;
+      // 14.5px square, 27px from the text.
+      @include mobile {
+        align-items: center;
+        gap: vw(54);
+      }
 
-          &::after {
-            width: vw(20);
-            height: vw(20);
-            background-color: #be14ab;
-            content: "";
-          }
+      &::after {
+        width: vw(20);
+        height: vw(20);
+        background-color: #be14ab;
+        content: "";
+
+        @include mobile {
+          flex: none;
+          width: vw(29);
+          height: vw(29);
         }
       }
     }
@@ -67,6 +129,16 @@
     padding: vw(729) 0 vw(20);
     grid-template-columns: vw(690) 1fr;
 
+    // One column: intro, artwork, copy. Intro line box at 325px.
+    @include mobile {
+      display: flex;
+      flex-direction: column;
+      gap: vw(40);
+      width: 100%;
+      padding: vw(192.8) vw(40) vw(197);
+      box-sizing: border-box;
+    }
+
     .copy-wrap {
       width: 100%;
       display: flex;
@@ -75,10 +147,22 @@
       flex-direction: column;
       justify-content: space-between;
 
+      // Its children join the section column so the intro can sit above
+      // the artwork.
+      @include mobile {
+        display: contents;
+      }
+
       &__ledge {
         font-weight: 600;
         font-size: vw(40);
         line-height: 96%;
+
+        @include mobile {
+          order: -1;
+          font-weight: 500;
+          line-height: 100%;
+        }
       }
 
       &__block {
@@ -88,6 +172,24 @@
         font-size: vw(20);
         line-height: 102%;
         grid-template-columns: 1fr 1fr;
+
+        @include mobile {
+          grid-template-columns: minmax(0, 1fr);
+          gap: vw(40);
+          max-width: vw(660); // mockup text box (330px) is narrower than the column
+          font-size: vw(40);
+          line-height: 100%;
+        }
+      }
+
+      // The mobile mockup breaks before "—scraped"; RevealText keeps
+      // "material—scraped," as one word otherwise.
+      &__mobile-break {
+        display: none;
+
+        @include mobile {
+          display: block;
+        }
       }
     }
   }

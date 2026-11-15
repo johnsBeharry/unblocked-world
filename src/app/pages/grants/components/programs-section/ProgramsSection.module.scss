@@ -1,3 +1,6 @@
+// Mobile values follow the 375 × 668 mockup (750 × 1336 @2x): the first
+// screen holds the centred "Sec.01", intro and "(Programs)". Each card is one
+// full screen (375 × 668 card mockup, same UI for blue and pink).
 .section {
   width: 100vw;
   color: #101010;
@@ -5,12 +8,29 @@
   padding: vw(40) 0;
   background-color: #d9d9d9;
 
+  // The last card ends the section: no bottom padding (it showed a grey strip
+  // above the next section).
+  @include mobile {
+    height: auto;
+    padding-bottom: 0;
+  }
+
   .main-title {
     margin-left: vw(20);
     font-weight: 600;
     font-size: vw(164);
     line-height: 90%;
     letter-spacing: -6%;
+
+    // 56px, centred; first line box at 20px. Chromium keeps the trailing
+    // -6% tracking inside the centred line (ink 0.03em right of the mockup);
+    // 0.06em right padding re-centres it.
+    @include mobile {
+      margin: 0;
+      padding-right: 0.06em;
+      font-size: vw(112);
+      text-align: center;
+    }
   }
 
   .block-description {
@@ -19,6 +39,14 @@
     line-height: 102%;
     max-width: vw(455);
     text-align: center;
+
+    // Line box at 293.3px; "(Programs)" line box at 598px.
+    @include mobile {
+      margin: vw(447.8) auto vw(447.4);
+      max-width: vw(640);
+      font-size: vw(40);
+      line-height: 100%;
+    }
   }
 
   .block-title {
@@ -26,11 +54,20 @@
     text-align: right;
     padding-bottom: vw(40);
     margin-right: vw(20);
+
+    @include mobile {
+      margin-right: 0;
+      text-align: center;
+    }
   }
 
   .blocks {
     display: grid;
     grid-template-columns: vw(720) vw(720);
+
+    @include mobile {
+      grid-template-columns: minmax(0, 1fr);
+    }
 
     &__item {
       display: flex;
@@ -38,6 +75,11 @@
       padding: vw(20);
       flex-direction: column;
       justify-content: space-between;
+
+      @include mobile {
+        height: vw(1336);
+        padding: vw(42) vw(40) vw(63);
+      }
 
       &:first-child {
         color: #d9d9d9;
@@ -53,6 +95,12 @@
         font-weight: 600;
         font-size: vw(56);
         line-height: 86%;
+
+        // 40px, 41px line pitch.
+        @include mobile {
+          font-size: vw(80);
+          line-height: 102%;
+        }
       }
 
       &-amount {
@@ -64,11 +112,21 @@
         align-items: flex-end;
         margin-bottom: vw(40);
 
+        // Description line box 38.5px below the amount line box.
+        @include mobile {
+          margin-bottom: vw(77);
+          font-size: vw(80);
+        }
+
         .small {
           font-weight: 500;
           line-height: 102%;
           font-size: vw(20);
           letter-spacing: -4%;
+
+          @include mobile {
+            font-size: vw(40);
+          }
         }
       }
 
@@ -77,12 +135,22 @@
         line-height: 102%;
         max-width: vw(453);
         letter-spacing: -4%;
+
+        @include mobile {
+          max-width: none;
+          font-size: vw(40);
+          line-height: 100%;
+        }
       }
 
       .cta {
         display: flex;
         margin-top: vw(40);
         justify-content: flex-end;
+
+        @include mobile {
+          margin-top: vw(82);
+        }
 
         a {
           font-weight: 600;
@@ -91,6 +159,18 @@
           letter-spacing: -4%;
           text-decoration: underline;
           text-decoration-thickness: 0%;
+
+          // 3px underline 2px below the glyphs (mockup). RevealText renders
+          // the label as block line spans, which text-decoration does not
+          // reach, so the underline is a border. The right margin offsets the
+          // trailing -4% tracking so the ink ends 20px from the edge.
+          // The underline also runs 1.5px past the right glyph edge.
+          @include mobile {
+            margin-right: calc(0.06em - #{vw(3)});
+            padding: 0 vw(3) vw(8.6) 0;
+            border-bottom: vw(6) solid currentColor;
+            font-size: vw(80);
+          }
         }
       }
     }

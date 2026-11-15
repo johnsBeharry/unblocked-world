@@ -1,0 +1,184 @@
+// Grants "Sec.05 (People)": header, then Leadership and Advisory & Working
+// Group grids of person cards. Values come from the 1440 × 3085 desktop
+// mockup (2880 × 6170 @2x). Mobile follows the 375 × 4559 mockup (750 × 9118
+// @2x): centred two-line header, one card per row. Tablet has no mockup yet.
+// Vertical margins are mockup line-box tops minus the previous box bottom.
+
+.people-section {
+  --people-bg: #101010;
+  --people-ink: #d9d9d9;
+  --people-muted: #747474;
+
+  height: vw(3085);
+  padding: vw(41) vw(20) 0;
+  box-sizing: border-box;
+  background-color: var(--people-bg);
+  color: var(--people-ink);
+
+  // 100px bottom space below the last card.
+  @include mobile {
+    height: auto;
+    padding: vw(41) vw(40) vw(200);
+  }
+
+  // Same title treatment as the Programs "Sec.01 (Programs)" header.
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    font-size: vw(164);
+    line-height: 90%;
+    letter-spacing: -6%;
+
+    // Right-aligned "(People)": Chromium keeps the trailing -6% tracking
+    // inside the line, so the ink sat 0.06em right of the mockup.
+    > :last-child {
+      margin-right: 0.06em;
+    }
+
+    // Two centred lines, 40px/102%/-4%; both lines get the trailing-tracking
+    // compensation (0.04em).
+    @include mobile {
+      flex-direction: column;
+      align-items: center;
+      padding-right: 0.04em;
+      font-size: vw(80);
+      line-height: 102%;
+      letter-spacing: -4%;
+
+      > :last-child {
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+.people-group {
+  --group-photo-bg: #2449ed;
+
+  // Leadership title line box top at 434px (cap top 437.5px).
+  margin-top: vw(245.4);
+
+  // Leadership title line box at 201.2px (99px below the header).
+  @include mobile {
+    margin-top: vw(200);
+  }
+
+  // Advisory title line box top at 1313px (mobile: 100px below the last card).
+  & + & {
+    margin-top: vw(153);
+
+    @include mobile {
+      margin-top: vw(200);
+    }
+  }
+
+  &--advisory {
+    --group-photo-bg: #db38c8;
+  }
+
+  // Rule 19.5px below the title box, photos 20.5px below the rule.
+  &__title {
+    padding-bottom: vw(19.5);
+    font-weight: 500;
+    font-size: vw(40);
+    line-height: 100%;
+    letter-spacing: -3%;
+
+    // 24px, rule 18.8px below.
+    @include mobile {
+      padding-bottom: vw(37.6);
+      font-size: vw(48);
+    }
+  }
+
+  &__rule {
+    top: 100%;
+    border-top-width: 1px;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: vw(100) vw(20);
+    margin: vw(20.5) 0 0;
+    padding: 0;
+    list-style: none;
+
+    // One card per row, 20px apart.
+    @include mobile {
+      grid-template-columns: minmax(0, 1fr);
+      gap: vw(40);
+      margin-top: vw(40);
+    }
+  }
+}
+
+.person-card {
+  font-size: vw(20);
+  line-height: 100%;
+  letter-spacing: -4%;
+
+  @include mobile {
+    font-size: vw(40);
+  }
+
+  // Stationary mask for the scroll reveal (clip-path set by GSAP).
+  &__photo {
+    aspect-ratio: 1;
+    margin-bottom: vw(20);
+    overflow: clip;
+
+    @include mobile {
+      margin-bottom: vw(39.6);
+    }
+  }
+
+  // Colour block + image: zooms out inside the mask during the reveal.
+  &__photo-fill {
+    height: 100%;
+    background-color: var(--group-photo-bg);
+  }
+
+  &__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  // Explicit size: the heading element would otherwise use its own default.
+  &__name {
+    font-weight: 500;
+    font-size: vw(20);
+    line-height: 100%;
+
+    @include mobile {
+      font-size: vw(40);
+    }
+  }
+
+  &__role {
+    color: var(--people-muted);
+  }
+
+  // First description line box 53px below the role. The mockup text box is a
+  // little narrower than the column (Dan's first line breaks before
+  // "Hyperledger").
+  &__description {
+    max-width: vw(450);
+    margin-top: vw(53);
+
+    @include mobile {
+      max-width: none;
+      margin-top: vw(104);
+    }
+  }
+
+  &__link {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.15em;
+  }
+}

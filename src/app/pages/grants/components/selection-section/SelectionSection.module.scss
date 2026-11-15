@@ -1,0 +1,168 @@
+// Grants "Sec. 03 How Selection Works": label + three-line title, intro copy
+// and three ruled steps. Values come from the 1440 × 1278 desktop mockup
+// (2880 × 2556 @2x). Mobile follows the 375 × 1093 mockup (750 × 2186 @2x):
+// one column, two-line title, steps stacked with the rule below each step.
+// Tablet has no mockup yet.
+// Columns follow the page grid: 20px gutter, 690px left column, 20px gap,
+// so the title and step descriptions start at 730px.
+
+.selection-section {
+  --selection-bg: #000000;
+  --selection-ink: #d9d9d9;
+
+  display: grid;
+  grid-template-columns: vw(690) minmax(0, 1fr);
+  grid-template-rows: auto auto 1fr;
+  column-gap: vw(20);
+  align-items: start;
+  height: vw(1278);
+  padding: vw(20) vw(20) 0;
+  overflow: clip; // title lines start offset to the right (scroll motion)
+  box-sizing: border-box;
+  background-color: var(--selection-bg);
+  color: var(--selection-ink);
+
+  // 100px bottom space below the last rule.
+  @include mobile {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    padding: vw(38) vw(40) vw(200);
+  }
+
+  &__label {
+    justify-self: start;
+
+    @include mobile {
+      align-self: flex-start;
+    }
+  }
+
+  &__title {
+    font-weight: 600;
+    font-size: vw(100);
+    line-height: 90%;
+    letter-spacing: -6%;
+
+    // 40px, first line box at 85px (41px below the tag).
+    @include mobile {
+      margin-top: vw(82);
+      font-size: vw(80);
+      line-height: 102%;
+      letter-spacing: -4%;
+    }
+
+    // "Public Programme" share the first mobile line.
+    // Top-aligned so the shared line keeps the 102% line pitch.
+    > :nth-child(-n + 2) {
+      @include mobile {
+        display: inline-block;
+        vertical-align: top;
+      }
+    }
+
+    > :first-child {
+      @include mobile {
+        margin-right: 0.25em;
+      }
+    }
+  }
+
+  // Intro line box starts at 442px (mockup), 152px below the title box.
+  &__intro {
+    grid-column: 1;
+    max-width: vw(360);
+    margin-top: vw(152);
+    font-size: vw(20);
+    line-height: 100%;
+    letter-spacing: -4%;
+
+    // Line box at 265.3px, full column width.
+    @include mobile {
+      max-width: none;
+      margin-top: vw(199.6);
+      font-size: vw(40);
+    }
+  }
+
+  // First rule at 653.5px: 151px below the intro box.
+  &__steps {
+    grid-column: 1 / -1;
+    margin: vw(151) 0 0;
+    padding: 0;
+    list-style: none;
+
+    // First number line box at 420px (54.7px below the intro).
+    @include mobile {
+      margin-top: vw(109.4);
+    }
+  }
+}
+
+.selection-step {
+  height: vw(124);
+  padding-top: vw(16.5);
+  box-sizing: border-box;
+
+  // Stacked step, 20px above the number and 20px above the rule.
+  @include mobile {
+    height: auto;
+    padding: 0 0 vw(40);
+
+    & + & {
+      padding-top: vw(40);
+    }
+  }
+
+  &__content {
+    display: grid;
+    grid-template-columns: vw(118) vw(592) vw(450);
+    align-items: start;
+    font-size: vw(20);
+    line-height: 100%;
+    letter-spacing: -4%;
+
+    @include mobile {
+      display: flex;
+      flex-direction: column;
+      font-size: vw(40);
+    }
+  }
+
+  // The mockup's number parentheses sit 1.5px above the description cap line.
+  &__number {
+    margin-top: vw(-1.5);
+  }
+
+  // Sits 1px lower than the number/description line boxes in the mockup.
+  &__title {
+    margin-top: vw(1);
+    font-weight: 500;
+    font-size: vw(40);
+    line-height: 100%;
+    letter-spacing: -3.25%;
+
+    // 24px, line box 22px below the number.
+    @include mobile {
+      margin-top: vw(44);
+      font-size: vw(48);
+    }
+  }
+
+  // Line box 18.8px below the title.
+  &__description {
+    @include mobile {
+      margin-top: vw(37.6);
+    }
+  }
+
+  &__rule {
+    border-top-width: 1px;
+
+    // Rule below the step on mobile.
+    @include mobile {
+      top: auto;
+      bottom: 0;
+    }
+  }
+}

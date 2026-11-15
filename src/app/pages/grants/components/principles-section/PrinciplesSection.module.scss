@@ -1,0 +1,224 @@
+// Grants "Sec. 02 The Principles": giant "Themes" word with four rotated
+// theme cards on top. Values come from the 1440 × 1601 desktop mockup
+// (2880 × 3202 @2x). Mobile follows the 375 × 2456 mockup (750 × 4912 @2x):
+// one column, the cards straight (no card rotation, so the counter-rotated
+// art shows level), same card contents as desktop. Tablet has no mockup yet.
+// Card positions are the card's untransformed top-left (centre − 167/228);
+// the theme artwork SVGs are exported in page orientation, so the art is
+// counter-rotated by the card angle to keep its supplied geometry.
+
+.principles-section {
+  --principles-bg: #101010;
+  --principles-ink: #101010;
+  --principles-muted: #d9d9d9;
+  --principles-title: #343434;
+
+  position: relative;
+  height: vw(1601);
+  overflow: clip;
+  background-color: var(--principles-bg);
+  color: var(--principles-muted);
+
+  // Title line box at 84.5px; 100px gaps around the cards; 100px bottom.
+  @include mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    padding: vw(169) vw(40) vw(200);
+    box-sizing: border-box;
+  }
+
+  &__label {
+    position: absolute;
+    top: vw(20);
+    left: vw(20);
+
+    @include mobile {
+      top: vw(40);
+      left: vw(40);
+    }
+  }
+
+  &__title {
+    position: absolute;
+    top: vw(245);
+    left: 0;
+    // Chromium keeps the trailing -6% tracking inside the centred line, which
+    // pushes the ink 0.03em right of the mockup; trimming 0.06em on the right
+    // centres the ink like the mockup.
+    right: 0.06em;
+    color: var(--principles-title);
+    font-weight: 600;
+    font-size: vw(388);
+    line-height: 90%;
+    letter-spacing: -6%;
+    text-align: center;
+    white-space: nowrap; // per-glyph inline-blocks must never wrap
+
+    // 93px (ink spans the 335px column), same trailing-tracking trim.
+    @include mobile {
+      position: static;
+      width: 100%;
+      padding-right: 0.06em;
+      box-sizing: border-box;
+      font-size: vw(186);
+    }
+
+    // Stationary per-glyph mask; extended so the -6% tracking overhang and
+    // the glyph tops are never cut. Only the glyph inside moves.
+    &-mask {
+      display: inline-block;
+      clip-path: inset(-0.4em -0.08em);
+    }
+
+    &-glyph {
+      display: inline-block;
+    }
+  }
+
+  &__cards {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    @include mobile {
+      position: static;
+      display: flex;
+      flex-direction: column;
+      gap: vw(40);
+      width: 100%;
+      margin-top: vw(199.6);
+    }
+  }
+
+  &__description {
+    position: absolute;
+    top: vw(1221);
+    left: 50%;
+    width: vw(380);
+    transform: translateX(-50%);
+    font-size: vw(20);
+    line-height: 100%;
+    letter-spacing: -4%;
+    text-align: center;
+
+    @include mobile {
+      position: static;
+      width: vw(600);
+      margin-top: vw(199.6);
+      transform: none;
+      font-size: vw(40);
+    }
+  }
+}
+
+.theme-card {
+  --card-angle: 0deg;
+
+  position: absolute;
+  top: var(--card-top);
+  left: var(--card-left);
+  width: vw(334);
+  height: vw(456);
+  padding: vw(20);
+  box-sizing: border-box;
+  background-color: var(--card-bg);
+  color: var(--principles-ink);
+  text-align: center;
+  transform: rotate(var(--card-angle));
+
+  // Stacked and straight: 335 × 457, contents placed as on desktop.
+  @include mobile {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 100%;
+    height: vw(914);
+    padding: vw(42) vw(40) vw(40);
+    transform: none;
+  }
+
+  &__title {
+    font-weight: 600;
+    font-size: vw(40);
+    line-height: 100%;
+    letter-spacing: -4%;
+
+    @include mobile {
+      font-size: vw(80);
+    }
+  }
+
+  &__description {
+    margin-top: vw(20);
+    font-size: vw(20);
+    line-height: 100%;
+    letter-spacing: -4%;
+
+    @include mobile {
+      margin-top: vw(40);
+      font-size: vw(40);
+    }
+  }
+
+  // Artwork box centre sits 314px below the card top, centred horizontally,
+  // at native size (1 SVG unit = 1 design px, --art-units per theme).
+  &__art {
+    position: absolute;
+    top: vw(314);
+    left: 50%;
+    width: calc(var(--art-units) * #{vw(1)});
+    height: auto;
+    transform: translate(-50%, -50%) rotate(calc(-1 * var(--card-angle)));
+
+    @include mobile {
+      top: vw(630);
+      width: calc(var(--art-units) * #{vw(2)});
+    }
+  }
+
+  // Paint order from the mockup: Ownership over Permanence, Energy over
+  // Permanence and Peers.
+  &--ownership {
+    --art-units: 223;
+    --card-bg: #f4a8c0;
+    --card-angle: -20deg;
+    --card-left: #{vw(90.5)};
+    --card-top: #{vw(620.5)};
+
+    z-index: 2;
+  }
+
+  &--permanence {
+    --art-units: 207;
+    --card-bg: #23c46e;
+    --card-angle: -5deg;
+    --card-left: #{vw(390)};
+    --card-top: #{vw(549.2)};
+
+    z-index: 1;
+  }
+
+  &--energy {
+    --art-units: 208;
+    --card-bg: #f5ee34;
+    --card-angle: 5deg;
+    --card-left: #{vw(716.25)};
+    --card-top: #{vw(549.2)};
+
+    z-index: 2;
+  }
+
+  &--peers {
+    --art-units: 234;
+    --card-bg: #ff6e3e;
+    --card-angle: 20deg;
+    --card-left: #{vw(1014.5)};
+    --card-top: #{vw(620.25)};
+
+    z-index: 1;
+  }
+}

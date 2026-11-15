@@ -1,0 +1,127 @@
+// Grants "Sec. 04 Residencies": centred intro, a large quote and its
+// attribution on purple. Values come from the 1440 × 1644 desktop mockup
+// (2880 × 3288 @2x). Mobile follows the 375 × 709 mockup (750 × 1418 @2x):
+// same centred column at 20px gutters, 24px quote. Tablet has no mockup yet.
+// Vertical margins are mockup line-box tops minus the previous box bottom.
+
+.residencies-section {
+  --residencies-bg: #4f23bf;
+  --residencies-ink: #d9d9d9;
+  --section-label-ink: var(--residencies-bg);
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: vw(1644);
+  box-sizing: border-box;
+  background-color: var(--residencies-bg);
+  color: var(--residencies-ink);
+  text-align: center;
+
+  // 100px bottom space below the attribution.
+  @include mobile {
+    height: auto;
+    padding: 0 vw(40) vw(200);
+  }
+
+  &__label {
+    position: absolute;
+    top: vw(20);
+    left: vw(20);
+
+    @include mobile {
+      top: vw(40);
+      left: vw(40);
+    }
+  }
+
+  // Line box top at 173px.
+  &__intro {
+    width: vw(390);
+    margin-top: vw(173);
+    font-size: vw(20);
+    line-height: 100%;
+    letter-spacing: -4%;
+
+    // Line box at 143.3px, full column width.
+    @include mobile {
+      width: 100%;
+      margin-top: vw(288.6);
+      font-size: vw(40);
+    }
+  }
+
+  &__quote-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    font-weight: 600;
+    font-size: vw(100);
+    line-height: 90%;
+    letter-spacing: -6%;
+
+    // 40px quote mark on mobile (the quote sets its own size).
+    @include mobile {
+      width: 100%;
+      font-size: vw(80);
+    }
+  }
+
+  // Quote mark line box top at 313px (glyph top 319px). A line that ends on
+  // a glyph keeps its trailing -6% tracking in Chromium, which centres the ink
+  // 0.03em right of the mockup; 0.06em right padding re-centres it.
+  &__quote-mark {
+    display: block;
+    margin-top: vw(80);
+    padding-right: 0.06em;
+
+    // Line box at 266.6px.
+    @include mobile {
+      margin-top: vw(84.6);
+    }
+  }
+
+  // First line box top at 451.2px (cap top 459.5px, 90px line pitch).
+  &__quote {
+    width: vw(1080);
+    margin: vw(48.2) 0 0;
+
+    // 24px / 100% / -4%, full width; first line box at 345.3px.
+    @include mobile {
+      width: 100%;
+      margin-top: vw(88.4);
+      font-size: vw(48);
+      line-height: 100%;
+      letter-spacing: -4%;
+    }
+
+    // Last rendered line (RevealText keeps its measurer as the last child):
+    // same trailing-tracking compensation as the quote mark (equals the
+    // tracking: 0.06em desktop, 0.04em mobile).
+    > :nth-last-child(2) {
+      padding-right: 0.06em;
+
+      @include mobile {
+        padding-right: 0.04em;
+      }
+    }
+  }
+
+  // Line box top at 1312px.
+  &__attribution {
+    margin-top: vw(140.8);
+    font-weight: 500;
+    font-size: vw(32);
+    line-height: 100%;
+    letter-spacing: -3.4%;
+
+    // 20px, line box at 588.9px.
+    @include mobile {
+      margin-top: vw(196.2);
+      font-size: vw(40);
+      letter-spacing: -4%;
+    }
+  }
+}

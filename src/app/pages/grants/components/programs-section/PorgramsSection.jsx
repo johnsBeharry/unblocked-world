@@ -1,7 +1,27 @@
+import { useLayoutEffect, useRef } from "react";
+import { gsap } from "gsap";
 import { RevealText } from "../../../../../components/RevealText/RevealText";
+import { prefersReducedMotion, revealFrames } from "../../motion/scrollMotion.js";
 import styles from "./ProgramsSection.module.scss";
 
+// Scroll experience: both program cards open with a top -> bottom mask,
+// staggered. (No column drift: the cards sit edge to edge, so an offset reads
+// as a misalignment.)
+function useProgramsMotion(blocksRef) {
+  useLayoutEffect(() => {
+    const blocks = blocksRef.current;
+    if (!blocks || prefersReducedMotion()) return undefined;
+    const ctx = gsap.context(() => {
+      revealFrames([...blocks.children], { from: "top", stagger: 0.15 });
+    }, blocks);
+    return () => ctx.revert();
+  }, [blocksRef]);
+}
+
 export function ProgramsSections() {
+  const blocksRef = useRef(null);
+  useProgramsMotion(blocksRef);
+
   return (
     <section className={styles.section}>
       <RevealText as="h1" className={styles["main-title"]}>
@@ -17,7 +37,7 @@ export function ProgramsSections() {
       >
         (Programs)
       </RevealText>
-      <div className={styles.blocks}>
+      <div ref={blocksRef} className={styles.blocks}>
         <div className={styles["blocks__item"]}>
           <RevealText className={styles["blocks__item-title"]}>
             Cultural
@@ -45,29 +65,27 @@ export function ProgramsSections() {
           </div>
         </div>
         <div className={styles["blocks__item"]}>
-          <div className={styles["blocks__item"]}>
-            <RevealText className={styles["blocks__item-title"]}>
-              Open
-              <br />
-              System
-            </RevealText>
+          <RevealText className={styles["blocks__item-title"]}>
+            Open
+            <br />
+            System
+          </RevealText>
 
-            <div className={styles["blocks__item-bottom"]}>
-              <div className={styles["blocks__item-amount"]}>
-                <RevealText>$100,000</RevealText>
-                <RevealText className={styles.small}>over 12 mo.</RevealText>
-              </div>
-              <RevealText className={styles["blocks__item-detail"]}>
-                We support independent cultural work that challenges dominant
-                narratives and reimagines the systems shaping our lives.
-                Selected works will join the public UNBLOCKED archive and future
-                limited-edition book.
+          <div className={styles["blocks__item-bottom"]}>
+            <div className={styles["blocks__item-amount"]}>
+              <RevealText>$100,000</RevealText>
+              <RevealText className={styles.small}>over 12 mo.</RevealText>
+            </div>
+            <RevealText className={styles["blocks__item-detail"]}>
+              We support independent cultural work that challenges dominant
+              narratives and reimagines the systems shaping our lives.
+              Selected works will join the public UNBLOCKED archive and future
+              limited-edition book.
+            </RevealText>
+            <div className={styles.cta}>
+              <RevealText as="a">
+                <a href="#">(→)</a>
               </RevealText>
-              <div className={styles.cta}>
-                <RevealText as="a">
-                  <a href="#">(→)</a>
-                </RevealText>
-              </div>
             </div>
           </div>
         </div>

@@ -2,6 +2,30 @@
 
 ## Unreleased
 
+- Grants People section mobile layout: centred two-line header and one person card per row. The Grants page no longer scrolls sideways on phones.
+- Grants Residencies section mobile layout: centred introduction, quote and attribution sized for small screens, as in the mobile design.
+- Grants Selection section mobile layout: two-line title, introduction, and the three steps stacked with a line under each, as in the mobile design.
+- Fixed a grey strip between the program cards and the Themes section on mobile.
+- Grants Principles cards on mobile now open from top to bottom.
+- Grants Principles section mobile layout: "Themes" title, the four theme cards stacked straight with their artwork, and the closing statement, as in the mobile design. On mobile the cards open with a mask as they scroll in.
+- Grants program cards on mobile now follow the design: each card fills the screen, with the title at the top, amount and description at the bottom, and an underlined (→) link.
+- Grants Programs section mobile layout: centred "Sec.01", introduction and "(Programs)" on the first screen, then the two program cards stacked full width. The Open System card now has the same inner spacing as Cultural Work.
+- Grants hero mobile layout: left-aligned title, marquee, introduction above the artwork and the two paragraphs stacked, as in the mobile design.
+- Grants program cards now open from top to bottom.
+- Grants People section: the photo columns now stay aligned while scrolling.
+- Grants page scroll experience extended: the two program cards open with a mask as they enter, and the "Public Programme Starts 01.2027" title lines slide into place as the selection section arrives.
+- Grants People section scroll experience: the "Sec.05 (People)" words slide apart as the section enters, portraits open with a mask and a gentle zoom-out, and the middle column moves at a slightly different speed for depth.
+- Grants page: new "Sec.05 (People)" section (desktop) with the Leadership and Advisory & Working Group cards; photos and text reveal as you scroll. Portraits are placeholders until the final photos are supplied.
+- Grants page: new "Sec. 04 Residencies" section (desktop) with the residency note and the director's quote; the quote mark grows in and the quote lights up word by word as you scroll.
+- Grants page: new "Sec. 03 How Selection Works" section (desktop) with the "Public Programme Starts 01.2027" title, intake note and the three selection steps (One Intake, Quarterly Review, Matched Pathway).
+- Grants hero: the "Progress ≠ inevitability" line now scrolls endlessly and changes direction when you change scroll direction.
+- Grants Principles: the "Themes" title now starts centred on screen when the cards begin to fan out and glides into its place as you scroll.
+- Grants Principles: the large "Themes" title now drifts with a parallax effect while the cards fan out, settling in place when they finish.
+- Grants Principles cards now wait as a straight stack and start fanning out once the stack is about two-thirds down the screen.
+- Grants Principles section motion: the "Themes" letters rise from the middle outward, one pair at a time, and the four theme cards start stacked in the middle and fan out to their places as you scroll (reversing when scrolling back up). Card text and artwork stay visible throughout.
+- Fixed a duplicate-key warning in the Grants hero marquee.
+- Grants page: new "Sec. 02 The Principles" section (desktop) with the large "Themes" title, four rotated theme cards (Ownership, Permanence, Energy, Peers) and the closing statement. The four theme marks are now one shared artwork component that other pages can reuse.
+- Animated text inside rotated elements now keeps its line breaks instead of breaking after every word.
 - Production theme sections now reset paragraph and heading margins explicitly in `Global.scss`, matching local development and preventing Ownership copy from overflowing into the next section.
 - Grants programs section now includes Cultural Work and Open System cards with responsive layout, and the Grants page includes the shared Footer.
 - Added the `/grants` page with responsive Home/Menu header, editorial grant copy, scrolling progress marquee, and code-native purple geometric artwork for desktop and mobile.

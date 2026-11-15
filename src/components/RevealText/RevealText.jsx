@@ -73,7 +73,9 @@ function getLineGroups(words) {
       previousTop = null;
       return;
     }
-    const top = Math.round(word.getBoundingClientRect().top);
+    // Layout offset, not the on-screen rect: inside a rotated/transformed
+    // ancestor every word of one line has a different screen top.
+    const top = word.offsetTop;
     if (current.length && top !== previousTop) {
       groups.push(current);
       current = [];

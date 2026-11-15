@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Added the `/grants` page with responsive Home/Menu header, editorial grant copy, scrolling progress marquee, and code-native purple geometric artwork for desktop and mobile.
+- Split the Grants hero into its own page component, matching the existing homepage section architecture.
+- Grants desktop header now uses Home plus Open Calls, Grants, Guidelines, and Submit (→); the mobile overlay uses the same current labels, and the intro copy now lives inside GrantsHero.
 - Posters page jury: each jury member now has their own portrait, shown in its natural colours and centred in the frame (placeholder photos from Unsplash until the final portraits are supplied). Mobile jury cards show each member's own name, photo and description.
 - Desktop footer restored to the design: Back to Top appears once at the top right, the description, Question Everything and copyright sit in the bottom row again, columns line up with the design and the strip lines are light grey.
 - Posters page References: the lower posters are no longer cut off on narrower desktop screens.

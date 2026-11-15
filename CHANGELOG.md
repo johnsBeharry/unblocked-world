@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Grants programs section now includes Cultural Work and Open System cards with responsive layout, and the Grants page includes the shared Footer.
 - Added the `/grants` page with responsive Home/Menu header, editorial grant copy, scrolling progress marquee, and code-native purple geometric artwork for desktop and mobile.
 - Split the Grants hero into its own page component, matching the existing homepage section architecture.
 - Grants desktop header now uses Home plus Open Calls, Grants, Guidelines, and Submit (→); the mobile overlay uses the same current labels, and the intro copy now lives inside GrantsHero.

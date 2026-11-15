@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Production theme sections now reset paragraph and heading margins explicitly in `Global.scss`, matching local development and preventing Ownership copy from overflowing into the next section.
 - Grants programs section now includes Cultural Work and Open System cards with responsive layout, and the Grants page includes the shared Footer.
 - Added the `/grants` page with responsive Home/Menu header, editorial grant copy, scrolling progress marquee, and code-native purple geometric artwork for desktop and mobile.
 - Split the Grants hero into its own page component, matching the existing homepage section architecture.

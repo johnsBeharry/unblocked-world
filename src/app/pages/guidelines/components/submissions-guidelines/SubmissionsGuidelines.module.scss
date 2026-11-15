@@ -1,4 +1,3 @@
-@use '../../../../../styles/functions' as *;
 
 .hero {
   position: relative;
@@ -6,9 +5,9 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: vw(824);
+  height: 100vh;
   overflow: clip;
-  background: #2449ed;
+  background: #101010;
   box-sizing: border-box;
 
   & *,
@@ -19,25 +18,32 @@
 }
 
 .heading {
+  bottom: vw(208);
   position: absolute;
-  top: vw(277);
+  // top: vw(277);
   left: 50%;
   z-index: 2;
   width: 100%;
   transform: translateX(-50%);
   color: #d9d9d9;
-  font-family: 'Inter Local', sans-serif;
-  font-size: vw(164);
+  font-size: vw(124);
   font-style: normal;
   font-weight: 600;
-  letter-spacing: vw(-9.84);
+  letter-spacing: -0.06em;
   line-height: 0.83;
   text-align: center;
   white-space: nowrap;
   word-break: break-word;
 
-  p { margin: 0; }
-  span { display: inline-block; margin-left: vw(10); }
+  p {
+    margin: 0;
+  }
+}
+
+// Responsive copy variants; RevealText sits inside each so its line wrappers
+// keep their own display rules.
+.compact {
+  display: none;
 }
 
 .artwork {
@@ -47,10 +53,14 @@
   transform: scale(calc(50vw / 1440px));
 }
 
-.artwork [data-artwork-layer] { background: #db38c8; }
+.artwork [data-artwork-layer] {
+  background: #db38c8;
+}
 
 @include tablet-portrait {
-  .hero { height: calc(100vw * 1236 / 864); }
+  .hero {
+    height: calc(100vw * 1236 / 864);
+  }
 
   .heading {
     top: vw(457);
@@ -60,8 +70,14 @@
     letter-spacing: vw(-6.72);
     line-height: 0.9;
     transform: translateX(-50%);
+  }
 
-    span { display: block; margin-left: 0; }
+  .wide {
+    display: none;
+  }
+
+  .compact {
+    display: block;
   }
 
   .artwork {
@@ -72,7 +88,9 @@
 }
 
 @include mobile {
-  .hero { height: calc(100vw * 668 / 375); }
+  .hero {
+    height: calc(100vw * 668 / 375);
+  }
 
   .heading {
     top: calc(100vw * 260 / 375);
@@ -82,8 +100,14 @@
     letter-spacing: calc(100vw * -2.5 / 375);
     line-height: 0.9;
     transform: translateX(-50%);
+  }
 
-    span { display: block; margin-left: 0; }
+  .wide {
+    display: none;
+  }
+
+  .compact {
+    display: block;
   }
 
   .artwork {

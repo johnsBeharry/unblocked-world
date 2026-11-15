@@ -1,24 +1,52 @@
-@use '../../../../../styles/functions' as *;
 
 .panel { min-height: 100vh; }
-.inner { width: vw(406); margin-left: vw(229); padding-top: vw(123); padding-bottom: vw(24); }
+.inner { width: vw(406); margin-left: vw(229); padding-top: vw(123); padding-bottom: vw(138); }
 .inner h1, .inner p { margin: 0; }
 .inner h1 { font-size: vw(40); font-weight: 600; letter-spacing: vw(-1.6); line-height: 1.02; }
-.intro { margin-top: vw(47) !important; font-size: vw(20); font-weight: 500; letter-spacing: vw(-0.8); line-height: 1.02; }
-.form { margin-top: vw(34); }
-.field { position: relative; display: grid; box-sizing: border-box; align-content: start; gap: vw(7); height: vw(72); min-height: vw(72); border-bottom: vw(2) solid rgb(220 145 168 / 0.4); padding-bottom: vw(19); color: #dc91a8; }
-.field:first-child { height: vw(51); min-height: vw(51); gap: vw(5); }
-.field:first-child .fieldLabel { margin-top: vw(-1); }
-.field:first-child .fieldValue { margin-top: vw(0.5); }
-.fieldLabel, .field input, .field select { font: inherit; font-size: vw(20); font-weight: 500; letter-spacing: vw(-0.8); line-height: 1.02; }
+.intro { margin-top: vw(47) !important; letter-spacing: vw(-0.8); line-height: 1.02; }
+.inlineLink { border: 0; padding: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; letter-spacing: inherit; text-decoration: underline; text-underline-offset: vw(2); }
+.inlineLink:disabled { cursor: default; opacity: 0.4; }
+.form { position: relative; margin-top: vw(34); }
+// Transparent border keeps the field geometry; RevealRow draws the visible rule
+// over it together with the label. Padding lives on the revealed content so the
+// chevron keeps the same containing box while the content slides.
+.field { position: relative; display: block; box-sizing: border-box; height: vw(72); min-height: vw(72); border-bottom: vw(2) solid transparent; color: #dc91a8; }
+.fieldContent { display: grid; box-sizing: border-box; align-content: start; gap: vw(7); padding-bottom: vw(19); }
+.fieldRule { top: auto; bottom: vw(-2); border-top-width: vw(2); color: rgb(220 145 168 / 0.4); }
+.fieldLabel, .field input, .field textarea, .field .selectField { font: inherit; letter-spacing: vw(-0.8); line-height: 1.02; }
 .fieldLabel { margin-top: vw(10); color: rgb(220 145 168 / 0.4); font-size: vw(14); letter-spacing: vw(-0.56); }
 .fieldValue { margin-top: vw(-5); }
 .emptyField { margin-top: vw(41); }
-.field input, .field select { width: 100%; border: 0; outline: 0; padding: 0; background: transparent; color: #dc91a8; }
-.selectField { color: rgb(220 145 168 / 0.4) !important; }
+.field input, .field textarea, .field .selectField { width: 100%; border: 0; outline: 0; padding: 0; background: transparent; color: #dc91a8; }
+.field input:disabled, .field textarea:disabled, .field .selectField:disabled { opacity: 0.6; }
+// Rows that grow with their content (Short Bio, Profile Photo).
+.fieldAuto { height: auto; min-height: vw(72); }
+.textarea { display: block; resize: none; }
+.field textarea::placeholder { color: rgb(220 145 168 / 0.4); opacity: 1; }
+// Dropdown trigger (SelectPanel button): placeholder colour until a value is chosen.
+.field .selectField { cursor: pointer; text-align: left; }
+.field .selectField:disabled { cursor: not-allowed; }
+.field .selectEmpty { color: rgb(220 145 168 / 0.4); }
 .field input::placeholder { color: rgb(220 145 168 / 0.4); opacity: 1; }
-.field select { appearance: none; height: auto; margin-top: vw(41); line-height: 1.02; }
+.field .selectField { appearance: none; height: auto; margin-top: vw(41); line-height: 1.02; }
 .chevron { position: absolute; right: vw(16); bottom: vw(25); width: vw(16); height: vw(16); border-right: vw(2) solid #dc91a8; border-bottom: vw(2) solid #dc91a8; transform: rotate(45deg); }
+// Profile photo row.
+.photo { display: flex; align-items: flex-start; justify-content: space-between; gap: vw(16); margin-top: vw(41); padding-bottom: vw(12); }
+.photoTitle { color: rgb(220 145 168 / 0.4); letter-spacing: vw(-0.8); line-height: 1.02; }
+.photoHint { margin-top: vw(8) !important; font-size: vw(14); letter-spacing: vw(-0.56); line-height: 1.1; opacity: 0.6; }
+.photoActions { display: flex; gap: vw(12); margin-top: vw(10) !important; }
+.photoActions button { border: 0; padding: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; letter-spacing: vw(-0.8); }
+.photoPreview { flex: none; width: vw(56); height: vw(56); object-fit: cover; }
+.fileInput { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+// Sits directly under the previous field rule (no second divider).
+.form .terms { margin-top: 0; border-top: 0; }
+// Verification: six single-digit boxes.
+.verification { display: grid; gap: vw(12); margin-top: vw(32); }
+.code { display: grid; grid-template-columns: repeat(6, 1fr); gap: vw(8); }
+.digit { box-sizing: border-box; width: 100%; height: vw(56); border: vw(2) solid rgb(220 145 168 / 0.4); padding: 0; background: transparent; color: #dc91a8; font: inherit; font-size: vw(28); text-align: center; outline: 0; }
+.digit:focus { border-color: #dc91a8; }
+.verificationHint { margin: 0; font-size: vw(14); }
+.error { margin-top: vw(16) !important; color: #dc91a8; }
 
 @media (min-width: 601px) and (max-width: 864px) and (orientation: portrait) {
   .inner {
@@ -36,20 +64,19 @@
 
   .intro {
     margin-top: vw(47) !important;
-    font-size: vw(20);
     letter-spacing: vw(-0.66);
     line-height: 1.02;
   }
 
   .form { gap: 0; margin-top: vw(48.5); }
-  .field { box-sizing: border-box; height: vw(72); min-height: 0; border-bottom-width: vw(1); padding-bottom: vw(8); }
-  .field:first-child { height: vw(51); gap: vw(5); }
-  .field:first-child .fieldLabel { margin-top: vw(-1); }
-  .field:first-child .fieldValue { margin-top: vw(0.5); }
+  .field { box-sizing: border-box; height: vw(72); min-height: 0; border-bottom-width: vw(1); }
+  .fieldContent { padding-bottom: vw(8); }
+  .fieldRule { bottom: vw(-1); border-top-width: vw(1); }
   .fieldLabel { margin-top: 0; }
   .fieldValue { margin-top: 0; }
   .emptyField { margin-top: vw(39); }
-  .field select { height: auto; margin-top: vw(41); line-height: 1.02; }
+  .field .selectField { height: auto; margin-top: vw(41); line-height: 1.02; }
+  .fieldAuto { height: auto; }
   .chevron { right: vw(8); bottom: vw(18); width: vw(8); height: vw(8); border-right-width: vw(1); border-bottom-width: vw(1); }
 }
 
@@ -73,21 +100,29 @@
     width: vw(670);
     margin-top: vw(94) !important;
     font-size: vw(40);
-    font-weight: 500;
     letter-spacing: vw(-1.6);
     line-height: 1.02;
   }
 
   .form { gap: 0; margin-top: vw(94); }
-  .field { box-sizing: border-box; height: vw(144); min-height: 0; border-bottom-width: vw(1); padding-bottom: vw(8); }
-  .field:first-child { height: vw(104); gap: vw(12); }
-  .field:first-child .fieldLabel { margin-top: vw(1); }
-  .field:first-child .fieldValue { margin-top: vw(0.5); }
+  .field { box-sizing: border-box; height: vw(144); min-height: 0; border-bottom-width: vw(1); }
+  .fieldContent { padding-bottom: vw(8); }
+  .fieldRule { bottom: vw(-1); border-top-width: vw(1); }
   .fieldLabel { margin-top: 0; }
   .fieldValue { margin-top: 0; }
   .fieldLabel { font-size: vw(28); letter-spacing: vw(-1.12); }
-  .field input, .field select { font-size: vw(40); letter-spacing: vw(-1.6); }
+  .field input, .field .selectField { font-size: vw(40); letter-spacing: vw(-1.6); }
   .emptyField { margin-top: vw(79); }
-  .field select { height: auto; margin-top: vw(41); line-height: 1.02; }
+  // Dropdown text on the same line as the text fields.
+  .field .selectField { height: auto; margin-top: vw(79); line-height: 1.02; }
   .chevron { right: vw(8); bottom: vw(18); width: vw(8); height: vw(8); border-right-width: vw(1); border-bottom-width: vw(1); }
+  .field textarea { font-size: vw(40); letter-spacing: vw(-1.6); }
+  // Growing rows must not take the fixed mobile field height.
+  .fieldAuto { height: auto; min-height: vw(144); }
+  .photo { margin-top: vw(79); padding-bottom: vw(32); }
+  .photoTitle, .photoActions button { font-size: vw(40); letter-spacing: vw(-1.6); }
+  .photoHint { font-size: vw(28); letter-spacing: vw(-1.12); }
+  .photoPreview { width: vw(112); height: vw(112); }
+  .digit { height: vw(112); border-width: vw(1); font-size: vw(56); }
+  .verificationHint { font-size: vw(28); }
 }

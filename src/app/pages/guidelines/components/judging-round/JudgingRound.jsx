@@ -9,8 +9,8 @@ export function JudgingRound({ title, status, description, items }) {
       <div className={styles.roundHeader}>
         <RevealText as="h3">{title}</RevealText>
         <div className={styles.roundStatus}>
-          <span>Status</span>
-          <span className={styles.statusLabel}>{status}</span>
+          <RevealText as="span">Status</RevealText>
+          <span className={styles.statusLabel}><RevealText as="span">{status}</RevealText></span>
         </div>
       </div>
       <div className={styles.roundContent}>

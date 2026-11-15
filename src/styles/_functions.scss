@@ -12,8 +12,14 @@
   }
 }
 
+// @mixin tablet {
+//   @media (min-width: 601px) and (max-width: 1024px) {
+//     @content;
+//   }
+// }
+
 @mixin tablet {
-  @media (min-width: 601px) and (max-width: 1024px) {
+  @media (max-width: 864px) {
     @content;
   }
 }
@@ -38,6 +44,12 @@
 
 @mixin desktop {
   @media (min-width: 1025px) {
+    @content;
+  }
+}
+
+@mixin wideScreen {
+  @media (min-aspect-ratio: 1900 / 945) {
     @content;
   }
 }

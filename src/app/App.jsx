@@ -7,6 +7,7 @@ import { GuidelinesPage } from "./pages/guidelines/GuidelinesPage.jsx";
 import { SubmitPage } from "./pages/submit/SubmitPage.jsx";
 import { ClientStaticPreviewPage } from "./pages/client-static-preview/ClientStaticPreviewPage.jsx";
 import { GrantsPage } from "./pages/grants/GrantsPage.jsx";
+import { CultureGrantsPage } from "./pages/culture-grants/CultureGrantsPage.jsx";
 import { SmoothScroll } from "./components/smooth-scroll/SmoothScroll.jsx";
 import { PageCurtain } from "./components/page-curtain/PageCurtain.jsx";
 
@@ -39,6 +40,8 @@ export function App({ url = "/" }) {
       <ClientStaticPreviewPage />
     ) : path === "/grants" ? (
       <GrantsPage />
+    ) : path === "/grants/culture-grants" ? (
+      <CultureGrantsPage />
     ) : path === "/submit" ? (
       <SubmitPage />
     ) : path === "/submit/form/consent" ? (

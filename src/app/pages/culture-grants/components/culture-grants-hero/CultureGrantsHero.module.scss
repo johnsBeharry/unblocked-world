@@ -1,0 +1,86 @@
+// Culture Grants hero (/grants/culture-grants). Desktop values follow the
+// 1440 × 1499 mockup (2880 × 2998 @2x): a 645px blue intro (title, summary,
+// Apply Now) above the full-width 1440 × 854 slice artwork.
+// Mobile follows the 375 × 668 mockup (750 × 1336 @2x): a 446px intro
+// (title, summary 38px below it, Apply Now at the bottom) above the
+// full-width artwork. No tablet mockup yet.
+.culture-hero {
+  --culture-hero-bg: #2449ed;
+  --culture-hero-ink: #d9d9d9;
+
+  position: relative;
+  width: 100%;
+  overflow: clip;
+  background-color: var(--culture-hero-bg);
+  color: var(--culture-hero-ink);
+
+  &__intro {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: vw(645);
+    padding: vw(80) vw(20) vw(20);
+    box-sizing: border-box;
+
+    // Title line top 61px (cap top 65.5px); the footer fills the rest of the 446px intro.
+    @include mobile {
+      height: vw(892);
+      padding: vw(122) vw(40) vw(40);
+    }
+  }
+
+  &__title {
+    font-weight: 600;
+    font-size: vw(124);
+    line-height: 90%;
+    letter-spacing: -6%;
+
+    @include mobile {
+      font-size: vw(80);
+      line-height: 102%;
+      letter-spacing: -4%;
+    }
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    // Summary 38px under the title, Apply Now at the intro bottom.
+    @include mobile {
+      flex: 1;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-top: vw(78);
+    }
+  }
+
+  // Mockup text box: line 1 ("… for", 363px) still fits, line 3 plus
+  // "and" (371px) no longer fits.
+  &__summary {
+    max-width: vw(366);
+    font-weight: 500;
+    font-size: vw(20);
+    line-height: 100%;
+    letter-spacing: -4%;
+
+    // Full column width: in the start-aligned flex column the paragraph
+    // would otherwise size to RevealText's nowrap lines and overflow.
+    @include mobile {
+      width: 100%;
+      max-width: none;
+      font-size: vw(40);
+    }
+  }
+
+  // ApplyLink (typography/underline) sits 20px above the intro bottom; on
+  // mobile the intro's own 20px bottom padding already places it.
+  &__apply {
+    margin-bottom: vw(20);
+
+    @include mobile {
+      margin-bottom: 0;
+    }
+  }
+}

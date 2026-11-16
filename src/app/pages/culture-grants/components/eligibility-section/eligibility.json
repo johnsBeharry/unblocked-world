@@ -1,0 +1,26 @@
+{
+  "label": "Sec. 02  Eligibility Criteria",
+  "labelCompact": "Sec. 02 Eligibility Criteria",
+  "title": ["Who Can", "Apply"],
+  "groups": [
+    {
+      "id": "eligible",
+      "title": "Eligible",
+      "items": [
+        { "id": "maker", "number": "(01)", "text": "You are an artist, designer, or creative making the work yourself (individual or small group)" },
+        { "id": "theme", "number": "(02)", "text": "The piece relates clearly to at least one of the four themes" },
+        { "id": "outcome", "number": "(03)", "text": "You can describe a concrete outcome" },
+        { "id": "public", "number": "(04)", "text": "The work will be public or documented so it can enter the archive" },
+        { "id": "scale", "number": "(05)", "text": "The timeline and scale fit a one-time payment of $500–$5,000" }
+      ]
+    },
+    {
+      "id": "ineligible",
+      "title": "Ineligible",
+      "items": [
+        { "id": "ongoing", "number": "(01)", "text": "The proposal is for an ongoing organisation, product development, or multi-year project" },
+        { "id": "larger", "number": "(02)", "text": "You are seeking the larger 12-month design and experience support" }
+      ]
+    }
+  ]
+}

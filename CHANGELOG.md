@@ -2,6 +2,22 @@
 
 ## Unreleased
 
+- Culture Grants page on tablets now shows the same layout as desktop, scaled to the screen; before, portrait tablets showed it oversized and scrolling sideways.
+- Culture Grants Open System section on mobile now follows the mobile design: pink title block on top and the rings panel underneath at full width; the rings still open from the centre as it scrolls in.
+- Culture Grants application section on mobile now follows the mobile design: the title wraps over three lines, the six steps are stacked full width, and Apply Now sits below them.
+- Culture Grants eligibility section on mobile now follows the mobile design: one-line "Who Can Apply" title, and each criterion with its number above the text.
+- Culture Grants Makers section on mobile now follows the mobile design: label, title, divider, the large green card with its description, then the orange and purple cards side by side and the closing note. The section labels on the Culture Grants page now sit exactly like the design inside their dark tags.
+- Culture Grants amount section on mobile now follows the mobile design: one screen with the "$500 – $5k" line at the top, its divider, and the payment note centred lower down.
+- Culture Grants hero on mobile now follows the mobile design: title, summary below it, Apply Now at the bottom of the blue area and the circle artwork underneath. On phones the circles split into their slices once when the page opens, since the artwork is already on the first screen.
+- Culture Grants page: the "Who Can Apply", "Apply any time. Reviewed every quarter." and "Open System" titles now use the same simple line reveal as the rest of the text, without sliding in while scrolling.
+- Culture Grants page: new Open System section (pink copy half, black rings panel). As the panel scrolls in, the rings open from the centre one after another like an iris. Scroll animations on the page now stay in sync when text above them changes height after loading.
+- Culture Grants page: new "Sec. 03 Application" section with "Apply any time. Reviewed every quarter.", the six application steps and an Apply Now link. The title lines slide in from the right and each step reveals with its divider as you scroll.
+- Culture Grants page: new "Sec. 02 Eligibility Criteria" section with the "Who Can Apply" title and the Eligible / Ineligible lists. The title lines slide in from the right, and each criterion reveals with its divider as you scroll.
+- Culture Grants Makers "a" artwork: all pieces now slide out of the centre letter together, each inside its own fixed window, with no pause between the inner and outer pieces and no faint edge before they move.
+- Culture Grants Makers artworks: the "a" pieces now start as one letter in the centre and spread outward, and all three artworks now build while they are fully on screen, so the movement is easier to follow.
+- Culture Grants page: new "Sec. 01 Makers" section with the title, two descriptions and three artwork cards. The cards open as they enter, and each artwork builds while scrolling: the nested frames open out like a tunnel, the bars grow from thin to thick, and the "a" pieces come together into their pattern.
+- Culture Grants page: new amount section with a large "$500 – $5k" line that scrolls sideways (left while scrolling down, right while scrolling up), a divider that draws in with it, and the payment note.
+- New Culture Grants page (/grants/culture-grants) with its hero: title, summary, Apply Now link and the circle artwork. As the artwork scrolls in, each circle splits into its slices, starting from the centre column and spreading outward. The Cultural Work card on the Grants page now links to it.
 - Grants page now opens correctly on the live site when visited directly or refreshed, the mobile menu Grants link works, and the page transition into Grants uses the page's dark colour.
 - Grants People section mobile layout: centred two-line header and one person card per row. The Grants page no longer scrolls sideways on phones.
 - Grants Residencies section mobile layout: centred introduction, quote and attribution sized for small screens, as in the mobile design.

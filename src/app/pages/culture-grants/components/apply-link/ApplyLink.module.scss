@@ -1,0 +1,22 @@
+// Culture Grants "Apply Now (→)" link (hero and Application mockups, 1440
+// desktop): 40px label with a 1px underline 4px below the glyphs that runs
+// 4.5px past the ")" ink (the right padding also covers the trailing -4%
+// tracking). Position comes from the consumer. Mobile (hero mockup 375 ×
+// 668): the same link at 24px (0.6 ×), underline 4.5px below the glyphs.
+.apply-link {
+  padding: 0 vw(2) vw(8.5) 0;
+  font-weight: 600;
+  font-size: vw(40);
+  line-height: 100%;
+  letter-spacing: -4%;
+
+  @include mobile {
+    padding: 0 vw(2.4) vw(12.2) 0;
+    font-size: vw(48);
+  }
+
+  &__rule {
+    top: auto;
+    bottom: 0;
+  }
+}

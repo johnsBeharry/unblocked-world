@@ -1,0 +1,12 @@
+{
+  "label": "Sec. 03 Application",
+  "title": ["Apply any time.", "Reviewed", "every quarter."],
+  "steps": [
+    { "id": "submit", "number": "(01)", "text": "Submit through the intake form." },
+    { "id": "check", "number": "(02)", "text": "Core team checks eligibility and prepares a packet for the board." },
+    { "id": "review", "number": "(03)", "text": "Board reviews fit with the themes, clarity of the work, and scale. Conflicts are declared; those members recuse." },
+    { "id": "decide", "number": "(04)", "text": "Awards are decided by majority of non-conflicted members." },
+    { "id": "notify", "number": "(05)", "text": "Notification within one week of the quarterly decision." },
+    { "id": "pay", "number": "(06)", "text": "One-time payment is made. The work is posted on Open Collective and enters the archive." }
+  ]
+}

@@ -1,19 +1,23 @@
 // Grants section tag (Principles and Selection mockups): 24px grey box,
 // 20px text, 5px side padding. Consumers position it and may set
-// --section-label-ink (text colour, e.g. the purple Residencies section).
+// --section-label-ink (text colour, e.g. the purple Residencies section),
+// --section-label-bg and --section-label-height / --section-label-height-mobile
+// (box height; the Culture Grants tags are 28px dark boxes), and
+// --section-label-padding / --section-label-padding-mobile (Culture Grants:
+// text 4px from the left, 6px from the right).
 
 .section-label {
-  padding: 0 vw(5);
-  background-color: #d9d9d9;
+  padding: var(--section-label-padding, 0 #{vw(5)});
+  background-color: var(--section-label-bg, #d9d9d9);
   color: var(--section-label-ink, #101010);
   font-size: vw(20);
-  line-height: vw(24);
+  line-height: var(--section-label-height, #{vw(24)});
   letter-spacing: -4%;
 
   // Same 20px tag on mobile (vw units are half-scale there).
   @include mobile {
-    padding: 0 vw(10);
+    padding: var(--section-label-padding-mobile, 0 #{vw(10)});
     font-size: vw(40);
-    line-height: vw(48);
+    line-height: var(--section-label-height-mobile, #{vw(48)});
   }
 }

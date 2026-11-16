@@ -1,0 +1,91 @@
+// Culture Grants Open System section (last section before the footer).
+// Desktop values follow the 1440 × 800 mockup (2880 × 1600 @2x): pink left
+// half with the title and description, black right half with concentric
+// pink rings (geometry in OpenSystemSection.jsx).
+// Mobile follows the 375 × 659 mockup (750 × 1318 @2x): a 242px pink copy
+// block above the rings panel, which is the desktop panel scaled 375 / 720
+// (375 × 416.7). No tablet mockup yet.
+.open-system {
+  --open-system-light: #f546a4;
+  --open-system-dark: #000000;
+  --open-system-ink: #101010;
+
+  display: grid;
+  grid-template-columns: vw(720) vw(720);
+  height: vw(800);
+  background-color: var(--open-system-light);
+  color: var(--open-system-ink);
+
+  @include mobile {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+  }
+
+  &__copy {
+    padding: vw(45) vw(20) 0;
+
+    // 242px tall: title line top 21px (cap top 26px).
+    @include mobile {
+      height: vw(484);
+      padding: vw(42) vw(40) 0;
+      box-sizing: border-box;
+    }
+  }
+
+  // Cap-to-cap pitch is 80px in the mockup (line-height 80%).
+  &__title {
+    font-weight: 600;
+    font-size: vw(100);
+    line-height: 80%;
+    letter-spacing: -6%;
+
+    @include mobile {
+      font-size: vw(80);
+      line-height: 102%;
+      letter-spacing: -4%;
+    }
+  }
+
+  // Line box top at 305.3px; the 335px column wraps like the mockup.
+  &__description {
+    max-width: vw(335);
+    margin-top: vw(101);
+    font-weight: 500;
+    font-size: vw(20);
+    line-height: 100%;
+    letter-spacing: -4%;
+
+    // Full width, line top 39.7px under the title.
+    @include mobile {
+      max-width: none;
+      margin-top: vw(79.4);
+      font-size: vw(40);
+    }
+  }
+
+  &__panel {
+    display: block;
+    width: 100%;
+    height: 100%;
+
+    // The 720 × 800 panel at full width (rings scale with it).
+    @include mobile {
+      height: vw(833.3);
+    }
+  }
+
+  &__ground {
+    fill: var(--open-system-dark);
+  }
+
+  &__disc {
+    &--light {
+      fill: var(--open-system-light);
+    }
+
+    &--dark {
+      fill: var(--open-system-dark);
+    }
+  }
+}

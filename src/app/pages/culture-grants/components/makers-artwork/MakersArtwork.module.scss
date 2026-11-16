@@ -1,0 +1,38 @@
+// Culture Grants Makers card artworks (TunnelArtwork, BarsArtwork,
+// GlyphArtwork): the supplied SVGs at their native mockup size, centred in
+// their card by the card's grid. Colours from the exports. Mobile: scaled
+// with their cards (tunnel × 0.4855, bars and "a" × 0.4701).
+.makers-artwork {
+  &--tunnel {
+    width: vw(301);
+    height: vw(420);
+    stroke: #4f23bf;
+
+    @include mobile {
+      width: vw(292.3);
+      height: vw(407.8);
+    }
+  }
+
+  &--bars {
+    width: vw(161);
+    height: vw(159);
+    stroke: #4f23bf;
+
+    @include mobile {
+      width: vw(151.4);
+      height: vw(149.5);
+    }
+  }
+
+  &--glyph {
+    width: vw(174);
+    height: vw(249);
+    fill: #ff6e3e;
+
+    @include mobile {
+      width: vw(163.6);
+      height: vw(234.1);
+    }
+  }
+}

@@ -5,6 +5,7 @@ const CURTAIN_COLORS = {
   '/posters': '#000000',
   '/guidelines': '#101010',
   '/grants': '#101010',
+  '/grants/culture-grants': '#2449ed',
   '/submit': '#dc91a8',
 }
 

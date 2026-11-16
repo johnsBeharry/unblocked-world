@@ -5,18 +5,18 @@ export function SubmitProgress({
   compact = false,
   lineOnly = false,
   hideBar = false,
+  progress = 0,
+  className = "",
 }) {
-  const steps = ["Join", "Posters", "Submit"];
+  const steps = ["Join", "Poster", "Consent"];
 
   return (
     <aside
-      className={`${styles.progress} ${compact ? styles.compact : ""} ${activeStep === 2 ? styles.posterStep : ""} ${lineOnly ? styles.lineOnly : ""} ${hideBar ? styles.hideBar : ""}`}
+      className={`${styles.progress} ${compact ? styles.compact : ""} ${activeStep === 2 ? styles.posterStep : ""} ${lineOnly ? styles.lineOnly : ""} ${hideBar ? styles.hideBar : ""} ${className}`}
       aria-label="Submission progress"
     >
-      <div
-        className={styles.progressBar}
-        style={{ "--progress-width": `${(activeStep / steps.length) * 100}%` }}
-      />
+      {/* Grows with each frame of the flow (`progress` 0–1). */}
+      <div className={styles.progressBar} style={{ "--progress": progress }} />
       <ol>
         {steps.map((step, index) => (
           <li
@@ -24,7 +24,7 @@ export function SubmitProgress({
             key={step}
           >
             ({String(index + 1).padStart(2, "0")})
-            {index + 1 === activeStep && ` ${step}`}
+            {index + 1 === activeStep && <span className={styles.stepLabel}> {step}</span>}
           </li>
         ))}
       </ol>

@@ -1,0 +1,211 @@
+// Submit page Manage Poster screen (ManagePosterPanel.jsx), right column.
+// Desktop values follow the user's 2026-11-17 reference (1440 × 918 column
+// @2x, `.visual-qa/submit-manage-20261117/reference.png`): full column width
+// with 20px sides, title 40px (cap 138.5), then 142px rows with a 1px pink
+// rule on top: 72 × 102 thumbnail, info column 20.5px after it (title, file
+// info, action on the bottom line), date top right and a pink status tag on
+// the bottom right. Mobile doubles the values in 750 units (no reference).
+.manage-poster {
+  --manage-ink: #dc91a8;
+
+  min-height: 100%;
+  color: var(--manage-ink);
+
+  &__inner {
+    padding: vw(134) vw(20) vw(138);
+
+    @include mobile {
+      padding: vw(206) vw(40) vw(260);
+    }
+  }
+
+  &__title {
+    margin: 0;
+    font-size: vw(40);
+    font-weight: 600;
+    letter-spacing: vw(-1.6);
+    line-height: 1.02;
+
+    @include mobile {
+      font-size: vw(80);
+      letter-spacing: vw(-3.2);
+    }
+  }
+
+  // Scoped under `&__inner`: SubmitPage's `.content p { margin: 0 }` (0,1,1)
+  // beats a single class.
+  &__inner &__empty {
+    margin: vw(48) 0 0;
+    opacity: 0.6;
+    letter-spacing: vw(-0.8);
+    line-height: 1.02;
+
+    @include mobile {
+      margin-top: vw(96);
+      font-size: vw(40);
+      letter-spacing: vw(-1.6);
+    }
+  }
+
+  // First rule at 210.5px.
+  &__list {
+    margin: vw(36.2) 0 0;
+    padding: 0;
+    list-style: none;
+
+    @include mobile {
+      margin-top: vw(72.4);
+    }
+  }
+}
+
+.manage-entry {
+  display: block;
+  box-sizing: border-box;
+  height: vw(142);
+  padding: vw(20.5) 0 vw(19.5);
+
+  // Mobile: long titles wrap, so the row grows past the thumbnail.
+  @include mobile {
+    height: auto;
+    min-height: vw(284);
+    padding: vw(41) 0 vw(39);
+  }
+
+  &__rule {
+    color: var(--manage-ink, #dc91a8);
+  }
+
+  &__content {
+    display: grid;
+    grid-template-columns: vw(72) minmax(0, 1fr) auto;
+    column-gap: vw(20.5);
+
+    @include mobile {
+      grid-template-columns: vw(144) minmax(0, 1fr) auto;
+      column-gap: vw(41);
+    }
+  }
+
+  &__thumbnail {
+    display: block;
+    width: vw(72);
+    height: vw(102);
+    object-fit: cover;
+    background: #0a0a0a;
+
+    @include mobile {
+      width: vw(144);
+      height: vw(204);
+    }
+  }
+
+  // Title and date cap tops 2.5px under the thumbnail top (reference).
+  &__info,
+  &__side {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    padding-top: vw(1);
+
+    @include mobile {
+      padding-top: vw(2);
+    }
+  }
+
+  &__info {
+    align-items: flex-start;
+  }
+
+  &__side {
+    align-items: flex-end;
+  }
+
+  &__title,
+  &__date {
+    font-size: vw(20);
+    letter-spacing: vw(-0.8);
+    line-height: 1.02;
+
+    @include mobile {
+      font-size: vw(40);
+      letter-spacing: vw(-1.6);
+    }
+  }
+
+  // Trailing -0.8px tracking: the date ink ends 1.5px before the edge.
+  &__date {
+    padding-right: vw(1.5);
+  }
+
+  &__title {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    @include mobile {
+      white-space: normal;
+    }
+  }
+
+  &__meta {
+    margin-top: vw(7);
+    color: rgb(220 145 168 / 0.5);
+    font-size: vw(20);
+    letter-spacing: vw(-0.8);
+    line-height: 1.02;
+
+    @include mobile {
+      margin-top: vw(14);
+      font-size: vw(40);
+      letter-spacing: vw(-1.6);
+    }
+  }
+
+  // Actions sit on the thumbnail's bottom line.
+  &__action {
+    margin-top: auto;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    font-size: vw(16);
+    letter-spacing: vw(-0.64);
+    line-height: 1.02;
+
+    // Keeps a gap above the action once a wrapped title fills the row.
+    @include mobile {
+      padding-top: vw(24);
+      font-size: vw(32);
+      letter-spacing: vw(-1.28);
+    }
+
+    &:disabled {
+      cursor: wait;
+      opacity: 0.5;
+    }
+  }
+
+  // Pink tag, 20px tall, its bottom 4px above the thumbnail's.
+  &__status {
+    margin-top: auto;
+    margin-bottom: vw(4);
+    padding: 0 vw(4.5);
+    background: var(--manage-ink, #dc91a8);
+    color: #000;
+    font-size: vw(16);
+    letter-spacing: vw(-0.64);
+    line-height: vw(20);
+
+    @include mobile {
+      margin-bottom: vw(8);
+      padding: 0 vw(9);
+      font-size: vw(32);
+      letter-spacing: vw(-1.28);
+      line-height: vw(40);
+    }
+  }
+}

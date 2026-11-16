@@ -1,0 +1,196 @@
+// Shared numbered list section of the grant program pages
+// (ProgramListSection.jsx). Desktop values follow the Culture Grants
+// "Eligibility Criteria" mockup (1440 × 1436 @2x), which the Open Systems
+// "Our Role" mockup (1440 × 1156 @2x) repeats: label, two-line title (line
+// top 276px), then groups. Each group head has a full-width 1px rule (first
+// at 555.5px); rows sit at 730px (number) and 1075px (text) with 1px rules
+// under them, 19px / 20px padding around 20px / 100% text. A group head is
+// a 40px title (Eligible / Ineligible) or intro paragraphs (Our Role: 20px,
+// 335px column, one blank line between paragraphs). Mobile follows the
+// Culture Grants 375 × 1453 mockup (750 × 2906 @2x): one-line 40px title,
+// group rule at 228.5px, 24px group titles, rows with the number above the
+// text. No tablet mockup yet; no Open Systems mobile mockup.
+.program-list {
+  --program-list-bg: #d9d9d9;
+  --program-list-ink: #101010;
+
+  // 300.5px bottom keeps the mockup heights with the 99.5px title margin.
+  padding: vw(20) vw(20) vw(300.5);
+  background-color: var(--program-list-bg);
+  color: var(--program-list-ink);
+
+  @include mobile {
+    padding: vw(40) vw(40) vw(201);
+  }
+
+  &__label {
+    --section-label-bg: var(--program-list-ink);
+    --section-label-ink: var(--program-list-bg);
+    --section-label-height: #{vw(28)};
+    --section-label-padding: 0 #{vw(6)} 0 #{vw(4)};
+    --section-label-padding-mobile: 0 #{vw(12)} 0 #{vw(8)};
+    --section-label-height-mobile: #{vw(56)};
+
+    display: inline-block;
+    vertical-align: top;
+
+    &--wide {
+      @include mobile {
+        display: none;
+      }
+    }
+
+    &--compact {
+      display: none;
+
+      @include mobile {
+        display: inline-block;
+      }
+    }
+  }
+
+  // 228px from the label bottom to the first title line; 99.5px from the
+  // second line to the first group rule (rule at 555.5px in both mockups;
+  // 99px drew every rule and row 1 device px high).
+  &__title {
+    margin: vw(228) 0 vw(99.5);
+    font-weight: 600;
+    font-size: vw(100);
+    line-height: 90%;
+    letter-spacing: -6%;
+
+    // One line on mobile: line top 88px, 99.7px above the group rule.
+    @include mobile {
+      margin: vw(82) 0 vw(196.4);
+      font-size: vw(80);
+      line-height: 102%;
+      letter-spacing: -4%;
+    }
+
+    // "Who Can" and "Apply" share the mobile line (top-aligned so the line
+    // keeps the 102% pitch); the margin is the word space.
+    > * {
+      @include mobile {
+        display: inline-block;
+        vertical-align: top;
+      }
+    }
+
+    > :first-child {
+      @include mobile {
+        margin-right: 0.21em;
+      }
+    }
+  }
+}
+
+.program-list-group {
+  display: grid;
+  grid-template-columns: vw(710) minmax(0, 1fr);
+  align-items: start;
+
+  @include mobile {
+    display: block;
+  }
+
+  // Mobile: 51.5px between the last row and the next group rule.
+  & + & {
+    @include mobile {
+      margin-top: vw(104);
+    }
+  }
+
+  // Cap top 25px under the rule (mockup).
+  &__title {
+    padding-top: vw(21);
+    font-weight: 500;
+    font-size: vw(40);
+    line-height: 100%;
+    letter-spacing: -3%;
+
+    // 24px, line top 20px under the rule.
+    @include mobile {
+      padding-top: vw(43);
+      font-size: vw(48);
+    }
+  }
+
+  // Intro paragraphs in the 335px column, line top 576px (with the rows).
+  &__intro {
+    max-width: vw(335);
+    padding-top: vw(20);
+    font-weight: 500;
+    font-size: vw(20);
+    line-height: 100%;
+    letter-spacing: -4%;
+
+    @include mobile {
+      max-width: none;
+      padding-top: vw(40);
+      font-size: vw(40);
+    }
+  }
+
+  // One blank 20px line between paragraphs (mockup).
+  &__paragraph {
+    display: block;
+
+    & + & {
+      margin-top: vw(20);
+
+      @include mobile {
+        margin-top: vw(40);
+      }
+    }
+  }
+
+  // Spans the whole content width (1400px) from the head column.
+  &__rule {
+    width: vw(1400);
+
+    @include mobile {
+      width: 100%;
+    }
+  }
+
+  &__list {
+    list-style: none;
+
+    // 51.5px from the group title to the first row.
+    @include mobile {
+      margin-top: vw(101);
+    }
+  }
+}
+
+.program-list-item {
+  &__content {
+    display: grid;
+    grid-template-columns: vw(345) minmax(0, 1fr);
+    // 100 / 80 / 60px rule-to-rule rows (3 / 2 / 1 lines).
+    padding: vw(20) 0;
+    font-weight: 500;
+    font-size: vw(20);
+    line-height: 100%;
+    letter-spacing: -4%;
+
+    // Number above the text, 20px apart.
+    @include mobile {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: vw(42);
+      padding: vw(40) 0 vw(38);
+      font-size: vw(40);
+    }
+  }
+
+  // Just below the row (the group rule draws in its row's first pixel), so
+  // rule-to-rule distances equal the row heights.
+  &__rule {
+    top: auto;
+    bottom: vw(-1);
+
+    @include mobile {
+      bottom: vw(-3);
+    }
+  }
+}

@@ -1,5 +1,5 @@
 import { useId, useRef } from "react";
-import { useArtScrub } from "./useArtScrub";
+import { useArtScrub } from "../../../grants/motion/useArtScrub";
 import { FRAGMENTS, GLYPH_PATH } from "./glyphGeometry";
 import styles from "./MakersArtwork.module.scss";
 

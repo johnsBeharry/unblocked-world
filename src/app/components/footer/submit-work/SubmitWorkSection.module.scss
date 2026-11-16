@@ -11,14 +11,20 @@
     margin: 0;
   }
 
+  // The shared hero artwork keeps the section's previous artwork top (453px)
+  // instead of the home hero's centred slot.
   &__el-000 {
+    --hero-artwork-top: #{vw(453)};
+
     position: relative;
     background-color: #2951fe;
     height: vw(800);
     overflow: clip;
     width: vw(1440);
   }
-  &__el-198 {
+  // Title CTA link (Submit Work / Read the Guidelines).
+  &__title-link {
+    text-decoration: none;
     word-break: break-word;
     position: absolute;
     font-family: "Inter Local", sans-serif;
@@ -55,7 +61,9 @@
     white-space: nowrap;
     transform: translateX(-50%);
   }
-  &__el-202 {
+  // Bottom CTA link (View Brief).
+  &__brief-link {
+    text-decoration: none;
     word-break: break-word;
     position: absolute;
     line-height: 1.02;
@@ -94,7 +102,7 @@
       background-color: #2951fe;
     }
 
-    &__el-198 {
+    &__title-link {
       top: vw(529.5);
       font-size: vw(120);
       letter-spacing: vw(-7.2);
@@ -126,7 +134,7 @@
       }
     }
 
-    &__el-202 {
+    &__brief-link {
       top: vw(786);
       letter-spacing: vw(-0.8);
     }
@@ -138,7 +146,7 @@
       background-color: #2449ed;
     }
 
-    &__el-198 {
+    &__title-link {
       top: vw(520);
       left: calc(50% - vw(2));
       font-size: vw(116);
@@ -156,16 +164,16 @@
       transform-origin: 50% 0;
     }
 
-    &__el-202 {
+    &__brief-link {
       top: vw(840);
       left: calc(50% - vw(1.5));
       font-size: vw(40);
       letter-spacing: vw(-1.6);
     }
 
-    &__el-198,
+    &__title-link,
     &__el-201,
-    &__el-202 {
+    &__brief-link {
       z-index: 1;
     }
 

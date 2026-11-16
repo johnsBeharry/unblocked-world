@@ -1,81 +1,265 @@
+// Submit page Your Entries step (PosterEntriesPanel.jsx), right column.
+// Desktop values follow the user's 2026-11-17 Poster Entries reference (1440
+// column @2x, 864 × 918, `.visual-qa/submit-entries-20261117/reference.png`):
+// title, a 64px add card, then 176px entry rows (1px rule on top, 96 × 136
+// thumbnail, info column with a pink status tag, title, file info and the
+// actions on the thumbnail's bottom line). Tablet keeps the desktop values
+// with the older top offset; mobile doubles them in 750 units (no mobile
+// reference).
+.poster-entries {
+  --entries-ink: #dc91a8;
+  --entries-muted: rgb(220 145 168 / 0.5);
 
-.panel { min-height: 100%; }
-.inner { width: vw(406); margin-left: vw(229); padding-top: vw(253); padding-bottom: vw(138); }
-.hasEntries .inner { padding-top: vw(173); }
-.inner h1, .inner p { margin: 0; }
-.inner h1 { font-size: vw(40); font-weight: 600; letter-spacing: vw(-1.6); line-height: 1.02; }
-.addCard {
-  display: grid;
-  width: 100%;
+  min-height: 100%;
+  color: var(--entries-ink);
+
+  &__inner {
+    width: vw(406);
+    margin-left: vw(229);
+    padding-top: vw(253);
+    padding-bottom: vw(138);
+
+    @include mobile {
+      width: vw(670);
+      margin-left: vw(40);
+      padding-top: vw(206);
+      padding-bottom: vw(260);
+    }
+  }
+
+  &__title {
+    margin: 0;
+    font-size: vw(40);
+    font-weight: 600;
+    letter-spacing: vw(-1.6);
+    line-height: 1.02;
+
+    @include mobile {
+      font-size: vw(80);
+      letter-spacing: vw(-3.2);
+    }
+  }
+
+  // Add card: 64px, "(+)" ink 25.5px in, 10px before the label (16px text).
+  &__add {
+    display: flex;
+    align-items: center;
+    gap: vw(10);
+    box-sizing: border-box;
+    width: 100%;
+    height: vw(64);
+    margin-top: vw(47);
+    border: 0;
+    padding: 0 vw(24);
+    background: #0a0a0a;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    font-size: vw(16);
+    letter-spacing: vw(-0.64);
+    line-height: 1.02;
+
+    @include mobile {
+      gap: vw(20);
+      height: vw(128);
+      margin-top: vw(94);
+      padding: 0 vw(48) 0 vw(51);
+      font-size: vw(32);
+      letter-spacing: vw(-1.28);
+    }
+
+    &--dragging {
+      outline: vw(2) dashed currentColor;
+      outline-offset: vw(-8);
+    }
+  }
+
+  &__inner &__empty {
+    margin: vw(24) 0 0;
+    opacity: 0.6;
+    letter-spacing: vw(-0.8);
+    line-height: 1.02;
+
+    @include mobile {
+      margin-top: vw(48);
+      font-size: vw(40);
+      letter-spacing: vw(-1.6);
+    }
+  }
+
+  // First rule 19.5px under the add card.
+  &__group {
+    margin-top: vw(19.7);
+
+    @include mobile {
+      margin-top: vw(39);
+    }
+  }
+
+  &__group + &__group {
+    margin-top: vw(40);
+
+    @include mobile {
+      margin-top: vw(80);
+    }
+  }
+
+  &__group-title {
+    margin: 0 0 vw(19.5);
+    font-size: vw(20);
+    font-weight: 600;
+    letter-spacing: vw(-0.8);
+    line-height: 1.02;
+
+    @include mobile {
+      margin-bottom: vw(39);
+      font-size: vw(40);
+      letter-spacing: vw(-1.6);
+    }
+  }
+
+  &__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  // Tablet portrait keeps the older top offset (the step list sits above).
+  &--filled &__inner {
+    padding-top: vw(119);
+
+    @include tablet-portrait {
+      padding-top: vw(322);
+    }
+
+    @include mobile {
+      padding-top: vw(206);
+    }
+  }
+}
+
+// Entry row: 176px pitch, rule on top, thumbnail 20.5px under it.
+.poster-entry {
+  display: block;
+  box-sizing: border-box;
   height: vw(176);
-  margin-top: vw(47);
-  place-content: center;
-  gap: vw(20);
-  border: 0;
-  padding: 0;
-  background: #0a0a0a;
-  color: #dc91a8;
-  cursor: pointer;
-  font: inherit;
-  font-size: vw(16);
-  letter-spacing: vw(-0.64);
-  line-height: 1.02;
-}
-.compactAddCard { height: vw(64); margin-top: vw(47); display: flex; align-items: center; justify-content: flex-start; gap: vw(9.25); padding: 0 vw(24) 0 vw(24.5); }
-.plus { font-size: vw(16); }
-.dropHint { opacity: 0.6; }
-// Files dragged over the add card.
-.dragging { outline: vw(2) dashed currentColor; outline-offset: vw(-8); }
-.empty { margin-top: vw(24) !important; letter-spacing: vw(-0.8); line-height: 1.02; opacity: 0.6; }
-.group { margin-top: vw(40); }
-.groupTitle { margin: 0; font-size: vw(20); font-weight: 600; letter-spacing: vw(-0.8); line-height: 1.02; }
-.entries { margin-top: vw(19.75); border-top: vw(1) solid rgb(220 145 168 / 0.4); }
-.entry { display: flex; gap: vw(24); min-height: vw(176); border-bottom: vw(1) solid rgb(220 145 168 / 0.4); padding: vw(20) 0 vw(19); }
-.entry:last-child { border-bottom: 0; }
-.thumbnail { flex: 0 0 vw(96); width: vw(96); height: vw(136); object-fit: cover; background: #0a0a0a; }
-.entry:first-child .thumbnail { object-position: center 49%; }
-.entryInfo { padding-top: 0; }
-.entryInfo h3, .entryInfo p { margin: 0; }
-.entryInfo h3 { letter-spacing: vw(-0.8); line-height: 1.02; }
-.entryInfo p { margin-top: vw(8); font-size: vw(16); letter-spacing: vw(-0.64); line-height: 1.02; }
-.entryInfo p span { margin-inline: vw(1.5); }
-.entryInfo button { border: 0; padding: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; }
+  padding: vw(20.5) 0 vw(19.5);
 
-@media (min-width: 601px) and (max-width: 864px) and (orientation: portrait) {
-  .hasEntries .inner { padding-top: vw(322); }
-}
-
-@media (max-width: 600px) {
-  .inner {
-    width: vw(670);
-    margin-left: vw(40);
-    padding-top: vw(206);
-    padding-bottom: vw(260);
+  @include mobile {
+    height: vw(352);
+    padding: vw(41) 0 vw(39);
   }
 
-  .hasEntries .inner { padding-top: vw(206); }
-  .inner h1 { font-size: vw(80); letter-spacing: vw(-3.2); }
-  .compactAddCard {
-    height: vw(129);
-    margin-top: vw(96);
-    gap: vw(20);
-    padding: vw(2) vw(24) 0 vw(48);
-    font-size: vw(32);
-    letter-spacing: vw(-1.36);
+  &__rule {
+    color: var(--entries-muted, rgb(220 145 168 / 0.5));
   }
-  .plus { font-size: vw(32); }
-  .entries { margin-top: vw(38); border-top-width: vw(2); }
-  .entry {
-    gap: vw(48);
-    min-height: vw(313);
-    border-bottom-width: vw(2);
-    padding: vw(40) 0 vw(38);
+
+  &__content {
+    display: grid;
+    grid-template-columns: vw(96) minmax(0, 1fr);
+    column-gap: vw(24);
+
+    @include mobile {
+      grid-template-columns: vw(192) minmax(0, 1fr);
+      column-gap: vw(48);
+    }
   }
-  .thumbnail { flex-basis: vw(192); width: vw(192); height: vw(272); }
-  .entry + .entry { padding-top: vw(39); }
-  .entryInfo { padding-top: vw(1); }
-  .entry:first-child .entryInfo { padding-top: 0; }
-  .entryInfo h3 { font-size: vw(40); letter-spacing: vw(-1.6); line-height: 1; }
-  .entryInfo p { margin-top: vw(14); margin-left: vw(1); font-size: vw(32); letter-spacing: vw(-1.28); line-height: 1.02; }
-  .entryInfo p span { margin-inline: vw(3); }
+
+  &__thumbnail {
+    display: block;
+    width: vw(96);
+    height: vw(136);
+    object-fit: cover;
+    background: #0a0a0a;
+
+    @include mobile {
+      width: vw(192);
+      height: vw(272);
+    }
+  }
+
+  // Tag, title and file info stack from the top; actions sit on the
+  // thumbnail's bottom line.
+  &__info {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  // Pink status tag, 20px tall.
+  &__status {
+    padding: 0 vw(4.5);
+    background: var(--entries-ink, #dc91a8);
+    color: #000;
+    font-size: vw(16);
+    letter-spacing: vw(-0.64);
+    line-height: vw(20);
+
+    @include mobile {
+      padding: 0 vw(9);
+      font-size: vw(32);
+      letter-spacing: vw(-1.28);
+      line-height: vw(40);
+    }
+  }
+
+  &__title {
+    max-width: 100%;
+    margin-top: vw(7.6);
+    overflow: hidden;
+    font-size: vw(20);
+    letter-spacing: vw(-0.8);
+    line-height: 1.02;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    // Desktop keeps one line (ellipsis); the narrow mobile column wraps.
+    @include mobile {
+      margin-top: vw(15.2);
+      font-size: vw(40);
+      letter-spacing: vw(-1.6);
+      white-space: normal;
+    }
+  }
+
+  &__meta {
+    margin-top: vw(8);
+    color: var(--entries-muted, rgb(220 145 168 / 0.5));
+    font-size: vw(20);
+    letter-spacing: vw(-0.8);
+    line-height: 1.02;
+
+    @include mobile {
+      margin-top: vw(16);
+      font-size: vw(40);
+      letter-spacing: vw(-1.6);
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: baseline;
+    gap: vw(5.25);
+    margin-top: auto;
+    font-size: vw(16);
+    letter-spacing: vw(-0.64);
+    line-height: 1.02;
+
+    @include mobile {
+      gap: vw(12);
+      font-size: vw(32);
+      letter-spacing: vw(-1.28);
+    }
+
+    button {
+      border: 0;
+      padding: 0;
+      background: transparent;
+      color: inherit;
+      cursor: pointer;
+      font: inherit;
+      letter-spacing: inherit;
+    }
+  }
 }

@@ -1,0 +1,33 @@
+// Open Systems Intro card artworks (EllipseStackArtwork, BalanceArtwork):
+// the supplied SVGs at their native mockup size, centred in their card by
+// the card's grid (blue card: 217 / 75 from its edges, pink card: 120 /
+// 102.5). Colours from the exports. Mobile (375 × 1931 mockup): the
+// ellipses are 399px tall (× 0.4848, centred: 36.5px from the card top),
+// the balance art scales with its card (335 / 690 = 0.4855).
+.intro-artwork {
+  &--ellipses {
+    width: vw(256);
+    height: vw(823);
+    fill: #34bd57;
+
+    @include mobile {
+      width: vw(248.2);
+      height: vw(798);
+    }
+  }
+
+  // Visible overflow: the pieces fall in from above the card, so the SVG
+  // must not cut them at its own top edge (mid-card); the pink card frames
+  // them instead.
+  &--balance {
+    width: vw(450);
+    height: vw(267);
+    overflow: visible;
+    fill: #2449ed;
+
+    @include mobile {
+      width: vw(436.9);
+      height: vw(259.3);
+    }
+  }
+}

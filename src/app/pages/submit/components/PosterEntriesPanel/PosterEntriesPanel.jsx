@@ -1,34 +1,72 @@
 import React, { useState } from 'react'
 import styles from './PosterEntriesPanel.module.scss'
 import { RevealText } from '../../../../../components/RevealText/RevealText.jsx'
+import { RevealRow } from '../../../../../components/RevealRow/RevealRow.jsx'
+import { ConfirmDialog } from '../confirm-dialog/ConfirmDialog.jsx'
 
-// Your Entries (copy follows the reference form): add a poster by clicking or
-// by dropping files on the add card; entries are grouped into In Progress and
-// Submitted.
+// Your Entries (copy follows the reference form; layout the user's 2026-11-17
+// Poster Entries reference): add a poster by clicking or by dropping files on
+// the add card; each entry shows its status tag, title, file info and actions.
+
+// "PNG · 759 KB" from the poster file (demo entries carry `meta`).
+export function fileMeta(entry) {
+  if (entry.meta) return entry.meta
+  const file = entry.file
+  if (!file) return ''
+  const type = (file.name?.split('.').pop() || file.type?.split('/').pop() || '').toUpperCase()
+  const size = file.size >= 1024 * 1024 ? `${(file.size / (1024 * 1024)).toFixed(1)} MB` : `${Math.max(1, Math.round(file.size / 1024))} KB`
+  return [type, size].filter(Boolean).join(' · ')
+}
+
+function entryStatus(entry) {
+  if (entry.submitted) return 'Submitted'
+  return entry.file || entry.src ? 'Ready to submit' : 'In progress'
+}
+
 function EntryList({ title, entries, onEdit, onRemove }) {
   if (!entries.length) return null
   return (
-    <div className={styles.group}>
-      <h2 className={styles.groupTitle}>{title}</h2>
-      <div className={styles.entries}>
+    <div className={styles['poster-entries__group']}>
+      {/* Only the Submitted group shows its name; in-progress entries follow
+          the add card directly (reference). */}
+      {title && <h2 className={styles['poster-entries__group-title']}>{title}</h2>}
+      <ul className={styles['poster-entries__list']}>
         {entries.map(entry => (
-          <article className={styles.entry} key={entry.id}>
-            {entry.src ? <img className={styles.thumbnail} src={entry.src} alt="" /> : <span className={styles.thumbnail} aria-hidden="true" />}
-            <div className={styles.entryInfo}>
-              <RevealText as="h3">{entry.title}</RevealText>
+          <RevealRow className={styles['poster-entry']} contentClassName={styles['poster-entry__content']} lineClassName={styles['poster-entry__rule']} key={entry.id}>
+            {entry.src ? <img className={styles['poster-entry__thumbnail']} src={entry.src} alt="" /> : <span className={styles['poster-entry__thumbnail']} aria-hidden="true" />}
+            <span className={styles['poster-entry__info']}>
+              <span className={styles['poster-entry__status']}>{entryStatus(entry)}</span>
+              <span className={styles['poster-entry__title']}>{entry.title}</span>
+              {fileMeta(entry) && <span className={styles['poster-entry__meta']}>{fileMeta(entry)}</span>}
               {!entry.submitted && (
-                <p><button type="button" onClick={() => onEdit?.(entry)}>(Edit)</button><span aria-hidden="true"> • </span><button type="button" onClick={() => onRemove?.(entry.id)}>(Remove)</button></p>
+                <span className={styles['poster-entry__actions']}>
+                  <button type="button" onClick={() => onEdit?.(entry)}>(Edit)</button>
+                  <span aria-hidden="true">•</span>
+                  <button type="button" onClick={() => onRemove?.(entry)}>(Remove)</button>
+                </span>
               )}
-            </div>
-          </article>
+            </span>
+          </RevealRow>
         ))}
-      </div>
+      </ul>
     </div>
   )
 }
 
 export function PosterEntriesPanel({ entries = [], onAdd, onEdit, onRemove }) {
   const [dragging, setDragging] = useState(false)
+  // (Remove) asks first; the dialog keeps the last entry while it fades out.
+  // A failed removal keeps the dialog open with the reason.
+  const [removing, setRemoving] = useState({ entry: null, open: false, busy: false, error: '' })
+  const confirmRemove = async () => {
+    setRemoving(current => ({ ...current, busy: true, error: '' }))
+    try {
+      await onRemove?.(removing.entry.id)
+      setRemoving(current => ({ ...current, open: false, busy: false }))
+    } catch (error) {
+      setRemoving(current => ({ ...current, busy: false, error: error.message }))
+    }
+  }
   const inProgress = entries.filter(entry => !entry.submitted)
   const submitted = entries.filter(entry => entry.submitted)
 
@@ -40,27 +78,37 @@ export function PosterEntriesPanel({ entries = [], onAdd, onEdit, onRemove }) {
   }
 
   return (
-    <section className={`${styles.panel} ${entries.length ? styles.hasEntries : ''}`} aria-labelledby="poster-entries-title">
-      <div className={styles.inner}>
-        <RevealText as="h1" id="poster-entries-title">Your Entries</RevealText>
+    <section className={`${styles['poster-entries']} ${entries.length ? styles['poster-entries--filled'] : ''}`} aria-labelledby="poster-entries-title">
+      <div className={styles['poster-entries__inner']}>
+        <RevealText as="h1" id="poster-entries-title" className={styles['poster-entries__title']}>Your Entries</RevealText>
         <button
-          className={`${styles.addCard} ${entries.length ? styles.compactAddCard : ''} ${dragging ? styles.dragging : ''}`}
+          className={`${styles['poster-entries__add']} ${dragging ? styles['poster-entries__add--dragging'] : ''}`}
           type="button"
           onClick={() => onAdd?.()}
           onDragOver={(event) => { event.preventDefault(); setDragging(true) }}
           onDragLeave={() => setDragging(false)}
           onDrop={onDrop}
         >
-          <span className={styles.plus} aria-hidden="true">(+)</span>
+          <span aria-hidden="true">(+)</span>
           <span>{dragging ? 'Drop to add' : 'Add a Poster'}</span>
-          {!dragging && <span className={styles.dropHint}>or drag files here</span>}
         </button>
         {entries.length === 0 && (
-          <p className={styles.empty}>Nothing here yet. Add your first poster above. It saves as you go, so you can finish it later.</p>
+          <p className={styles['poster-entries__empty']}>Nothing here yet. Add your first poster above. It saves as you go, so you can finish it later.</p>
         )}
-        <EntryList title="In Progress" entries={inProgress} onEdit={onEdit} onRemove={onRemove} />
+        <EntryList entries={inProgress} onEdit={onEdit} onRemove={entry => setRemoving({ entry, open: true, busy: false, error: '' })} />
         <EntryList title="Submitted" entries={submitted} />
       </div>
+      <ConfirmDialog
+        open={removing.open}
+        title="Remove this poster?"
+        confirmLabel={removing.busy ? 'Removing…' : 'Remove Poster'}
+        busy={removing.busy}
+        error={removing.error}
+        onConfirm={confirmRemove}
+        onClose={() => { if (!removing.busy) setRemoving(current => ({ ...current, open: false })) }}
+      >
+        The poster '{removing.entry?.title}' won't be submitted. We keep a record of removed drafts.
+      </ConfirmDialog>
     </section>
   )
 }

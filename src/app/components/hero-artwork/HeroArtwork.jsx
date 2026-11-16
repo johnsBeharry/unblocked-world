@@ -3,6 +3,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import React from "react";
 import styles from "./HeroArtwork.module.scss";
 import { addArtworkIntro, prepareArtworkIntro } from "./artworkIntro.js";
+import { ROWS } from "./heroArtworkGeometry.js";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -19,23 +20,31 @@ const ARTWORK_SIDE_SPACE = 36;
 const REVEAL_START = "top 85%";
 const PARALLAX_PERCENT = 6;
 
-function HeroDesktopArtwork() {
+// The artwork (user-supplied 824 × 704 SVG): rows of centred layers,
+// rendered as motif groups → layer elements so the scroll scaling (per
+// group) and the intro (per layer, rows bottom → top) keep working on the
+// shared data attributes. Geometry in heroArtworkGeometry.js, placed by
+// percentages in SCSS (same drawing at every breakpoint).
+function ArtworkRows() {
   return (
-    <div
-      className={`${styles.artwork} ${styles.desktopArtLayer}`}
-      aria-hidden="true"
-    >
-      {Array.from({ length: 24 }, (_, motifIndex) => (
+    <div className={styles["hero-artwork__art"]} aria-hidden="true">
+      {ROWS.map((layers, rowIndex) => (
         <div
-          key={motifIndex}
-          className={styles.motif}
-          data-artwork-motif={motifIndex}
+          key={rowIndex}
+          className={styles["hero-artwork__row"]}
+          style={{ "--row-index": rowIndex }}
+          data-artwork-motif={rowIndex}
         >
-          {Array.from({ length: 3 }, (_, layerIndex) => (
+          {layers.map(([x, width, height]) => (
             <div
-              key={layerIndex}
-              className={styles.layer}
-              data-artwork-layer={`${motifIndex}-${layerIndex}`}
+              key={x}
+              className={styles["hero-artwork__layer"]}
+              style={{
+                "--layer-x": x,
+                "--layer-width": width,
+                "--layer-height": height,
+              }}
+              data-artwork-layer={`${rowIndex}-${x}`}
             />
           ))}
         </div>
@@ -43,10 +52,11 @@ function HeroDesktopArtwork() {
     </div>
   );
 }
-function TabletArtwork() {
+
+function CompactArtwork() {
   return (
-    <div className={styles.tabletArt} data-hero-artwork="tablet">
-      <HeroDesktopArtwork />
+    <div className={styles["hero-artwork-compact"]} data-hero-artwork="tablet">
+      <ArtworkRows />
     </div>
   );
 }
@@ -195,13 +205,13 @@ export function HeroArtwork({
     <>
       <div
         ref={artworkRef}
-        className={styles.desktopArt}
+        className={styles["hero-artwork"]}
         data-hero-artwork="desktop"
         aria-hidden="true"
       >
-        <HeroDesktopArtwork />
+        <ArtworkRows />
       </div>
-      {compactArtwork && <TabletArtwork />}
+      {compactArtwork && <CompactArtwork />}
     </>
   );
 }

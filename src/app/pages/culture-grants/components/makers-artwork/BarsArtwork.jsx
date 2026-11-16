@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { useArtScrub } from "./useArtScrub";
+import { useArtScrub } from "../../../grants/motion/useArtScrub";
 import styles from "./MakersArtwork.module.scss";
 
 // Supplied 161 × 159 vertical bars, right (tallest, thickest) → left.

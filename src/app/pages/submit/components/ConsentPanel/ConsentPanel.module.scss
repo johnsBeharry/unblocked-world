@@ -1,22 +1,92 @@
+// Submit page Consent step (ConsentPanel.jsx), right column. Desktop values
+// follow the user's 2026-11-17 Consent reference (1440 × 918 column @2x,
+// `.visual-qa/submit-consent-20261117/reference.png`): title, two-line lede,
+// then three CheckboxRows with 1px rules on top (20px text, 100% line height).
+// Tablet keeps the older top offset; mobile doubles the values in 750 units.
+.consent-panel {
+  min-height: 100%;
+  color: #dc91a8;
 
-.panel { min-height: 100%; }
-.inner { width: vw(406); margin-left: vw(229); padding-top: vw(253); padding-bottom: vw(138); }
-.inner h1, .inner .intro { margin: 0; }
-.inner h1 { font-size: vw(40); font-weight: 600; letter-spacing: vw(-1.6); line-height: 1.02; }
-.inner .intro { margin-top: vw(47); letter-spacing: vw(-0.8); line-height: 1.02; }
-.list { margin-top: vw(46); }
+  &__inner {
+    width: vw(406);
+    margin-left: vw(229);
+    padding-top: vw(253);
+    padding-bottom: vw(138);
 
-@media (min-width: 601px) and (max-width: 864px) and (orientation: portrait) {
-  .inner { width: vw(406); margin-left: vw(229); padding-top: vw(278); }
-  .inner h1 { font-size: vw(40); letter-spacing: vw(-1.6); }
-  .inner .intro { margin-top: vw(47); letter-spacing: vw(-0.8); }
-  .list { margin-top: vw(48.5); }
+    @include tablet-portrait {
+      padding-top: vw(278);
+    }
+
+    @include mobile {
+      width: vw(670);
+      margin-left: vw(40);
+      padding-top: vw(206);
+      padding-bottom: vw(260);
+    }
+  }
+
+  &__title {
+    margin: 0;
+    font-size: vw(40);
+    font-weight: 600;
+    letter-spacing: vw(-1.6);
+    line-height: 1.02;
+
+    @include mobile {
+      font-size: vw(80);
+      letter-spacing: vw(-3.2);
+    }
+  }
+
+  // Scoped under `&__inner`: SubmitPage's `.content p { margin: 0 }` (0,1,1)
+  // beats a single class.
+  &__inner &__lede {
+    margin: vw(47) 0 0;
+    letter-spacing: vw(-0.8);
+    line-height: 100%;
+
+    @include mobile {
+      margin-top: vw(94);
+      font-size: vw(40);
+      letter-spacing: vw(-1.6);
+    }
+  }
+
+  // First rule at 428.5px (reference; 47.5 under the lede box).
+  &__list {
+    margin-top: vw(47.5);
+
+    @include mobile {
+      margin-top: vw(96);
+    }
+  }
+
+  // Two classes so it wins over CheckboxRow's `.row` whatever the order.
+  // 20px explicitly (the row would pass on a smaller inherited size).
+  // Rows 56px (one line) / 76px (two): text 12px under the rule.
+  &__list &__row {
+    border-top-width: vw(1);
+    padding-top: vw(12);
+    font-size: vw(20);
+    line-height: 100%;
+
+    // Mobile: the desktop rhythm doubled (CheckboxRow's 72px minimum made
+    // one-line rows taller than two-line ones).
+    @include mobile {
+      min-height: 0;
+      padding: vw(24) 0 vw(46);
+      font-size: vw(40);
+    }
+  }
+
+  &__inner &__error {
+    margin: vw(24) 0 0;
+    font-size: vw(16);
+    line-height: 1.1;
+
+    @include mobile {
+      margin-top: vw(48);
+      font-size: vw(32);
+    }
+  }
 }
-
-@media (max-width: 600px) {
-  .inner { width: vw(670); margin-left: vw(40); padding-top: vw(206); padding-bottom: vw(260); }
-  .inner h1 { font-size: vw(80); letter-spacing: vw(-3.2); line-height: 1.02; }
-  .inner .intro { margin-top: vw(94); font-size: vw(40); letter-spacing: vw(-1.6); line-height: 1; }
-  .list { margin-top: vw(94); }
-}
-.error { margin-top: vw(24); color: #dc91a8; }

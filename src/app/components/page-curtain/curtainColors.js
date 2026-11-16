@@ -6,6 +6,7 @@ const CURTAIN_COLORS = {
   '/guidelines': '#101010',
   '/grants': '#101010',
   '/grants/culture-grants': '#2449ed',
+  '/grants/open-systems': '#f546a4',
   '/submit': '#dc91a8',
 }
 

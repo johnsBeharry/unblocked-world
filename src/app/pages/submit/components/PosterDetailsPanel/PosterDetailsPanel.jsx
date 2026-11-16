@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import styles from './PosterDetailsPanel.module.scss'
 import { RevealText } from '../../../../../components/RevealText/RevealText.jsx'
-import { RevealRow } from '../../../../../components/RevealRow/RevealRow.jsx'
 import { SelectPanel } from '../SelectPanel/SelectPanel.jsx'
+import { FormField, formFieldStyles as field } from '../form-field/FormField.jsx'
 
-// Add a Poster (fields, limits and copy follow the reference form).
+// Add a Poster (fields and limits follow the reference form; layout and copy
+// the user's 2026-11-17 Add a Poster column reference).
 export const POSTER_ACCEPT = '.jpg,.jpeg,.png,.pdf,.gif,.mp4,image/jpeg,image/png,image/gif,application/pdf,video/mp4'
 export const MAX_SUPPORTING_FILES = 3
 const CONCEPT_MAX = 4000
@@ -24,12 +25,14 @@ const fields = [
 const fileSummary = (files = []) =>
   files.length === 1 ? files[0].name : `${files.length} files: ${files.map(file => file.name).join(', ')}`
 
-// File card: click to browse or drop files on it.
+// File card (2026-11-17 reference): title, optional hint (replaced by the
+// chosen file names) and "Browse"; click to browse or drop files on it.
 function UploadCard({ title, description, files, multiple = false, onFiles }) {
   const [dragging, setDragging] = useState(false)
+  const hint = files?.length ? fileSummary(files) : description
   return (
     <label
-      className={`${styles.uploadCard} ${dragging ? styles.dragging : ''}`}
+      className={`${styles['poster-upload']} ${dragging ? styles['poster-upload--dragging'] : ''}`}
       onDragOver={(event) => { event.preventDefault(); setDragging(true) }}
       onDragLeave={() => setDragging(false)}
       onDrop={(event) => {
@@ -38,10 +41,10 @@ function UploadCard({ title, description, files, multiple = false, onFiles }) {
         onFiles(Array.from(event.dataTransfer?.files || []))
       }}
     >
-      <input className={styles.fileInput} type="file" accept={POSTER_ACCEPT} multiple={multiple} onChange={event => onFiles(Array.from(event.target.files || []))} />
-      <span className={styles.uploadTitle}>{title}</span>
-      <span className={styles.uploadDescription}>{files?.length ? fileSummary(files) : description}</span>
-      <span className={styles.uploadAction}>{dragging ? 'Drop to add' : 'Browse or drop'}</span>
+      <input className={styles['poster-upload__file']} type="file" accept={POSTER_ACCEPT} multiple={multiple} onChange={event => onFiles(Array.from(event.target.files || []))} />
+      <span className={styles['poster-upload__title']}>{title}</span>
+      {hint && <span className={styles['poster-upload__hint']}>{hint}</span>}
+      <span className={styles['poster-upload__action']}>{dragging ? 'Drop to add' : 'Browse'}</span>
     </label>
   )
 }
@@ -49,37 +52,40 @@ function UploadCard({ title, description, files, multiple = false, onFiles }) {
 export function PosterDetailsPanel({ draft = {}, onDraftChange, error }) {
   const concept = draft.concept || ''
   return (
-    <section className={styles.panel} aria-labelledby="add-poster-title">
-      <div className={styles.inner}>
-        <RevealText as="h1" id="add-poster-title">Add a Poster</RevealText>
-        <form className={styles.form} onSubmit={(event) => event.preventDefault()}>
-          {fields.map(field => (
-            <RevealRow as="label" className={styles.field} lineClassName={styles.fieldRule} key={field.label}>
-              {field.select
-                ? <SelectPanel label={field.label} value={draft[field.name] ? String(draft[field.name]) : ''} options={YEARS} triggerClassName={styles.selectField} emptyClassName={styles.selectEmpty} onChange={year => onDraftChange?.({ [field.name]: year })} />
-                : <input aria-label={field.label} placeholder={field.label} maxLength={field.maxLength} value={draft[field.name] || ''} onChange={event => onDraftChange?.({ [field.name]: event.target.value })} />}
-              {field.select && <span className={styles.chevron} aria-hidden="true" />}
-            </RevealRow>
-          ))}
-          <RevealRow as="label" className={`${styles.field} ${styles.fieldArea}`} lineClassName={styles.fieldRule}>
-            <textarea aria-label="Poster Concept" placeholder="Poster Concept" rows={4} maxLength={CONCEPT_MAX} value={concept} onChange={event => onDraftChange?.({ concept: event.target.value })} />
-            <span className={styles.counter} aria-live="polite">{concept.length} / {CONCEPT_MAX}</span>
-          </RevealRow>
-          <div className={styles.uploadDivider} aria-hidden="true" />
-          <UploadCard
-            title="Poster File"
-            description={<>Static: JPG, PNG or PDF under 5 MB.<br />Motion: GIF or MP4 under 20 MB.</>}
-            files={draft.posterFiles}
-            onFiles={files => files.length && onDraftChange?.({ posterFiles: files.slice(0, 1) })}
-          />
-          <UploadCard
-            title="Supporting Assets (Optional)"
-            description={<>Up to 3 files — process shots, details, mockups.<br />Same file types and sizes as above.</>}
-            files={draft.supportingFiles}
-            multiple
-            onFiles={files => files.length && onDraftChange?.({ supportingFiles: files.slice(0, MAX_SUPPORTING_FILES) })}
-          />
-          {error && <p className={styles.error} role="alert">{error}</p>}
+    <section className={styles['poster-panel']} aria-labelledby="add-poster-title">
+      <div className={styles['poster-panel__inner']}>
+        <RevealText as="h1" id="add-poster-title" className={styles['poster-panel__title']}>Add a Poster</RevealText>
+        <form className={styles['poster-panel__form']} onSubmit={(event) => event.preventDefault()}>
+          {fields.map(item => {
+            const value = draft[item.name] ? String(draft[item.name]) : ''
+            return (
+              <FormField label={item.label} filled={Boolean(value)} chevron={item.select} key={item.name}>
+                {item.select
+                  ? <SelectPanel label={item.label} value={value} options={YEARS} triggerClassName={`${field['form-field__control']} ${field['form-field__select']}`} emptyClassName={field['form-field__select--empty']} onChange={year => onDraftChange?.({ [item.name]: year })} />
+                  : <input className={field['form-field__control']} aria-label={item.label} placeholder={item.label} maxLength={item.maxLength} value={value} onChange={event => onDraftChange?.({ [item.name]: event.target.value })} />}
+              </FormField>
+            )
+          })}
+          <FormField label="Poster Concept" filled={Boolean(concept)} className={styles['poster-panel__concept']}>
+            <textarea className={`${field['form-field__control']} ${field['form-field__textarea']}`} aria-label="Poster Concept" placeholder="Poster Concept" maxLength={CONCEPT_MAX} value={concept} onChange={event => onDraftChange?.({ concept: event.target.value })} />
+            {/* Counter only once typing (the reference shows the empty field). */}
+            {concept && <span className={styles['poster-panel__counter']} aria-live="polite">{concept.length} / {CONCEPT_MAX}</span>}
+          </FormField>
+          <div className={styles['poster-panel__uploads']}>
+            <UploadCard
+              title="Poster Files"
+              description={<>Static: JPG, PNG, GIF up to 2000px wide under 4mb.<br />Motion: GIF or MP4 up to 2000px wide under 20mb.</>}
+              files={draft.posterFiles}
+              onFiles={files => files.length && onDraftChange?.({ posterFiles: files.slice(0, 1) })}
+            />
+            <UploadCard
+              title={<>Supporting Assets<br />(Optional)</>}
+              files={draft.supportingFiles}
+              multiple
+              onFiles={files => files.length && onDraftChange?.({ supportingFiles: files.slice(0, MAX_SUPPORTING_FILES) })}
+            />
+          </div>
+          {error && <p className={styles['poster-panel__error']} role="alert">{error}</p>}
         </form>
       </div>
     </section>

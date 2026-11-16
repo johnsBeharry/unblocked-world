@@ -14,9 +14,9 @@ export const introduction = introductionLines.join(' ')
 
 export const sections = [
   { id: 'submission-process', title: 'Submission Process', items: [
-    { text: 'Visit the poster contest page.', href: '#contest-overview' },
+    { text: 'Visit the poster contest page.', href: '/posters' },
     'Read the contest overview.',
-    { text: 'Review the Ownership theme.', href: '#ownership-theme' },
+    { text: 'Review the Ownership theme.', href: '/posters#ownership-theme' },
     'Create one or more original poster responses.',
     'Prepare your poster file or files and any supporting assets.',
     'Open the submit page.',

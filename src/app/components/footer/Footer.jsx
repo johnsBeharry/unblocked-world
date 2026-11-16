@@ -101,6 +101,7 @@ export function Footer({ color = FOOTER_COLORS.home, ctaVariant = "default" }) {
       ? {
           variant: "poster",
           titleLines: ["Read the", "Guidelines (→)"],
+          titleHref: "/guidelines",
           topLabel:
             "Before You Submit. Make sure your work is original, prepared in the correct format, and connected to the current theme.",
           bottomLabel: "",
@@ -108,6 +109,7 @@ export function Footer({ color = FOOTER_COLORS.home, ctaVariant = "default" }) {
       : ctaVariant === "guidelines"
         ? {
             titleLines: ["Submit", "Entry (→)"],
+            titleHref: "/submit",
             showTopLabel: false,
             showBottomLabel: false,
           }
@@ -145,6 +147,9 @@ export function Footer({ color = FOOTER_COLORS.home, ctaVariant = "default" }) {
                 href="/posters"
               >
                 Ownership
+              </a>
+              <a className={styles.text} href="/grants">
+                Grants
               </a>
               <a
                 className={`${styles.text} ${styles.guidelines}`}

@@ -1,0 +1,39 @@
+{
+  "label": "Sec. 02  Our Role",
+  "labelCompact": "Sec. 02 Our Role",
+  "title": [
+    "What we",
+    "actually do"
+  ],
+  "groups": [
+    {
+      "id": "role",
+      "intro": [
+        "We do not award the larger amounts. We help shape the proposal so it matches what the partner looks for.",
+        "Spiral is the primary partner for this track. Other aligned funders can be included when the fit is clear."
+      ],
+      "items": [
+        {
+          "id": "scope",
+          "number": "(01)",
+          "text": "Clarify scope and deliverables"
+        },
+        {
+          "id": "framing",
+          "number": "(02)",
+          "text": "Align language and framing with the partner’s criteria"
+        },
+        {
+          "id": "materials",
+          "number": "(03)",
+          "text": "Prepare the materials they require (proposal text, supporting visuals, timeline)"
+        },
+        {
+          "id": "review",
+          "number": "(04)",
+          "text": "Review drafts before submission"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+// Concentric rings artwork (RingsArtwork.jsx): Open Systems hero and the
+// Culture Grants Open System panel. Geometry comes from the consumer's
+// mockup measurements; colours from the consumer's `--rings-light` /
+// `--rings-dark` (inherited from an ancestor, so no defaults here). Size
+// comes from the consumer's className.
+.rings-artwork {
+  display: block;
+  width: 100%;
+
+  &__ground {
+    fill: var(--rings-dark);
+  }
+
+  &__disc {
+    &--light {
+      fill: var(--rings-light);
+    }
+
+    &--dark {
+      fill: var(--rings-dark);
+    }
+  }
+}

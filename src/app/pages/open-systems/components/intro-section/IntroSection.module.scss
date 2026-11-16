@@ -1,0 +1,98 @@
+// Open Systems "Sec. 01 Intro" content on the shared ProgramGridSection
+// shell (grid, label, title, rule and 20px copy live there). Desktop values
+// follow the 1440 × 1995 mockup (2880 × 3990 @2x): title block 449.5px (rule
+// at 489.5px), the blue ellipse card (690 × 973) in column 1 with the money
+// copy (top) and the brief (bottom) in column 2 and the intelligence copy in
+// column 3, then the support copy and the 690 × 472 pink card over columns
+// 2–3. Mobile follows the 375 × 1931 mockup (750 × 3862 @2x): label, title,
+// rule, blue card, money and intelligence copy, then the pink card, the
+// brief and the support copy (the pink card moves up with `order`), cards
+// scaled 335 / 690, 20px between blocks. No tablet mockup yet.
+.intro {
+  --program-grid-header: #{vw(449.5)};
+
+  &__card {
+    display: grid;
+    place-items: center;
+
+    &--ellipses {
+      grid-area: 3 / 1;
+      background-color: #1739d3;
+
+      @include mobile {
+        grid-area: auto / 1 / auto / -1;
+        height: vw(944);
+      }
+    }
+
+    // Frame for the falling pieces (BalanceArtwork starts them above it).
+    &--balance {
+      grid-area: 4 / 2 / 5 / 4;
+      overflow: clip;
+      background-color: #f4a8c0;
+
+      // Mobile: right after the intelligence copy, 20.5px below it.
+      @include mobile {
+        grid-area: auto / 1 / auto / -1;
+        height: vw(458.3);
+        margin-top: vw(41);
+      }
+    }
+  }
+
+  // Mobile placement lives in each modifier: a shared mobile grid-area here
+  // would lose to the later desktop grid-area of the modifier.
+  &__copy {
+    align-self: start;
+
+    @include mobile {
+      margin-top: vw(39.6);
+    }
+
+    &--money {
+      grid-area: 3 / 2;
+
+      @include mobile {
+        grid-area: auto / 1 / auto / -1;
+      }
+    }
+
+    // Mockup text box: "… changes or shuts" (325.5px ink) fits, line 2
+    // plus "Open" (334.5px) does not — on mobile too (same seven lines).
+    &--intelligence {
+      grid-area: 3 / 3;
+      max-width: vw(330);
+
+      @include mobile {
+        grid-area: auto / 1 / auto / -1;
+        max-width: vw(660);
+      }
+    }
+
+    // Shares the money cell: its last line ends on the card bottom. Mobile:
+    // after the pink card (order), 20px below it.
+    &--brief {
+      grid-area: 3 / 2;
+      align-self: end;
+
+      @include mobile {
+        grid-area: auto / 1 / auto / -1;
+        order: 1;
+      }
+    }
+
+    // Mockup text box: line 2 ("process … and", 332px) fits, line 1 plus
+    // "process" does not.
+    &--support {
+      grid-area: 4 / 1;
+      max-width: vw(335);
+
+      // Last on mobile, after the brief.
+      @include mobile {
+        grid-area: auto / 1 / auto / -1;
+        order: 1;
+        max-width: none;
+      }
+    }
+  }
+}

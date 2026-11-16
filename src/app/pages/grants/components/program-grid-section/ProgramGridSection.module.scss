@@ -1,0 +1,102 @@
+// Shared section shell of the grant program pages (ProgramGridSection.jsx).
+// Desktop values follow the Culture Grants Makers mockup (1440 × 1906 @2x),
+// which the Open Systems "Sec. 01 Intro" mockup (1440 × 1995 @2x) repeats:
+// three columns (690 / 335 / 335, 20px gutters), label + title in row 1, a
+// 1px rule in row 2, a 973px card row and a 472px card row. Consumers set
+// the row-1 height (`--program-grid-header`, the title block differs) and
+// the bottom padding (`--program-grid-padding-bottom`, desktop, and
+// `--program-grid-padding-bottom-mobile`) on className, and place their
+// cards/copy with their own grid-area rules. Copy inherits the 20px text
+// style from the root. Mobile follows the Makers 375 × 1423 mockup: two
+// equal columns, rows size to content. No tablet mockup yet.
+.program-grid {
+  --program-grid-bg: #cacaca;
+  --program-grid-ink: #101010;
+
+  display: grid;
+  grid-template-columns: vw(690) vw(335) vw(335);
+  grid-template-rows: var(--program-grid-header, auto) auto vw(973) vw(472);
+  column-gap: vw(20);
+  row-gap: vw(20);
+  padding: vw(20) vw(20) var(--program-grid-padding-bottom, #{vw(20)});
+  background-color: var(--program-grid-bg);
+  color: var(--program-grid-ink);
+  font-weight: 500;
+  font-size: vw(20);
+  line-height: 100%;
+  letter-spacing: -4%;
+
+  // Two equal columns; rows size to content, spacing comes from margins.
+  @include mobile {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: none;
+    column-gap: vw(40);
+    row-gap: 0;
+    padding: vw(40) vw(40) var(--program-grid-padding-bottom-mobile, #{vw(200)});
+    font-size: vw(40);
+  }
+
+  &__label {
+    --section-label-bg: var(--program-grid-ink);
+    --section-label-ink: var(--program-grid-bg);
+    --section-label-height: #{vw(28)};
+    --section-label-height-mobile: #{vw(56)};
+    --section-label-padding: 0 #{vw(6)} 0 #{vw(4)};
+    --section-label-padding-mobile: 0 #{vw(12)} 0 #{vw(8)};
+
+    grid-area: 1 / 1;
+    justify-self: start;
+    align-self: start;
+
+    @include mobile {
+      grid-area: auto / 1 / auto / -1;
+    }
+
+    &--wide {
+      @include mobile {
+        display: none;
+      }
+    }
+
+    &--compact {
+      display: none;
+
+      @include mobile {
+        display: block;
+      }
+    }
+  }
+
+  &__title {
+    grid-area: 1 / 2 / 2 / 4;
+    font-weight: 600;
+    font-size: vw(100);
+    line-height: 90%;
+    letter-spacing: -6%;
+
+    // Line top 88px (40px under the label).
+    @include mobile {
+      grid-area: auto / 1 / auto / -1;
+      margin-top: vw(82);
+      font-size: vw(80);
+      line-height: 102%;
+      letter-spacing: -4%;
+    }
+  }
+
+  // Rule row (1px line): the -0.5px margin makes the row 0.5px tall, so the
+  // first card starts 20.5px below the rule top like the mockups.
+  &__rule {
+    grid-area: 2 / 1 / 3 / 4;
+    height: 1px;
+    margin-bottom: vw(-0.5);
+    background-color: currentColor;
+    transform-origin: left center;
+
+    // 99.5px under the title, 19.5px above the first card.
+    @include mobile {
+      grid-area: auto / 1 / auto / -1;
+      margin: vw(197.6) 0 vw(39);
+    }
+  }
+}

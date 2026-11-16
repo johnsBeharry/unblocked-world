@@ -1,0 +1,128 @@
+// Amount section of the grant program pages (FundingSection.jsx). Desktop
+// values follow the Culture Grants 1440 × 800 mockup (2880 × 1600 @2x): a
+// full-width "$500 – $5k ■" marquee, a 1px rule inset 20px, and the centred
+// payment note. The Open Systems "$100,000 ■" mockup (also 1440 × 800)
+// shares the marquee spacing (958px period) and differs only in the note:
+// pages set `--funding-note-width` / `--funding-note-top` on className
+// (desktop only; fallbacks below are the Culture Grants values, declared in
+// var() so they never race the consumer rule).
+// Mobile follows the 375 × 668 mockup (750 × 1336 @2x): one screen, the
+// same layout at 40px (line top 20.5px, rule at 75.5px, note at 293.3px).
+// No tablet mockup yet.
+.funding {
+  --funding-bg: #d9d9d9;
+  --funding-ink: #101010;
+
+  height: vw(800);
+  padding-top: vw(21);
+  box-sizing: border-box;
+  overflow: clip;
+  background-color: var(--funding-bg);
+  color: var(--funding-ink);
+
+  @include mobile {
+    height: vw(1336);
+    padding-top: vw(41);
+  }
+
+  &__amount-row {
+    padding-bottom: vw(19.5);
+
+    @include mobile {
+      padding-bottom: vw(38);
+    }
+  }
+
+  // Mockup rule: 1px, 20px from both edges, 19.5px below the marquee line box.
+  &__rule {
+    top: auto;
+    bottom: 0;
+    left: vw(20);
+    width: calc(100% - #{vw(40)});
+
+    @include mobile {
+      left: vw(40);
+      width: calc(100% - #{vw(80)});
+    }
+  }
+
+  // Track moved by useScrollMarquee (direction follows the scroll).
+  &__marquee {
+    overflow: clip;
+    font-weight: 600;
+    font-size: vw(164);
+    line-height: 90%;
+    letter-spacing: -6%;
+
+    @include mobile {
+      font-size: vw(80);
+    }
+  }
+
+  &__track {
+    display: flex;
+    width: max-content;
+    will-change: transform;
+  }
+
+  // Trailing padding equals the item gap so the seam between the two groups
+  // has the same spacing as the items (mockup period 1063px per amount).
+  &__group {
+    display: flex;
+    flex: none;
+    gap: vw(67.5);
+    padding-right: vw(67.5);
+
+    @include mobile {
+      gap: vw(33);
+      padding-right: vw(33);
+    }
+  }
+
+  // Square: the cap height (119px at 164px = 0.726em, so it follows the type
+  // size), sitting on the baseline like the digits.
+  &__amount {
+    display: flex;
+    align-items: baseline;
+    gap: vw(79);
+    white-space: nowrap;
+
+    @include mobile {
+      gap: vw(36);
+    }
+
+    &::after {
+      flex: none;
+      width: 0.726em;
+      height: 0.726em;
+      background-color: currentColor;
+      content: "";
+    }
+  }
+
+  // The mockup dash is centred on the cap height (Inter's case-sensitive
+  // dash). The bundled Inter subset has no `case` feature, so the dash is
+  // raised by the measured difference: 10px at 164px = 0.061em.
+  &__dash {
+    position: relative;
+    top: -0.061em;
+  }
+
+  &__note {
+    max-width: var(--funding-note-width, #{vw(440)});
+    margin: var(--funding-note-top, #{vw(233)}) auto 0;
+    font-weight: 500;
+    font-size: vw(20);
+    line-height: 100%;
+    letter-spacing: -4%;
+    text-align: center;
+
+    // Centred in the 335px column; line top 216.8px under the rule.
+    @include mobile {
+      max-width: none;
+      margin-top: vw(435.6);
+      padding: 0 vw(40);
+      font-size: vw(40);
+    }
+  }
+}

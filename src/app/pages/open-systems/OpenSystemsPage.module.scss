@@ -1,0 +1,59 @@
+// Open Systems sub page of /grants (/grants/open-systems), desktop mockup
+// 1440 wide (2880 × 21316 @2x). Sections have desktop (1440 base) and
+// mobile values only, like Culture Grants: the global tablet-portrait rule
+// switches --base-size to 864px, which would scale every desktop value by
+// 1440 / 864, so the sections wrapper restores the 1440 base there. The
+// shared Footer stays outside it (it has its own 864-based tablet layout).
+.open-systems-page {
+  position: relative;
+  min-height: 100%;
+  background: #101010;
+
+  &__sections {
+    @include tablet-portrait {
+      --base-size: 1440px;
+    }
+  }
+
+  // Shared ProgramHero + RingsArtwork colours (mockup: pink intro, dark
+  // ink, pink rings on #101010).
+  &__hero {
+    --program-hero-bg: #f546a4;
+    --program-hero-ink: #101010;
+    --rings-light: #f546a4;
+    --rings-dark: #101010;
+  }
+
+  // Shared FundingSection note (mockup: 6 lines from 393px; the widest line,
+  // "specialized support than a one-time cultural grant.", needs 446px).
+  &__funding {
+    --funding-note-width: #{vw(446)};
+    --funding-note-top: #{vw(203)};
+  }
+
+  // Shared ProgramStepsSection (mockup: two-line title, so the first step
+  // rule sits at 403.5px; Apply Now 118px under the last step row).
+  &__process {
+    --program-steps-title-height: #{vw(383.5)};
+    --program-steps-apply-gap: #{vw(118)};
+  }
+
+  // Shared ProgramCrossLinkSection + SliceArtwork colours (mockup: blue copy
+  // half, light ink, blue slices on black).
+  &__cross-link {
+    --cross-link-bg: #2449ed;
+    --cross-link-ink: #d9d9d9;
+    --slice-artwork-ground: #000000;
+    --slice-artwork-shape: #2449ed;
+    // Mockup title pitch 83px (cap tops 52.5 / 135.5) and description line
+    // box top at 302.5px.
+    --cross-link-title-top: #{vw(48)};
+    --cross-link-title-leading: #{vw(83)};
+    --cross-link-description-gap: #{vw(90)};
+  }
+
+  // 1440 × 854 at full width.
+  &__hero-art {
+    height: auto;
+  }
+}

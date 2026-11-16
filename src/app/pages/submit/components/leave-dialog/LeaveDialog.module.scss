@@ -1,0 +1,19 @@
+// "Leave for now?" popup (LeaveDialog.jsx) on the shared ConfirmDialog.
+// Desktop values follow the user's 2026-11-17 reference (1440 × 918 @1x,
+// `.visual-qa/submit-leave-20261117/reference.png`): a smaller 464 × 280
+// panel (top 319), 40px content inset, a 20px semibold title, message 360px
+// wide (breaks after "Come back") and "Save & Leave".
+.leave-dialog {
+  --confirm-dialog-width: #{vw(464)};
+  --confirm-dialog-height: #{vw(280)};
+  --confirm-dialog-offset: #{vw(140)};
+  --confirm-dialog-inset: #{vw(40)};
+  --confirm-dialog-title-size: #{vw(20)};
+  --confirm-dialog-title-size-mobile: #{vw(40)};
+  // The small title is set slightly looser than the 40px ones (-3.2%).
+  --confirm-dialog-title-tracking: -0.032em;
+  --confirm-dialog-title-gap: #{vw(27.6)};
+  --confirm-dialog-message-gap: #{vw(31.9)};
+  --confirm-dialog-message-width: #{vw(360)};
+  --confirm-dialog-action-gap: #{vw(31.8)};
+}

@@ -1,0 +1,133 @@
+// Open Systems "Sec. 02 Guidelines". Desktop values follow the 1440 × 2158
+// mockup (2880 × 4316 @2x): grey 28px section tag, the 305px "Example
+// Directions" title centred in grey, a centred stack of touching 52px
+// direction tags (the bright one is the scroll-active tag, the others are
+// the same pink at 50% over the ground; while scrolling, the tags turn on
+// a drum around the active position and darken with distance), and the
+// centred note. Mobile follows the 375 × 916 mockup (750 × 1832 @2x): the
+// same layout at 76px title / half-size tags (20px text, 26px rows), a full
+// width note, and the plain list (no drum: first tag bright, the others at
+// 50%). No tablet mockup yet.
+.directions {
+  --directions-ground: #101010;
+  --directions-title-ink: #343434;
+  --directions-pink: #f546a4;
+  --directions-note-ink: #d9d9d9;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: vw(2158);
+  padding: vw(20) vw(20) 0;
+  box-sizing: border-box;
+  background-color: var(--directions-ground);
+
+  @include mobile {
+    min-height: vw(1832);
+    padding: vw(40) vw(40) 0;
+  }
+
+  // Grey 28px tag, text 4px from the left and 6px from the right (as the
+  // Culture Grants tags).
+  &__label {
+    --section-label-height: #{vw(28)};
+    --section-label-height-mobile: #{vw(56)};
+    --section-label-padding: 0 #{vw(6)} 0 #{vw(4)};
+    --section-label-padding-mobile: 0 #{vw(12)} 0 #{vw(8)};
+
+    align-self: flex-start;
+  }
+
+  // Cap height 222px (305 × 0.727), cap-to-cap pitch 275px (90%), cap top
+  // 270px. Centred lines keep Chromium's trailing -6% tracking, which
+  // pushed the ink 10.25–10.5px right of the mockup; a right padding of
+  // twice that (0.068em) centres it again.
+  &__title {
+    margin-top: vw(197);
+    padding-right: 0.068em;
+    color: var(--directions-title-ink);
+    font-weight: 600;
+    font-size: vw(305);
+    line-height: 90%;
+    letter-spacing: -6%;
+    text-align: center;
+
+    // 76px (cap top 94px, baselines 149.5 / 218.5).
+    @include mobile {
+      margin-top: vw(78);
+      font-size: vw(152);
+    }
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: vw(104) 0 0;
+    padding: 0;
+    list-style: none;
+    // Drum depth for the scroll track (origin set on the active tag in JS).
+    perspective: vw(900);
+
+    // First tag at 266px; every mobile tag sits 1.5px right of centre in
+    // the mockup (3px left padding moves the centred stack by half).
+    @include mobile {
+      margin-top: vw(84);
+      padding-left: vw(6);
+    }
+  }
+
+  // Touching 52px tags; mockup ink 19px from the left and 18px from the
+  // right edge: the right padding adds the 2.4px trailing tracking (-6% of
+  // 40px) Chromium keeps after the last glyph. Text sits 1px lower than a
+  // centred 52px line (1px top padding + 51px line). The mobile mockup is
+  // exactly half that (26px rows, 20px text), which these vw() values give
+  // on the 750 mobile base, so there is no mobile block.
+  &__tag {
+    padding: vw(1) vw(19) 0 vw(16.5);
+    background-color: rgb(245 70 164 / 50%);
+    color: var(--directions-ground);
+    font-weight: 600;
+    font-size: vw(40);
+    line-height: vw(51);
+    letter-spacing: -6%;
+
+    // Mobile text 5px below the row top (mockup): 1px top padding + 25px
+    // line keeps the 26px row.
+    @include mobile {
+      padding-top: vw(2);
+      line-height: vw(50);
+    }
+
+    // Static state (first paint, reduced motion): the mockup, first tag
+    // bright. The scroll track then writes colour and scale per tag.
+    &[data-active] {
+      background-color: var(--directions-pink);
+    }
+  }
+
+  // Every mockup line sits 0.5px right of a centred 440px box; the 1px
+  // left padding moves the centre by that half pixel. Explicit width: in
+  // the centred flex column the paragraph would otherwise size to
+  // RevealText's nowrap lines (it overflowed the mobile page).
+  &__note {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: vw(440);
+    margin-top: vw(100);
+    padding-left: vw(1);
+    color: var(--directions-note-ink);
+    font-weight: 500;
+    font-size: vw(20);
+    line-height: 100%;
+    letter-spacing: -4%;
+    text-align: center;
+
+    // Full width, line top 40px under the list.
+    @include mobile {
+      max-width: none;
+      margin-top: vw(80);
+      font-size: vw(40);
+    }
+  }
+}

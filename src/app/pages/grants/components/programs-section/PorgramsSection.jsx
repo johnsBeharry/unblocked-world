@@ -83,8 +83,8 @@ export function ProgramsSections() {
               limited-edition book.
             </RevealText>
             <div className={styles.cta}>
-              <RevealText as="a">
-                <a href="#">(→)</a>
+              <RevealText as="a" href="/grants/open-systems">
+                (→)
               </RevealText>
             </div>
           </div>

@@ -3,37 +3,29 @@ import styles from './ConsentPanel.module.scss'
 import { RevealText } from '../../../../../components/RevealText/RevealText.jsx'
 import { CheckboxRow } from '../CheckboxRow/CheckboxRow.jsx'
 
-// Submit step (copy follows the reference form): pick the posters to send,
-// then accept the three required confirmations.
+// Consent step (user reference 2026-11-17): the three required
+// confirmations. Every in-progress poster is sent (SubmitPage ticks them all
+// when entering the step); the reference has no poster picker.
 export const CONSENTS = [
-  { name: 'original', label: 'The submitted work is original and I hold the rights to it, or have permission from everyone who does.' },
-  { name: 'publicity', label: 'UNBLOCKED may show my submitted work publicly in connection with the contest, with credit to me.' },
-  { name: 'rules', label: 'I have read the contest rules and eligibility.' },
+  { name: 'original', label: 'I confirm this is original work and I have the right to submit it.' },
+  { name: 'terms', label: 'I accept the submission terms.' },
+  { name: 'privacy', label: 'I accept the privacy policy.' },
 ]
 
-export function ConsentPanel({ entries = [], picked = {}, onPickChange, value = {}, onChange, error }) {
+export function ConsentPanel({ value = {}, onChange, error }) {
   return (
-    <section className={styles.panel} aria-labelledby="consent-title">
-      <div className={styles.inner}>
-        <RevealText as="h1" id="consent-title">Submit</RevealText>
-        <RevealText as="p" className={styles.intro}>Choose the posters to send to the jury, then confirm the terms. You can come back and submit more later.</RevealText>
-        {entries.length > 0 && (
-          <div className={styles.list} role="group" aria-label="Posters to submit">
-            {entries.map(entry => (
-              <CheckboxRow key={entry.id} checked={Boolean(picked[entry.id])} onChange={checked => onPickChange?.({ [entry.id]: checked })}>
-                {entry.title}
-              </CheckboxRow>
-            ))}
-          </div>
-        )}
-        <div className={styles.list} role="group" aria-label="Submission terms">
+    <section className={styles['consent-panel']} aria-labelledby="consent-title">
+      <div className={styles['consent-panel__inner']}>
+        <RevealText as="h1" id="consent-title" className={styles['consent-panel__title']}>Consent</RevealText>
+        <RevealText as="p" className={styles['consent-panel__lede']}>Confirm that your submission complies with the programme guidelines.</RevealText>
+        <div className={styles['consent-panel__list']} role="group" aria-label="Submission terms">
           {CONSENTS.map(consent => (
-            <CheckboxRow key={consent.name} required checked={Boolean(value[consent.name])} onChange={checked => onChange?.({ [consent.name]: checked })}>
+            <CheckboxRow key={consent.name} className={styles['consent-panel__row']} required checked={Boolean(value[consent.name])} onChange={checked => onChange?.({ [consent.name]: checked })}>
               {consent.label}
             </CheckboxRow>
           ))}
         </div>
-        {error && <p className={styles.error} role="alert">{error}</p>}
+        {error && <p className={styles['consent-panel__error']} role="alert">{error}</p>}
       </div>
     </section>
   )

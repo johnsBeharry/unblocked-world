@@ -14,4 +14,19 @@
       --base-size: 1440px;
     }
   }
+
+  // Shared ProgramHero colours (Culture Grants mockup: blue, light ink).
+  &__hero {
+    --program-hero-bg: #2449ed;
+    --program-hero-ink: #d9d9d9;
+  }
+
+  // Shared ProgramCrossLinkSection + RingsArtwork colours (Open System
+  // mockup: pink copy half, dark ink, pink rings on black).
+  &__cross-link {
+    --cross-link-bg: #f546a4;
+    --cross-link-ink: #101010;
+    --rings-light: #f546a4;
+    --rings-dark: #000000;
+  }
 }

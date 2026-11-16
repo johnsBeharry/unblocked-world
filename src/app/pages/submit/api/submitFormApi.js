@@ -46,6 +46,13 @@ export function requestEmailCode(email, profile, termsVersion, photo) {
   return request('POST', '/codes', payload)
 }
 export function verifyEmailCode(email, code) { return request('POST', '/session', { email, code }) }
+// Signed-in session: the profile (GET /me, 401 when signed out), sign out,
+// and the profile photo (served at PROFILE_PHOTO_URL).
+export function getProfile() { return request('GET', '/me') }
+export function signOut() { return request('DELETE', '/session') }
+export function uploadProfilePhoto(blob) { return upload('PUT', '/me/photo', new File([blob], 'photo.jpg', { type: blob.type || 'image/jpeg' })) }
+export function deleteProfilePhoto() { return request('DELETE', '/me/photo') }
+export const PROFILE_PHOTO_URL = `${FORM_API}/me/photo`
 export function updateProfile(profile, termsVersion) {
   return request('PATCH', '/me', {
     name: profile.name,
@@ -61,6 +68,13 @@ export function updateEntry(id, fields, version) {
 }
 export function uploadPoster(id, file) { return upload('PUT', `/entries/${encodeURIComponent(id)}/file`, file) }
 export function uploadAsset(id, file) { return upload('POST', `/entries/${encodeURIComponent(id)}/assets`, file) }
+// Entries of the signed-in artist ({ entries: [{ id, status, version, fields,
+// file, submittedAt, withdrawnAt, … }] }), withdraw / restore, and the
+// poster file (thumbnail) URL.
+export function listEntries() { return request('GET', '/entries') }
+export function withdrawEntry(id, reason = '') { return request('POST', `/entries/${encodeURIComponent(id)}/withdraw`, { reason }) }
+export function restoreEntry(id) { return request('POST', `/entries/${encodeURIComponent(id)}/restore`) }
+export const entryFileUrl = (id) => `${FORM_API}/entries/${encodeURIComponent(id)}/file`
 export function deleteEntry(id) { return request('DELETE', `/entries/${encodeURIComponent(id)}`) }
 export function submitEntries(entryIds, consentVersion) {
   return request('POST', '/submit', { entryIds, consentVersion })

@@ -7,7 +7,8 @@
   z-index: 3;
   display: flex;
   justify-content: space-between;
-  padding: 0 vw(22) 0 vw(19);
+  // References: "(←)" ink at 22px, "Continue (→)" ink ends 22px from the right.
+  padding: 0 vw(21) 0 vw(20);
   color: #dc91a8;
   font-family: 'Inter Local', sans-serif;
 }
@@ -28,13 +29,21 @@
 .labelMobile { display: none; }
 
 @include mobile {
+  // Mobile footer (user reference 2026-11-17: 84px layer pinned to the
+  // bottom): a black fade behind the links so scrolled content never runs
+  // under them (Add a Poster has no column fade on mobile). Links stay 24px
+  // above the bottom edge.
   .nav {
     position: fixed;
     right: 0;
-    bottom: vw(48);
+    bottom: 0;
     left: 0;
     z-index: 2;
-    padding: 0 vw(40);
+    box-sizing: border-box;
+    height: vw(168);
+    align-items: flex-end;
+    padding: 0 vw(40) vw(48);
+    background: linear-gradient(180deg, rgb(0 0 0 / 0) 0%, #000 30.26%);
   }
 
   .link {

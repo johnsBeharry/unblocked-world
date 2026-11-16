@@ -1,0 +1,159 @@
+// Shared ruled field of the Submit forms (Join, Add a Poster), FormField.jsx.
+// Values from the user's 2026-11-17 Join column reference (1440): 72px rows
+// with a 1px rule, 20px controls (form controls do not inherit the body size),
+// a 14px label above a filled value. Taller rows set `--form-field-height`
+// (`-mobile`) and textareas `--form-field-textarea-height` (`-mobile`) on
+// their className (also `--form-field-muted` for placeholder / rule colour
+// and `--form-field-control-top` for the empty control line): custom properties, so the consumer never races this
+// module's stylesheet order. Mobile doubles the values in 750 units.
+// One ruled form row. Transparent border keeps the geometry; RevealRow draws
+// the visible rule with the label. Empty: the 20px placeholder line sits 38px
+// below the row top (cap 28.5px above the rule); filled: a 14px label 19px
+// below the top and the value 6.2px under it.
+.form-field {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  height: var(--form-field-height, vw(72));
+  border-bottom: vw(1) solid transparent;
+  color: var(--form-field-ink, #dc91a8);
+
+  @include mobile {
+    height: var(--form-field-height-mobile, vw(144));
+    border-bottom-width: vw(2);
+  }
+
+  &__content {
+    display: grid;
+    align-content: start;
+  }
+
+  &__rule {
+    top: auto;
+    bottom: vw(-1);
+    border-top-width: vw(1);
+    color: var(--form-field-muted, rgb(220 145 168 / 0.4));
+
+    @include mobile {
+      bottom: vw(-2);
+      border-top-width: vw(2);
+    }
+  }
+
+  &__label {
+    color: var(--form-field-muted, rgb(220 145 168 / 0.4));
+    font-size: vw(14);
+    letter-spacing: vw(-0.56);
+    line-height: 1.02;
+
+    @include mobile {
+      font-size: vw(28);
+      letter-spacing: vw(-1.12);
+    }
+  }
+
+  &__control {
+    width: 100%;
+    margin-top: var(--form-field-control-top, vw(38));
+    border: 0;
+    outline: 0;
+    padding: 0;
+    background: transparent;
+    color: var(--form-field-ink, #dc91a8);
+    font: inherit;
+    font-size: vw(20);
+    letter-spacing: vw(-0.8);
+    line-height: 1.02;
+
+    @include mobile {
+      margin-top: vw(76);
+      font-size: vw(40);
+      letter-spacing: vw(-1.6);
+    }
+
+    &::placeholder {
+      color: var(--form-field-muted, rgb(220 145 168 / 0.4));
+      opacity: 1;
+    }
+
+    &:disabled {
+      opacity: 0.6;
+    }
+  }
+
+  // Dropdown trigger (SelectPanel button): the button draws its text 2px
+  // higher than an input, so its line starts 2px lower.
+  &__select {
+    margin-top: vw(40);
+    appearance: none;
+    cursor: pointer;
+    text-align: left;
+
+    @include mobile {
+      margin-top: vw(80);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+
+    &--empty {
+      color: var(--form-field-muted, rgb(220 145 168 / 0.4));
+    }
+  }
+
+  &__textarea {
+    display: block;
+    height: var(--form-field-textarea-height, vw(130));
+    resize: none;
+
+    @include mobile {
+      height: var(--form-field-textarea-height-mobile, vw(260));
+    }
+  }
+
+  // 9 × 5.5px "v", centred at x 625 (10px from the column edge).
+  &__chevron {
+    position: absolute;
+    right: vw(7);
+    bottom: vw(19);
+    width: vw(6.4);
+    height: vw(6.4);
+    border-right: vw(1.5) solid var(--form-field-ink, #dc91a8);
+    border-bottom: vw(1.5) solid var(--form-field-ink, #dc91a8);
+    transform: rotate(45deg);
+
+    @include mobile {
+      right: vw(16);
+      bottom: vw(44);
+      width: vw(16);
+      height: vw(16);
+      border-right-width: vw(3);
+      border-bottom-width: vw(3);
+    }
+  }
+
+  &--filled &__label {
+    margin-top: vw(19);
+
+    @include mobile {
+      margin-top: vw(38);
+    }
+  }
+
+  &--filled &__control {
+    margin-top: vw(6.2);
+
+    @include mobile {
+      margin-top: vw(12.4);
+    }
+  }
+
+  &--filled &__select {
+    margin-top: vw(8.2);
+
+    @include mobile {
+      margin-top: vw(16.4);
+    }
+  }
+}

@@ -1,0 +1,93 @@
+// Shared hero of the grant program pages (ProgramHero.jsx). Desktop values
+// follow the Culture Grants 1440 × 1499 mockup (2880 × 2998 @2x), which the
+// Open Systems mockup (2880 × 21316 @2x, hero 0–1499) repeats: a 645px intro
+// (title lines, summary, Apply Now) above a full-width artwork (1440 × 854).
+// Mobile follows the Culture Grants 375 × 668 mockup (750 × 1336 @2x): a
+// 446px intro (title, summary 38px below it, Apply Now at the bottom) above
+// the full-width artwork. No tablet mockup yet; no Open Systems mobile mockup.
+// Colours come from the consumer (`--program-hero-bg`, `--program-hero-ink`
+// on its className): declaring defaults here would race the consumer rule
+// in stylesheet order.
+.program-hero {
+  position: relative;
+  width: 100%;
+  overflow: clip;
+  background-color: var(--program-hero-bg);
+  color: var(--program-hero-ink);
+
+  &__intro {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: vw(645);
+    // 79px (not the 80px line top): with the whole-px 112px pitch below,
+    // Chromium's rounded baselines then land on every mockup line.
+    padding: vw(79) vw(20) vw(20);
+    box-sizing: border-box;
+
+    // Title line top 61px (cap top 65.5px); the footer fills the rest of the 446px intro.
+    @include mobile {
+      height: vw(892);
+      padding: vw(122) vw(40) vw(40);
+    }
+  }
+
+  &__title {
+    font-weight: 600;
+    font-size: vw(124);
+    // Mockup line pitch is 112px (Figma rounds 90% × 124 = 111.6): with
+    // 111.6 the third Open Systems line sat 1 device px high.
+    line-height: vw(112);
+    letter-spacing: -6%;
+
+    @include mobile {
+      font-size: vw(80);
+      line-height: 102%;
+      letter-spacing: -4%;
+    }
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    // Summary 38px under the title, Apply Now at the intro bottom.
+    @include mobile {
+      flex: 1;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-top: vw(78);
+    }
+  }
+
+  // Mockup text box: line 1 ("… for", 363px) still fits, line 3 plus
+  // "and" (371px) no longer fits.
+  &__summary {
+    max-width: vw(366);
+    font-weight: 500;
+    font-size: vw(20);
+    line-height: 100%;
+    letter-spacing: -4%;
+
+    // Full column width: in the start-aligned flex column the paragraph
+    // would otherwise size to RevealText's nowrap lines and overflow.
+    @include mobile {
+      width: 100%;
+      max-width: none;
+      font-size: vw(40);
+    }
+  }
+
+  // ApplyLink (typography/underline) sits 20px above the intro bottom; on
+  // mobile the intro's own 20px bottom padding already places it. The
+  // mockups draw the underline 0.5px lower; Chromium snaps a rule at 604.5
+  // to 605 (overshoots), so the 1 device px residue is kept.
+  &__apply {
+    margin-bottom: vw(20);
+
+    @include mobile {
+      margin-bottom: 0;
+    }
+  }
+}

@@ -25,11 +25,10 @@
 .contentInner li { padding-left: vw(1); }
 .contentInner ul { margin-top: vw(21) !important; padding-left: vw(30); list-style: disc; font-size: vw(16); letter-spacing: vw(-0.70); line-height: 1.62; }
 .submitLink { position: fixed; z-index: 2; bottom: vw(24); left: 70%; display: block; width: max-content; margin: 0; border: 0; padding: 0; transform: translateX(-50%); background: transparent; color: inherit; cursor: pointer; font: inherit; letter-spacing: vw(-0.8); line-height: 1.02; text-decoration: none; }
-.editorActions { position: absolute; top: vw(24); right: vw(24); left: vw(24); z-index: 3; display: flex; justify-content: space-between; color: #dc91a8; }
-.editorActions button { border: 0; padding: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; letter-spacing: vw(-0.8); line-height: 1.02; }
-.editorActions button:disabled { cursor: wait; opacity: 0.5; }
-.editorStatus { position: absolute; top: vw(28); left: 50%; transform: translateX(-50%); color: inherit; font-size: vw(14); white-space: nowrap; }
 .editing .identity .homeLink { display: none; }
+.editorBar { display: none; }
+// Thank-you screen: no bottom fade (reference); its content ends well above.
+.success .content::after { display: none; }
 
 @include tablet-portrait {
   .page { display: block; min-height: 100vh; }
@@ -44,18 +43,26 @@
   .contentInner ul li { padding-left: vw(-0.5); }
   .contentInner ol + h3 { margin-top: vw(48) !important; }
   .contentInner ul + .submitLink { left: 50%; bottom: vw(24); }
+  // Manage Poster "Submit Poster (→)" (account screens): centred like overview.
+  .account .submitLink { left: 50%; }
 }
 
 @include mobile {
   .page { display: block; min-height: 100vh; }
   .identity { display: block; position: static; min-height: 0; overflow: visible; background: transparent; color: #dc91a8; }
   .identity .artwork, .identity h1 { display: none; }
-  .identity .homeLink { top: vw(40); left: vw(40); font-size: vw(40); letter-spacing: vw(-1.6); }
+  // Mobile header (2026-11-17 mockups): "(←) Home" cap 20.5px from the top.
+  .identity .homeLink { top: vw(37); left: vw(40); font-size: vw(40); letter-spacing: vw(-1.6); }
   .content { width: 100%; height: 100vh; min-height: 100vh; }
   .content::after { position: fixed; right: 0; left: 0; width: auto; height: vw(169); transform: none; }
+  // Header fade (user request 2026-11-17): mirrors the 84px footer layer so
+  // scrolled content never runs under "(←) Home" / the step label (they sit
+  // above it, z-index 2+).
+  .content::before { position: fixed; z-index: 1; top: 0; right: 0; left: 0; height: vw(168); pointer-events: none; content: ''; background: linear-gradient(0deg, rgb(0 0 0 / 0) 0%, #000 30.26%); }
   .editing .content::after { display: none; }
   .success .content::after { display: none; }
-  .success .homeLink { top: vw(37); }
+  // Profile: the account nav (Profile / Poster / Sign out) takes the top row.
+  .account .homeLink { display: none; }
   .contentInner { width: vw(660); margin-left: vw(40); padding-top: vw(206); padding-bottom: vw(260); }
   .titleDesktop { display: none; }
   .titleMobile { display: inline; }
@@ -68,8 +75,14 @@
   .contentInner ul { margin-top: vw(42) !important; padding-left: vw(60); font-size: vw(32); letter-spacing: vw(-1.28); }
   .contentInner ul li { padding-left: vw(2); }
   .contentInner ol + h3 { margin-top: vw(96) !important; }
-  .contentInner ul + .submitLink { bottom: vw(48); font-size: vw(40); letter-spacing: vw(-1.6); white-space: nowrap; }
-  .editing .editorActions { position: fixed; top: vw(40); right: vw(43); left: vw(40); z-index: 4; }
-  .editing .editorActions button { font-size: vw(40); letter-spacing: vw(-1.6); }
+  // Centred like the mockup (the desktop rule puts it at 70%).
+  .contentInner ul + .submitLink { left: 50%; bottom: vw(48); font-size: vw(40); letter-spacing: vw(-1.6); white-space: nowrap; }
+  .account .submitLink { left: 50%; bottom: vw(48); font-size: vw(40); letter-spacing: vw(-1.6); white-space: nowrap; }
   .editing .progressBar { width: vw(264); }
+  // Add a Poster on mobile: "Cancel" / "Save" header instead of the step
+  // list and footer nav (mockup).
+  .editorBar { position: fixed; z-index: 3; top: vw(40); right: vw(43); left: vw(40); display: flex; justify-content: space-between; color: #dc91a8; }
+  .editorBar button { border: 0; padding: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; font-size: vw(40); letter-spacing: vw(-1.6); line-height: 1; }
+  .editorBar button:disabled { cursor: wait; opacity: 0.5; }
+  .editing .mobileHidden { display: none; }
 }

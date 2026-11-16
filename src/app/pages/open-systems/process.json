@@ -1,0 +1,34 @@
+{
+  "label": "Sec. 03  Application",
+  "title": [
+    "How the",
+    "process works"
+  ],
+  "steps": [
+    {
+      "id": "intake",
+      "number": "(01)",
+      "text": "Submit via the shared intake"
+    },
+    {
+      "id": "route",
+      "number": "(02)",
+      "text": "We assess fit and route: small cultural grant or preparation for external funding"
+    },
+    {
+      "id": "materials",
+      "number": "(03)",
+      "text": "If routed here, we work with you on the application materials"
+    },
+    {
+      "id": "submit",
+      "number": "(04)",
+      "text": "You submit to Spiral (or the relevant partner) under their terms and timeline"
+    },
+    {
+      "id": "support",
+      "number": "(05)",
+      "text": "We stay available for questions during preparation"
+    }
+  ]
+}

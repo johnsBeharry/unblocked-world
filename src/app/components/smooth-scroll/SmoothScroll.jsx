@@ -23,7 +23,28 @@ export function SmoothScroll() {
     gsap.ticker.add(tick)
     gsap.ticker.lagSmoothing(0)
 
+    // Links like /posters#ownership-theme: the app renders on the client, so
+    // the browser's own fragment scroll runs before the section exists or
+    // settles (fonts, RevealText splits, pin spacing). Scroll to the target
+    // once fonts are ready and layout has had two frames, with fresh
+    // ScrollTrigger positions.
+    let cancelled = false
+    const scrollToHash = () => {
+      if (cancelled) return
+      const id = decodeURIComponent(window.location.hash.slice(1))
+      const target = id && document.getElementById(id)
+      if (!target) return
+      ScrollTrigger.refresh()
+      lenis.scrollTo(target, { immediate: true, force: true })
+    }
+    if (window.location.hash.length > 1) {
+      document.fonts.ready.then(() =>
+        requestAnimationFrame(() => requestAnimationFrame(scrollToHash)),
+      )
+    }
+
     return () => {
+      cancelled = true
       gsap.ticker.remove(tick)
       lenis.destroy()
       if (activeLenis === lenis) activeLenis = null

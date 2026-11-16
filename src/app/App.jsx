@@ -8,6 +8,7 @@ import { SubmitPage } from "./pages/submit/SubmitPage.jsx";
 import { ClientStaticPreviewPage } from "./pages/client-static-preview/ClientStaticPreviewPage.jsx";
 import { GrantsPage } from "./pages/grants/GrantsPage.jsx";
 import { CultureGrantsPage } from "./pages/culture-grants/CultureGrantsPage.jsx";
+import { OpenSystemsPage } from "./pages/open-systems/OpenSystemsPage.jsx";
 import { SmoothScroll } from "./components/smooth-scroll/SmoothScroll.jsx";
 import { PageCurtain } from "./components/page-curtain/PageCurtain.jsx";
 
@@ -42,6 +43,8 @@ export function App({ url = "/" }) {
       <GrantsPage />
     ) : path === "/grants/culture-grants" ? (
       <CultureGrantsPage />
+    ) : path === "/grants/open-systems" ? (
+      <OpenSystemsPage />
     ) : path === "/submit" ? (
       <SubmitPage />
     ) : path === "/submit/form/consent" ? (

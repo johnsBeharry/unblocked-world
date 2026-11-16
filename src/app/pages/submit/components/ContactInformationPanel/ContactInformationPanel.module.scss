@@ -1,128 +1,335 @@
+// Submit page Join step (ContactInformationPanel.jsx), right column.
+// Desktop values follow the user's 2026-11-17 reference of the 1440 Join
+// column (864 × 1265 @2x, `.visual-qa/submit-join-20261117/reference.png`):
+// a 406px column 229px into the panel — title, lede, "Already joined? Sign
+// in", 72px fields with 1px rules (placeholder 20px; a filled field shows a
+// 14px label above its value), a 185px Short Bio, the photo row (100px tile
+// + label, hint and action) and the terms row. Tablet-portrait keeps the
+// desktop sizes with the older top offset; mobile doubles the 375 design in
+// 750 units. Field text sizes are explicit: form controls do not inherit
+// the 20px body size.
+.contact-panel {
+  --contact-ink: #dc91a8;
+  --contact-muted: rgb(220 145 168 / 0.4);
 
-.panel { min-height: 100vh; }
-.inner { width: vw(406); margin-left: vw(229); padding-top: vw(123); padding-bottom: vw(138); }
-.inner h1, .inner p { margin: 0; }
-.inner h1 { font-size: vw(40); font-weight: 600; letter-spacing: vw(-1.6); line-height: 1.02; }
-.intro { margin-top: vw(47) !important; letter-spacing: vw(-0.8); line-height: 1.02; }
-.inlineLink { border: 0; padding: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; letter-spacing: inherit; text-decoration: underline; text-underline-offset: vw(2); }
-.inlineLink:disabled { cursor: default; opacity: 0.4; }
-.form { position: relative; margin-top: vw(34); }
-// Transparent border keeps the field geometry; RevealRow draws the visible rule
-// over it together with the label. Padding lives on the revealed content so the
-// chevron keeps the same containing box while the content slides.
-.field { position: relative; display: block; box-sizing: border-box; height: vw(72); min-height: vw(72); border-bottom: vw(2) solid transparent; color: #dc91a8; }
-.fieldContent { display: grid; box-sizing: border-box; align-content: start; gap: vw(7); padding-bottom: vw(19); }
-.fieldRule { top: auto; bottom: vw(-2); border-top-width: vw(2); color: rgb(220 145 168 / 0.4); }
-.fieldLabel, .field input, .field textarea, .field .selectField { font: inherit; letter-spacing: vw(-0.8); line-height: 1.02; }
-.fieldLabel { margin-top: vw(10); color: rgb(220 145 168 / 0.4); font-size: vw(14); letter-spacing: vw(-0.56); }
-.fieldValue { margin-top: vw(-5); }
-.emptyField { margin-top: vw(41); }
-.field input, .field textarea, .field .selectField { width: 100%; border: 0; outline: 0; padding: 0; background: transparent; color: #dc91a8; }
-.field input:disabled, .field textarea:disabled, .field .selectField:disabled { opacity: 0.6; }
-// Rows that grow with their content (Short Bio, Profile Photo).
-.fieldAuto { height: auto; min-height: vw(72); }
-.textarea { display: block; resize: none; }
-.field textarea::placeholder { color: rgb(220 145 168 / 0.4); opacity: 1; }
-// Dropdown trigger (SelectPanel button): placeholder colour until a value is chosen.
-.field .selectField { cursor: pointer; text-align: left; }
-.field .selectField:disabled { cursor: not-allowed; }
-.field .selectEmpty { color: rgb(220 145 168 / 0.4); }
-.field input::placeholder { color: rgb(220 145 168 / 0.4); opacity: 1; }
-.field .selectField { appearance: none; height: auto; margin-top: vw(41); line-height: 1.02; }
-.chevron { position: absolute; right: vw(16); bottom: vw(25); width: vw(16); height: vw(16); border-right: vw(2) solid #dc91a8; border-bottom: vw(2) solid #dc91a8; transform: rotate(45deg); }
-// Profile photo row.
-.photo { display: flex; align-items: flex-start; justify-content: space-between; gap: vw(16); margin-top: vw(41); padding-bottom: vw(12); }
-.photoTitle { color: rgb(220 145 168 / 0.4); letter-spacing: vw(-0.8); line-height: 1.02; }
-.photoHint { margin-top: vw(8) !important; font-size: vw(14); letter-spacing: vw(-0.56); line-height: 1.1; opacity: 0.6; }
-.photoActions { display: flex; gap: vw(12); margin-top: vw(10) !important; }
-.photoActions button { border: 0; padding: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; letter-spacing: vw(-0.8); }
-.photoPreview { flex: none; width: vw(56); height: vw(56); object-fit: cover; }
-.fileInput { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
-// Sits directly under the previous field rule (no second divider).
-.form .terms { margin-top: 0; border-top: 0; }
-// Verification: six single-digit boxes.
-.verification { display: grid; gap: vw(12); margin-top: vw(32); }
-.code { display: grid; grid-template-columns: repeat(6, 1fr); gap: vw(8); }
-.digit { box-sizing: border-box; width: 100%; height: vw(56); border: vw(2) solid rgb(220 145 168 / 0.4); padding: 0; background: transparent; color: #dc91a8; font: inherit; font-size: vw(28); text-align: center; outline: 0; }
-.digit:focus { border-color: #dc91a8; }
-.verificationHint { margin: 0; font-size: vw(14); }
-.error { margin-top: vw(16) !important; color: #dc91a8; }
+  min-height: 100vh;
+  color: var(--contact-ink);
 
-@media (min-width: 601px) and (max-width: 864px) and (orientation: portrait) {
-  .inner {
+  &__inner {
     width: vw(406);
     margin-left: vw(229);
-    padding-top: vw(278);
+    padding-top: vw(119);
+    // Reference column ends 115.5px under the terms text (the 114px fade).
+    padding-bottom: vw(94);
+
+    @include tablet-portrait {
+      padding-top: vw(278);
+    }
+
+    @include mobile {
+      width: vw(670);
+      margin-left: vw(40);
+      padding-top: vw(206);
+      padding-bottom: vw(260);
+    }
   }
 
-  .inner h1 {
+  &__title {
+    margin: 0;
     font-size: vw(40);
     font-weight: 600;
     letter-spacing: vw(-1.6);
     line-height: 1.02;
+
+    @include mobile {
+      font-size: vw(80);
+      letter-spacing: vw(-3.2);
+    }
   }
 
-  .intro {
-    margin-top: vw(47) !important;
-    letter-spacing: vw(-0.66);
+  // Six 20px lines, 47px under the title. Paragraph margins are scoped
+  // under `&__inner` because SubmitPage's `.content p { margin: 0 }`
+  // (0,1,1) beats a single class.
+  &__inner &__lede {
+    margin: vw(47) 0 0;
+    font-size: vw(20);
+    letter-spacing: vw(-0.8);
+    line-height: 100%;
+
+    @include mobile {
+      margin-top: vw(94);
+      font-size: vw(40);
+      letter-spacing: vw(-1.6);
+    }
+  }
+
+  // "Already joined? Sign in": cap top 376.5px.
+  &__inner &__switch {
+    margin: vw(48) 0 0;
+    font-size: vw(20);
+    letter-spacing: vw(-0.8);
     line-height: 1.02;
+
+    @include mobile {
+      margin-top: vw(94);
+      font-size: vw(40);
+      letter-spacing: vw(-1.6);
+    }
   }
 
-  .form { gap: 0; margin-top: vw(48.5); }
-  .field { box-sizing: border-box; height: vw(72); min-height: 0; border-bottom-width: vw(1); }
-  .fieldContent { padding-bottom: vw(8); }
-  .fieldRule { bottom: vw(-1); border-top-width: vw(1); }
-  .fieldLabel { margin-top: 0; }
-  .fieldValue { margin-top: 0; }
-  .emptyField { margin-top: vw(39); }
-  .field .selectField { height: auto; margin-top: vw(41); line-height: 1.02; }
-  .fieldAuto { height: auto; }
-  .chevron { right: vw(8); bottom: vw(18); width: vw(8); height: vw(8); border-right-width: vw(1); border-bottom-width: vw(1); }
+  // Bold in the Sign In code reference (600 is 4px narrower).
+  &__email {
+    font-weight: 700;
+  }
+
+  &__switch-prompt {
+    color: rgb(220 145 168 / 0.5);
+  }
+
+  &__inline-link {
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    letter-spacing: inherit;
+    text-decoration: underline;
+    text-decoration-thickness: vw(1.5);
+    text-underline-offset: vw(4);
+
+    &:disabled {
+      cursor: default;
+      opacity: 0.4;
+    }
+  }
+
+  // First field rule at 494.5px (field top 423.5).
+  &__form {
+    position: relative;
+    margin-top: vw(28.5);
+
+    @include mobile {
+      margin-top: vw(57);
+    }
+  }
+
+  // Terms row (shared CheckboxRow): sits directly under the photo row rule
+  // (no second divider). Two classes so it wins over CheckboxRow's `.row`
+  // whatever the stylesheet order.
+  &__form &__terms {
+    border-top: 0;
+    padding-top: vw(11.5);
+    font-size: vw(20);
+    // Two lines on a 20px pitch (reference), not the row's 102%.
+    line-height: 100%;
+
+    @include mobile {
+      padding-top: vw(20);
+      font-size: vw(40);
+    }
+  }
+
+  // Reference underline: 1.5px, 4px under the baseline.
+  &__terms-doc {
+    text-decoration: underline;
+    text-decoration-thickness: vw(1.5);
+    text-underline-offset: vw(4);
+  }
+
+  // Join-only row heights (shared FormField reads them).
+  // Short Bio: 185px row (rule at 895.5px).
+  &__bio-field {
+    --form-field-height: #{vw(185)};
+    --form-field-height-mobile: #{vw(370)};
+  }
+
+  // Photo row: 199px (tile + text), rule at 1094.5px.
+  &__photo-field {
+    --form-field-height: #{vw(199)};
+    --form-field-height-mobile: #{vw(398)};
+  }
+
+  // Code screen: boxes 48px under the lede.
+  &__code {
+    margin-top: vw(48);
+
+    @include mobile {
+      margin-top: vw(96);
+    }
+  }
+
+  &__inner &__error {
+    margin: vw(16) 0 0;
+    color: var(--contact-ink);
+
+    // The inherited body size is 10px on the 750 base: 20px explicitly.
+    @include mobile {
+      margin-top: vw(32);
+      font-size: vw(40);
+      letter-spacing: vw(-1.6);
+    }
+  }
+
+  // Sign In "Continue (→)": cap 49px under the email rule (reference).
+  &__submit {
+    align-self: start;
+    margin-top: vw(47);
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    font-size: vw(20);
+    letter-spacing: vw(-0.8);
+    line-height: 1.02;
+
+    @include mobile {
+      margin-top: vw(93);
+      font-size: vw(40);
+      letter-spacing: vw(-1.6);
+    }
+
+    &:disabled {
+      cursor: wait;
+      opacity: 0.5;
+    }
+  }
+
+  // Sign In and the code screens of Join / Sign In (2026-11-17 references,
+  // 1440 × 918): the short block is centred
+  // in the column (title box top 277 = (918 − 364) / 2). Equal top / bottom
+  // padding keeps the centre and the bottom fade clearance.
+  &--centred &__inner {
+    display: flex;
+    box-sizing: border-box;
+    min-height: 100vh;
+    min-height: 100svh;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: vw(138);
+    padding-bottom: vw(138);
+
+    @include mobile {
+      padding-top: vw(206);
+    }
+  }
+
+  // "Join UNBLOCKED" is semibold in the reference.
+  // Code screens sit 0.5px lower than the email screen in the references.
+  &--code &__inner {
+    padding-top: vw(139);
+  }
+
+  &--centred &__inline-link {
+    font-weight: 600;
+  }
+
+  &--centred &__form {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
-@include mobile {
-  .inner {
-    width: vw(670);
-    margin-left: vw(40);
-    padding-top: vw(206);
-    padding-bottom: vw(260);
+// Photo row content: 100px tile, text column 29px to its right.
+.contact-photo {
+  display: grid;
+  grid-template-columns: vw(100) minmax(0, 1fr);
+  column-gap: vw(28);
+  align-items: start;
+
+  @include mobile {
+    grid-template-columns: vw(200) minmax(0, 1fr);
+    column-gap: vw(56);
   }
 
-  .inner h1 {
-    max-width: vw(670);
-    font-size: vw(80);
-    font-weight: 600;
-    letter-spacing: vw(-3.2);
-    line-height: 1.02;
+  &__tile {
+    display: grid;
+    place-items: center;
+    width: vw(100);
+    height: vw(100);
+    margin-top: vw(45.5);
+    overflow: hidden;
+    border: 0;
+    padding: 0;
+    background: #0a0a0a;
+    color: var(--contact-ink, #dc91a8);
+    cursor: pointer;
+    font: inherit;
+    font-size: vw(20);
+    letter-spacing: vw(-0.8);
+
+    @include mobile {
+      width: vw(200);
+      height: vw(200);
+      margin-top: vw(91);
+      font-size: vw(40);
+      letter-spacing: vw(-1.6);
+    }
   }
 
-  .intro {
-    width: vw(670);
-    margin-top: vw(94) !important;
-    font-size: vw(40);
-    letter-spacing: vw(-1.6);
-    line-height: 1.02;
+  &__preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
-  .form { gap: 0; margin-top: vw(94); }
-  .field { box-sizing: border-box; height: vw(144); min-height: 0; border-bottom-width: vw(1); }
-  .fieldContent { padding-bottom: vw(8); }
-  .fieldRule { bottom: vw(-1); border-top-width: vw(1); }
-  .fieldLabel { margin-top: 0; }
-  .fieldValue { margin-top: 0; }
-  .fieldLabel { font-size: vw(28); letter-spacing: vw(-1.12); }
-  .field input, .field .selectField { font-size: vw(40); letter-spacing: vw(-1.6); }
-  .emptyField { margin-top: vw(79); }
-  // Dropdown text on the same line as the text fields.
-  .field .selectField { height: auto; margin-top: vw(79); line-height: 1.02; }
-  .chevron { right: vw(8); bottom: vw(18); width: vw(8); height: vw(8); border-right-width: vw(1); border-bottom-width: vw(1); }
-  .field textarea { font-size: vw(40); letter-spacing: vw(-1.6); }
-  // Growing rows must not take the fixed mobile field height.
-  .fieldAuto { height: auto; min-height: vw(144); }
-  .photo { margin-top: vw(79); padding-bottom: vw(32); }
-  .photoTitle, .photoActions button { font-size: vw(40); letter-spacing: vw(-1.6); }
-  .photoHint { font-size: vw(28); letter-spacing: vw(-1.12); }
-  .photoPreview { width: vw(112); height: vw(112); }
-  .digit { height: vw(112); border-width: vw(1); font-size: vw(56); }
-  .verificationHint { font-size: vw(28); }
+  // Label line top 39.8px under the row top (5.7px above the tile).
+  &__text {
+    display: grid;
+    padding-top: vw(39.8);
+
+    @include mobile {
+      padding-top: vw(79.6);
+    }
+  }
+
+  &__hint {
+    margin-top: vw(8.6);
+    font-size: vw(20);
+    letter-spacing: vw(-0.8);
+    line-height: 100%;
+
+    @include mobile {
+      margin-top: vw(17.2);
+      font-size: vw(40);
+      letter-spacing: vw(-1.6);
+    }
+  }
+
+  &__actions {
+    display: flex;
+    gap: vw(12);
+    margin-top: vw(8.5);
+
+    @include mobile {
+      gap: vw(24);
+      margin-top: vw(17);
+    }
+
+    button {
+      border: 0;
+      padding: 0;
+      background: transparent;
+      color: inherit;
+      cursor: pointer;
+      font: inherit;
+      font-size: vw(16);
+      letter-spacing: vw(-0.64);
+
+      @include mobile {
+        font-size: vw(32);
+        letter-spacing: vw(-1.28);
+      }
+    }
+  }
+
+  &__file {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
 }

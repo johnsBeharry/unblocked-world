@@ -11,10 +11,18 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: var(--progress-width);
+  // Full column width scaled by the frame progress (user request
+  // 2026-11-17: the bar follows each frame), animated between frames.
+  width: 100%;
   height: vw(4);
   background: #dc91a8;
-  transition: width 400ms ease;
+  transform: scaleX(var(--progress, 0));
+  transform-origin: left center;
+  transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 }
 
 .progress ol {
@@ -41,10 +49,11 @@
 .compact .progressBar {
   height: vw(2);
 }
+// Reference list: line tops 20.5 / 52.5 / 84.5 (32px pitch).
 .compact ol {
-  top: vw(20);
-  left: vw(22);
-  gap: vw(12);
+  top: vw(19);
+  left: vw(20);
+  gap: vw(11.2);
   letter-spacing: vw(-0.8);
 }
 
@@ -57,7 +66,6 @@
 
 @media (min-width: 601px) and (max-width: 864px) and (orientation: portrait) {
   .progressBar {
-    width: vw(229);
     height: vw(2);
   }
   .progress ol {
@@ -67,7 +75,9 @@
     letter-spacing: vw(-0.8);
   }
 
-  .compact.posterStep ol {
+  // Every step list sits under "(←) Home" (it shares the top row there);
+  // the Posters step already did (864 mockup).
+  .compact ol {
     top: vw(110.25);
     gap: vw(11.85);
   }
@@ -82,18 +92,22 @@
   }
 
   .progressBar {
-    width: vw(132);
     height: vw(2);
   }
 
+  // Mobile mockups: "(01)   Join" with a wide gap, -4% tracking.
   .progress ol {
-    top: vw(40);
+    top: vw(38);
     right: vw(41);
     left: auto;
     display: block;
     font-size: vw(40);
-    letter-spacing: 0;
+    letter-spacing: vw(-1.6);
     line-height: 1;
+  }
+
+  .stepLabel {
+    margin-left: vw(18);
   }
 
   .progress.lineOnly ol {

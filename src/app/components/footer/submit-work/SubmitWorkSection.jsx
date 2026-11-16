@@ -8,6 +8,8 @@ export default function SubmitWorkSection({
   titleLines = ["Submit", "Work (→)"],
   topLabel = "Current Theme (Ownership)",
   bottomLabel = "View Brief (→)",
+  titleHref = "/submit",
+  bottomHref = "/posters",
   showTopLabel = true,
   showBottomLabel = true,
 }) {
@@ -22,7 +24,9 @@ export default function SubmitWorkSection({
         scrollReveal
       />
 
-      <div className={styles["submit-work__el-198"]}>
+      {/* The title is the section's main CTA; the link wraps the line
+          reveals (RevealText flattens links placed inside it). */}
+      <a className={styles["submit-work__title-link"]} href={titleHref}>
         <span className={styles["submit-work__title-desktop"]}>
           <RevealText as="p" className={styles["submit-work__el-199"]}>
             {titleLines[0]}
@@ -38,7 +42,7 @@ export default function SubmitWorkSection({
             <RevealText as="p">(→)</RevealText>
           </span>
         )}
-      </div>
+      </a>
       {showTopLabel && topLabel && (
         <p className={styles["submit-work__el-201"]}>
           {variant === "poster" ? (
@@ -73,7 +77,7 @@ export default function SubmitWorkSection({
         </p>
       )}
       {showBottomLabel && bottomLabel && (
-        <RevealText as="p" className={styles["submit-work__el-202"]}>
+        <RevealText as="a" className={styles["submit-work__brief-link"]} href={bottomHref}>
           {bottomLabel}
         </RevealText>
       )}

@@ -1,0 +1,86 @@
+// Cross-link section of the grant program pages (ProgramCrossLinkSection
+// .jsx), the last section before the footer. Desktop values follow the
+// Culture Grants Open System mockup (1440 × 800 @2x): a 720px copy half
+// (title, description) and a 720 × 800 artwork panel. Mobile follows its
+// 375 × 659 mockup (750 × 1318 @2x): a 242px copy block above the panel at
+// full width (375 × 416.7). No tablet mockup yet. Colours come from the
+// consumer (`--cross-link-bg`, `--cross-link-ink` on className; no
+// defaults here so they never race the consumer rule), as do the desktop
+// title/description spacings documented on `&__copy`.
+.cross-link {
+  display: grid;
+  grid-template-columns: vw(720) vw(720);
+  height: vw(800);
+  background-color: var(--cross-link-bg);
+  color: var(--cross-link-ink);
+
+  @include mobile {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+  }
+
+  // Desktop title/description spacing per mockup: `--cross-link-title-top`
+  // (padding above the title), `--cross-link-title-leading` (line pitch) and
+  // `--cross-link-description-gap`; fallbacks = Culture Grants Open System
+  // (45px, 80px pitch, 101px).
+  &__copy {
+    padding: var(--cross-link-title-top, #{vw(45)}) vw(20) 0;
+
+    // 242px tall: title line top 21px (cap top 26px).
+    @include mobile {
+      height: vw(484);
+      padding: vw(42) vw(40) 0;
+      box-sizing: border-box;
+    }
+  }
+
+  // Cap-to-cap pitch is 80px in the Culture Grants mockup (line-height 80%).
+  &__title {
+    font-weight: 600;
+    font-size: vw(100);
+    line-height: var(--cross-link-title-leading, 80%);
+    letter-spacing: -6%;
+
+    @include mobile {
+      font-size: vw(80);
+      line-height: 102%;
+      letter-spacing: -4%;
+    }
+  }
+
+  // Line box top at 305.3px; the 335px column wraps like the mockup.
+  &__description {
+    max-width: vw(335);
+    margin-top: var(--cross-link-description-gap, #{vw(101)});
+    font-weight: 500;
+    font-size: vw(20);
+    line-height: 100%;
+    letter-spacing: -4%;
+
+    // Full width, line top 39.7px under the title.
+    @include mobile {
+      max-width: none;
+      margin-top: vw(79.4);
+      font-size: vw(40);
+    }
+  }
+
+  &__title-link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  // Artwork panel (720 × 800): a flex row, so the artwork SVG (height auto)
+  // stretches to the panel height.
+  &__art {
+    display: flex;
+    height: 100%;
+
+    // The 720 × 800 panel at full width (artwork scales with it).
+    @include mobile {
+      height: vw(833.3);
+    }
+  }
+}

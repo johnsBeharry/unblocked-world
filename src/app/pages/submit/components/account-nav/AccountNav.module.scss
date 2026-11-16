@@ -1,0 +1,72 @@
+// Signed-in nav (AccountNav.jsx). Desktop values follow the user's
+// 2026-11-17 Profile reference (1440 column @2x,
+// `.visual-qa/submit-profile-20261117/reference.png`): 20px labels with cap
+// tops at 21.5px, "Profile" ink at 21.5, "Poster" 15px after it in 50% pink,
+// "Sign out" ink ending 21.5px from the column's right edge. Mobile follows
+// the step list's mobile spacing (40px in, 20px labels).
+.account-nav {
+  --account-ink: #dc91a8;
+
+  position: absolute;
+  z-index: 3;
+  top: vw(20);
+  right: vw(22);
+  left: vw(20);
+  display: flex;
+  justify-content: space-between;
+  color: var(--account-ink);
+
+  // Tablet portrait: one row with "(←) Home" (user request): the tabs start
+  // 20px after its label (ink ends at 109 on the 864 layout).
+  @include tablet-portrait {
+    top: vw(19);
+    left: vw(129);
+  }
+
+  @include mobile {
+    position: fixed;
+    top: vw(40);
+    right: vw(40);
+    left: vw(40);
+  }
+
+  &__tabs {
+    display: flex;
+    gap: vw(14);
+
+    @include mobile {
+      gap: vw(28);
+    }
+  }
+
+  &__tab,
+  &__sign-out {
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    font-size: vw(20);
+    letter-spacing: vw(-0.8);
+    line-height: 1.02;
+
+    @include mobile {
+      font-size: vw(40);
+      letter-spacing: vw(-1.6);
+    }
+  }
+
+  &__tab {
+    color: rgb(220 145 168 / 0.5);
+
+    &--active {
+      color: var(--account-ink);
+    }
+  }
+
+  &__sign-out:disabled {
+    cursor: wait;
+    opacity: 0.5;
+  }
+}

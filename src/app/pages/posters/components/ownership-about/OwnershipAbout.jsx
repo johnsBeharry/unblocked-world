@@ -4,7 +4,7 @@ import { RevealText } from '../../../../../components/RevealText/RevealText.jsx'
 
 export function OwnershipAbout() {
   return (
-    <section className={styles.about} data-name="about" aria-label="About the Ownership theme">
+    <section id="ownership-theme" className={styles.about} data-name="about" aria-label="About the Ownership theme">
       <p className={styles.intro}>
         <RevealText highlight as="span" className={styles.desktopCopy}>Ownership is more than possession—it shapes identity, responsibility, freedom and the relationship between people and the things they create, protect and value.</RevealText>
         <RevealText highlight as="span" className={styles.mobileCopy}>Ownership is more than<br />possession—it shapes identity,<br />responsibility, freedom and the<br />relationship between people<br />and the things they create,<br />protect and value.</RevealText>

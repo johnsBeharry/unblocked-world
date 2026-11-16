@@ -1,0 +1,20 @@
+// Sliced-circle artwork of the grant program pages (SliceArtwork.jsx):
+// Culture Grants hero (1440 × 854 export) and Open Systems cross-link panel
+// (720 × 800, measured from the mockup). Full width, height from the
+// viewBox. Colours come from an ancestor through `--slice-artwork-ground` /
+// `--slice-artwork-shape`; the fallbacks are the Culture Grants hero export
+// (#101010 ground, #2449ed circles), declared in var() so they never race
+// the consumer.
+.slice-artwork {
+  display: block;
+  width: 100%;
+  height: auto;
+
+  &__ground {
+    fill: var(--slice-artwork-ground, #101010);
+  }
+
+  &__column {
+    fill: var(--slice-artwork-shape, #2449ed);
+  }
+}

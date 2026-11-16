@@ -1,0 +1,148 @@
+// Submit page Profile screen (ProfilePanel.jsx), right column. Desktop values
+// follow the user's 2026-11-17 Profile reference (1440 column @2x, 864 × 1107,
+// `.visual-qa/submit-profile-20261117/reference.png`): two-line title, lede,
+// then the shared FormField rows (same rhythm as Join) with a fixed email row
+// carrying "(Change Email)" and a pink "verified" tag under it. Mobile doubles
+// the values in 750 units (no mobile reference).
+.profile-panel {
+  --profile-ink: #dc91a8;
+
+  min-height: 100%;
+  color: var(--profile-ink);
+
+  &__inner {
+    width: vw(406);
+    margin-left: vw(229);
+    padding-top: vw(119);
+    // Reference column ends 70.5px under the photo row (no rule after it).
+    padding-bottom: vw(70.5);
+
+    @include tablet-portrait {
+      padding-top: vw(160);
+    }
+
+    @include mobile {
+      width: vw(670);
+      margin-left: vw(40);
+      padding-top: vw(206);
+      padding-bottom: vw(260);
+    }
+  }
+
+  &__title {
+    margin: 0;
+    font-size: vw(40);
+    font-weight: 600;
+    letter-spacing: vw(-1.6);
+    line-height: 1.02;
+
+    @include mobile {
+      font-size: vw(80);
+      letter-spacing: vw(-3.2);
+    }
+  }
+
+  // Scoped under `&__inner`: SubmitPage's `.content p { margin: 0 }` (0,1,1)
+  // beats a single class.
+  // max-width: the reference breaks after "Any" (406 fits "Any changes").
+  &__inner &__lede {
+    max-width: vw(400);
+    margin: vw(47) 0 0;
+    font-size: vw(20);
+    letter-spacing: vw(-0.8);
+    line-height: 100%;
+
+    @include mobile {
+      max-width: none;
+      margin-top: vw(94);
+      font-size: vw(40);
+      letter-spacing: vw(-1.6);
+    }
+  }
+
+  // First rule at 407.5px.
+  &__form {
+    position: relative;
+    margin-top: vw(29);
+
+    @include mobile {
+      margin-top: vw(57);
+    }
+  }
+
+  &__email-row {
+    display: flex;
+    align-items: baseline;
+    gap: vw(12);
+
+    @include mobile {
+      gap: vw(24);
+    }
+  }
+
+  &__email {
+    min-width: 0;
+    flex: 1;
+  }
+
+  &__change-email {
+    flex: none;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    font-size: vw(16);
+    letter-spacing: vw(-0.64);
+    line-height: 1.02;
+
+    @include mobile {
+      font-size: vw(32);
+      letter-spacing: vw(-1.28);
+    }
+
+    &:disabled {
+      cursor: wait;
+      opacity: 0.5;
+    }
+  }
+
+  // 20px pink tag 8.5px under the email row; the next row follows directly.
+  &__verified {
+    display: block;
+    width: fit-content;
+    margin-top: vw(8.5);
+    padding: 0 vw(5);
+    background: var(--profile-ink);
+    color: #000;
+    font-size: vw(16);
+    letter-spacing: vw(-0.64);
+    line-height: vw(20);
+
+    @include mobile {
+      margin-top: vw(18);
+      padding: 0 vw(9);
+      font-size: vw(32);
+      letter-spacing: vw(-1.28);
+      line-height: vw(40);
+    }
+  }
+
+  // Short Bio: 185px row like Join.
+  &__bio {
+    --form-field-height: #{vw(185)};
+    --form-field-height-mobile: #{vw(370)};
+  }
+
+  &__form &__error {
+    margin: vw(16) 0 0;
+    font-size: vw(16);
+    line-height: 1.1;
+
+    @include mobile {
+      margin-top: vw(32);
+      font-size: vw(32);
+    }
+  }
+}

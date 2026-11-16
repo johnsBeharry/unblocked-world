@@ -1,0 +1,52 @@
+// Change Email popup (ChangeEmailDialog.jsx) on the shared ConfirmDialog.
+// Desktop values follow the user's 2026-11-17 reference (1440 × 918 @1x,
+// `.visual-qa/submit-change-email-20261117/reference.png`): a 550 × 485 panel
+// (top 216), the "New Email Address" field (rule 537) and "Send Code" (cap
+// 619). The "Enter Code" stage follows its own reference
+// (`.visual-qa/submit-change-email-code-20261117/reference.png`): 602px panel,
+// (←) on the Close row, black code boxes 48px under the message.
+.change-email {
+  --confirm-dialog-height: #{vw(485)};
+  // Panel top 216 (reference edge 216.5); title cap 77 under the top.
+  --confirm-dialog-offset: #{vw(243)};
+  --confirm-dialog-title-gap: #{vw(29.6)};
+  --confirm-dialog-action-gap: #{vw(78.3)};
+
+  // Field rule at 537 (placeholder cap 508).
+  &__field {
+    max-width: vw(406);
+    margin-top: vw(28);
+
+    @include mobile {
+      max-width: none;
+      margin-top: vw(62);
+    }
+  }
+
+  &__code {
+    --code-entry-box: #000;
+    --code-entry-actions-gap: #{vw(46)};
+    --code-entry-note-gap: #{vw(16.5)};
+
+    max-width: vw(406);
+    margin-top: vw(47.5);
+
+    @include mobile {
+      max-width: none;
+      margin-top: vw(95);
+    }
+  }
+
+  &__address {
+    font-weight: 700;
+  }
+
+  // "Enter Code" stage (reference 158–760): 602px panel, Verify Email under
+  // the email-link note.
+  &--code {
+    --confirm-dialog-height: #{vw(602)};
+    --confirm-dialog-offset: #{vw(301.5)};
+    --confirm-dialog-message-gap: #{vw(47)};
+    --confirm-dialog-action-gap: #{vw(81)};
+  }
+}

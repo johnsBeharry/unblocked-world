@@ -1,0 +1,158 @@
+// Shared steps section of the grant program pages (ProgramStepsSection.jsx).
+// Desktop values follow the Culture Grants "Sec. 03 Application" mockup
+// (1440 × 1560 @2x): four 335px columns with 20px gutters. Title in columns
+// 3–4; steps 01–02 in columns 3–4 (rule at 493.5px), the rest across all
+// four (rule at 783.5px); each step is a 1px rule, a grey 64px number and
+// 20px text 150px under the rule. "Apply Now" centred below. The Open
+// Systems "How the process works" mockup (1440 × 1450 @2x) repeats it with
+// a two-line title: pages set the title block height
+// (`--program-steps-title-height`, Culture Grants 473.5 by fallback) and the
+// gap above Apply Now (`--program-steps-apply-gap`, fallback 138) on
+// className; fallbacks live in var() so they never race the consumer.
+// Mobile follows the 375 × 1820 mockup (750 × 3640 @2x): 40px title wrapping
+// naturally, steps stacked full width (same step layout, height from the
+// text + 20px), Apply Now 78.7px under the last step. No tablet mockup yet.
+.program-steps {
+  --program-steps-bg: #cacaca;
+  --program-steps-ink: #101010;
+  --program-steps-number: #aeaeae;
+
+  display: grid;
+  grid-template-columns: repeat(4, vw(335));
+  column-gap: vw(20);
+  padding: vw(20) vw(20) vw(300);
+  background-color: var(--program-steps-bg);
+  color: var(--program-steps-ink);
+
+  @include mobile {
+    display: flex;
+    flex-direction: column;
+    padding: vw(40) vw(40) vw(203);
+  }
+
+  &__label {
+    --section-label-bg: var(--program-steps-ink);
+    --section-label-ink: var(--program-steps-bg);
+    --section-label-height: #{vw(28)};
+    --section-label-padding: 0 #{vw(6)} 0 #{vw(4)};
+    --section-label-padding-mobile: 0 #{vw(12)} 0 #{vw(8)};
+    --section-label-height-mobile: #{vw(56)};
+
+    grid-area: 1 / 1;
+    justify-self: start;
+    align-self: start;
+
+    @include mobile {
+      align-self: flex-start;
+    }
+  }
+
+  // Line top 24px; the step rules start at 493.5px.
+  &__title {
+    grid-area: 1 / 3 / 2 / 5;
+    height: var(--program-steps-title-height, #{vw(473.5)});
+    padding-top: vw(4);
+    box-sizing: border-box;
+    font-weight: 600;
+    font-size: vw(100);
+    line-height: 90%;
+    letter-spacing: -6%;
+
+    // Line top 88px; the first step rule at 310.5px.
+    @include mobile {
+      height: auto;
+      margin: vw(80) 0 vw(199.2);
+      padding-top: 0;
+      font-size: vw(80);
+      line-height: 102%;
+      letter-spacing: -4%;
+    }
+
+    &-lines {
+      display: block;
+
+      @include mobile {
+        display: none;
+      }
+    }
+
+    &-flow {
+      display: none;
+
+      @include mobile {
+        display: block;
+      }
+    }
+  }
+
+  // The list joins the section grid so the steps fill its columns.
+  &__steps {
+    display: contents;
+    list-style: none;
+  }
+
+  // 138px below the last step row (Culture Grants).
+  &__apply {
+    grid-column: 1 / -1;
+    justify-self: center;
+    margin-top: var(--program-steps-apply-gap, #{vw(138)});
+
+    @include mobile {
+      align-self: flex-start;
+      margin-top: vw(157.4);
+    }
+  }
+}
+
+.program-step {
+  height: vw(290);
+
+  // Mobile height follows the text: 150px to the text line, 20px below it.
+  @include mobile {
+    height: auto;
+    padding-bottom: vw(40);
+  }
+
+  // Steps 01–02 sit in columns 3–4; 03–06 wrap onto the next row.
+  &:first-child {
+    grid-column: 3;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    // Digits aligned with the mockup; its Inter version draws "(" ")" 4px
+    // higher relative to the digits than the bundled font does.
+    padding-top: vw(17);
+    font-weight: 500;
+    font-size: vw(20);
+    line-height: 100%;
+    letter-spacing: -4%;
+
+    @include mobile {
+      padding-top: vw(34);
+      font-size: vw(40);
+    }
+  }
+
+  &__number {
+    color: var(--program-steps-number);
+    font-weight: 600;
+    font-size: vw(64);
+    line-height: 100%;
+    letter-spacing: -6%;
+
+    @include mobile {
+      font-size: vw(128);
+    }
+  }
+
+  // Text line box 150px under the rule (17 + 64 + 69).
+  &__text {
+    margin-top: vw(69);
+
+    @include mobile {
+      margin-top: vw(138);
+    }
+  }
+}

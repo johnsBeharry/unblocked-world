@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { useArtScrub } from "./useArtScrub";
+import { useArtScrub } from "../../../grants/motion/useArtScrub";
 import styles from "./MakersArtwork.module.scss";
 
 // Supplied 301 × 420 nested frames (outer → inner). All share one centre.

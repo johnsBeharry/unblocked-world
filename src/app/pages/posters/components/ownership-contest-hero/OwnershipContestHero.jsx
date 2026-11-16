@@ -121,7 +121,7 @@ function useArtworkSequence(ready, sectionRef) {
   }, [ready, sectionRef]);
 }
 
-export function OwnershipContestHero({ guidelinesHref, submitHref }) {
+export function OwnershipContestHero({ guidelinesHref = "/guidelines", submitHref = "/submit" }) {
   const ready = useFontsReady();
   const sectionRef = React.useRef(null);
   useArtworkSequence(ready, sectionRef);

@@ -1,38 +1,33 @@
-import { useEffect, useRef } from "react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useRef } from "react";
+import { useRefreshOnHeightChange } from "../grants/motion/useRefreshOnHeightChange";
 import { Footer } from "../../components/footer/Footer.jsx";
-import { CultureGrantsHero } from "./components/culture-grants-hero/CultureGrantsHero.jsx";
-import { FundingSection } from "./components/funding-section/FundingSection.jsx";
+import { ProgramHero } from "../grants/components/program-hero/ProgramHero.jsx";
+import { SliceArtwork } from "../grants/components/slice-artwork/SliceArtwork.jsx";
+import { HERO_SLICES } from "./heroSlices";
+import { FundingSection } from "../grants/components/funding-section/FundingSection.jsx";
 import { MakersSection } from "./components/makers-section/MakersSection.jsx";
-import { EligibilitySection } from "./components/eligibility-section/EligibilitySection.jsx";
-import { ApplicationSection } from "./components/application-section/ApplicationSection.jsx";
-import { OpenSystemSection } from "./components/open-system-section/OpenSystemSection.jsx";
+import { ProgramListSection } from "../grants/components/program-list-section/ProgramListSection.jsx";
+import { ProgramStepsSection } from "../grants/components/program-steps-section/ProgramStepsSection.jsx";
+import { ProgramCrossLinkSection } from "../grants/components/program-cross-link-section/ProgramCrossLinkSection.jsx";
+import { RingsArtwork } from "../grants/components/rings-artwork/RingsArtwork.jsx";
+import hero from "./hero.json";
+import funding from "./funding.json";
+import eligibility from "./eligibility.json";
+import application from "./application.json";
+import crossLink from "./crossLink.json";
 import styles from "./CultureGrantsPage.module.scss";
 
-const REFRESH_DELAY = 150; // ms, lets a burst of re-measures settle
-
-// Section ScrollTriggers measure their start/end when they mount, but the
-// text-driven sections keep changing height afterwards (RevealText splits
-// its lines after measuring, again once the font loads), so later triggers
-// fired hundreds of px early. Refresh them whenever the page height changes.
-function useRefreshOnHeightChange(pageRef) {
-  useEffect(() => {
-    const page = pageRef.current;
-    let height = page.offsetHeight;
-    let timer;
-    const observer = new ResizeObserver(() => {
-      if (Math.abs(page.offsetHeight - height) < 1) return;
-      height = page.offsetHeight;
-      clearTimeout(timer);
-      timer = setTimeout(() => ScrollTrigger.refresh(), REFRESH_DELAY);
-    });
-    observer.observe(page);
-    return () => {
-      observer.disconnect();
-      clearTimeout(timer);
-    };
-  }, [pageRef]);
-}
+// Open System cross-link rings, measured from the 1440 × 800 mockup (720 ×
+// 800 panel, centre 360 / 400), outermost first = paint order. Scrubbed
+// iris on the panel (RingsArtwork default `top 85%` → `bottom bottom`).
+const CROSS_LINK_PANEL = { width: 720, height: 800, cx: 360, cy: 400 };
+const CROSS_LINK_RINGS = [
+  { r: 483.5, tone: "light" },
+  { r: 447.5, tone: "dark" },
+  { r: 373.5, tone: "light" },
+  { r: 320, tone: "dark" },
+  { r: 230.5, tone: "light" },
+];
 
 export function CultureGrantsPage() {
   const pageRef = useRef(null);
@@ -42,12 +37,23 @@ export function CultureGrantsPage() {
     <main ref={pageRef} className={styles["culture-grants-page"]}>
       {/* Desktop UI on tablet too: see CultureGrantsPage.module.scss. */}
       <div className={styles["culture-grants-page__sections"]}>
-        <CultureGrantsHero />
-        <FundingSection />
+        <ProgramHero
+          id="culture-grants-title"
+          title={hero.title}
+          summary={hero.summary}
+          artwork={<SliceArtwork geometry={HERO_SLICES} mobileIntro />}
+          className={styles["culture-grants-page__hero"]}
+        />
+        <FundingSection content={funding} />
         <MakersSection />
-        <EligibilitySection />
-        <ApplicationSection />
-        <OpenSystemSection />
+        <ProgramListSection id="eligibility-title" content={eligibility} />
+        <ProgramStepsSection id="application-title" content={application} />
+        <ProgramCrossLinkSection
+          id="open-system-title"
+          content={crossLink}
+          artwork={<RingsArtwork {...CROSS_LINK_PANEL} rings={CROSS_LINK_RINGS} />}
+          className={styles["culture-grants-page__cross-link"]}
+        />
       </div>
       <Footer />
     </main>

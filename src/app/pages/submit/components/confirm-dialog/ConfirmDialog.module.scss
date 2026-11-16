@@ -1,0 +1,150 @@
+// Submit flow confirmation popup (ConfirmDialog.jsx). Desktop values follow
+// the user's 2026-11-17 "Remove this poster?" reference (1440 × 918 @1x,
+// `.visual-qa/submit-remove-modal-20261117/reference.png`): a 550 × 377
+// #101010 panel centred in the viewport over a 40% black overlay; Close 20px
+// top right, title 40px, 20px message and action. No mobile reference:
+// mobile uses the full width minus 20px sides with the desktop type sizes.
+.confirm-dialog {
+  --dialog-ink: #dc91a8;
+
+  position: fixed;
+  z-index: 41;
+  // Centred: 377px panel, top on a whole pixel (270 at 918 like the
+  // reference; plain 50% / -50% lands on 270.5 and blurs the edge).
+  top: calc(50% - var(--confirm-dialog-offset, #{vw(189)}));
+  left: 50%;
+  box-sizing: border-box;
+  width: var(--confirm-dialog-width, #{vw(550)});
+  min-height: var(--confirm-dialog-height, #{vw(377)});
+  padding: vw(24) vw(24) vw(63) var(--confirm-dialog-inset, #{vw(72)});
+  background: #101010;
+  color: var(--dialog-ink);
+  translate: -50% 0;
+
+  @include mobile {
+    width: calc(100% - #{vw(80)});
+    top: 50%;
+    min-height: 0;
+    padding: vw(46) vw(48) vw(96) vw(48);
+    translate: -50% -50%;
+  }
+
+  &__overlay {
+    position: fixed;
+    z-index: 40;
+    inset: 0;
+    background: rgb(0 0 0 / 0.4);
+  }
+
+  // Close row; the optional (←) sits at the panel's left (ink 26px in, so
+  // it reaches past the 72px content inset).
+  &__bar {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &__back {
+    position: absolute;
+    left: vw(25);
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    font-size: vw(20);
+    letter-spacing: vw(-0.8);
+    line-height: 1.02;
+
+    @include mobile {
+      left: vw(48);
+      font-size: vw(40);
+      letter-spacing: vw(-1.6);
+    }
+  }
+
+  // Close: ink ends 24px from the right edge, cap 26px under the top.
+  &__close {
+    display: block;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    font-size: vw(20);
+    letter-spacing: vw(-0.8);
+    line-height: 1.02;
+
+    @include mobile {
+      font-size: vw(40);
+      letter-spacing: vw(-1.6);
+    }
+  }
+
+  &__title {
+    margin: var(--confirm-dialog-title-gap, #{vw(28.6)}) 0 0;
+    font-size: var(--confirm-dialog-title-size, #{vw(40)});
+    font-weight: 600;
+    letter-spacing: var(--confirm-dialog-title-tracking, -0.04em);
+    line-height: 1.02;
+
+    @include mobile {
+      margin-top: vw(53);
+      font-size: var(--confirm-dialog-title-size-mobile, #{vw(56)});
+    }
+  }
+
+  &__message {
+    max-width: var(--confirm-dialog-message-width, #{vw(406)});
+    margin: var(--confirm-dialog-message-gap, #{vw(47.5)}) 0 0;
+    font-size: vw(20);
+    letter-spacing: vw(-0.8);
+    line-height: 100%;
+
+    @include mobile {
+      max-width: none;
+      margin-top: vw(64);
+      font-size: vw(40);
+      letter-spacing: vw(-1.6);
+    }
+  }
+
+  &__error {
+    margin: vw(24) 0 0;
+    font-size: vw(16);
+    letter-spacing: vw(-0.64);
+    line-height: 1.1;
+
+    @include mobile {
+      margin-top: vw(48);
+      font-size: vw(32);
+      letter-spacing: vw(-1.28);
+    }
+  }
+
+  &__action {
+    display: block;
+    margin-top: var(--confirm-dialog-action-gap, #{vw(72)});
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    font-size: vw(20);
+    letter-spacing: vw(-0.8);
+    line-height: 1.02;
+
+    @include mobile {
+      margin-top: vw(96);
+      font-size: vw(40);
+      letter-spacing: vw(-1.6);
+    }
+
+    &:disabled {
+      cursor: wait;
+      opacity: 0.5;
+    }
+  }
+}

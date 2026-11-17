@@ -3,7 +3,7 @@ import { gsap } from "gsap";
 import { RevealRow } from "../../../../../components/RevealRow/RevealRow.jsx";
 import { RevealText } from "../../../../../components/RevealText/RevealText";
 import { prefersReducedMotion, revealFrames, slideApart } from "../../motion/scrollMotion.js";
-import content from "./people.json";
+import content from "./people.js";
 import styles from "./PeopleSection.module.scss";
 
 // Scroll experience: header words slide apart, photos open with a mask and

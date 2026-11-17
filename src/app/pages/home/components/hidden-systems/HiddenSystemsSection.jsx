@@ -265,10 +265,10 @@ export default function HiddenSystemsSection({ reveal = true }) {
         className={styles["hidden-systems__node-032"]}
         data-name="hidden-systems-logos"
       >
-        <div className={styles["hidden-systems__node-033"]}>
+        <div className={styles["hidden-systems__pxpush-cell"]}>
           <div className={styles["hidden-systems__node-034"]} data-name="logo">
             <div
-              className={styles["hidden-systems__node-035"]}
+              className={styles["hidden-systems__pxpush-push"]}
               data-name="Vector"
             >
               <svg
@@ -285,11 +285,11 @@ export default function HiddenSystemsSection({ reveal = true }) {
               </svg>
             </div>
             <div
-              className={styles["hidden-systems__node-038"]}
+              className={styles["hidden-systems__pxpush-px"]}
               data-name="Vector"
             >
               <svg
-                className={styles["hidden-systems__node-039"]}
+                className={styles["hidden-systems__pxpush-px-art"]}
                 fill="none"
                 preserveAspectRatio="none"
                 viewBox="0 0 71.666 30.1201"

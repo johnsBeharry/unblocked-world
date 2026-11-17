@@ -252,7 +252,7 @@
   width: vw(1400);
 }
 
-.hidden-systems__node-033 {
+.hidden-systems__pxpush-cell {
   flex: 1 0 0;
   height: vw(172);
   min-width: vw(1);
@@ -266,7 +266,7 @@
   inset: 40.12% 18.86% 40.1% 19.1%;
 }
 
-.hidden-systems__node-035 {
+.hidden-systems__pxpush-push {
   position: absolute;
   inset: 40.12% 18.86% 40.1% 43.3%;
 }
@@ -278,12 +278,12 @@
   width: 100%;
 }
 
-.hidden-systems__node-038 {
+.hidden-systems__pxpush-px {
   position: absolute;
   inset: 42.38% 59.51% 40.11% 19.1%;
 }
 
-.hidden-systems__node-039 {
+.hidden-systems__pxpush-px-art {
   position: absolute;
   display: block;
   inset: vw(0);
@@ -451,7 +451,7 @@
     font-size: vw(123);
   }
 
-  .hidden-systems__node-033,
+  .hidden-systems__pxpush-cell,
   .hidden-systems__node-041,
   .hidden-systems__node-046,
   .hidden-systems__node-049 {
@@ -473,8 +473,8 @@
     top: calc(50% + #{vw(8)});
   }
 
-  .hidden-systems__node-035,
-  .hidden-systems__node-039 {
+  .hidden-systems__pxpush-push,
+  .hidden-systems__pxpush-px-art {
     transform: translateY(vw(5)) scale(1.05);
     transform-origin: center;
   }
@@ -557,7 +557,7 @@
     height: vw(808);
   }
 
-  .hidden-systems__node-033,
+  .hidden-systems__pxpush-cell,
   .hidden-systems__node-041,
   .hidden-systems__node-046,
   .hidden-systems__node-049 {
@@ -568,30 +568,34 @@
     overflow: visible;
   }
 
-  .hidden-systems__node-033 { left: 0; top: 0; }
+  // Mobile mockup (375 @2x): the full "px push" mark is 104 × 17px at 47 / 97.
+  // The cell keeps the desktop 335 × 172 proportions, so the desktop inset
+  // percentages of both parts ("px" + "push") place the mark there.
+  .hidden-systems__pxpush-cell {
+    left: vw(30);
+    top: vw(125.5);
+    width: vw(335);
+    height: vw(172);
+  }
   .hidden-systems__node-041 { left: vw(375); top: 0; }
   .hidden-systems__node-046 { left: 0; top: vw(386); }
   .hidden-systems__node-049 { left: vw(375); top: vw(386); }
 
-  .hidden-systems__node-035 {
-    left: vw(94);
-    top: vw(195);
-    width: vw(208);
-    height: vw(34);
+  // Reset the compact-portrait nudge; mobile uses the desktop geometry.
+  .hidden-systems__pxpush-push,
+  .hidden-systems__pxpush-px-art {
     transform: none;
   }
 
   .hidden-systems__node-036,
-  .hidden-systems__node-039,
+  .hidden-systems__pxpush-px-art,
   .hidden-systems__node-043 {
     height: 100%;
   }
 
-  .hidden-systems__node-038 { display: none; }
-
   .hidden-systems__node-042 {
     left: vw(115);
-    top: vw(151);
+    top: vw(150.5);
     width: vw(123);
     height: vw(121);
     transform: none;

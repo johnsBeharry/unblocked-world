@@ -35,7 +35,9 @@
     right: vw(20);
     width: vw(690);
     position: absolute;
-    grid-template-columns: 1fr 1fr;
+    // minmax(0, …): keep the columns equal; plain 1fr grows to the widest
+    // nowrap RevealText line and pushes the block past the right edge.
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   // Compact-portrait copy (tablet/mobile mockups); desktop keeps .content.

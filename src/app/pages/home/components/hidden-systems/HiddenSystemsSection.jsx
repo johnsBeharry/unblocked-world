@@ -61,7 +61,7 @@ export default function HiddenSystemsSection({ reveal = true }) {
             ease={INTRO_EASE}
             delay={introDelay(1)}
           >
-            Hidden
+            Different
           </RevealText>
         </div>
         <p
@@ -96,7 +96,7 @@ export default function HiddenSystemsSection({ reveal = true }) {
             ease={INTRO_EASE}
             delay={introDelay(3)}
           >
-            Systems
+            Perspectives
           </RevealText>
           <RevealText
             as="p"
@@ -138,27 +138,26 @@ export default function HiddenSystemsSection({ reveal = true }) {
             className={styles["hidden-systems__node-011"]}
             enabled={reveal}
           >
-            Through public participation. Through questions
+            Through creative work. Through open questions.
           </RevealText>
           <RevealText
             as="p"
             className={styles["hidden-systems__node-012"]}
             enabled={reveal}
           >
-            Through people who refuse to treat the current arrangement as
-            permanent.
+            Through people who bring their own perspectives to the systems we
+            share.
           </RevealText>
           <p className={styles["hidden-systems__mobile-copy"]}>
+            <RevealText enabled={reveal}>Through creative work.</RevealText>
+            <RevealText enabled={reveal}>Through open questions.</RevealText>
             <RevealText enabled={reveal}>
-              Through public participation. Through
+              Through people who see things
             </RevealText>
             <RevealText enabled={reveal}>
-              questions Through people who
+              differently and imagine what
             </RevealText>
-            <RevealText enabled={reveal}>
-              refuse to treat the current
-            </RevealText>
-            <RevealText enabled={reveal}>arrangement as permanent.</RevealText>
+            <RevealText enabled={reveal}>else might be possible.</RevealText>
           </p>
         </div>
         <RevealText

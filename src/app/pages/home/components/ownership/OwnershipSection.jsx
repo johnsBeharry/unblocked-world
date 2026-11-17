@@ -21,7 +21,6 @@ export default function OwnershipSection() {
         </>
       }
       sideLabel="Dependence"
-      barCount={20}
     />
   );
 }

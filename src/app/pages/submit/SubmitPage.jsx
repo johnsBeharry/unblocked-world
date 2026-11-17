@@ -709,7 +709,7 @@ export function SubmitPage({ initialStep = 0 }) {
   return (
     <main className={`${styles.page} ${showPosterDetails ? styles.editing : ''} ${showSuccess ? styles.success : ''} ${showAccount ? styles.account : ''} ${introPending ? styles.introPending : ''}`} data-name="submit-index">
       <section className={styles.identity} aria-label="Ownership theme">
-        <a className={styles.homeLink} href="/" onClick={handleHomeClick}>(←) Home</a>
+        <RevealRow as="a" line={false} pinned className={styles.homeLink} href="/" onClick={handleHomeClick}>(←) Home</RevealRow>
         <SubmitArtwork introRef={artIntroRef} />
         <RevealText as="h1">Ownership</RevealText>
       </section>
@@ -802,17 +802,17 @@ export function SubmitPage({ initialStep = 0 }) {
                     <ul>
                       {rules.map(rule => <RevealRow key={rule} line={false}>{rule}</RevealRow>)}
                     </ul>
-                    <button className={styles.submitLink} type="button" onClick={() => setStep(1)}>Enter Submission (→)</button>
+                    <RevealRow as="button" line={false} pinned className={styles.submitLink} type="button" onClick={() => setStep(1)}>Enter Submission (→)</RevealRow>
                 </div>}
         </div>
-        {showManage && <button className={styles.submitLink} type="button" onClick={openSubmitFromManage}>{draftCount ? `Submit Poster (${String(draftCount).padStart(2, '0')})` : 'Submit Poster (→)'}</button>}
+        {showManage && <RevealRow as="button" line={false} pinned className={styles.submitLink} type="button" onClick={openSubmitFromManage}>{draftCount ? `Submit Poster (${String(draftCount).padStart(2, '0')})` : 'Submit Poster (→)'}</RevealRow>}
         {showContact && !showAccount && <SubmitFooterNav nextLabel={joinMode === 'join' ? contactNextLabel : null} nextLabelMobile={contactBusy ? undefined : 'Poster'} disabled={contactBusy} onBack={handleContactBack} onNext={handleContactNext} />}
         {/* Add a Poster: (←) back to the entries list, Continue saves. */}
         {/* Mobile Add a Poster header (mockup): Cancel → entries, Save. */}
         {showPosterDetails && (
           <div className={styles.editorBar}>
-            <button type="button" disabled={saveState === 'saving'} onClick={() => { setSaveError(''); setSaveState('idle'); setStep(2) }}>Cancel</button>
-            <button type="button" disabled={saveState === 'saving'} onClick={handlePosterSave}>{saveState === 'saving' ? 'Saving…' : 'Save'}</button>
+            <RevealRow as="button" line={false} pinned type="button" disabled={saveState === 'saving'} onClick={() => { setSaveError(''); setSaveState('idle'); setStep(2) }}>Cancel</RevealRow>
+            <RevealRow as="button" line={false} pinned type="button" disabled={saveState === 'saving'} onClick={handlePosterSave}>{saveState === 'saving' ? 'Saving…' : 'Save'}</RevealRow>
           </div>
         )}
         {showPosterDetails && <SubmitFooterNav className={styles.mobileHidden} nextLabel={saveState === 'saving' ? 'Saving…' : 'Continue'} disabled={saveState === 'saving'} onBack={() => { if (saveState === 'saving') return; setSaveError(''); setSaveState('idle'); setStep(2) }} onNext={handlePosterSave} />}

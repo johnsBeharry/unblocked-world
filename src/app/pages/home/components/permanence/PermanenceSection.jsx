@@ -12,7 +12,6 @@ export default function PermanenceSection() {
       question="Why is everything disposable?"
       description="Products. Memories. Platforms. Relationships. Why are so many things designed to disappear?"
       sideLabel="Decay"
-      barCount={18}
     />
   );
 }

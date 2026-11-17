@@ -15,20 +15,17 @@
   position: relative;
   z-index: 1;
   width: vw(1440);
-  height: vw(640);
+  // Full screen on every desktop size (user request 2026-11-17; was the
+  // 640px Permanence mockup height, full screen only on wide screens).
+  height: 100vh;
+  height: 100svh; // visible height, without mobile browser bars
   overflow: clip;
   box-sizing: border-box;
   background-color: var(--theme-bg);
 
-  @include wideScreen {
-    height: 100vh;
-  }
-
-  // Full screen on tablet (the 864 × 1238 mockup is one viewport).
+  // Full screen on tablet too (the 864 × 1238 mockup is one viewport).
   @include tablet {
     width: 100%;
-    height: 100vh;
-    height: 100svh; // visible height, without mobile browser bars
   }
 
   @include mobile {
@@ -108,9 +105,12 @@
       }
 
       .content__rule {
+        position: relative;
         width: vw(433);
         height: vw(280);
+        overflow: clip;
         background-color: #101010;
+        color: var(--theme-art-color, var(--theme-bg));
 
         @include tablet {
           width: 100%;
@@ -182,6 +182,48 @@
     }
   }
 
+  // Theme mark in the dark box (user request 2026-11-17: the Grants
+  // principle-card artwork). Native size like the cards (1 SVG unit = 1
+  // design px; tablet × 1.5, mobile × 0.8 to fit the box). The geometry is
+  // exported tilted; it is turned back by the card angle so it sits level,
+  // as on the straight (mobile) Grants cards.
+  &__art {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: calc(var(--art-units) * #{vw(1)});
+    height: auto;
+    transform: translate(-50%, -50%) rotate(calc(-1 * var(--art-angle)));
+
+    @include tablet {
+      width: calc(var(--art-units) * #{vw(1.5)});
+    }
+
+    @include mobile {
+      width: calc(var(--art-units) * #{vw(1.6)});
+    }
+  }
+
+  &--ownership {
+    --art-units: 223;
+    --art-angle: -20deg;
+  }
+
+  &--permanence {
+    --art-units: 207;
+    --art-angle: -5deg;
+  }
+
+  &--energy {
+    --art-units: 208;
+    --art-angle: 5deg;
+  }
+
+  &--peers {
+    --art-units: 234;
+    --art-angle: 20deg;
+  }
+
   // Desktop-only line breaks inside descriptions.
   &__desktop-break,
   &__mobile-break {
@@ -194,17 +236,9 @@
 .frame {
   position: relative;
   width: 100%;
-  height: vw(640);
-
   // Must mirror the section height so stacked frames never overlap.
-  @include wideScreen {
-    height: 100vh;
-  }
-
-  @include tablet {
-    height: 100vh;
-    height: 100svh;
-  }
+  height: 100vh;
+  height: 100svh;
 
   @include mobile {
     height: vw(1336);

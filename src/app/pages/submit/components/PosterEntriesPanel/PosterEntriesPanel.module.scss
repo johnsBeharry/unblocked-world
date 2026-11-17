@@ -42,9 +42,7 @@
 
   // Add card: 64px, "(+)" ink 25.5px in, 10px before the label (16px text).
   &__add {
-    display: flex;
-    align-items: center;
-    gap: vw(10);
+    display: block;
     box-sizing: border-box;
     width: 100%;
     height: vw(64);
@@ -60,7 +58,6 @@
     line-height: 1.02;
 
     @include mobile {
-      gap: vw(20);
       height: vw(128);
       margin-top: vw(94);
       padding: 0 vw(48) 0 vw(51);
@@ -73,6 +70,18 @@
       outline-offset: vw(-8);
     }
   }
+  // The add card reveals with RevealRow; "(+)" and the label sit in its
+  // content span (vertically centred in the 64px card).
+  &__add-row {
+    display: flex;
+    align-items: center;
+    gap: vw(10);
+
+    @include mobile {
+      gap: vw(20);
+    }
+  }
+
 
   &__inner &__empty {
     margin: vw(24) 0 0;

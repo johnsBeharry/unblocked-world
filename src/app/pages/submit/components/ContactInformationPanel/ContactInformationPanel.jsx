@@ -111,12 +111,12 @@ export function ContactInformationPanel({
             {verification.error && <p className={styles['contact-panel__error']} role="alert">{verification.error}</p>}
           </div>
         ) : (<>
-        <p className={styles['contact-panel__switch']}>
+        <RevealRow as="p" line={false} className={styles['contact-panel__switch']}>
           <span className={styles['contact-panel__switch-prompt']}>{joining ? 'Already joined? ' : 'New here? '}</span>
           <button type="button" className={styles['contact-panel__inline-link']} disabled={codeSent} onClick={() => onModeChange?.(joining ? 'signin' : 'join')}>
             {joining ? 'Sign in' : 'Join UNBLOCKED'}
           </button>
-        </p>
+        </RevealRow>
         <form
           className={styles['contact-panel__form']}
           onSubmit={(event) => {
@@ -149,7 +149,7 @@ export function ContactInformationPanel({
           )}
           {verification.error && <p className={styles['contact-panel__error']} role="alert">{verification.error}</p>}
           {!joining && (
-            <button type="submit" className={styles['contact-panel__submit']} disabled={submitDisabled}>{submitLabel} (→)</button>
+            <RevealRow as="button" line={false} type="submit" className={styles['contact-panel__submit']} disabled={submitDisabled}>{submitLabel} (→)</RevealRow>
           )}
         </form>
         </>)}

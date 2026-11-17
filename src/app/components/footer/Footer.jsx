@@ -2,6 +2,7 @@ import React from "react";
 import { gsap } from "gsap";
 import styles from "./Footer.module.scss";
 import { RevealText } from "../../../components/RevealText/RevealText.jsx";
+import { RevealRow } from "../../../components/RevealRow/RevealRow.jsx";
 import SubmitWorkSection from "./submit-work/SubmitWorkSection.jsx";
 import { BrandLogo } from "../logo/index.jsx";
 
@@ -142,24 +143,28 @@ export function Footer({ color = FOOTER_COLORS.home, ctaVariant = "default" }) {
               Explore
             </RevealText>
             <div className={styles.menu}>
-              <a
+              <RevealRow
+                as="a"
+                line={false}
                 className={`${styles.text} ${styles.ownership}`}
                 href="/posters"
               >
                 Ownership
-              </a>
-              <a className={styles.text} href="/grants">
+              </RevealRow>
+              <RevealRow as="a" line={false} className={styles.text} href="/grants">
                 Grants
-              </a>
-              <a
+              </RevealRow>
+              <RevealRow
+                as="a"
+                line={false}
                 className={`${styles.text} ${styles.guidelines}`}
                 href="/guidelines"
               >
                 Guidelines
-              </a>
-              <a className={`${styles.text} ${styles.submit}`} href="/submit">
+              </RevealRow>
+              <RevealRow as="a" line={false} className={`${styles.text} ${styles.submit}`} href="/submit">
                 (→) Submit
-              </a>
+              </RevealRow>
             </div>
           </div>
 
@@ -169,16 +174,18 @@ export function Footer({ color = FOOTER_COLORS.home, ctaVariant = "default" }) {
             </RevealText>
 
             <div className={styles.menu}>
-              <a
+              <RevealRow
+                as="a"
+                line={false}
                 href="https://www.instagram.com"
                 target="_blank"
                 rel="noreferrer"
               >
                 Instagram
-              </a>
-              <a href="https://twitter.com" target="_blank" rel="noreferrer">
+              </RevealRow>
+              <RevealRow as="a" line={false} href="https://twitter.com" target="_blank" rel="noreferrer">
                 Twitter (X)
-              </a>
+              </RevealRow>
             </div>
           </div>
 
@@ -187,20 +194,22 @@ export function Footer({ color = FOOTER_COLORS.home, ctaVariant = "default" }) {
               Question Everything
             </RevealText>
             <div className={styles.menu}>
-              <a className={styles.email} href="mailto:hello@unblocked.net">
+              <RevealRow as="a" line={false} className={styles.email} href="mailto:hello@unblocked.net">
                 (hello@unblocked.net)
-              </a>
+              </RevealRow>
             </div>
           </div>
           <div className={`${styles.backToTop} ${styles["desktop"]}`}>
-            <a href="#top">Back to Top (↑)</a>
+            <RevealRow as="a" line={false} href="#top">Back to Top (↑)</RevealRow>
           </div>
         </div>
         <div className={`${styles["main__content"]}`}>
           <div className={`${styles.backToTop} ${styles["mobile-back-to-top"]}`}>
-            <a href="#top">
+            {/* Last row of the page: it stays in the bottom 10% band at the
+                page end, so it uses the whole-viewport (pinned) observer. */}
+            <RevealRow as="a" line={false} pinned href="#top">
               <span className={styles.backToTopLabel}>Back to Top </span>(↑)
-            </a>
+            </RevealRow>
           </div>
           <RevealText
             as="p"
@@ -219,9 +228,9 @@ export function Footer({ color = FOOTER_COLORS.home, ctaVariant = "default" }) {
               Question Everything
             </RevealText>
             <div className={styles.menu}>
-              <a className={styles.email} href="mailto:hello@unblocked.net">
+              <RevealRow as="a" line={false} className={styles.email} href="mailto:hello@unblocked.net">
                 (hello@unblocked.net)
-              </a>
+              </RevealRow>
             </div>
           </div>
 

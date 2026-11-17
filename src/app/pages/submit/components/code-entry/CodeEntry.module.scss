@@ -55,14 +55,21 @@
   // Scoped under the block: SubmitPage's `.content p { margin: 0 }` (0,1,1)
   // beats a single class.
   & &__actions {
-    display: flex;
-    align-items: baseline;
-    gap: vw(6);
     margin-top: var(--code-entry-actions-gap, #{vw(47)});
 
     @include mobile {
-      gap: vw(12);
       margin-top: var(--code-entry-actions-gap-mobile, #{vw(96)});
+    }
+  }
+
+  // The actions line reveals with RevealRow; its flex row is the content span.
+  &__actions-row {
+    display: flex;
+    align-items: baseline;
+    gap: vw(6);
+
+    @include mobile {
+      gap: vw(12);
     }
   }
 

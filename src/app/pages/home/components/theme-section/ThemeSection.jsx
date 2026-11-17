@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./ThemeSection.module.scss";
 import { RevealText } from "../../../../../components/RevealText/RevealText.jsx";
+import { ThemeArtwork } from "../../../../components/theme-artwork/ThemeArtwork.jsx";
 
 export function ThemeSection({
   variant,
@@ -10,7 +11,6 @@ export function ThemeSection({
   description,
   sideLabel,
   versus = "(vs)",
-  barCount,
   backgroundColor,
   reveal = true,
 }) {
@@ -19,7 +19,7 @@ export function ThemeSection({
       <section
         id={variant}
         className={`${styles["theme-section"]} ${styles[`theme-section--${variant}`]}`}
-        style={{ backgroundColor }}
+        style={{ backgroundColor, "--theme-art-color": backgroundColor }}
         data-name={variant}
         data-theme-section
       >
@@ -41,14 +41,6 @@ export function ThemeSection({
             </RevealText>
           </div>
 
-          {/* <div className={styles["theme-section__art"]} aria-hidden="true">
-          {Array.from({ length: barCount }, (_, i) => (
-            <div
-              key={i}
-              className={`${styles["theme-section__bar"]} ${styles[`theme-section__bar--${String(i + 1).padStart(2, "0")}`]}`}
-            />
-          ))}
-        </div> */}
 
           <div className={styles["theme-section__pin-meta"]}>
             <div className={styles["theme-section__pin-meta-header"]}>
@@ -74,6 +66,9 @@ export function ThemeSection({
                 data-name="line"
                 aria-hidden="true"
               >
+                {/* Theme mark (same artwork as the Grants principle cards),
+                    in the section colour on the dark box. */}
+                <ThemeArtwork theme={variant} className={styles["theme-section__art"]} />
                 <div className={styles["theme-section__rule-inset"]}>
                   <svg
                     className={styles["theme-section__rule-svg"]}

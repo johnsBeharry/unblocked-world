@@ -1,5 +1,6 @@
 import React, { useRef } from 'react'
 import styles from './CodeEntry.module.scss'
+import { RevealRow } from '../../../../../components/RevealRow/RevealRow.jsx'
 
 // Email code entry shared by the Join / Sign In code screens and the Change
 // Email popup (2026-11-17 references): six digit boxes (typing or pasting
@@ -54,12 +55,12 @@ export function CodeEntry({ value, onChange, busy = false, checking = false, onR
   return (
     <div className={`${styles['code-entry']} ${className}`}>
       <CodeInput value={value} onChange={onChange} />
-      <p className={styles['code-entry__actions']}>
+      <RevealRow as="p" line={false} className={styles['code-entry__actions']} contentClassName={styles['code-entry__actions-row']}>
         <button type="button" className={styles['code-entry__action']} disabled={busy} onClick={onResend}>(Resend Code)</button>
         <span aria-hidden="true">•</span>
         <button type="button" className={styles['code-entry__action']} disabled={busy} onClick={onChangeEmail}>(Change Email)</button>
-      </p>
-      <p className={styles['code-entry__note']}>{checking ? 'Checking the code…' : 'Or click the link in the email'}</p>
+      </RevealRow>
+      <RevealRow as="p" line={false} className={styles['code-entry__note']}>{checking ? 'Checking the code…' : 'Or click the link in the email'}</RevealRow>
     </div>
   )
 }

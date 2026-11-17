@@ -19,8 +19,10 @@
     width: vw(406);
     margin-left: vw(229);
     padding-top: vw(119);
-    // Reference column ends 115.5px under the terms text (the 114px fade).
-    padding-bottom: vw(94);
+    // The reference column ends 115.5px under the terms text, right on the
+    // 114px bottom fade; like every other step the last text now ends 24px
+    // above it (user request 2026-11-17).
+    padding-bottom: vw(117);
 
     @include tablet-portrait {
       padding-top: vw(278);

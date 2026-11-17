@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from './ProfilePanel.module.scss'
 import { RevealText } from '../../../../../components/RevealText/RevealText.jsx'
+import { RevealRow } from '../../../../../components/RevealRow/RevealRow.jsx'
 import { SelectPanel } from '../SelectPanel/SelectPanel.jsx'
 import { FormField, formFieldStyles as field } from '../form-field/FormField.jsx'
 import { PhotoField } from '../ContactInformationPanel/ContactInformationPanel.jsx'
@@ -28,7 +29,7 @@ export function ProfilePanel({ value = {}, onChange, onPhotoChange, onChangeEmai
               <button type="button" className={styles['profile-panel__change-email']} disabled={busy} onClick={onChangeEmail}>(Change Email)</button>
             </span>
           </FormField>
-          <span className={styles['profile-panel__verified']}>verified</span>
+          <RevealRow as="span" line={false} className={styles['profile-panel__verified']}>verified</RevealRow>
           {TEXT_FIELDS.map(item => (
             <FormField label={item.label} filled={Boolean(value[item.name])} chevron={item.select} key={item.name}>
               {item.select

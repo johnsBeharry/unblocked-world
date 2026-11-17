@@ -6,13 +6,16 @@ import styles from "./ProgramsSection.module.scss";
 
 // Scroll experience: both program cards open with a top -> bottom mask,
 // staggered. (No column drift: the cards sit edge to edge, so an offset reads
-// as a misalignment.)
+// as a misalignment.) User request 2026-11-17: smoother and a bit slower —
+// the shared expo.out 1.2s did nearly the whole wipe in the first ~0.15s on
+// these tall cards and read as a glitch; power2.inOut over 1.6s, 0.25s apart.
+const CARD_REVEAL = { from: "top", duration: 1.6, ease: "power2.inOut", stagger: 0.25 };
 function useProgramsMotion(blocksRef) {
   useLayoutEffect(() => {
     const blocks = blocksRef.current;
     if (!blocks || prefersReducedMotion()) return undefined;
     const ctx = gsap.context(() => {
-      revealFrames([...blocks.children], { from: "top", stagger: 0.15 });
+      revealFrames([...blocks.children], CARD_REVEAL);
     }, blocks);
     return () => ctx.revert();
   }, [blocksRef]);

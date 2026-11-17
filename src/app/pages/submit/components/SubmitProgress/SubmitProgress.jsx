@@ -1,4 +1,5 @@
 import styles from "./SubmitProgress.module.scss";
+import { RevealRow } from "../../../../../components/RevealRow/RevealRow.jsx";
 
 export function SubmitProgress({
   activeStep = 1,
@@ -19,13 +20,16 @@ export function SubmitProgress({
       <div className={styles.progressBar} style={{ "--progress": progress }} />
       <ol>
         {steps.map((step, index) => (
-          <li
+          <RevealRow
+            as="li"
+            line={false}
+            pinned
             className={index + 1 === activeStep ? styles.active : ""}
             key={step}
           >
             ({String(index + 1).padStart(2, "0")})
             {index + 1 === activeStep && <span className={styles.stepLabel}> {step}</span>}
-          </li>
+          </RevealRow>
         ))}
       </ol>
     </aside>

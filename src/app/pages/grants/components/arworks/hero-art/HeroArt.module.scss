@@ -2,3 +2,10 @@
   width: 100%;
   height: auto;
 }
+
+// Opening core of the entrance (HeroArt.jsx): not part of the mockup, so it
+// is hidden unless the entrance runs (the build shows it before first paint;
+// reduced motion keeps it hidden).
+.core {
+  display: none;
+}

@@ -10,7 +10,6 @@ export default function PeersSection() {
       question="Who decides what matters?"
       description="We are more connected than ever. Yet increasingly separated from each other. What happens when people build directly together again?"
       sideLabel="Hierarchies"
-      barCount={17}
     />
   );
 }

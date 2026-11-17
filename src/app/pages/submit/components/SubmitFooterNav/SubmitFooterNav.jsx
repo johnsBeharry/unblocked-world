@@ -1,5 +1,6 @@
 import React from 'react'
 import styles from './SubmitFooterNav.module.scss'
+import { RevealRow } from '../../../../../components/RevealRow/RevealRow.jsx'
 
 export function SubmitFooterNav({ backHref = '/submit', nextHref = '#', nextLabel = 'Next', nextLabelMobile, onBack, onNext, disabled = false, className = '' }) {
   const nextText = nextLabelMobile
@@ -7,9 +8,9 @@ export function SubmitFooterNav({ backHref = '/submit', nextHref = '#', nextLabe
     : nextLabel
   return (
     <nav className={`${styles.nav} ${className}`} aria-label="Submission navigation">
-      {onBack ? <button className={styles.link} type="button" onClick={onBack}>(←)</button> : <a className={styles.link} href={backHref}>(←)</a>}
+      {onBack ? <RevealRow as="button" line={false} pinned className={styles.link} type="button" onClick={onBack}>(←)</RevealRow> : <RevealRow as="a" line={false} pinned className={styles.link} href={backHref}>(←)</RevealRow>}
       {/* nextLabel null: the step renders its own next action (Sign in). */}
-      {nextLabel && (onNext ? <button className={styles.link} type="button" disabled={disabled} onClick={onNext}>{nextText} (→)</button> : <a className={styles.link} href={nextHref}>{nextText} (→)</a>)}
+      {nextLabel && (onNext ? <RevealRow as="button" line={false} pinned className={styles.link} type="button" disabled={disabled} onClick={onNext}>{nextText} (→)</RevealRow> : <RevealRow as="a" line={false} pinned className={styles.link} href={nextHref}>{nextText} (→)</RevealRow>)}
     </nav>
   )
 }

@@ -42,8 +42,15 @@ export function ThemeSectionStack({ children }) {
         !plain && isTall(k)
           ? window.innerHeight - frames[k].offsetHeight
           : baseTop(k);
+      // Flow position of frame k: heights plus the reading-time spacer
+      // (margin-bottom) that every frame but the last carries.
       const flowTop = (k) =>
-        frames.slice(0, k).reduce((t, f) => t + f.offsetHeight, 0);
+        frames
+          .slice(0, k)
+          .reduce(
+            (t, f) => t + f.offsetHeight + parseFloat(getComputedStyle(f).marginBottom || 0),
+            0,
+          );
       // px section k yang ketutup di bawah viewport saat pin di bawah header
       const overflow = (k) =>
         Math.max(0, frames[k].offsetHeight - (window.innerHeight - baseTop(k)));

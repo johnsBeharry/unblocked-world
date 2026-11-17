@@ -57,7 +57,7 @@ export function GuidelinesContent() {
         </h1>
       </header>
       <div className={styles.contentGrid}>
-        <aside><div className={styles.stickyNavigation}><Label>Sections</Label><nav ref={navRef} aria-label="Submission guide sections" className={styles.navigation}>{navigation.map(({ id, title }) => <a key={id} href={`#${id}`} aria-current={activeSection === id ? 'location' : undefined} onClick={() => setActiveSection(id)} className={styles.navLink}>{title}<span className={styles.navFill} aria-hidden="true">{title}</span></a>)}</nav></div></aside>
+        <aside><div className={styles.stickyNavigation}><Label>Sections</Label><nav ref={navRef} aria-label="Submission guide sections" className={styles.navigation}>{navigation.map(({ id, title }) => <RevealRow as="a" line={false} key={id} href={`#${id}`} aria-current={activeSection === id ? 'location' : undefined} onClick={() => setActiveSection(id)} className={styles.navLink}>{title}<span className={styles.navFill} aria-hidden="true">{title}</span></RevealRow>)}</nav></div></aside>
         <div className={styles.contentSections}>
           {sections.map(section => <GuidelineSection key={section.id} id={section.id} title={section.title} description={section.description} items={section.items} ordered={section.id === 'submission-process'} />)}
           <section id="judging-process" className={styles.guideSection} aria-labelledby="judging-title">

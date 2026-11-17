@@ -81,8 +81,11 @@ export function PosterEntriesPanel({ entries = [], onAdd, onEdit, onRemove }) {
     <section className={`${styles['poster-entries']} ${entries.length ? styles['poster-entries--filled'] : ''}`} aria-labelledby="poster-entries-title">
       <div className={styles['poster-entries__inner']}>
         <RevealText as="h1" id="poster-entries-title" className={styles['poster-entries__title']}>Your Entries</RevealText>
-        <button
+        <RevealRow
+          as="button"
+          line={false}
           className={`${styles['poster-entries__add']} ${dragging ? styles['poster-entries__add--dragging'] : ''}`}
+          contentClassName={styles['poster-entries__add-row']}
           type="button"
           onClick={() => onAdd?.()}
           onDragOver={(event) => { event.preventDefault(); setDragging(true) }}
@@ -91,7 +94,7 @@ export function PosterEntriesPanel({ entries = [], onAdd, onEdit, onRemove }) {
         >
           <span aria-hidden="true">(+)</span>
           <span>{dragging ? 'Drop to add' : 'Add a Poster'}</span>
-        </button>
+        </RevealRow>
         {entries.length === 0 && (
           <p className={styles['poster-entries__empty']}>Nothing here yet. Add your first poster above. It saves as you go, so you can finish it later.</p>
         )}

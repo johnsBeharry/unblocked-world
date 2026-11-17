@@ -55,10 +55,11 @@ export function slideLinesIn(trigger, lines, step = 60) {
 // Each frame is a stationary clip-path mask that opens bottom -> top
 // (`from: "bottom"`) or top -> bottom (`from: "top"`); its first child (when
 // `zoom` is set) zooms out from `zoom` to 1 inside it.
-// Frames entering together play as one staggered batch, once.
+// Frames entering together play as one staggered batch, once. `ease` (default
+// expo.out) sets the mask curve; tall frames read better with an in-out curve.
 export function revealFrames(
   frames,
-  { from = "bottom", zoom = null, duration = 1.2, stagger = 0.1 } = {},
+  { from = "bottom", zoom = null, duration = 1.2, stagger = 0.1, ease = "expo.out" } = {},
 ) {
   const inner = (frame) => frame.firstElementChild;
   const hidden = from === "top" ? "inset(0% 0% 100% 0%)" : "inset(100% 0% 0% 0%)";
@@ -72,7 +73,7 @@ export function revealFrames(
       tl.to(batch, {
         clipPath: "inset(0% 0% 0% 0%)",
         duration,
-        ease: "expo.out",
+        ease,
         stagger,
       }, 0);
       if (zoom)

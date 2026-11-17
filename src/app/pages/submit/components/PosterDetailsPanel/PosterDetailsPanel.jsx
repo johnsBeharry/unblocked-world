@@ -3,6 +3,7 @@ import styles from './PosterDetailsPanel.module.scss'
 import { RevealText } from '../../../../../components/RevealText/RevealText.jsx'
 import { SelectPanel } from '../SelectPanel/SelectPanel.jsx'
 import { FormField, formFieldStyles as field } from '../form-field/FormField.jsx'
+import { RevealRow } from '../../../../../components/RevealRow/RevealRow.jsx'
 
 // Add a Poster (fields and limits follow the reference form; layout and copy
 // the user's 2026-11-17 Add a Poster column reference).
@@ -42,9 +43,9 @@ function UploadCard({ title, description, files, multiple = false, onFiles }) {
       }}
     >
       <input className={styles['poster-upload__file']} type="file" accept={POSTER_ACCEPT} multiple={multiple} onChange={event => onFiles(Array.from(event.target.files || []))} />
-      <span className={styles['poster-upload__title']}>{title}</span>
-      {hint && <span className={styles['poster-upload__hint']}>{hint}</span>}
-      <span className={styles['poster-upload__action']}>{dragging ? 'Drop to add' : 'Browse'}</span>
+      <RevealRow as="span" line={false} className={styles['poster-upload__title']}>{title}</RevealRow>
+      {hint && <RevealRow as="span" line={false} className={styles['poster-upload__hint']}>{hint}</RevealRow>}
+      <RevealRow as="span" line={false} className={styles['poster-upload__action']}>{dragging ? 'Drop to add' : 'Browse'}</RevealRow>
     </label>
   )
 }

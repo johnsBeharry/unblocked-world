@@ -26,6 +26,9 @@
 }
 
 .progress ol {
+  // No markers: the rows reveal with RevealRow, whose content becomes the
+  // list item (a default marker would show inside its widened mask).
+  list-style: none;
   position: absolute;
   top: vw(34);
   left: vw(38);

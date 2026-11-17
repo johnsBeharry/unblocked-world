@@ -11,7 +11,6 @@ export default function EnergySection() {
       question="When did exhaustion become normal?"
       description="Scarcity is not the natural state of human beings. What becomes possible when we stop accepting stagnation as progress?"
       sideLabel="Stagnation"
-      barCount={22}
     />
   );
 }

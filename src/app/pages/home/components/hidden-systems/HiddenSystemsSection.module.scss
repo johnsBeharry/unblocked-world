@@ -247,13 +247,15 @@
   display: flex;
   gap: vw(20);
   align-items: center;
+  // Two logos for now: centred, each keeping its four-up cell width.
+  justify-content: center;
   left: vw(20);
   top: vw(1492);
   width: vw(1400);
 }
 
 .hidden-systems__pxpush-cell {
-  flex: 1 0 0;
+  flex: 0 0 calc((100% - #{vw(60)}) / 4);
   height: vw(172);
   min-width: vw(1);
   overflow: clip;
@@ -291,7 +293,7 @@
 }
 
 .hidden-systems__node-041 {
-  flex: 1 0 0;
+  flex: 0 0 calc((100% - #{vw(60)}) / 4);
   height: vw(172);
   min-width: vw(1);
   overflow: clip;
@@ -483,7 +485,8 @@
 @include mobile {
   .hidden-systems {
     width: 100vw;
-    height: vw(2144);
+    // Logo row top (1336) + one row of logos (386); was two rows (808).
+    height: vw(1722);
     overflow: visible;
   }
 
@@ -554,7 +557,7 @@
     left: 0;
     top: vw(1336);
     width: 100%;
-    height: vw(808);
+    height: vw(386);
   }
 
   .hidden-systems__pxpush-cell,

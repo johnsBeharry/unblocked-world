@@ -121,24 +121,24 @@ export function HeroSection({ reveal = true }) {
           enabled={reveal}
           {...firstScreen}
         >
-          The World Isn’t Inevitable
+          Different Perspectives
         </RevealText>
         <RevealText as="p" enabled={reveal} {...firstScreen}>
-          Everything around us was designed by someone. The systems. The
-          platforms. The institutions. The incentives. The habits. They were
-          built. Which means they can be questioned.
+          The systems around us shape how we live. What we own. What we keep.
+          How we use energy. How we relate to one another. These are shared
+          questions, open to different interpretations.
         </RevealText>
       </div>
       <div className={styles["content"]}>
         <RevealText as="p" className={styles["text"]} enabled={reveal}>
-          Everything around us was designed by someone. The systems, platforms,
-          institutions, incentives, and habits that shape our lives were all
-          built through human choices.
+          Most of the systems that shape our lives were designed by someone.
+          They influence what we own, what we keep, how we use energy, and how
+          we live together.
         </RevealText>
         <RevealText as="p" className={styles["text"]} enabled={reveal}>
-          And what has been built can be questioned and challenged. We don't
-          have to accept the world as it is. We have the power to imagine
-          something different.
+          These are shared questions, but there are no single answers. We bring
+          artists, designers and makers together to explore them through
+          independent perspectives and creative work.
         </RevealText>
       </div>
       <HeroArtwork compactArtwork />

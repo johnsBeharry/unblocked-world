@@ -134,9 +134,8 @@ export function Footer({ color = FOOTER_COLORS.home, ctaVariant = "default" }) {
             as="p"
             className={`${styles.text} ${styles.description} ${styles["mobile-description"]}`}
           >
-            Exploring ownership, permanence, energy and peers through art,
-            design and culture. Built through participation, dialogue and
-            creative expression.
+            Exploring ownership, permanence, energy and peers through
+            independent creative work, open calls, grants and residencies.
           </RevealText>
 
           <div>
@@ -178,13 +177,13 @@ export function Footer({ color = FOOTER_COLORS.home, ctaVariant = "default" }) {
               <RevealRow
                 as="a"
                 line={false}
-                href="https://www.instagram.com"
+                href="https://www.instagram.com/unblocked.world"
                 target="_blank"
                 rel="noreferrer"
               >
                 <RollingText dim text="Instagram" />
               </RevealRow>
-              <RevealRow as="a" line={false} href="https://twitter.com" target="_blank" rel="noreferrer">
+              <RevealRow as="a" line={false} href="https://x.com/johnsBeharry" target="_blank" rel="noreferrer">
                 <RollingText dim text="Twitter (X)" />
               </RevealRow>
             </div>
@@ -195,8 +194,8 @@ export function Footer({ color = FOOTER_COLORS.home, ctaVariant = "default" }) {
               Question Everything
             </RevealText>
             <div className={styles.menu}>
-              <RevealRow as="a" line={false} className={styles.email} href="mailto:hello@unblocked.net">
-                <RollingText dim text="(hello@unblocked.net)" />
+              <RevealRow as="a" line={false} className={styles.email} href="mailto:ask@unblocked.world">
+                <RollingText dim text="(ask@unblocked.world)" />
               </RevealRow>
             </div>
           </div>
@@ -217,9 +216,8 @@ export function Footer({ color = FOOTER_COLORS.home, ctaVariant = "default" }) {
             as="p"
             className={`${styles.text} ${styles.description} ${styles["desktop"]}`}
           >
-            Exploring ownership, permanence, energy and peers through art,
-            design and culture. Built through participation, dialogue and
-            creative expression.
+            Exploring ownership, permanence, energy and peers through
+            independent creative work, open calls, grants and residencies.
           </RevealText>
 
           <div className={`${styles["desktop"]}`}>
@@ -230,8 +228,8 @@ export function Footer({ color = FOOTER_COLORS.home, ctaVariant = "default" }) {
               Question Everything
             </RevealText>
             <div className={styles.menu}>
-              <RevealRow as="a" line={false} className={styles.email} href="mailto:hello@unblocked.net">
-                <RollingText dim text="(hello@unblocked.net)" />
+              <RevealRow as="a" line={false} className={styles.email} href="mailto:ask@unblocked.world">
+                <RollingText dim text="(ask@unblocked.world)" />
               </RevealRow>
             </div>
           </div>

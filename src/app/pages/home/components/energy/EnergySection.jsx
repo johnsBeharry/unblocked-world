@@ -8,9 +8,9 @@ export default function EnergySection() {
       title="Energy"
       backgroundColor="#EAE438"
       index="03"
-      question="When did exhaustion become normal?"
-      description="Scarcity is not the natural state of human beings. What becomes possible when we stop accepting stagnation as progress?"
-      sideLabel="Stagnation"
+      question="What makes things possible?"
+      description="Energy powers everything we make, from the physical world to the digital one. Who has access to it? How is it distributed? What becomes possible when we rethink abundance?"
+      sideLabel="Scarcity"
     />
   );
 }

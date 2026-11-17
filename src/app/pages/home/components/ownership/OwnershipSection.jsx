@@ -1,6 +1,5 @@
 import React from "react";
 import { ThemeSection } from "../theme-section/ThemeSection.jsx";
-import styles from "../theme-section/ThemeSection.module.scss";
 
 export default function OwnershipSection() {
   return (
@@ -9,18 +8,9 @@ export default function OwnershipSection() {
       title="Ownership"
       index="01"
       backgroundColor="#DC91A8"
-      question="Who owns your life?"
-      description={
-        <>
-          We mistake access for ownership. We mistake convenience for control.
-          We mistake permission for freedom.
-          <br className={styles["theme-section__mobile-break"]} /> What happens
-          when the things that{" "}
-          <br className={styles["theme-section__mobile-break"]} />
-          matter most no longer belong to us?
-        </>
-      }
-      sideLabel="Dependence"
+      question="What does it mean to own?"
+      description="We create, exchange, use and depend on things every day. But where does access end and ownership begin? Who decides what belongs to us, and what happens when the rules change?"
+      sideLabel="Access"
     />
   );
 }

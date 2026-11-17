@@ -317,12 +317,12 @@ export function Header({ color = HEADER_COLORS.home }) {
               </RevealText>
               <RevealText
                 as="a"
-                href="mailto:hello@unblocked.net"
+                href="mailto:ask@unblocked.world"
                 play={menuRevealed}
                 delay={0.38}
                 duration={0.7}
               >
-                (hello@unblocked.net)
+                (ask@unblocked.world)
               </RevealText>
             </div>
           </div>

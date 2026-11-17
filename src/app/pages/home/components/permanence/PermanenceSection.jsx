@@ -9,9 +9,9 @@ export default function PermanenceSection() {
       title="Permanence"
       index="02"
       backgroundColor="#34BD5F"
-      question="Why is everything disposable?"
-      description="Products. Memories. Platforms. Relationships. Why are so many things designed to disappear?"
-      sideLabel="Decay"
+      question="What deserves to last?"
+      description="Objects, memories, platforms and ideas. What do we choose to preserve? What should be repairable? And why are so many things designed to disappear?"
+      sideLabel="Disposability"
     />
   );
 }

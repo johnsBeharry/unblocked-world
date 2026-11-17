@@ -170,10 +170,10 @@ export function OwnershipContestHero({ guidelinesHref = "/guidelines", submitHre
       <RevealText as="p" className={styles.dates}>
         21.02.26—23.09.26
       </RevealText>
-      <RevealText as="a" className={styles.guidelines} href={guidelinesHref}>
+      <RevealText as="a" rolling className={styles.guidelines} href={guidelinesHref}>
         Submission Guidelines (→)
       </RevealText>
-      <RevealText as="a" className={styles.submit} href={submitHref}>
+      <RevealText as="a" rolling className={styles.submit} href={submitHref}>
         Submit Poster (→)
       </RevealText>
     </section>

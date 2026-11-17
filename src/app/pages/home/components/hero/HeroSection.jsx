@@ -95,6 +95,7 @@ export function HeroSection({ reveal = true }) {
         <RevealText
           as="a"
           className={styles["submit-work-link"]}
+          rolling
           href="/submit"
           enabled={reveal}
           {...firstScreen}
@@ -104,6 +105,7 @@ export function HeroSection({ reveal = true }) {
         <RevealText
           as="a"
           className={styles["explore-themes-link"]}
+          rolling
           data-explore-themes
           href="#ownership"
           enabled={reveal}

@@ -20,7 +20,7 @@ export function OwnershipHowItWorks() {
         <img src={patternUrl} alt="" />
       </div>
 
-      <RevealText as="a" className={styles.submitLink} href="/submit">Submit Work (→)</RevealText>
+      <RevealText as="a" rolling className={styles.submitLink} href="/submit">Submit Work (→)</RevealText>
     </section>
   )
 }

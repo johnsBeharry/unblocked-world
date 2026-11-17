@@ -2,6 +2,7 @@ import React, { useLayoutEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import styles from './SubmissionSuccessPanel.module.scss'
 import { RevealText } from '../../../../../components/RevealText/RevealText.jsx'
+import { RollingText } from '../../../../../components/RollingText/RollingText.jsx'
 import { RevealRow } from '../../../../../components/RevealRow/RevealRow.jsx'
 
 // Nested hearts, innermost first. Motion (user request 2026-11-17, "settle
@@ -68,7 +69,7 @@ export function SubmissionSuccessPanel() {
         <SuccessPattern />
         <RevealText as="h1" id="submission-success-title" className={styles['submission-success__title']}>Entry Submitted</RevealText>
         <RevealText as="p" className={styles['submission-success__copy']}>Thank you for your submission. Your work has been received and is now under review. We'll keep you informed of any updates as the selection process progresses.</RevealText>
-        <RevealRow as="a" line={false} className={styles['submission-success__explore']} href="/">Explore More (→)</RevealRow>
+        <RevealRow as="a" line={false} className={styles['submission-success__explore']} href="/"><RollingText text="Explore More (→)" /></RevealRow>
       </div>
     </section>
   )

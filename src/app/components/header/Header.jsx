@@ -2,6 +2,7 @@ import React, { useEffect, useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { RevealText } from "../../../components/RevealText/RevealText.jsx";
 import { getLenis } from "../smooth-scroll/SmoothScroll.jsx";
+import { RollingText } from "../../../components/RollingText/RollingText.jsx";
 import styles from "./Header.module.scss";
 
 export const HEADER_COLORS = {
@@ -329,20 +330,30 @@ export function Header({ color = HEADER_COLORS.home }) {
       )}
       <nav className={`${styles.nav} ${colorClass}`}>
         <a className={styles.navItem} href="/posters">
-          <span data-header-intro>Poster</span>
+          <span data-header-intro>
+            <RollingText dim text="Poster" />
+          </span>
         </a>
         <a className={styles.navItem} href="/grants">
-          <span data-header-intro>Grants</span>
+          <span data-header-intro>
+            <RollingText dim text="Grants" />
+          </span>
         </a>
         <a className={styles.navItem} href="/guidelines">
-          <span data-header-intro>Guidelines</span>
+          <span data-header-intro>
+            <RollingText dim text="Guidelines" />
+          </span>
         </a>
         <a className={styles.navItem} href="/submit">
-          <span data-header-intro>Submit (→)</span>
+          <span data-header-intro>
+            <RollingText dim text="Submit (→)" />
+          </span>
         </a>
       </nav>
       <a className={`${styles.home} ${colorClass}`} href="/">
-        <span data-header-intro>Home</span>
+        <span data-header-intro>
+            <RollingText dim text="Home" />
+          </span>
       </a>
       <button
         className={`${styles.menu} ${colorClass}`}

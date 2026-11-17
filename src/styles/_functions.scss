@@ -53,3 +53,16 @@
     @content;
   }
 }
+
+// Pointer devices that can hover (no sticky hover states on touch screens).
+@mixin hover-device {
+  @media (hover: hover) and (pointer: fine) {
+    @content;
+  }
+}
+
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}

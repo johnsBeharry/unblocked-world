@@ -1,0 +1,144 @@
+// Odometer hover label (user requests 2026-11-17, no mockup): each letter
+// rolls up out of its mask while its copy (`::after`) rolls in from below;
+// parentheses stay still; arrows are pushed out by a new arrow in the
+// direction they point. The hover owner is the closest link / button, so the
+// glyphs work inside RevealRow, RevealText (`rolling`) and header intro spans.
+// Inherits all typography.
+
+.rolling-text {
+  display: inline-block;
+  white-space: pre;
+
+  &--dim {
+    --rolling-hover-opacity: 0.6;
+  }
+
+  &__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  // Not selectable: copying the link text uses the hidden label once.
+  &__glyphs {
+    display: inline-block;
+    user-select: none;
+  }
+
+  // One mask per character. The overhang extends the mask beyond the line box
+  // (descenders / accents are not cut when the inherited line-height is
+  // tight); the negative margin keeps the layout unchanged. The copy sits two
+  // overhangs past the glyph, i.e. fully outside the mask, and `--roll`
+  // (100% + that gap) brings it exactly onto the glyph's place.
+  &__mask {
+    --rolling-duration: 0.38s;
+    --rolling-stagger: 0.014s;
+    --overhang-y: 0.14em;
+    --overhang-x: 0em;
+    --roll: calc(-100% - var(--overhang-y) * 2);
+
+    display: inline-block;
+    padding: var(--overhang-y) var(--overhang-x);
+    margin: calc(var(--overhang-y) * -1) calc(var(--overhang-x) * -1);
+    // Clip only top / bottom (the roll axis). With tight tracking the ink of
+    // B, O, K, W… reaches past the character's advance; a side clip cut it.
+    clip-path: inset(0 -0.5em);
+    vertical-align: top;
+    white-space: pre;
+
+    // Parentheses never move: nothing to mask.
+    &--static {
+      clip-path: none;
+    }
+
+    // Horizontal arrows roll sideways: clip at the sides (the padding box
+    // leaves room for the arrow ink) and let the ink extend vertically.
+    &--arrow-right,
+    &--arrow-left {
+      --overhang-x: 0.1em;
+      --roll: calc(100% + var(--overhang-x) * 2);
+
+      clip-path: inset(-0.5em 0);
+    }
+
+    &--arrow-left {
+      --roll: calc(-100% - var(--overhang-x) * 2);
+    }
+
+    &--arrow-down {
+      --roll: calc(100% + var(--overhang-y) * 2);
+    }
+  }
+
+  &__glyph {
+    position: relative;
+    display: inline-block; // block would add a line break per glyph to innerText
+    transition:
+      transform var(--rolling-duration) cubic-bezier(0.65, 0, 0.35, 1)
+        calc(var(--char-index) * var(--rolling-stagger)),
+      opacity var(--rolling-duration) linear
+        calc(var(--char-index) * var(--rolling-stagger));
+
+    @include reduced-motion {
+      transition: none;
+    }
+
+    &::after {
+      content: attr(data-char);
+      position: absolute;
+      top: calc(100% + var(--overhang-y) * 2);
+      left: 0;
+      opacity: var(--rolling-hover-opacity, 1);
+    }
+
+    .rolling-text__mask--arrow-right > &::after {
+      top: 0;
+      left: calc(-100% - var(--overhang-x) * 2);
+    }
+
+    .rolling-text__mask--arrow-left > &::after {
+      top: 0;
+      left: calc(100% + var(--overhang-x) * 2);
+    }
+
+    .rolling-text__mask--arrow-down > &::after {
+      top: calc(-100% - var(--overhang-y) * 2);
+    }
+
+    // Parentheses do not move; with `dim` they fade with the rolled copies.
+    .rolling-text__mask--static > &::after {
+      content: none;
+    }
+  }
+}
+
+// Hover owner: any enabled link / button containing the glyphs. Bare element
+// selectors on purpose (the owner is the consumer's element).
+@mixin rolling-active {
+  .rolling-text__glyph {
+    transform: translateY(var(--roll));
+  }
+
+  .rolling-text__mask--arrow-right > .rolling-text__glyph,
+  .rolling-text__mask--arrow-left > .rolling-text__glyph {
+    transform: translateX(var(--roll));
+  }
+
+  .rolling-text__mask--static > .rolling-text__glyph {
+    transform: none;
+    opacity: var(--rolling-hover-opacity, 1);
+  }
+}
+
+@include hover-device {
+  :is(a, button:not(:disabled)):hover {
+    @include rolling-active;
+  }
+}
+
+:is(a, button):focus-visible {
+  @include rolling-active;
+}

@@ -1,4 +1,5 @@
 import { RevealRow } from "../../../../../components/RevealRow/RevealRow";
+import { RollingText } from "../../../../../components/RollingText/RollingText.jsx";
 import styles from "./ApplyLink.module.scss";
 
 // "Apply Now (→)" link of the grant program pages (ProgramHero and the
@@ -13,7 +14,7 @@ export function ApplyLink({ className = "" }) {
       className={`${styles["apply-link"]} ${className}`}
       lineClassName={styles["apply-link__rule"]}
     >
-      Apply Now (→)
+      <RollingText text="Apply Now (→)" />
     </RevealRow>
   );
 }

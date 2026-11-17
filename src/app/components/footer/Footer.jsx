@@ -5,6 +5,7 @@ import { RevealText } from "../../../components/RevealText/RevealText.jsx";
 import { RevealRow } from "../../../components/RevealRow/RevealRow.jsx";
 import SubmitWorkSection from "./submit-work/SubmitWorkSection.jsx";
 import { BrandLogo } from "../logo/index.jsx";
+import { RollingText } from "../../../components/RollingText/RollingText.jsx";
 
 export const FOOTER_COLORS = { home: "#d9d9d9", poster: "#d9d9d9" };
 
@@ -149,10 +150,10 @@ export function Footer({ color = FOOTER_COLORS.home, ctaVariant = "default" }) {
                 className={`${styles.text} ${styles.ownership}`}
                 href="/posters"
               >
-                Ownership
+                <RollingText dim text="Ownership" />
               </RevealRow>
               <RevealRow as="a" line={false} className={styles.text} href="/grants">
-                Grants
+                <RollingText dim text="Grants" />
               </RevealRow>
               <RevealRow
                 as="a"
@@ -160,10 +161,10 @@ export function Footer({ color = FOOTER_COLORS.home, ctaVariant = "default" }) {
                 className={`${styles.text} ${styles.guidelines}`}
                 href="/guidelines"
               >
-                Guidelines
+                <RollingText dim text="Guidelines" />
               </RevealRow>
               <RevealRow as="a" line={false} className={`${styles.text} ${styles.submit}`} href="/submit">
-                (→) Submit
+                <RollingText dim text="(→) Submit" />
               </RevealRow>
             </div>
           </div>
@@ -181,10 +182,10 @@ export function Footer({ color = FOOTER_COLORS.home, ctaVariant = "default" }) {
                 target="_blank"
                 rel="noreferrer"
               >
-                Instagram
+                <RollingText dim text="Instagram" />
               </RevealRow>
               <RevealRow as="a" line={false} href="https://twitter.com" target="_blank" rel="noreferrer">
-                Twitter (X)
+                <RollingText dim text="Twitter (X)" />
               </RevealRow>
             </div>
           </div>
@@ -195,12 +196,12 @@ export function Footer({ color = FOOTER_COLORS.home, ctaVariant = "default" }) {
             </RevealText>
             <div className={styles.menu}>
               <RevealRow as="a" line={false} className={styles.email} href="mailto:hello@unblocked.net">
-                (hello@unblocked.net)
+                <RollingText dim text="(hello@unblocked.net)" />
               </RevealRow>
             </div>
           </div>
           <div className={`${styles.backToTop} ${styles["desktop"]}`}>
-            <RevealRow as="a" line={false} href="#top">Back to Top (↑)</RevealRow>
+            <RevealRow as="a" line={false} href="#top"><RollingText dim text="Back to Top (↑)" /></RevealRow>
           </div>
         </div>
         <div className={`${styles["main__content"]}`}>
@@ -208,7 +209,8 @@ export function Footer({ color = FOOTER_COLORS.home, ctaVariant = "default" }) {
             {/* Last row of the page: it stays in the bottom 10% band at the
                 page end, so it uses the whole-viewport (pinned) observer. */}
             <RevealRow as="a" line={false} pinned href="#top">
-              <span className={styles.backToTopLabel}>Back to Top </span>(↑)
+              <RollingText dim className={styles.backToTopLabel} text="Back to Top " />
+              <RollingText dim text="(↑)" />
             </RevealRow>
           </div>
           <RevealText
@@ -229,7 +231,7 @@ export function Footer({ color = FOOTER_COLORS.home, ctaVariant = "default" }) {
             </RevealText>
             <div className={styles.menu}>
               <RevealRow as="a" line={false} className={styles.email} href="mailto:hello@unblocked.net">
-                (hello@unblocked.net)
+                <RollingText dim text="(hello@unblocked.net)" />
               </RevealRow>
             </div>
           </div>

@@ -61,7 +61,7 @@ export function ProgramsSections() {
             </RevealText>
 
             <div className={styles.cta}>
-              <RevealText as="a" href="/grants/culture-grants">
+              <RevealText as="a" rolling href="/grants/culture-grants">
                 (→)
               </RevealText>
             </div>
@@ -86,7 +86,7 @@ export function ProgramsSections() {
               limited-edition book.
             </RevealText>
             <div className={styles.cta}>
-              <RevealText as="a" href="/grants/open-systems">
+              <RevealText as="a" rolling href="/grants/open-systems">
                 (→)
               </RevealText>
             </div>

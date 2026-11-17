@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import styles from './ContactInformationPanel.module.scss'
 import { RevealText } from '../../../../../components/RevealText/RevealText.jsx'
+import { RollingText } from '../../../../../components/RollingText/RollingText.jsx'
 import { RevealRow } from '../../../../../components/RevealRow/RevealRow.jsx'
 import { SelectPanel } from '../SelectPanel/SelectPanel.jsx'
 import { CheckboxRow } from '../CheckboxRow/CheckboxRow.jsx'
@@ -149,7 +150,7 @@ export function ContactInformationPanel({
           )}
           {verification.error && <p className={styles['contact-panel__error']} role="alert">{verification.error}</p>}
           {!joining && (
-            <RevealRow as="button" line={false} type="submit" className={styles['contact-panel__submit']} disabled={submitDisabled}>{submitLabel} (→)</RevealRow>
+            <RevealRow as="button" line={false} type="submit" className={styles['contact-panel__submit']} disabled={submitDisabled}><RollingText text={`${submitLabel} (→)`} /></RevealRow>
           )}
         </form>
         </>)}

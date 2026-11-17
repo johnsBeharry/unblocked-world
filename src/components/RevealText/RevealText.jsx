@@ -2,6 +2,11 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "./RevealText.module.scss";
+import {
+  RollingGlyphs,
+  RollingText,
+  rollingStyles,
+} from "../RollingText/RollingText.jsx";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -115,6 +120,7 @@ export function RevealText({
   play = null,
   fade = true,
   highlight = false,
+  rolling = false,
   ...props
 }) {
   const measureRef = useRef(null);
@@ -132,6 +138,8 @@ export function RevealText({
   // replaying the entrance (e.g. resize or late font swap).
   const [instant, setInstant] = useState(false);
   const text = getText(children);
+  // Readable copy for the rolling label (break markers become spaces).
+  const readable = text.replace(/\u0001[^\u0002]*\u0002|\n/g, " ");
   enteredRef.current = hasEntered;
 
   // The hidden measurer stays mounted inside the root, so lines are re-measured
@@ -270,7 +278,7 @@ export function RevealText({
   if (!enabled)
     return (
       <Tag {...props} className={className}>
-        {children}
+        {rolling ? <RollingText text={readable} arrowOnly={rolling === "arrow"} /> : children}
       </Tag>
     );
 
@@ -282,6 +290,21 @@ export function RevealText({
     ],
     [],
   );
+  // rolling: odometer hover on the glyphs (CTA links / buttons); "arrow"
+  // moves only the arrows (large title CTAs). Lines are
+  // decorative then; the hidden label is the readable text.
+  let charIndex = 0;
+  const rollWord = (word) => {
+    const start = charIndex;
+    charIndex += word.length + 1;
+    return (
+      <RollingGlyphs
+        text={word}
+        start={start}
+        arrowOnly={rolling === "arrow"}
+      />
+    );
+  };
 
   return (
     <Tag
@@ -294,10 +317,14 @@ export function RevealText({
           : props.style
       }
     >
+      {rolling && (
+        <span className={rollingStyles["rolling-text__label"]}>{readable}</span>
+      )}
       {lines?.map((line, index) => (
         <span
           className={styles.line}
           data-page-reveal-line="true"
+          aria-hidden={rolling || undefined}
           key={`${line.map((word) => word.text).join(" ")}-${index}`}
           style={{
             "--reveal-delay": `${delay - elapsed + index * stagger}s`,
@@ -317,7 +344,7 @@ export function RevealText({
                       : undefined
                   }
                 >
-                  {word.text}
+                  {rolling ? rollWord(word.text) : word.text}
                 </span>
                 {word.spaceAfter || (wordIndex < line.length - 1 ? " " : null)}
               </React.Fragment>

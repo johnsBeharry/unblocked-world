@@ -28,18 +28,18 @@ export default function SubmitWorkSection({
           reveals (RevealText flattens links placed inside it). */}
       <a className={styles["submit-work__title-link"]} href={titleHref}>
         <span className={styles["submit-work__title-desktop"]}>
-          <RevealText as="p" className={styles["submit-work__el-199"]}>
+          <RevealText as="p" rolling="arrow" className={styles["submit-work__el-199"]}>
             {titleLines[0]}
           </RevealText>
-          <RevealText as="p" className={styles["submit-work__el-200"]}>
+          <RevealText as="p" rolling="arrow" className={styles["submit-work__el-200"]}>
             {titleLines[1]}
           </RevealText>
         </span>
         {variant === "poster" && (
           <span className={styles["submit-work__title-mobile"]}>
-            <RevealText as="p">Read the</RevealText>
-            <RevealText as="p">Guidelines</RevealText>
-            <RevealText as="p">(→)</RevealText>
+            <RevealText as="p" rolling="arrow">Read the</RevealText>
+            <RevealText as="p" rolling="arrow">Guidelines</RevealText>
+            <RevealText as="p" rolling="arrow">(→)</RevealText>
           </span>
         )}
       </a>
@@ -77,7 +77,7 @@ export default function SubmitWorkSection({
         </p>
       )}
       {showBottomLabel && bottomLabel && (
-        <RevealText as="a" className={styles["submit-work__brief-link"]} href={bottomHref}>
+        <RevealText as="a" rolling className={styles["submit-work__brief-link"]} href={bottomHref}>
           {bottomLabel}
         </RevealText>
       )}

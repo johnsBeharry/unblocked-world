@@ -17,7 +17,9 @@ export function ProgramCrossLinkSection({ id, content, artwork, className = "" }
               placed inside it). */}
           <a className={styles["cross-link__title-link"]} href={content.href}>
             {content.title.map((line) => (
-              <RevealText key={line}>{line}</RevealText>
+              <RevealText key={line} rolling="arrow">
+                {line}
+              </RevealText>
             ))}
           </a>
         </h2>

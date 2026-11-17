@@ -16,6 +16,7 @@ import { SubmissionSuccessPanel } from './components/SubmissionSuccessPanel/Subm
 import { useSubmitLenis } from './hooks/useSubmitLenis.js'
 import { useSubmitIntro } from './hooks/useSubmitIntro.js'
 import { RevealText } from '../../../components/RevealText/RevealText.jsx'
+import { RollingText } from '../../../components/RollingText/RollingText.jsx'
 import { RevealRow } from '../../../components/RevealRow/RevealRow.jsx'
 import {
   createEntry,
@@ -709,7 +710,7 @@ export function SubmitPage({ initialStep = 0 }) {
   return (
     <main className={`${styles.page} ${showPosterDetails ? styles.editing : ''} ${showSuccess ? styles.success : ''} ${showAccount ? styles.account : ''} ${introPending ? styles.introPending : ''}`} data-name="submit-index">
       <section className={styles.identity} aria-label="Ownership theme">
-        <RevealRow as="a" line={false} pinned className={styles.homeLink} href="/" onClick={handleHomeClick}>(←) Home</RevealRow>
+        <RevealRow as="a" line={false} pinned className={styles.homeLink} href="/" onClick={handleHomeClick}><RollingText text="(←) Home" /></RevealRow>
         <SubmitArtwork introRef={artIntroRef} />
         <RevealText as="h1">Ownership</RevealText>
       </section>
@@ -802,10 +803,10 @@ export function SubmitPage({ initialStep = 0 }) {
                     <ul>
                       {rules.map(rule => <RevealRow key={rule} line={false}>{rule}</RevealRow>)}
                     </ul>
-                    <RevealRow as="button" line={false} pinned className={styles.submitLink} type="button" onClick={() => setStep(1)}>Enter Submission (→)</RevealRow>
+                    <RevealRow as="button" line={false} pinned className={styles.submitLink} type="button" onClick={() => setStep(1)}><RollingText text="Enter Submission (→)" /></RevealRow>
                 </div>}
         </div>
-        {showManage && <RevealRow as="button" line={false} pinned className={styles.submitLink} type="button" onClick={openSubmitFromManage}>{draftCount ? `Submit Poster (${String(draftCount).padStart(2, '0')})` : 'Submit Poster (→)'}</RevealRow>}
+        {showManage && <RevealRow as="button" line={false} pinned className={styles.submitLink} type="button" onClick={openSubmitFromManage}><RollingText text={draftCount ? `Submit Poster (${String(draftCount).padStart(2, '0')})` : 'Submit Poster (→)'} /></RevealRow>}
         {showContact && !showAccount && <SubmitFooterNav nextLabel={joinMode === 'join' ? contactNextLabel : null} nextLabelMobile={contactBusy ? undefined : 'Poster'} disabled={contactBusy} onBack={handleContactBack} onNext={handleContactNext} />}
         {/* Add a Poster: (←) back to the entries list, Continue saves. */}
         {/* Mobile Add a Poster header (mockup): Cancel → entries, Save. */}

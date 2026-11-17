@@ -264,7 +264,13 @@ export default function HiddenSystemsSection({ reveal = true }) {
         className={styles["hidden-systems__node-032"]}
         data-name="hidden-systems-logos"
       >
-        <div className={styles["hidden-systems__node-033"]}>
+        <a
+          className={styles["hidden-systems__node-033"]}
+          href="https://pxpush.com/?ref=unblocked"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="pxpush"
+        >
           <div className={styles["hidden-systems__node-034"]} data-name="logo">
             <div
               className={styles["hidden-systems__node-035"]}
@@ -301,8 +307,14 @@ export default function HiddenSystemsSection({ reveal = true }) {
               </svg>
             </div>
           </div>
-        </div>
-        <div className={styles["hidden-systems__node-041"]}>
+        </a>
+        <a
+          className={styles["hidden-systems__node-041"]}
+          href="https://spiral.xyz/?ref=unblocked"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="Spiral"
+        >
           <div
             className={styles["hidden-systems__node-042"]}
             data-name="logo-107fbbb3e6ab7dd846bb56070511bc79 1"
@@ -322,7 +334,8 @@ export default function HiddenSystemsSection({ reveal = true }) {
               </g>
             </svg>
           </div>
-        </div>
+        </a>
+        {/* Hidden for now; restore when these partners return.
         <div className={styles["hidden-systems__node-046"]}>
           <div
             className={styles["hidden-systems__node-047"]}
@@ -345,6 +358,7 @@ export default function HiddenSystemsSection({ reveal = true }) {
             />
           </div>
         </div>
+        */}
       </div>
     </div>
   );

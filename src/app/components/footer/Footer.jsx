@@ -169,13 +169,13 @@ export function Footer({ color = FOOTER_COLORS.home, ctaVariant = "default" }) {
 
             <div className={styles.menu}>
               <a
-                href="https://www.instagram.com"
+                href="https://www.instagram.com/unblocked.world"
                 target="_blank"
                 rel="noreferrer"
               >
                 Instagram
               </a>
-              <a href="https://twitter.com" target="_blank" rel="noreferrer">
+              <a href="https://x.com/johnsBeharry" target="_blank" rel="noreferrer">
                 Twitter (X)
               </a>
             </div>
@@ -186,8 +186,8 @@ export function Footer({ color = FOOTER_COLORS.home, ctaVariant = "default" }) {
               Question Everything
             </RevealText>
             <div className={styles.menu}>
-              <a className={styles.email} href="mailto:hello@unblocked.net">
-                (hello@unblocked.net)
+              <a className={styles.email} href="mailto:ask@unblocked.world">
+                (ask@unblocked.world)
               </a>
             </div>
           </div>
@@ -217,8 +217,8 @@ export function Footer({ color = FOOTER_COLORS.home, ctaVariant = "default" }) {
               Question Everything
             </RevealText>
             <div className={styles.menu}>
-              <a className={styles.email} href="mailto:hello@unblocked.net">
-                (hello@unblocked.net)
+              <a className={styles.email} href="mailto:ask@unblocked.world">
+                (ask@unblocked.world)
               </a>
             </div>
           </div>

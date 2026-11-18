@@ -1,0 +1,57 @@
+{
+  "description": "Exploring ownership, permanence, energy and peers through independent creative work, open calls, grants and residencies.",
+  "explore": {
+    "title": "Explore",
+    "links": [
+      { "id": "ownership", "label": "Ownership", "href": "/posters" },
+      { "id": "grants", "label": "Grants", "href": "/grants" },
+      { "id": "guidelines", "label": "Guidelines", "href": "/guidelines" },
+      { "id": "submit", "label": "(→) Submit", "href": "/submit" }
+    ]
+  },
+  "socials": {
+    "title": "Socials",
+    "links": [
+      { "id": "instagram", "label": "Instagram", "href": "https://www.instagram.com/unblocked.world" },
+      { "id": "twitter", "label": "Twitter (X)", "href": "https://x.com/johnsBeharry" }
+    ]
+  },
+  "contact": {
+    "title": "Question Everything",
+    "label": "(ask@unblocked.world)",
+    "href": "mailto:ask@unblocked.world"
+  },
+  "backToTop": {
+    "label": "Back to Top",
+    "arrow": "(↑)",
+    "href": "#top"
+  },
+  "copyright": "© Copyright 2026",
+  "cta": {
+    "default": {
+      "title": ["Submit", "Work (→)"],
+      "href": "/submit",
+      "topLabel": "Current Theme (Ownership)",
+      "bottomLink": { "label": "View Brief (→)", "href": "/posters" }
+    },
+    "poster": {
+      "title": ["Read the", "Guidelines (→)"],
+      "titleMobile": ["Read the", "Guidelines", "(→)"],
+      "href": "/guidelines",
+      "topLabel": {
+        "desktop": "Before You Submit. Make sure your work is original, prepared in the correct format, and connected to the current theme.",
+        "tablet": [
+          "Before You Submit. Make sure your work is",
+          "original, prepared in the correct format, and",
+          "connected to the current theme."
+        ],
+        "mobile": [
+          "Before You Submit. Make sure your",
+          "work is original, prepared in the",
+          "correct format, and connected to the",
+          "current theme."
+        ]
+      }
+    }
+  }
+}

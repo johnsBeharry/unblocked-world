@@ -1,0 +1,40 @@
+{
+  "label": "Key Dates",
+  "title": [
+    "Sec.07",
+    "(Key Dates)"
+  ],
+  "intro": "The programme unfolds across a series of milestones guiding participants from theme announcement and submission through selection, exhibition, and publication",
+  "dates": [
+    {
+      "number": "01",
+      "milestone": "Theme Announced",
+      "date": "12.06.2026"
+    },
+    {
+      "number": "02",
+      "milestone": "Submission Deadline",
+      "date": "12.09.2026"
+    },
+    {
+      "number": "03",
+      "milestone": "Next Theme Announced",
+      "date": "12.12.2026"
+    },
+    {
+      "number": "04",
+      "milestone": "Selected Works Announced",
+      "date": "12.10.2026"
+    },
+    {
+      "number": "05",
+      "milestone": "Global Exhibition",
+      "date": "12.06.2027"
+    },
+    {
+      "number": "06",
+      "milestone": "Final Publication",
+      "date": "12.06.2027"
+    }
+  ]
+}

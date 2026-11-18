@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./HiddenSystemsSection.module.scss";
 import { RevealText } from "../../../../../components/RevealText/RevealText.jsx";
+import content from "./hidden-systems-content.json";
 
 // Headline intro (mockup): Making → Hidden → ( U ) row + side labels →
 // Systems → Visible, each sliding up inside its own stationary mask.
@@ -50,7 +51,7 @@ export default function HiddenSystemsSection({ reveal = true }) {
             ease={INTRO_EASE}
             delay={introDelay(0)}
           >
-            Making
+            {content.headline.top[0]}
           </RevealText>
           <RevealText
             as="p"
@@ -61,7 +62,7 @@ export default function HiddenSystemsSection({ reveal = true }) {
             ease={INTRO_EASE}
             delay={introDelay(1)}
           >
-            Different
+            {content.headline.top[1]}
           </RevealText>
         </div>
         <p
@@ -96,7 +97,7 @@ export default function HiddenSystemsSection({ reveal = true }) {
             ease={INTRO_EASE}
             delay={introDelay(3)}
           >
-            Perspectives
+            {content.headline.bottom[0]}
           </RevealText>
           <RevealText
             as="p"
@@ -107,7 +108,7 @@ export default function HiddenSystemsSection({ reveal = true }) {
             ease={INTRO_EASE}
             delay={introDelay(4)}
           >
-            Visible
+            {content.headline.bottom[1]}
           </RevealText>
         </div>
         <RevealText
@@ -119,7 +120,7 @@ export default function HiddenSystemsSection({ reveal = true }) {
           ease={INTRO_EASE}
           delay={introDelay(2)}
         >
-          (Through art)
+          {content.sideLabels[0]}
         </RevealText>
         <RevealText
           as="p"
@@ -130,7 +131,7 @@ export default function HiddenSystemsSection({ reveal = true }) {
           ease={INTRO_EASE}
           delay={introDelay(2)}
         >
-          (Through exhibitions)
+          {content.sideLabels[1]}
         </RevealText>
         <div className={styles["hidden-systems__node-010"]}>
           <RevealText
@@ -138,26 +139,21 @@ export default function HiddenSystemsSection({ reveal = true }) {
             className={styles["hidden-systems__node-011"]}
             enabled={reveal}
           >
-            Through creative work. Through open questions.
+            {content.copy[0]}
           </RevealText>
           <RevealText
             as="p"
             className={styles["hidden-systems__node-012"]}
             enabled={reveal}
           >
-            Through people who bring their own perspectives to the systems we
-            share.
+            {content.copy[1]}
           </RevealText>
           <p className={styles["hidden-systems__mobile-copy"]}>
-            <RevealText enabled={reveal}>Through creative work.</RevealText>
-            <RevealText enabled={reveal}>Through open questions.</RevealText>
-            <RevealText enabled={reveal}>
-              Through people who see things
-            </RevealText>
-            <RevealText enabled={reveal}>
-              differently and imagine what
-            </RevealText>
-            <RevealText enabled={reveal}>else might be possible.</RevealText>
+            {content.mobileCopy.map((line) => (
+              <RevealText key={line} enabled={reveal}>
+                {line}
+              </RevealText>
+            ))}
           </p>
         </div>
         <RevealText
@@ -165,7 +161,7 @@ export default function HiddenSystemsSection({ reveal = true }) {
           className={styles["hidden-systems__node-013"]}
           enabled={reveal}
         >
-          UNBLOCKED
+          {content.brand}
         </RevealText>
         {/* Stationary mask: cut line at the blue box bottom, shared with the brackets. */}
         <div className={styles["hidden-systems__canvas-mask"]}>
@@ -266,10 +262,10 @@ export default function HiddenSystemsSection({ reveal = true }) {
       >
         <a
           className={styles["hidden-systems__pxpush-cell"]}
-          href="https://pxpush.com/?ref=unblocked"
+          href={content.partners.pxpush.href}
           target="_blank"
           rel="noreferrer"
-          aria-label="pxpush"
+          aria-label={content.partners.pxpush.label}
         >
           <div className={styles["hidden-systems__node-034"]} data-name="logo">
             <div
@@ -310,10 +306,10 @@ export default function HiddenSystemsSection({ reveal = true }) {
         </a>
         <a
           className={styles["hidden-systems__node-041"]}
-          href="https://spiral.xyz/?ref=unblocked"
+          href={content.partners.spiral.href}
           target="_blank"
           rel="noreferrer"
-          aria-label="Spiral"
+          aria-label={content.partners.spiral.label}
         >
           <div
             className={styles["hidden-systems__node-042"]}

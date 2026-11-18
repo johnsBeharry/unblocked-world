@@ -3,13 +3,13 @@ import styles from './JudgingRound.module.scss'
 import { RuledList } from '../guideline-section/GuidelineSection.jsx'
 import { RevealText } from '../../../../../components/RevealText/RevealText.jsx'
 
-export function JudgingRound({ title, status, description, items }) {
+export function JudgingRound({ title, status, statusLabel, description, items }) {
   return (
     <article className={styles.round}>
       <div className={styles.roundHeader}>
         <RevealText as="h3">{title}</RevealText>
         <div className={styles.roundStatus}>
-          <RevealText as="span">Status</RevealText>
+          <RevealText as="span">{statusLabel}</RevealText>
           <span className={styles.statusLabel}><RevealText as="span">{status}</RevealText></span>
         </div>
       </div>

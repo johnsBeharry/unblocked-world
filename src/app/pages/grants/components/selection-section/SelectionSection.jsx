@@ -4,7 +4,7 @@ import { RevealRow } from "../../../../../components/RevealRow/RevealRow.jsx";
 import { RevealText } from "../../../../../components/RevealText/RevealText";
 import { SectionLabel } from "../section-label/SectionLabel.jsx";
 import { prefersReducedMotion, slideLinesIn } from "../../motion/scrollMotion.js";
-import content from "./selection.json";
+import content from "./selection-content.json";
 import styles from "./SelectionSection.module.scss";
 
 // Scroll experience: the title lines slide in from the right, later lines

@@ -1,6 +1,7 @@
 import React from "react";
 import { gsap } from "gsap";
 import styles from "./OwnershipContestHero.module.scss";
+import content from "./ownership-contest-hero-content.json";
 import { RevealText } from "../../../../../components/RevealText/RevealText.jsx";
 
 const bars = [
@@ -121,7 +122,7 @@ function useArtworkSequence(ready, sectionRef) {
   }, [ready, sectionRef]);
 }
 
-export function OwnershipContestHero({ guidelinesHref = "/guidelines", submitHref = "/submit" }) {
+export function OwnershipContestHero() {
   const ready = useFontsReady();
   const sectionRef = React.useRef(null);
   useArtworkSequence(ready, sectionRef);
@@ -155,26 +156,26 @@ export function OwnershipContestHero({ guidelinesHref = "/guidelines", submitHre
       </div>
 
       <h1 className={styles.title} id="ownership-contest-title">
-        <PosterTitleReveal className={styles.titleText} label="Ownership">
-          Ownership
+        <PosterTitleReveal className={styles.titleText} label={content.title}>
+          {content.title}
         </PosterTitleReveal>
       </h1>
       <p className={styles.subtitle} data-subtitle-reveal>
         <PosterTitleReveal
           className={styles.subtitleText}
-          label="Poster Contest (↓)"
+          label={content.subtitle}
         >
-          Poster Contest (↓)
+          {content.subtitle}
         </PosterTitleReveal>
       </p>
       <RevealText as="p" className={styles.dates}>
-        21.02.26—23.09.26
+        {content.dates}
       </RevealText>
-      <RevealText as="a" rolling className={styles.guidelines} href={guidelinesHref}>
-        Submission Guidelines (→)
+      <RevealText as="a" rolling className={styles.guidelines} href={content.guidelinesLink.href}>
+        {content.guidelinesLink.label}
       </RevealText>
-      <RevealText as="a" rolling className={styles.submit} href={submitHref}>
-        Submit Poster (→)
+      <RevealText as="a" rolling className={styles.submit} href={content.submitLink.href}>
+        {content.submitLink.label}
       </RevealText>
     </section>
   );

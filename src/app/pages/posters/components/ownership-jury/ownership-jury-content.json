@@ -1,0 +1,42 @@
+{
+  "label": "Jury Members",
+  "sectionLabel": "Sec. 05 (Jury Members)",
+  "members": [
+    {
+      "name": "Kyle Fletcher",
+      "photo": "/UNBLOCKED-poster_files/jury/jury-01-kyle-fletcher.jpg",
+      "alt": "Kyle Fletcher portrait",
+      "description": "Head of Brand Creative at Cash App, with experience shaping cultural work across music, identity, and visual systems."
+    },
+    {
+      "name": "Johns Beharry",
+      "photo": "/UNBLOCKED-poster_files/jury/jury-02-johns-beharry.jpg",
+      "alt": "Johns Beharry portrait",
+      "description": "Head of Brand Creative at Cash App, with experience shaping cultural work across music, identity, and visual systems."
+    },
+    {
+      "name": "Lewis Webber",
+      "photo": "/UNBLOCKED-poster_files/jury/jury-03-lewis-webber.jpg",
+      "alt": "Lewis Webber portrait",
+      "description": "Head of Brand Creative at Cash App, with experience shaping cultural work across music, identity, and visual systems."
+    },
+    {
+      "name": "Liam Hartwell",
+      "photo": "/UNBLOCKED-poster_files/jury/jury-04-liam-hartwell.jpg",
+      "alt": "Liam Hartwell portrait",
+      "description": "Head of Brand Creative at Cash App, with experience shaping cultural work across music, identity, and visual systems."
+    },
+    {
+      "name": "Caleb Winters",
+      "photo": "/UNBLOCKED-poster_files/jury/jury-05-caleb-winters.jpg",
+      "alt": "Caleb Winters portrait",
+      "description": "Head of Brand Creative at Cash App, with experience shaping cultural work across music, identity, and visual systems."
+    },
+    {
+      "name": "Ava Sinclair",
+      "photo": "/UNBLOCKED-poster_files/jury/jury-06-ava-sinclair.jpg",
+      "alt": "Ava Sinclair portrait",
+      "description": "Head of Brand Creative at Cash App, with experience shaping cultural work across music, identity, and visual systems."
+    }
+  ]
+}

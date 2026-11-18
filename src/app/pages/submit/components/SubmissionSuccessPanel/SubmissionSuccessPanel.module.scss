@@ -93,19 +93,37 @@
     }
   }
 
-  // Same trailing-tracking compensation as the title (-0.8px → 0.8px pad).
+  // Framed CTA (user reference 2026-11-18): 300 × 86, 1px pink frame,
+  // label centred (0.8px pad = the trailing -0.8px tracking). Mobile: the
+  // full text width (no mobile reference).
   &__explore {
-    margin-top: vw(78.8);
-    padding-right: vw(0.8);
+    display: block;
+    width: vw(300);
+    height: vw(86);
+    // 44px between the copy's last line and the frame (reference).
+    margin-top: vw(43);
     color: inherit;
     letter-spacing: vw(-0.8);
     line-height: 1.02;
     text-decoration: none;
 
     @include mobile {
+      width: 100%;
+      height: vw(172);
       margin-top: vw(124);
       font-size: vw(40);
       letter-spacing: vw(-1.6);
     }
+  }
+
+  // RevealRow's sliding content is the frame (frame and label enter
+  // together); label centred.
+  &__explore-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border: 1px solid currentColor;
+    padding-right: vw(0.8);
   }
 }

@@ -4,6 +4,7 @@ import { RevealText } from "../../../components/RevealText/RevealText.jsx";
 import { getLenis } from "../smooth-scroll/SmoothScroll.jsx";
 import { RollingText } from "../../../components/RollingText/RollingText.jsx";
 import styles from "./Header.module.scss";
+import content from "./header-content.json";
 
 export const HEADER_COLORS = {
   home: "#d9d9d9",
@@ -118,6 +119,9 @@ function useAdaptiveHeader(
     barVisibleClass,
   ]);
 }
+
+// Mobile menu link reveal delays (s), in link order.
+const MENU_LINK_DELAYS = [0, 0.08, 0.08, 0.16];
 
 // Each label sits in a `data-header-intro` span so a page intro (home hero)
 // can slide it inside its link; elsewhere the spans are static.
@@ -240,7 +244,7 @@ export function Header({ color = HEADER_COLORS.home }) {
     <header
       ref={headerRef}
       className={`${styles.header} ${menuOpen ? styles.menuOpen : ""}`}
-      aria-label="Primary navigation"
+      aria-label={content.label}
     >
       <span ref={barRef} className={styles.bar} aria-hidden="true" />
       {menuOpen && (
@@ -248,7 +252,7 @@ export function Header({ color = HEADER_COLORS.home }) {
           className={styles.mobileMenu}
           id="mobile-menu"
           role="dialog"
-          aria-label="Mobile navigation"
+          aria-label={content.menu.label}
           style={{ "--mobile-menu-color": color }}
         >
           <div
@@ -268,43 +272,22 @@ export function Header({ color = HEADER_COLORS.home }) {
             ref={menuContentRef}
             className={`${styles.mobileMenuContent} ${menuRevealed ? styles.mobileMenuContentReady : ""}`}
           >
-            <nav className={styles.mobileMenuLinks} aria-label="Mobile links">
-              <RevealText
-                as="a"
-                href="/posters"
-                play={menuRevealed}
-                delay={0}
-                duration={0.8}
-              >
-                Poster
-              </RevealText>
-              <RevealText
-                as="a"
-                href="/grants"
-                play={menuRevealed}
-                delay={0.08}
-                duration={0.8}
-              >
-                Grants
-              </RevealText>
-              <RevealText
-                as="a"
-                href="/guidelines"
-                play={menuRevealed}
-                delay={0.08}
-                duration={0.8}
-              >
-                Guidelines
-              </RevealText>
-              <RevealText
-                as="a"
-                href="/submit"
-                play={menuRevealed}
-                delay={0.16}
-                duration={0.8}
-              >
-                Submit (→)
-              </RevealText>
+            <nav
+              className={styles.mobileMenuLinks}
+              aria-label={content.menu.linksLabel}
+            >
+              {content.links.map((link, index) => (
+                <RevealText
+                  key={link.href}
+                  as="a"
+                  href={link.href}
+                  play={menuRevealed}
+                  delay={MENU_LINK_DELAYS[index]}
+                  duration={0.8}
+                >
+                  {link.label}
+                </RevealText>
+              ))}
             </nav>
             <div className={styles.mobileMenuContact}>
               <RevealText
@@ -313,47 +296,34 @@ export function Header({ color = HEADER_COLORS.home }) {
                 delay={0.32}
                 duration={0.7}
               >
-                Question Everything
+                {content.menu.contactTitle}
               </RevealText>
               <RevealText
                 as="a"
-                href="mailto:ask@unblocked.world"
+                href={content.menu.contact.href}
                 play={menuRevealed}
                 delay={0.38}
                 duration={0.7}
               >
-                (ask@unblocked.world)
+                {content.menu.contact.label}
               </RevealText>
             </div>
           </div>
         </div>
       )}
       <nav className={`${styles.nav} ${colorClass}`}>
-        <a className={styles.navItem} href="/posters">
-          <span data-header-intro>
-            <RollingText dim text="Poster" />
-          </span>
-        </a>
-        <a className={styles.navItem} href="/grants">
-          <span data-header-intro>
-            <RollingText dim text="Grants" />
-          </span>
-        </a>
-        <a className={styles.navItem} href="/guidelines">
-          <span data-header-intro>
-            <RollingText dim text="Guidelines" />
-          </span>
-        </a>
-        <a className={styles.navItem} href="/submit">
-          <span data-header-intro>
-            <RollingText dim text="Submit (→)" />
-          </span>
-        </a>
+        {content.links.map((link) => (
+          <a key={link.href} className={styles.navItem} href={link.href}>
+            <span data-header-intro>
+              <RollingText dim text={link.label} />
+            </span>
+          </a>
+        ))}
       </nav>
-      <a className={`${styles.home} ${colorClass}`} href="/">
+      <a className={`${styles.home} ${colorClass}`} href={content.home.href}>
         <span data-header-intro>
-            <RollingText dim text="Home" />
-          </span>
+          <RollingText dim text={content.home.label} />
+        </span>
       </a>
       <button
         className={`${styles.menu} ${colorClass}`}
@@ -363,7 +333,7 @@ export function Header({ color = HEADER_COLORS.home }) {
         onClick={() => (menuOpen ? closeMenu() : setMenuOpen(true))}
       >
         <span data-header-intro>
-          {menuOpen && !menuClosing ? "Close" : "Menu"}
+          {menuOpen && !menuClosing ? content.menu.close : content.menu.open}
         </span>
       </button>
     </header>

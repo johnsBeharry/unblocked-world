@@ -1,15 +1,7 @@
+// Stack wrapper for the homepage theme sections. The door slide (pin,
+// stacking, reading pauses) is set up in ThemeSectionStack.jsx, so no spacer
+// or frame positioning is needed here.
+
 .root {
-  // Reading time (user request 2026-11-17): every section except the last
-  // keeps 30% of the viewport of extra scroll below it, so it stays pinned
-  // and fully visible (the description near the bottom included) before the
-  // next section slides over it. 10% only gave ~90px at 900px tall: a
-  // full-screen section is fully visible exactly when the spacer starts. The
-  // pinned section covers the spacer, so nothing shows through.
-  --theme-stack-rest: 30vh;
-
   position: relative;
-
-  > [data-theme-section-frame]:not(:last-child) {
-    margin-bottom: var(--theme-stack-rest);
-  }
 }

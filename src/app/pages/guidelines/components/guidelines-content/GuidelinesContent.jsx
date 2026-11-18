@@ -2,12 +2,15 @@ import React, { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import styles from './GuidelinesContent.module.scss'
-import { introduction, introductionLines, sections, rounds, unansweredQuestions, prizes } from './content.js'
+import content from './guidelines-content.json'
 import { GuidelineSection, RuledList } from '../guideline-section/GuidelineSection.jsx'
 import { JudgingRound } from '../judging-round/JudgingRound.jsx'
 import { FaqAccordion } from '../faq-accordion/FaqAccordion.jsx'
 import { RevealText } from '../../../../../components/RevealText/RevealText.jsx'
 import { RevealRow } from '../../../../../components/RevealRow/RevealRow.jsx'
+import { contentLines } from '../../../../../components/ContentLines/ContentLines.jsx'
+
+const { sections, judging, afterSubmission, faq } = content
 
 function Label({ children }) { return <span className={styles.label}><RevealText as="span">{children}</RevealText></span> }
 
@@ -16,7 +19,7 @@ gsap.registerPlugin(ScrollTrigger)
 // Reference line the section progress is measured against (matches the active band).
 const PROGRESS_LINE = 'top 45%'
 
-const navigation = [...sections.map(({ id, title }) => ({ id, title })), { id: 'judging-process', title: 'Judging Process' }, { id: 'after-submission', title: 'After Submission' }]
+const navigation = [...sections, judging, afterSubmission].map(({ id, title }) => ({ id, title }))
 
 export function GuidelinesContent() {
   const [activeSection, setActiveSection] = useState(navigation[0].id)
@@ -48,28 +51,28 @@ export function GuidelinesContent() {
 
   return (
     <section className={styles.page} data-name="guidelines-content">
-      <a href="#submission-process" className={styles.skipLink}>Skip to submission guide</a>
+      <a href={content.skipLink.href} className={styles.skipLink}>{content.skipLink.label}</a>
       <header className={styles.header}>
-        <RevealText as="p" className={styles.introText}>This page explains how to prepare<br />and submit work for the poster<br />contest. The first theme is<br /><u>Ownership</u>.</RevealText>
+        <RevealText as="p" className={styles.introText}>{contentLines(content.introText)}</RevealText>
         <h1 className={`${styles.headline} ${styles.introHeadline}`}>
-          <RevealText highlight as="span" className={styles.introDesktop}>{introduction}</RevealText>
-          <RevealText highlight as="span" className={styles.introTablet}>{introductionLines.map((line, index) => <React.Fragment key={line}>{index > 0 && <br />}{line}</React.Fragment>)}</RevealText>
+          <RevealText highlight as="span" className={styles.introDesktop}>{content.introduction.join(' ')}</RevealText>
+          <RevealText highlight as="span" className={styles.introTablet}>{contentLines(content.introduction)}</RevealText>
         </h1>
       </header>
       <div className={styles.contentGrid}>
-        <aside><div className={styles.stickyNavigation}><Label>Sections</Label><nav ref={navRef} aria-label="Submission guide sections" className={styles.navigation}>{navigation.map(({ id, title }) => <RevealRow as="a" line={false} key={id} href={`#${id}`} aria-current={activeSection === id ? 'location' : undefined} onClick={() => setActiveSection(id)} className={styles.navLink}>{title}<span className={styles.navFill} aria-hidden="true">{title}</span></RevealRow>)}</nav></div></aside>
+        <aside><div className={styles.stickyNavigation}><Label>{content.navigation.title}</Label><nav ref={navRef} aria-label={content.navigation.label} className={styles.navigation}>{navigation.map(({ id, title }) => <RevealRow as="a" line={false} key={id} href={`#${id}`} aria-current={activeSection === id ? 'location' : undefined} onClick={() => setActiveSection(id)} className={styles.navLink}>{title}<span className={styles.navFill} aria-hidden="true">{title}</span></RevealRow>)}</nav></div></aside>
         <div className={styles.contentSections}>
           {sections.map(section => <GuidelineSection key={section.id} id={section.id} title={section.title} description={section.description} items={section.items} ordered={section.id === 'submission-process'} />)}
-          <section id="judging-process" className={styles.guideSection} aria-labelledby="judging-title">
-            <RevealText as="h2" id="judging-title" className={styles.headline}>Judging Process</RevealText>
-            <RevealText as="p">The competition review process takes place across four rounds. During each round, submitted posters are reviewed and either progress to the next stage or conclude their journey. Each round represents a different level of selection and feedback.</RevealText>
-            {rounds.map(round => <JudgingRound key={round.status} {...round} />)}
-            <div className={styles.progressOverview}><RevealText as="h3" className={styles.bold}>Progress Overview</RevealText><RevealText as="p">Accepted (→) Under Review (→) Shortlisted (→) Selected</RevealText></div>
+          <section id={judging.id} className={styles.guideSection} aria-labelledby="judging-title">
+            <RevealText as="h2" id="judging-title" className={styles.headline}>{judging.title}</RevealText>
+            <RevealText as="p">{judging.description}</RevealText>
+            {judging.rounds.map(round => <JudgingRound key={round.status} statusLabel={judging.statusLabel} {...round} />)}
+            <div className={styles.progressOverview}><RevealText as="h3" className={styles.bold}>{judging.progressTitle}</RevealText><RevealText as="p">{judging.progress}</RevealText></div>
           </section>
-          <section id="after-submission" className={styles.guideSection} aria-labelledby="after-title"><RevealText as="h2" id="after-title" className={styles.headline}>After Submission</RevealText><RevealText as="p">After submitting, you should receive a confirmation message or email. Please do not close or exit the page while your submission is uploading.</RevealText></section>
+          <section id={afterSubmission.id} className={styles.guideSection} aria-labelledby="after-title"><RevealText as="h2" id="after-title" className={styles.headline}>{afterSubmission.title}</RevealText><RevealText as="p">{afterSubmission.description}</RevealText></section>
         </div>
       </div>
-      <section className={styles.faqSection} aria-labelledby="faq-title"><h2 id="faq-title"><Label>FAQs</Label></h2><div className={styles.faqContent}>{unansweredQuestions.map(question => <FaqAccordion key={question} question={question} />)}<FaqAccordion question="What do I get if I win?" defaultOpen><RevealText as="p">Winning entries receive recognition across our channels and programme materials, with selected works becoming part of the broader exhibition experience.</RevealText><ul className={styles.prizesList}>{prizes.map(prize => <RevealRow key={prize} className={styles.prizeItem} contentClassName={styles.prizeContent} lineClassName={styles.prizeRule}><span aria-hidden="true">•</span><span>{prize.replace(/\u00c2\u00a3/g, '\u00a3')}</span></RevealRow>)}</ul></FaqAccordion></div></section>
+      <section className={styles.faqSection} aria-labelledby="faq-title"><h2 id="faq-title"><Label>{faq.title}</Label></h2><div className={styles.faqContent}>{faq.questions.map(question => <FaqAccordion key={question} question={question} />)}<FaqAccordion question={faq.prize.question} defaultOpen><RevealText as="p">{faq.prize.answer}</RevealText><ul className={styles.prizesList}>{faq.prize.prizes.map(prize => <RevealRow key={prize} className={styles.prizeItem} contentClassName={styles.prizeContent} lineClassName={styles.prizeRule}><span aria-hidden="true">•</span><span>{prize}</span></RevealRow>)}</ul></FaqAccordion></div></section>
     </section>
   )
 }

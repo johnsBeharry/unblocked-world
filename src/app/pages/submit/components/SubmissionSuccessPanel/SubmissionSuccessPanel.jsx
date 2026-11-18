@@ -1,6 +1,7 @@
 import React, { useLayoutEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import styles from './SubmissionSuccessPanel.module.scss'
+import content from './submission-success-content.json'
 import { RevealText } from '../../../../../components/RevealText/RevealText.jsx'
 import { RollingText } from '../../../../../components/RollingText/RollingText.jsx'
 import { RevealRow } from '../../../../../components/RevealRow/RevealRow.jsx'
@@ -67,9 +68,9 @@ export function SubmissionSuccessPanel() {
     <section className={styles['submission-success']} aria-labelledby="submission-success-title">
       <div className={styles['submission-success__inner']}>
         <SuccessPattern />
-        <RevealText as="h1" id="submission-success-title" className={styles['submission-success__title']}>Entry Submitted</RevealText>
-        <RevealText as="p" className={styles['submission-success__copy']}>Thank you for your submission. Your work has been received and is now under review. We'll keep you informed of any updates as the selection process progresses.</RevealText>
-        <RevealRow as="a" line={false} className={styles['submission-success__explore']} href="/"><RollingText text="Explore More (→)" /></RevealRow>
+        <RevealText as="h1" id="submission-success-title" className={styles['submission-success__title']}>{content.title}</RevealText>
+        <RevealText as="p" className={styles['submission-success__copy']}>{content.copy}</RevealText>
+        <RevealRow as="a" line={false} className={styles['submission-success__explore']} contentClassName={styles['submission-success__explore-content']} href={content.link.href}><RollingText text={content.link.label} /></RevealRow>
       </div>
     </section>
   )

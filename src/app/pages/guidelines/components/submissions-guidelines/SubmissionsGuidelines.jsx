@@ -1,5 +1,7 @@
 import { RevealText } from "../../../../../components/RevealText/RevealText.jsx";
+import { contentLines } from "../../../../../components/ContentLines/ContentLines.jsx";
 import styles from "./SubmissionsGuidelines.module.scss";
+import content from "./submissions-guidelines-content.json";
 
 export function SubmissionsGuidelines() {
   return (
@@ -7,15 +9,13 @@ export function SubmissionsGuidelines() {
       {/* <SubmitArtwork className={styles.artwork} /> */}
 
       <div className={styles.heading}>
-        <RevealText as="p">Submissions</RevealText>
+        <RevealText as="p">{content.title}</RevealText>
         <p className={styles.wide}>
-          <RevealText as="span">Guidelines (↓)</RevealText>
+          <RevealText as="span">{content.subtitle}</RevealText>
         </p>
         <p className={styles.compact}>
           <RevealText as="span">
-            Guidelines
-            <br />
-            (↓)
+            {contentLines(content.subtitleCompact)}
           </RevealText>
         </p>
       </div>

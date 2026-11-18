@@ -1,6 +1,8 @@
 // Shared layout for the four homepage theme sections.
-// Values are based on the supplied Permanence section; colors and artwork
-// are switched through section modifiers.
+// Desktop values follow the 1440 × 827 @2x Ownership mockup (2026-11-18,
+// `.visual-qa/theme-layout-20261118/reference.png`): 453 × 356 art box,
+// question / description at 100% line-height. Colors and artwork are
+// switched through section modifiers.
 // Tablet values follow the 864 × 1238 Ownership mockup. The tablet mixin
 // (max-width: 864px) also covers mobile, so mobile blocks only override what
 // differs (no mobile mockup yet: stacked to fit 375px).
@@ -8,28 +10,25 @@
 .theme-section {
   --theme-bg: #43a772;
   --theme-art-bg: #369462;
-  --theme-ink: #272727;
+  // Rule colour: #101010 like the text (mockup).
+  --theme-ink: #101010;
   --theme-copy: #272727;
   --theme-bar: #272727;
 
   position: relative;
   z-index: 1;
   width: vw(1440);
-  // Full screen on every desktop size (user request 2026-11-17; was the
-  // 640px Permanence mockup height, full screen only on wide screens).
+  // Full screen on every screen size (user request 2026-11-18; the stack's
+  // door slide needs one section per screen). svh = visible height, without
+  // mobile browser bars.
   height: 100vh;
-  height: 100svh; // visible height, without mobile browser bars
+  height: 100svh;
   overflow: clip;
   box-sizing: border-box;
   background-color: var(--theme-bg);
 
-  // Full screen on tablet too (the 864 × 1238 mockup is one viewport).
   @include tablet {
     width: 100%;
-  }
-
-  @include mobile {
-    height: vw(1336);
   }
 
   &__content {
@@ -44,7 +43,7 @@
   &__pin-header {
     display: grid;
     grid-template-columns: 1fr vw(690);
-    padding: vw(20) vw(20) 0;
+    padding: vw(80) vw(20) vw(20);
     font-weight: 600;
     font-size: vw(100);
     line-height: 90%;
@@ -80,8 +79,18 @@
       display: flex;
       justify-content: space-between;
       outline: none;
-      padding-bottom: vw(20);
+      // Mockup: label line 37.5px above the rule, art box 19.5px below it.
+      // 100% line-height keeps the meta block on whole pixels (an inherited
+      // 20.4px line put it at y 370.59 and Chromium drew the rule a device
+      // pixel low).
+      padding-bottom: vw(19.5);
+      line-height: 100%;
       border-bottom: 1px solid var(--theme-ink);
+
+      // Tablet / mobile keep their own mockups' spacing.
+      @include tablet {
+        padding-bottom: vw(20);
+      }
 
       @include mobile {
         padding-bottom: vw(40);
@@ -90,11 +99,12 @@
 
     &-detail {
       display: grid;
-      padding: vw(20) 0 0;
+      padding: vw(19.5) 0 0;
       grid-template-columns: 1fr vw(690);
 
       // minmax(0, …): the track must not grow to RevealText's nowrap lines.
       @include tablet {
+        padding-top: vw(20);
         grid-template-columns: minmax(0, 1fr);
         row-gap: vw(180);
       }
@@ -106,8 +116,8 @@
 
       .content__rule {
         position: relative;
-        width: vw(433);
-        height: vw(280);
+        width: vw(453);
+        height: vw(356);
         overflow: clip;
         background-color: #101010;
         color: var(--theme-art-color, var(--theme-bg));
@@ -141,14 +151,18 @@
           gap: vw(48);
         }
 
+        // Own line-height: an inherited value resolves to the 20px copy size.
         &__question-wrap {
           font-weight: 600;
           font-size: vw(40);
+          line-height: 100%;
+          // The mockup draws the 40px line 1px lower in its 100% box than
+          // Chromium does (glyph top 4.5px vs 3.5px under the box top).
+          padding-top: vw(1);
 
-          // Own line-height: the meta's 100% resolves to the 20px copy size.
           @include tablet {
-            line-height: 100%;
             flex: 0 0 auto;
+            padding-top: 0;
           }
 
           // Mobile mockup: 20px (same as the copy), long questions wrap to
@@ -161,6 +175,7 @@
         &__description-wrap {
           width: 100%;
           max-width: vw(453);
+          line-height: 100%;
 
           @include tablet {
             width: vw(402);
@@ -191,9 +206,12 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    width: calc(var(--art-units) * #{vw(1)});
+    // Mockup: the Ownership mark is 186px in the 453 × 356 box (1.0717 ×
+    // its native units, measured from the bar area at @2x).
+    width: calc(var(--art-units) * #{vw(1.0717)});
     height: auto;
-    transform: translate(-50%, -50%) rotate(calc(-1 * var(--art-angle)));
+    // `--art-shift-x`: the mockup places a mark slightly off the box centre.
+    transform: translate(calc(-50% + var(--art-shift-x, 0px)), -50%) rotate(calc(-1 * var(--art-angle)));
 
     @include tablet {
       width: calc(var(--art-units) * #{vw(1.5)});
@@ -207,6 +225,12 @@
   &--ownership {
     --art-units: 223;
     --art-angle: -20deg;
+    // Mockup: bar centroid 0.9px left of the centred mark (desktop only).
+    --art-shift-x: #{vw(-0.9)};
+
+    @include tablet {
+      --art-shift-x: 0px;
+    }
   }
 
   &--permanence {
@@ -236,24 +260,9 @@
 .frame {
   position: relative;
   width: 100%;
-  // Must mirror the section height so stacked frames never overlap.
+  // Mirrors the section height (ThemeSectionStack stretches it to 100lvh
+  // while the door slide runs, so the section colour also fills the strip
+  // under collapsing mobile browser bars).
   height: 100vh;
   height: 100svh;
-
-  @include mobile {
-    height: vw(1336);
-  }
-
-  // Seam backfill below stacked frames (set by ThemeSectionStack); the next
-  // frame paints over it, so it only shows where a compositor seam would.
-  &[data-theme-section-backfill]::after {
-    content: "";
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: inherit;
-    pointer-events: none;
-  }
 }

@@ -1,0 +1,31 @@
+{
+  "title": "Add a Poster",
+  "fields": {
+    "title": "Poster Title",
+    "year_designed": "Year Designed",
+    "designed_for": "Designed For",
+    "client_name": "Client Name",
+    "creation_method": "Creation Method",
+    "materials_used": "Materials Used",
+    "digital_programs": "Digital Programs Used",
+    "printing_method": "Printing Method"
+  },
+  "beforeYears": "Before 1996",
+  "concept": "Poster Concept",
+  "posterFiles": {
+    "title": "Poster Files",
+    "description": [
+      "Static: JPG, PNG, GIF up to 2000px wide under 4mb.",
+      "Motion: GIF or MP4 up to 2000px wide under 20mb."
+    ]
+  },
+  "supportingFiles": {
+    "title": [
+      "Supporting Assets",
+      "(Optional)"
+    ]
+  },
+  "browse": "Browse",
+  "dropping": "Drop to add",
+  "fileCount": "{count} files: {names}"
+}

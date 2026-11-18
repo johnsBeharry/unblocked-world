@@ -1,24 +1,25 @@
 import React from 'react'
 import styles from './OwnershipProgramme.module.scss'
 import { RevealText } from '../../../../../components/RevealText/RevealText.jsx'
+import content from './ownership-programme-content.json'
 
 export function OwnershipProgramme() {
   return (
-    <section className={styles.section} data-name="programme" aria-label="About the Programme">
+    <section className={styles.section} data-name="programme" aria-label={content.label}>
       <RevealText highlight as="p" className={styles.intro}>
-        A creative programme bringing together diverse perspectives through participation, visual expression, public dialogue, and the collective exploration of ideas that shape culture and society.
+        {content.intro}
       </RevealText>
 
       <div className={styles.label}>
-        <RevealText as="p">Sec. 04 (About the Programme)</RevealText>
+        <RevealText as="p">{content.sectionLabel}</RevealText>
       </div>
 
       <RevealText as="p" className={styles.descriptionLeft}>
-        Each edition centres on a single theme. Participants respond with one poster that interprets the theme through image, type, symbol, story, or system.
+        {content.descriptionLeft}
       </RevealText>
 
       <RevealText as="p" className={styles.descriptionRight}>
-        Selected works may be featured in an online gallery, publication, exhibition, or other programme materials.
+        {content.descriptionRight}
       </RevealText>
 
       <div className={styles.rule} data-name="line" aria-hidden="true">

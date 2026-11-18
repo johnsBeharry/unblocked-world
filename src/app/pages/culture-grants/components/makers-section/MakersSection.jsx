@@ -3,7 +3,7 @@ import { TunnelArtwork } from "../makers-artwork/TunnelArtwork";
 import { BarsArtwork } from "../makers-artwork/BarsArtwork";
 import { GlyphArtwork } from "../makers-artwork/GlyphArtwork";
 import { RevealText } from "../../../../../components/RevealText/RevealText";
-import content from "./makers.json";
+import content from "./makers-content.json";
 import styles from "./MakersSection.module.scss";
 
 // Culture Grants "Sec. 01 Makers" on the shared ProgramGridSection shell

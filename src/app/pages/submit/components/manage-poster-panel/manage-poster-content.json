@@ -1,0 +1,12 @@
+{
+  "title": "Manage Poster",
+  "empty": "No submitted posters yet.",
+  "withdraw": "(Withdraw)",
+  "withdrawing": "(Withdrawing…)",
+  "restore": "(Restore)",
+  "restoring": "(Restoring…)",
+  "status": {
+    "submitted": "Submitted",
+    "withdrawn": "Withdrawn"
+  }
+}

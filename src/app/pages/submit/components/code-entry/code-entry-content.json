@@ -1,0 +1,8 @@
+{
+  "label": "Email verification code",
+  "digitLabel": "Digit {number}",
+  "resend": "(Resend Code)",
+  "changeEmail": "(Change Email)",
+  "note": "Or click the link in the email",
+  "checking": "Checking the code…"
+}

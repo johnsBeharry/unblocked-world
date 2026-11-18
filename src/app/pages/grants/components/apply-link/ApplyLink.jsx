@@ -1,6 +1,7 @@
 import { RevealRow } from "../../../../../components/RevealRow/RevealRow";
 import { RollingText } from "../../../../../components/RollingText/RollingText.jsx";
 import styles from "./ApplyLink.module.scss";
+import content from "./apply-link-content.json";
 
 // "Apply Now (→)" link of the grant program pages (ProgramHero and the
 // Culture Grants Application section). RevealRow keeps the link markup; its
@@ -10,11 +11,11 @@ export function ApplyLink({ className = "" }) {
   return (
     <RevealRow
       as="a"
-      href="/submit"
+      href={content.href}
       className={`${styles["apply-link"]} ${className}`}
       lineClassName={styles["apply-link__rule"]}
     >
-      <RollingText text="Apply Now (→)" />
+      <RollingText text={content.label} />
     </RevealRow>
   );
 }

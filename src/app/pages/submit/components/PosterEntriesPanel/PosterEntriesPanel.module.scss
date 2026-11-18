@@ -23,7 +23,8 @@
       width: vw(670);
       margin-left: vw(40);
       padding-top: vw(206);
-      padding-bottom: vw(260);
+      // Clear of the mobile CTA band (156px) + 24px.
+      padding-bottom: vw(360);
     }
   }
 

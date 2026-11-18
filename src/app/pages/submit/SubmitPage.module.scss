@@ -11,7 +11,8 @@
 .introPending { background: #dc91a8; }
 .introPending .content { clip-path: inset(0% 0% 0% 100%); }
 // Bottom fade over the form column. Every step keeps its last content above it:
-// bottom padding vw(138) desktop/tablet (114 fade + 24), vw(260) mobile.
+// bottom padding vw(138) desktop/tablet (114 fade + 24); mobile vw(360) on
+// screens with the bottom CTA band (156px band + shadow + fade, + 24).
 .content::after { position: absolute; z-index: 1; bottom: 0; left: 50%; width: vw(496); height: vw(114); pointer-events: none; content: ''; transform: translateX(-50%); background: linear-gradient(180deg, rgb(0 0 0 / 0) 0%, #000 30.26%); }
 .contentScroll { height: 100%; overflow-y: auto; overscroll-behavior: contain; scroll-behavior: smooth; scrollbar-width: none; }
 .contentScroll::-webkit-scrollbar { display: none; }
@@ -24,7 +25,72 @@
 .contentInner ol { margin-top: vw(24) !important; padding-left: vw(30); list-style: decimal; letter-spacing: vw(-0.8); line-height: 1.6; }
 .contentInner li { padding-left: vw(1); }
 .contentInner ul { margin-top: vw(21) !important; padding-left: vw(30); list-style: disc; font-size: vw(16); letter-spacing: vw(-0.70); line-height: 1.62; }
-.submitLink { position: fixed; z-index: 2; bottom: vw(24); left: 70%; display: block; width: max-content; margin: 0; border: 0; padding: 0; transform: translateX(-50%); background: transparent; color: inherit; cursor: pointer; font: inherit; letter-spacing: vw(-0.8); line-height: 1.02; text-decoration: none; }
+// Fixed CTA of the overview ("Enter Submission (→)") and Manage Poster
+// ("Submit Poster (→)"): user reference 2026-11-18, a 1px pink frame 84px
+// tall across the column, 20px in from its sides and the bottom (the same
+// band as the footer nav), label centred. Mobile doubles it in 750 units and
+// fills the 20px around it with black (no mobile reference).
+.submitLink {
+  position: fixed;
+  right: vw(20);
+  bottom: vw(20);
+  left: calc(40% + #{vw(20)});
+  z-index: 2;
+  display: block;
+  height: vw(84);
+  margin: 0;
+  border: 0;
+  padding: 0;
+  // Stationary backing; the frame itself is the sliding RevealRow content.
+  background: #000;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  letter-spacing: vw(-0.8);
+  line-height: 1.02;
+  text-decoration: none;
+  white-space: nowrap;
+
+  // The column is the full width here.
+  @include tablet-portrait {
+    left: vw(20);
+  }
+
+  @include mobile {
+    right: vw(40);
+    bottom: vw(40);
+    left: vw(40);
+    height: vw(168);
+    font-size: vw(40);
+    letter-spacing: vw(-1.6);
+    // Black around the frame (spread shadow); ::before fades the copy above
+    // it, like the footer nav.
+    box-shadow: 0 0 0 vw(40) #000;
+  }
+
+  &::before {
+    @include mobile {
+      position: absolute;
+      right: vw(-40);
+      bottom: calc(100% + #{vw(40)});
+      left: vw(-40);
+      height: vw(64);
+      content: '';
+      background: linear-gradient(180deg, rgb(0 0 0 / 0), #000);
+      pointer-events: none;
+    }
+  }
+}
+
+// RevealRow's sliding content is the frame, so frame and label enter
+// together (user request 2026-11-18); it fills the button, label centred.
+.submitLinkContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  border: 1px solid #dc91a8;
+}
 .editing .identity .homeLink { display: none; }
 .editorBar { display: none; }
 // Thank-you screen: no bottom fade (reference); its content ends well above.
@@ -42,9 +108,6 @@
   .contentInner ul { padding-left: vw(26); }
   .contentInner ul li { padding-left: vw(-0.5); }
   .contentInner ol + h3 { margin-top: vw(48) !important; }
-  .contentInner ul + .submitLink { left: 50%; bottom: vw(24); }
-  // Manage Poster "Submit Poster (→)" (account screens): centred like overview.
-  .account .submitLink { left: 50%; }
 }
 
 @include mobile {
@@ -63,7 +126,7 @@
   .success .content::after { display: none; }
   // Profile: the account nav (Profile / Poster / Sign out) takes the top row.
   .account .homeLink { display: none; }
-  .contentInner { width: vw(660); margin-left: vw(40); padding-top: vw(206); padding-bottom: vw(260); }
+  .contentInner { width: vw(660); margin-left: vw(40); padding-top: vw(206); padding-bottom: vw(360); }
   .titleDesktop { display: none; }
   .titleMobile { display: inline; }
   .content h2 { font-size: vw(80); letter-spacing: vw(-3.2); }
@@ -75,9 +138,6 @@
   .contentInner ul { margin-top: vw(42) !important; padding-left: vw(60); font-size: vw(32); letter-spacing: vw(-1.28); }
   .contentInner ul li { padding-left: vw(2); }
   .contentInner ol + h3 { margin-top: vw(96) !important; }
-  // Centred like the mockup (the desktop rule puts it at 70%).
-  .contentInner ul + .submitLink { left: 50%; bottom: vw(48); font-size: vw(40); letter-spacing: vw(-1.6); white-space: nowrap; }
-  .account .submitLink { left: 50%; bottom: vw(48); font-size: vw(40); letter-spacing: vw(-1.6); white-space: nowrap; }
   .editing .progressBar { width: vw(264); }
   // Add a Poster on mobile: "Cancel" / "Save" header instead of the step
   // list and footer nav (mockup).

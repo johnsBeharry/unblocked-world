@@ -1,5 +1,6 @@
 import styles from "./SubmitProgress.module.scss";
 import { RevealRow } from "../../../../../components/RevealRow/RevealRow.jsx";
+import content from "./submit-progress-content.json";
 
 export function SubmitProgress({
   activeStep = 1,
@@ -9,17 +10,15 @@ export function SubmitProgress({
   progress = 0,
   className = "",
 }) {
-  const steps = ["Join", "Poster", "Consent"];
-
   return (
     <aside
       className={`${styles.progress} ${compact ? styles.compact : ""} ${activeStep === 2 ? styles.posterStep : ""} ${lineOnly ? styles.lineOnly : ""} ${hideBar ? styles.hideBar : ""} ${className}`}
-      aria-label="Submission progress"
+      aria-label={content.label}
     >
       {/* Grows with each frame of the flow (`progress` 0–1). */}
       <div className={styles.progressBar} style={{ "--progress": progress }} />
       <ol>
-        {steps.map((step, index) => (
+        {content.steps.map((step, index) => (
           <RevealRow
             as="li"
             line={false}

@@ -1,5 +1,8 @@
 {
-  "amount": ["$100,000"],
+  "label": "Grant amount",
+  "amount": [
+    "$100,000"
+  ],
   "amountLabel": "$100,000",
   "note": "Some projects need more time, funding, or specialized support than a one-time cultural grant. These proposals explore how open money or open intelligence is understood and used. Spiral and other partners fund this work, and we help prepare applications."
 }

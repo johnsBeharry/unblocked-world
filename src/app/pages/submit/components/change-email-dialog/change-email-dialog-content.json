@@ -1,0 +1,18 @@
+{
+  "email": {
+    "title": "Change Email",
+    "message": "We’ll send a 6-digit code to your new address. Your current email stays active until you confirm it.",
+    "field": "New Email Address",
+    "confirm": "Send Code",
+    "busy": "Sending…"
+  },
+  "code": {
+    "title": "Enter Code",
+    "message": [
+      "Enter the 6-digit code we sent",
+      "to {email}. It expires in 15 minutes."
+    ],
+    "confirm": "Verify Email",
+    "busy": "Checking…"
+  }
+}

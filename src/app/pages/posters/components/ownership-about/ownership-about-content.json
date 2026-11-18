@@ -1,0 +1,65 @@
+{
+  "label": "About the Ownership theme",
+  "sectionLabel": "Sec. 01 (About the Theme)",
+  "intro": {
+    "desktop": "Ownership is more than possession—it shapes identity, responsibility, freedom and the relationship between people and the things they create, protect and value.",
+    "mobile": [
+      "Ownership is more than",
+      "possession—it shapes identity,",
+      "responsibility, freedom and the",
+      "relationship between people",
+      "and the things they create,",
+      "protect and value."
+    ]
+  },
+  "descriptionLeft": {
+    "desktop": "Ownership is the first theme of UNBLOCKED, inviting artists, designers, and creative thinkers to explore one of the most enduring ideas in human society. While ownership is often associated with property and assets, it also influences how we understand autonomy, stewardship, access, memory, and personal agency.",
+    "landscape": [
+      "Ownership is the first theme of UNBLOCKED,",
+      "inviting artists, designers, and creative",
+      "thinkers to explore one of the most enduring",
+      "ideas in human society. While ownership is",
+      "often associated with property and assets, it",
+      "also influences how we understand",
+      "autonomy, stewardship, access, memory,",
+      "and personal agency."
+    ],
+    "mobile": [
+      "Ownership is the first theme of",
+      "UNBLOCKED, inviting artists,",
+      "designers, and creative thinkers to",
+      "explore one of the most enduring",
+      "ideas in human society. While",
+      "ownership is often associated with",
+      "property and assets, it also",
+      "influences how we understand",
+      "autonomy, stewardship, access,",
+      "memory, and personal agency."
+    ]
+  },
+  "descriptionRight": {
+    "desktop": "This open call encourages participants to move beyond conventional definitions and examine ownership through cultural, emotional, philosophical, and creative perspectives. The goal is not to communicate a single answer, but to expand the conversation through original visual expression and thoughtful interpretation.",
+    "landscape": [
+      "This open call encourages participants to",
+      "move beyond conventional definitions and",
+      "examine ownership through cultural,",
+      "emotional, philosophical, and creative",
+      "perspectives. The goal is not to communicate",
+      "a single answer, but to expand the",
+      "conversation through original visual",
+      "expression and thoughtful interpretation."
+    ],
+    "mobile": [
+      "This open call encourages",
+      "participants to move beyond",
+      "conventional definitions and examine",
+      "ownership through cultural,",
+      "emotional, philosophical, and creative",
+      "perspectives. The goal is not to",
+      "communicate a single answer, but to",
+      "expand the conversation through",
+      "original visual expression and",
+      "thoughtful interpretation."
+    ]
+  }
+}

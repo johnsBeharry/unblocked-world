@@ -1,0 +1,40 @@
+{
+  "versus": "(vs)",
+  "themes": [
+    {
+      "variant": "ownership",
+      "index": "01",
+      "title": "Ownership",
+      "backgroundColor": "#DC91A8",
+      "question": "What does it mean to own?",
+      "description": "We create, exchange, use and depend on things every day. But where does access end and ownership begin? Who decides what belongs to us, and what happens when the rules change?",
+      "sideLabel": "Access"
+    },
+    {
+      "variant": "permanence",
+      "index": "02",
+      "title": "Permanence",
+      "backgroundColor": "#34BD5F",
+      "question": "What deserves to last?",
+      "description": "Objects, memories, platforms and ideas. What do we choose to preserve? What should be repairable? And why are so many things designed to disappear?",
+      "sideLabel": "Disposability"
+    },
+    {
+      "variant": "energy",
+      "index": "03",
+      "title": "Energy",
+      "backgroundColor": "#EAE438",
+      "question": "What makes things possible?",
+      "description": "Energy powers everything we make, from the physical world to the digital one. Who has access to it? How is it distributed? What becomes possible when we rethink abundance?",
+      "sideLabel": "Scarcity"
+    },
+    {
+      "variant": "peers",
+      "index": "04",
+      "title": "Peers",
+      "question": "What can we do together?",
+      "description": "We have more ways to connect than ever. Yet many of us feel increasingly disconnected. How do people organize, exchange and support one another? What becomes possible when we build together?",
+      "sideLabel": "Isolation"
+    }
+  ]
+}

@@ -1,60 +1,121 @@
+// Submit flow footer: back "(←)" | next "Continue (→)".
+// Desktop values from the user's 2026-11-18 Submit references (864 column
+// @2x and the 1440 × 918 Remove popup frame): a band 84px tall, 20px in from
+// the column sides and bottom, with a 1px pink rule on top and a 1px divider
+// after the back cell (x 116.5 in the column). Labels 20px, vertically
+// centred. No tablet / mobile reference: tablet uses the desktop values on
+// its full-width column; mobile doubles them in 750 units.
 
-.nav {
+.footer-nav {
+  --footer-nav-ink: #dc91a8;
+
   position: absolute;
-  right: 0;
-  bottom: vw(24);
-  left: 0;
+  right: vw(20);
+  bottom: vw(20);
+  left: vw(20);
   z-index: 3;
-  display: flex;
-  justify-content: space-between;
-  // References: "(←)" ink at 22px, "Continue (→)" ink ends 22px from the right.
-  padding: 0 vw(21) 0 vw(20);
-  color: #dc91a8;
+  display: block;
+  height: vw(84);
+  // Stationary backing: scrolled copy never shows through the band, also
+  // while the band slides in.
+  background: #000;
+  color: var(--footer-nav-ink);
   font-family: 'Inter Local', sans-serif;
-}
 
-.link {
-  border: 0;
-  padding: 0;
-  background: transparent;
-  color: inherit;
-  cursor: pointer;
-  font: inherit;
-  letter-spacing: vw(-0.8);
-  line-height: 1.02;
-  text-decoration: none;
-}
-
-.link:disabled { cursor: wait; opacity: 0.5; }
-.labelMobile { display: none; }
-
-@include mobile {
-  // Mobile footer (user reference 2026-11-17: 84px layer pinned to the
-  // bottom): a black fade behind the links so scrolled content never runs
-  // under them (Add a Poster has no column fade on mobile). Links stay 24px
-  // above the bottom edge.
-  .nav {
+  @include mobile {
     position: fixed;
-    right: 0;
-    bottom: 0;
-    left: 0;
+    right: vw(40);
+    bottom: vw(40);
+    left: vw(40);
     z-index: 2;
-    box-sizing: border-box;
     height: vw(168);
-    align-items: flex-end;
-    padding: 0 vw(40) vw(48);
-    background: linear-gradient(180deg, rgb(0 0 0 / 0) 0%, #000 30.26%);
+    // Fixed to the screen: a black spread shadow fills the 20px around the
+    // band; ::before fades the copy above it (Add a Poster has no column
+    // fade on mobile).
+    box-shadow: 0 0 0 vw(40) #000;
   }
 
-  .link {
-    font-size: vw(40);
-    letter-spacing: vw(-1.6);
+  &::before {
+    @include mobile {
+      position: absolute;
+      right: vw(-40);
+      bottom: calc(100% + #{vw(40)});
+      left: vw(-40);
+      height: vw(64);
+      content: '';
+      background: linear-gradient(180deg, rgb(0 0 0 / 0), #000);
+      pointer-events: none;
+    }
   }
 
-  .labelDesktop { display: none; }
-  .labelMobile { display: inline; }
-}
+  // RevealRow's sliding content: the rule, divider and actions move in
+  // together (the frame never shows before its labels).
+  &__band {
+    display: flex;
+    box-sizing: border-box;
+    border-top: 1px solid var(--footer-nav-ink);
+  }
 
-@media (min-width: 601px) and (max-width: 864px) and (orientation: portrait) {
-  .nav { bottom: vw(20); padding-left: vw(20); }
+  &__back,
+  &__next {
+    display: flex;
+    align-items: center;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    letter-spacing: vw(-0.8);
+    line-height: 1.02;
+    text-decoration: none;
+
+    @include mobile {
+      font-size: vw(40);
+      letter-spacing: vw(-1.6);
+    }
+
+    &:disabled {
+      cursor: wait;
+      opacity: 0.5;
+    }
+  }
+
+  // Back cell: 96.5px + the 1px divider; "(←)" centred in it (ink centre
+  // x 68 in the reference column).
+  &__back {
+    flex: none;
+    justify-content: center;
+    box-sizing: border-box;
+    width: vw(97.5);
+    border-right: 1px solid var(--footer-nav-ink);
+
+    @include mobile {
+      width: vw(195);
+    }
+  }
+
+  // "Continue (→)" ink ends 35px before the band's right end.
+  &__next {
+    margin-left: auto;
+    padding-right: vw(34.2);
+
+    @include mobile {
+      padding-right: vw(68.4);
+    }
+  }
+
+  &__label-mobile {
+    display: none;
+
+    @include mobile {
+      display: inline;
+    }
+  }
+
+  &__label-desktop {
+    @include mobile {
+      display: none;
+    }
+  }
 }

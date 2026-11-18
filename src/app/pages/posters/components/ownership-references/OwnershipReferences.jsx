@@ -3,6 +3,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef } from "react";
 import { RevealText } from "../../../../../components/RevealText/RevealText.jsx";
 import styles from "./OwnershipReferences.module.scss";
+import content from "./ownership-references-content.json";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,28 +17,6 @@ const POSTER_PROFILES = [
 const MOUSE_DEPTH = [0.35, 0.55, 0.8, 1];
 const MAX_MOUSE_SCALE = 1.2;
 
-const references = [
-  {
-    name: "A4 - 1",
-    imageName: "image 54",
-    src: "/UNBLOCKED-poster_files/ff2033a1c38a4357386d641377703903abf0cb51.ff2033a1.png",
-  },
-  {
-    name: "A4 - 3",
-    imageName: "image 56",
-    src: "/UNBLOCKED-poster_files/e353c20b9b160ceed44fa9f8dfbd71844bc63f36.e353c20b.png",
-  },
-  {
-    name: "A4 - 2",
-    imageName: "image 55",
-    src: "/UNBLOCKED-poster_files/ace3413e5a82a9d017f82762129b9755a0ff0588.ace3413e.png",
-  },
-  {
-    name: "A4 - 4",
-    imageName: "image 57",
-    src: "/UNBLOCKED-poster_files/49a99c5012c102d9fd4cf34cc5a1f852cdfb92ed.49a99c50.png",
-  },
-];
 
 export function OwnershipReferences() {
   const sectionRef = useRef(null);
@@ -188,20 +167,22 @@ export function OwnershipReferences() {
       ref={sectionRef}
       className={styles.references}
       data-name="references"
-      aria-label="Creative references"
+      aria-label={content.label}
     >
       <div className={styles.textContainer}>
         <div className={styles.heading}>
-          <RevealText as="p">Sec.03</RevealText>
-          <RevealText as="p">(References)</RevealText>
+          {content.heading.map((line) => (
+            <RevealText key={line} as="p">
+              {line}
+            </RevealText>
+          ))}
         </div>
         <RevealText as="p" className={styles.description}>
-          These references are provided as creative inspiration rather than
-          stylistic direction.
+          {content.description}
         </RevealText>
       </div>
 
-      {references.map((reference, index) => (
+      {content.posters.map((reference, index) => (
         <div
           className={`${styles.poster} ${styles[`poster${index + 1}`]}`}
           data-name={reference.name}
@@ -214,7 +195,7 @@ export function OwnershipReferences() {
           >
             <img
               src={reference.src}
-              alt={`Creative reference poster ${index + 1}`}
+              alt={reference.alt}
             />
           </div>
         </div>

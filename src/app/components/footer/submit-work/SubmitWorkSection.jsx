@@ -1,18 +1,14 @@
 import styles from "./SubmitWorkSection.module.scss";
 import { HeroArtwork } from "../../hero-artwork/HeroArtwork.jsx";
 import { RevealText } from "../../../../components/RevealText/RevealText.jsx";
+import { contentLines } from "../../../../components/ContentLines/ContentLines.jsx";
 
 /** Export frame: 1440 × 800. Global Figma top:6576px normalized to local section origin. */
-export default function SubmitWorkSection({
-  variant = "default",
-  titleLines = ["Submit", "Work (→)"],
-  topLabel = "Current Theme (Ownership)",
-  bottomLabel = "View Brief (→)",
-  titleHref = "/submit",
-  bottomHref = "/posters",
-  showTopLabel = true,
-  showBottomLabel = true,
-}) {
+// Content (title lines, link targets, labels) comes from the footer's
+// footer-content.json `cta` entry; `topLabel` is a string, or per-breakpoint copy
+// ({ desktop, tablet, mobile }) for the poster variant.
+export default function SubmitWorkSection({ variant = "default", content }) {
+  const { title, titleMobile, href, topLabel, bottomLink } = content;
   return (
     <section
       className={`${styles["submit-work"]} ${styles["submit-work__el-000"]} ${variant === "poster" ? styles["submit-work--poster"] : ""}`}
@@ -26,59 +22,52 @@ export default function SubmitWorkSection({
 
       {/* The title is the section's main CTA; the link wraps the line
           reveals (RevealText flattens links placed inside it). */}
-      <a className={styles["submit-work__title-link"]} href={titleHref}>
+      <a className={styles["submit-work__title-link"]} href={href}>
         <span className={styles["submit-work__title-desktop"]}>
           <RevealText as="p" rolling="arrow" className={styles["submit-work__el-199"]}>
-            {titleLines[0]}
+            {title[0]}
           </RevealText>
           <RevealText as="p" rolling="arrow" className={styles["submit-work__el-200"]}>
-            {titleLines[1]}
+            {title[1]}
           </RevealText>
         </span>
-        {variant === "poster" && (
+        {titleMobile && (
           <span className={styles["submit-work__title-mobile"]}>
-            <RevealText as="p" rolling="arrow">Read the</RevealText>
-            <RevealText as="p" rolling="arrow">Guidelines</RevealText>
-            <RevealText as="p" rolling="arrow">(→)</RevealText>
+            {titleMobile.map((line) => (
+              <RevealText key={line} as="p" rolling="arrow">
+                {line}
+              </RevealText>
+            ))}
           </span>
         )}
       </a>
-      {showTopLabel && topLabel && (
+      {topLabel && (
         <p className={styles["submit-work__el-201"]}>
-          {variant === "poster" ? (
+          {typeof topLabel === "string" ? (
+            <RevealText as="span">{topLabel}</RevealText>
+          ) : (
             <>
               <span className={styles["submit-work__top-label-desktop"]}>
-                <RevealText as="span">{topLabel}</RevealText>
+                <RevealText as="span">{topLabel.desktop}</RevealText>
               </span>
               <span className={styles["submit-work__top-label-tablet"]}>
-                <RevealText as="span">
-                  Before You Submit. Make sure your work is
-                  <br />
-                  original, prepared in the correct format, and
-                  <br />
-                  connected to the current theme.
-                </RevealText>
+                <RevealText as="span">{contentLines(topLabel.tablet)}</RevealText>
               </span>
               <span className={styles["submit-work__top-label-mobile"]}>
-                <RevealText as="span">
-                  Before You Submit. Make sure your
-                  <br />
-                  work is original, prepared in the
-                  <br />
-                  correct format, and connected to the
-                  <br />
-                  current theme.
-                </RevealText>
+                <RevealText as="span">{contentLines(topLabel.mobile)}</RevealText>
               </span>
             </>
-          ) : (
-            <RevealText as="span">{topLabel}</RevealText>
           )}
         </p>
       )}
-      {showBottomLabel && bottomLabel && (
-        <RevealText as="a" rolling className={styles["submit-work__brief-link"]} href={bottomHref}>
-          {bottomLabel}
+      {bottomLink && (
+        <RevealText
+          as="a"
+          rolling
+          className={styles["submit-work__brief-link"]}
+          href={bottomLink.href}
+        >
+          {bottomLink.label}
         </RevealText>
       )}
     </section>

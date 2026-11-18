@@ -3,7 +3,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { RevealText } from "../../../../../components/RevealText/RevealText";
 import { SectionLabel } from "../section-label/SectionLabel.jsx";
-import content from "./residencies.json";
+import content from "./residencies-content.json";
 import styles from "./ResidenciesSection.module.scss";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -39,7 +39,7 @@ export function ResidenciesSection() {
   useQuoteMark(markRef);
 
   return (
-    <section className={styles["residencies-section"]} aria-label="Residencies">
+    <section className={styles["residencies-section"]} aria-label={content.sectionLabel}>
       <SectionLabel className={styles["residencies-section__label"]}>
         {content.label}
       </SectionLabel>

@@ -56,7 +56,7 @@ function useRingBuild(rootRef) {
   }, [rootRef]);
 }
 
-export function HeroArtwork() {
+export function HeroArtwork({ label }) {
   const rootRef = useRef(null);
   useRingBuild(rootRef);
   return (
@@ -68,7 +68,7 @@ export function HeroArtwork() {
       viewBox="0 0 690 804"
       fill="none"
       role="img"
-      aria-label="Abstract purple and black geometric artwork"
+      aria-label={label}
     >
       <g clipPath="url(#clip0_2693_1700)">
         <rect

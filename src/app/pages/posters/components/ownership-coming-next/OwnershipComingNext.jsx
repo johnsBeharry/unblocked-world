@@ -1,6 +1,8 @@
 import React from 'react'
 import styles from './OwnershipComingNext.module.scss'
 import { RevealText } from '../../../../../components/RevealText/RevealText.jsx'
+import { contentLines } from '../../../../../components/ContentLines/ContentLines.jsx'
+import content from './ownership-coming-next-content.json'
 
 const columns = [
   [175.75, [[294.875, 24], [331.3125, 24], [367.3125, 18], [397.3125, 12], [421.3125, 6], [439.3125, 3]]],
@@ -23,12 +25,10 @@ export function OwnershipComingNext() {
         )))}
       </div>
 
-      <RevealText as="p" className={styles.label}>Coming Next</RevealText>
-      <RevealText as="h2" className={styles.title} id="ownership-coming-next-title">Permanence</RevealText>
+      <RevealText as="p" className={styles.label}>{content.label}</RevealText>
+      <RevealText as="h2" className={styles.title} id="ownership-coming-next-title">{content.title}</RevealText>
       <RevealText as="p" className={styles.description}>
-        Products. Memories. Platforms.<br />
-        Relationships. Why are so many<br />
-        things designed to disappear?
+        {contentLines(content.description)}
       </RevealText>
     </section>
   )

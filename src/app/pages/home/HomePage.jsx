@@ -1,12 +1,10 @@
 import { Footer } from "../../components/footer/Footer.jsx";
 import "../../styles/Unblocked.generated.module.scss";
 import styles from "./HomePage.module.scss";
-import EnergySection from "./components/energy/EnergySection.jsx";
+import themeContent from "./themes-content.json";
 import { HeroSection } from "./components/hero/HeroSection.jsx";
 import HiddenSystemsSection from "./components/hidden-systems/HiddenSystemsSection.jsx";
-import OwnershipSection from "./components/ownership/OwnershipSection.jsx";
-import PeersSection from "./components/peers/PeersSection.jsx";
-import PermanenceSection from "./components/permanence/PermanenceSection.jsx";
+import { ThemeSection } from "./components/theme-section/ThemeSection.jsx";
 import { ThemeSectionStack } from "./components/theme-section-stack/ThemeSectionStack.jsx";
 
 export function HomePage() {
@@ -21,10 +19,13 @@ export function HomePage() {
                   <div className="relative size-full" data-name="index">
                     <HeroSection />
                     <ThemeSectionStack>
-                      <OwnershipSection />
-                      <PermanenceSection />
-                      <EnergySection />
-                      <PeersSection />
+                      {themeContent.themes.map((theme) => (
+                        <ThemeSection
+                          key={theme.variant}
+                          versus={themeContent.versus}
+                          {...theme}
+                        />
+                      ))}
                     </ThemeSectionStack>
                     <HiddenSystemsSection />
                     <Footer />

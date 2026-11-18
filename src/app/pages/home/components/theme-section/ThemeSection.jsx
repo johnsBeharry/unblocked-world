@@ -35,7 +35,7 @@ export function ThemeSection({
   question,
   description,
   sideLabel,
-  versus = "(vs)",
+  versus,
   backgroundColor,
   reveal = true,
 }) {
@@ -67,7 +67,6 @@ export function ThemeSection({
             </RevealText>
           </div>
 
-
           <div className={styles["theme-section__pin-meta"]}>
             <div className={styles["theme-section__pin-meta-header"]}>
               <RevealText
@@ -94,7 +93,10 @@ export function ThemeSection({
               >
                 {/* Theme mark (same artwork as the Grants principle cards),
                     in the section colour on the dark box. */}
-                <ThemeArtwork theme={variant} className={styles["theme-section__art"]} />
+                <ThemeArtwork
+                  theme={variant}
+                  className={styles["theme-section__art"]}
+                />
                 <div className={styles["theme-section__rule-inset"]}>
                   <svg
                     className={styles["theme-section__rule-svg"]}

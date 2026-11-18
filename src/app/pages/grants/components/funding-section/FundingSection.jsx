@@ -21,7 +21,7 @@ export function FundingSection({ content, className = "" }) {
   useScrollMarquee(marqueeRef, { speed: MARQUEE_SPEED });
 
   return (
-    <section className={`${styles.funding} ${className}`} aria-label="Grant amount">
+    <section className={`${styles.funding} ${className}`} aria-label={content.label}>
       {/* The marquee rises in its mask while the rule below draws in. */}
       <RevealRow
         as="div"

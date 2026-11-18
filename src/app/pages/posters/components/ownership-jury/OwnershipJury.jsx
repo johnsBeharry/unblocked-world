@@ -2,36 +2,17 @@ import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "./OwnershipJury.module.scss";
+import content from "./ownership-jury-content.json";
 import { RevealText } from "../../../../../components/RevealText/RevealText.jsx";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// One portrait per jury member, shown as-is (no blend). Placeholders until
-// the real photos arrive; sources in public/UNBLOCKED-poster_files/jury.
-const JURY_PHOTOS = [
-  "/UNBLOCKED-poster_files/jury/jury-01-kyle-fletcher.jpg",
-  "/UNBLOCKED-poster_files/jury/jury-02-johns-beharry.jpg",
-  "/UNBLOCKED-poster_files/jury/jury-03-lewis-webber.jpg",
-  "/UNBLOCKED-poster_files/jury/jury-04-liam-hartwell.jpg",
-  "/UNBLOCKED-poster_files/jury/jury-05-caleb-winters.jpg",
-  "/UNBLOCKED-poster_files/jury/jury-06-ava-sinclair.jpg",
-];
-
-const JURY_MEMBERS = [
-  "Kyle Fletcher",
-  "Johns Beharry",
-  "Lewis Webber",
-  "Liam Hartwell",
-  "Caleb Winters",
-  "Ava Sinclair",
-];
-
-const MOBILE_JURY_CARDS = [0, 1, 2, 3];
-const DEFAULT_JURY_DESCRIPTION =
-  "Head of Brand Creative at Cash App, with experience shaping cultural work across music, identity, and visual systems.";
-const DEFAULT_JURY_DESCRIPTIONS = JURY_MEMBERS.map(
-  () => DEFAULT_JURY_DESCRIPTION,
-);
+// Members (name, portrait, description) live in ownership-jury-content.json.
+// Portraits are shown as-is (no blend); placeholders until the real photos
+// arrive (sources in public/UNBLOCKED-poster_files/jury).
+const MEMBERS = content.members;
+// Tablet / mobile show the first four members as cards.
+const MOBILE_JURY_CARDS = MEMBERS.slice(0, 4);
 
 // 1 juri = 1 tinggi viewport scroll
 const SCROLL_VIEWPORTS_PER_MEMBER = 1;
@@ -76,19 +57,9 @@ const applyClip = (el, value) => {
   el.style.webkitClipPath = value;
 };
 
-export function OwnershipJury({
-  photoSrc = JURY_PHOTOS,
-  descriptions = DEFAULT_JURY_DESCRIPTIONS,
-}) {
+export function OwnershipJury() {
   const memberListRef = useRef(null);
   const [activeJuryIndex, setActiveJuryIndex] = useState(0);
-  const photoSources = Array.isArray(photoSrc)
-    ? photoSrc
-    : JURY_MEMBERS.map(() => photoSrc);
-  const descriptionSources = JURY_MEMBERS.map(
-    (_, index) =>
-      descriptions[index] || descriptions[0] || DEFAULT_JURY_DESCRIPTION,
-  );
 
   useEffect(() => {
     const memberList = memberListRef.current;
@@ -203,63 +174,60 @@ export function OwnershipJury({
     <section
       className={styles.section}
       data-name="jury"
-      aria-label="Jury Members"
+      aria-label={content.label}
     >
       <div className={styles.label}>
-        <RevealText as="p">Sec. 05 (Jury Members)</RevealText>
+        <RevealText as="p">{content.sectionLabel}</RevealText>
       </div>
 
       <div className={styles.imageFrame}>
         <div className={styles.imageStack}>
-          {JURY_MEMBERS.map((member, index) => (
+          {MEMBERS.map((member, index) => (
             <div
               className={styles.imageLayer}
               data-name={index === 0 ? "image 40" : `image 40 ${index + 1}`}
               data-jury-image-layer
-              key={member}
+              key={member.name}
             >
-              <img
-                src={photoSources[index] || photoSources[0]}
-                alt={`${member} portrait`}
-              />
+              <img src={member.photo} alt={member.alt} />
             </div>
           ))}
         </div>
       </div>
 
       <div ref={memberListRef} className={styles.memberList}>
-        {JURY_MEMBERS.map((member) => (
-          <p className={styles.member} key={member} data-jury-row>
+        {MEMBERS.map((member) => (
+          <p className={styles.member} key={member.name} data-jury-row>
             <span className={styles.memberText} data-jury-text>
-              {member}
+              {member.name}
             </span>
           </p>
         ))}
       </div>
 
       <div className={styles.description}>
-        {descriptionSources.map((description, index) => (
+        {MEMBERS.map((member, index) => (
           <RevealText
             as="p"
             className={styles.descriptionText}
             data-jury-description
             enabled
             play={index === activeJuryIndex}
-            key={`${JURY_MEMBERS[index]}-description`}
+            key={`${member.name}-description`}
           >
-            {description}
+            {member.description}
           </RevealText>
         ))}
       </div>
 
       <div className={styles.mobileCards} aria-hidden="true">
-        {MOBILE_JURY_CARDS.map((card) => (
-          <article className={styles.mobileCard} key={card}>
+        {MOBILE_JURY_CARDS.map((member, index) => (
+          <article className={styles.mobileCard} key={index}>
             <div className={styles.mobileImageFrame}>
-              <img src={photoSources[card] || photoSources[0]} alt="" />
+              <img src={member.photo} alt="" />
             </div>
-            <RevealText as="h2">{JURY_MEMBERS[card]}</RevealText>
-            <RevealText as="p">{descriptionSources[card]}</RevealText>
+            <RevealText as="h2">{member.name}</RevealText>
+            <RevealText as="p">{member.description}</RevealText>
           </article>
         ))}
       </div>

@@ -8,6 +8,7 @@ import {
   prepareArtworkIntro,
 } from "../../../../components/hero-artwork/artworkIntro.js";
 import styles from "./HeroSection.module.scss";
+import content from "./hero-content.json";
 
 // Home intro (user reference frames, 3s total): the logo drops in from above
 // inside its own SVG viewport, the header labels drop into their links, the
@@ -96,22 +97,22 @@ export function HeroSection({ reveal = true }) {
           as="a"
           className={styles["submit-work-link"]}
           rolling
-          href="/submit"
+          href={content.submitLink.href}
           enabled={reveal}
           {...firstScreen}
         >
-          Submit Work (→)
+          {content.submitLink.label}
         </RevealText>
         <RevealText
           as="a"
           className={styles["explore-themes-link"]}
           rolling
           data-explore-themes
-          href="#ownership"
+          href={content.exploreLink.href}
           enabled={reveal}
           {...firstScreen}
         >
-          (↓) Explore Themes
+          {content.exploreLink.label}
         </RevealText>
       </div>
       <div className={styles["intro"]}>
@@ -121,25 +122,23 @@ export function HeroSection({ reveal = true }) {
           enabled={reveal}
           {...firstScreen}
         >
-          Different Perspectives
+          {content.intro.title}
         </RevealText>
         <RevealText as="p" enabled={reveal} {...firstScreen}>
-          The systems around us shape how we live. What we own. What we keep.
-          How we use energy. How we relate to one another. These are shared
-          questions, open to different interpretations.
+          {content.intro.text}
         </RevealText>
       </div>
       <div className={styles["content"]}>
-        <RevealText as="p" className={styles["text"]} enabled={reveal}>
-          Most of the systems that shape our lives were designed by someone.
-          They influence what we own, what we keep, how we use energy, and how
-          we live together.
-        </RevealText>
-        <RevealText as="p" className={styles["text"]} enabled={reveal}>
-          These are shared questions, but there are no single answers. We bring
-          artists, designers and makers together to explore them through
-          independent perspectives and creative work.
-        </RevealText>
+        {content.paragraphs.map((paragraph) => (
+          <RevealText
+            key={paragraph}
+            as="p"
+            className={styles["text"]}
+            enabled={reveal}
+          >
+            {paragraph}
+          </RevealText>
+        ))}
       </div>
       <HeroArtwork compactArtwork />
     </div>

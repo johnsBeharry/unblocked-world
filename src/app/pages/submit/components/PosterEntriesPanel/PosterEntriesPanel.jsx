@@ -3,6 +3,8 @@ import styles from './PosterEntriesPanel.module.scss'
 import { RevealText } from '../../../../../components/RevealText/RevealText.jsx'
 import { RevealRow } from '../../../../../components/RevealRow/RevealRow.jsx'
 import { ConfirmDialog } from '../confirm-dialog/ConfirmDialog.jsx'
+import { fillContent } from '../../../../../components/ContentLines/ContentLines.jsx'
+import content from './poster-entries-content.json'
 
 // Your Entries (copy follows the reference form; layout the user's 2026-11-17
 // Poster Entries reference): add a poster by clicking or by dropping files on
@@ -19,8 +21,8 @@ export function fileMeta(entry) {
 }
 
 function entryStatus(entry) {
-  if (entry.submitted) return 'Submitted'
-  return entry.file || entry.src ? 'Ready to submit' : 'In progress'
+  if (entry.submitted) return content.status.submitted
+  return entry.file || entry.src ? content.status.ready : content.status.inProgress
 }
 
 function EntryList({ title, entries, onEdit, onRemove }) {
@@ -40,9 +42,9 @@ function EntryList({ title, entries, onEdit, onRemove }) {
               {fileMeta(entry) && <span className={styles['poster-entry__meta']}>{fileMeta(entry)}</span>}
               {!entry.submitted && (
                 <span className={styles['poster-entry__actions']}>
-                  <button type="button" onClick={() => onEdit?.(entry)}>(Edit)</button>
+                  <button type="button" onClick={() => onEdit?.(entry)}>{content.edit}</button>
                   <span aria-hidden="true">•</span>
-                  <button type="button" onClick={() => onRemove?.(entry)}>(Remove)</button>
+                  <button type="button" onClick={() => onRemove?.(entry)}>{content.remove}</button>
                 </span>
               )}
             </span>
@@ -80,7 +82,7 @@ export function PosterEntriesPanel({ entries = [], onAdd, onEdit, onRemove }) {
   return (
     <section className={`${styles['poster-entries']} ${entries.length ? styles['poster-entries--filled'] : ''}`} aria-labelledby="poster-entries-title">
       <div className={styles['poster-entries__inner']}>
-        <RevealText as="h1" id="poster-entries-title" className={styles['poster-entries__title']}>Your Entries</RevealText>
+        <RevealText as="h1" id="poster-entries-title" className={styles['poster-entries__title']}>{content.title}</RevealText>
         <RevealRow
           as="button"
           line={false}
@@ -92,25 +94,25 @@ export function PosterEntriesPanel({ entries = [], onAdd, onEdit, onRemove }) {
           onDragLeave={() => setDragging(false)}
           onDrop={onDrop}
         >
-          <span aria-hidden="true">(+)</span>
-          <span>{dragging ? 'Drop to add' : 'Add a Poster'}</span>
+          <span aria-hidden="true">{content.add.icon}</span>
+          <span>{dragging ? content.add.dropping : content.add.label}</span>
         </RevealRow>
         {entries.length === 0 && (
-          <p className={styles['poster-entries__empty']}>Nothing here yet. Add your first poster above. It saves as you go, so you can finish it later.</p>
+          <p className={styles['poster-entries__empty']}>{content.empty}</p>
         )}
         <EntryList entries={inProgress} onEdit={onEdit} onRemove={entry => setRemoving({ entry, open: true, busy: false, error: '' })} />
-        <EntryList title="Submitted" entries={submitted} />
+        <EntryList title={content.submittedTitle} entries={submitted} />
       </div>
       <ConfirmDialog
         open={removing.open}
-        title="Remove this poster?"
-        confirmLabel={removing.busy ? 'Removing…' : 'Remove Poster'}
+        title={content.removeDialog.title}
+        confirmLabel={removing.busy ? content.removeDialog.busy : content.removeDialog.confirm}
         busy={removing.busy}
         error={removing.error}
         onConfirm={confirmRemove}
         onClose={() => { if (!removing.busy) setRemoving(current => ({ ...current, open: false })) }}
       >
-        The poster '{removing.entry?.title}' won't be submitted. We keep a record of removed drafts.
+        {fillContent(content.removeDialog.message, { title: removing.entry?.title })}
       </ConfirmDialog>
     </section>
   )

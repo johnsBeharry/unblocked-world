@@ -1,0 +1,34 @@
+{
+  "label": "Sec.01",
+  "description": "There are two ways to work with us, direct grants for cultural exploration, and hands-on support for larger funding proposals.",
+  "title": "(Programs)",
+  "programs": [
+    {
+      "id": "cultural-work",
+      "title": [
+        "Cultural",
+        "Work"
+      ],
+      "amount": "$500–$5,000",
+      "detail": "We support independent cultural work that challenges dominant narratives and reimagines the systems shaping our lives. Selected works will join the public UNBLOCKED archive and future limited-edition book.",
+      "link": {
+        "label": "(→)",
+        "href": "/grants/culture-grants"
+      }
+    },
+    {
+      "id": "open-system",
+      "title": [
+        "Open",
+        "System"
+      ],
+      "amount": "$100,000",
+      "amountNote": "over 12 mo.",
+      "detail": "We support independent cultural work that challenges dominant narratives and reimagines the systems shaping our lives. Selected works will join the public UNBLOCKED archive and future limited-edition book.",
+      "link": {
+        "label": "(→)",
+        "href": "/grants/open-systems"
+      }
+    }
+  ]
+}

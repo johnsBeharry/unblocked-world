@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from './LeaveDialog.module.scss'
 import { ConfirmDialog } from '../confirm-dialog/ConfirmDialog.jsx'
+import content from './leave-dialog-content.json'
 
 // "Leave for now?" (user reference 2026-11-17, designer note: "Exit from site
 // navigation (Home)"): shown when "(←) Home" is pressed inside the submit
@@ -10,14 +11,14 @@ export function LeaveDialog({ open, busy = false, error = '', onLeave, onClose }
     <ConfirmDialog
       open={open}
       className={styles['leave-dialog']}
-      title="Leave for now?"
-      confirmLabel={busy ? 'Saving…' : 'Save & Leave'}
+      title={content.title}
+      confirmLabel={busy ? content.saving : content.confirm}
       busy={busy}
       error={error}
       onConfirm={onLeave}
       onClose={onClose}
     >
-      Your progress is saved. Come back anytime and continue where you left off.
+      {content.message}
     </ConfirmDialog>
   )
 }

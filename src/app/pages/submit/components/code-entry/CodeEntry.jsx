@@ -1,5 +1,6 @@
 import React, { useRef } from 'react'
 import styles from './CodeEntry.module.scss'
+import content from './code-entry-content.json'
 import { RevealRow } from '../../../../../components/RevealRow/RevealRow.jsx'
 
 // Email code entry shared by the Join / Sign In code screens and the Change
@@ -8,6 +9,8 @@ import { RevealRow } from '../../../../../components/RevealRow/RevealRow.jsx'
 // email-link note. Spacing above is the consumer's; the box colour comes from
 // `--code-entry-box` (#101010 on the black column, black in the popup).
 export const CODE_LENGTH = 6
+// Accessible name of box `number` (1-based); the Change Email popup focuses box 1 by it.
+export const digitLabel = (number) => content.digitLabel.replace('{number}', number)
 
 function CodeInput({ value = '', onChange }) {
   const inputsRef = useRef([])
@@ -31,7 +34,7 @@ function CodeInput({ value = '', onChange }) {
   }
 
   return (
-    <div className={styles['code-entry__boxes']} role="group" aria-label="Email verification code">
+    <div className={styles['code-entry__boxes']} role="group" aria-label={content.label}>
       {digits.map((digit, index) => (
         <input
           key={index}
@@ -40,7 +43,7 @@ function CodeInput({ value = '', onChange }) {
           inputMode="numeric"
           autoComplete={index === 0 ? 'one-time-code' : 'off'}
           maxLength={index === 0 ? CODE_LENGTH : 1}
-          aria-label={`Digit ${index + 1}`}
+          aria-label={digitLabel(index + 1)}
           value={digit}
           onChange={(event) => onInput(index, event.target.value)}
           onKeyDown={(event) => onKeyDown(index, event)}
@@ -56,11 +59,11 @@ export function CodeEntry({ value, onChange, busy = false, checking = false, onR
     <div className={`${styles['code-entry']} ${className}`}>
       <CodeInput value={value} onChange={onChange} />
       <RevealRow as="p" line={false} className={styles['code-entry__actions']} contentClassName={styles['code-entry__actions-row']}>
-        <button type="button" className={styles['code-entry__action']} disabled={busy} onClick={onResend}>(Resend Code)</button>
+        <button type="button" className={styles['code-entry__action']} disabled={busy} onClick={onResend}>{content.resend}</button>
         <span aria-hidden="true">•</span>
-        <button type="button" className={styles['code-entry__action']} disabled={busy} onClick={onChangeEmail}>(Change Email)</button>
+        <button type="button" className={styles['code-entry__action']} disabled={busy} onClick={onChangeEmail}>{content.changeEmail}</button>
       </RevealRow>
-      <RevealRow as="p" line={false} className={styles['code-entry__note']}>{checking ? 'Checking the code…' : 'Or click the link in the email'}</RevealRow>
+      <RevealRow as="p" line={false} className={styles['code-entry__note']}>{checking ? content.checking : content.note}</RevealRow>
     </div>
   )
 }

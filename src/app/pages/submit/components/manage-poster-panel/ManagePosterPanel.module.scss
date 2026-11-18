@@ -15,7 +15,8 @@
     padding: vw(134) vw(20) vw(138);
 
     @include mobile {
-      padding: vw(206) vw(40) vw(260);
+      // Bottom: clear of the mobile CTA band (156px) + 24px.
+      padding: vw(206) vw(40) vw(360);
     }
   }
 

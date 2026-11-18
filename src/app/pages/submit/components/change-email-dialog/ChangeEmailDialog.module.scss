@@ -6,9 +6,9 @@
 // (`.visual-qa/submit-change-email-code-20261117/reference.png`): 602px panel,
 // (←) on the Close row, black code boxes 48px under the message.
 .change-email {
-  --confirm-dialog-height: #{vw(485)};
+  --confirm-dialog-height: #{vw(551)};
   // Panel top 216 (reference edge 216.5); title cap 77 under the top.
-  --confirm-dialog-offset: #{vw(243)};
+  --confirm-dialog-offset: #{vw(276)};
   --confirm-dialog-title-gap: #{vw(29.6)};
   --confirm-dialog-action-gap: #{vw(78.3)};
 
@@ -44,8 +44,8 @@
   // "Enter Code" stage (reference 158–760): 602px panel, Verify Email under
   // the email-link note.
   &--code {
-    --confirm-dialog-height: #{vw(602)};
-    --confirm-dialog-offset: #{vw(301.5)};
+    --confirm-dialog-height: #{vw(668)};
+    --confirm-dialog-offset: #{vw(334.5)};
     --confirm-dialog-message-gap: #{vw(47)};
     --confirm-dialog-action-gap: #{vw(81)};
   }

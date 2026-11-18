@@ -1,0 +1,34 @@
+{
+  "label": "Creative references",
+  "heading": [
+    "Sec.03",
+    "(References)"
+  ],
+  "description": "These references are provided as creative inspiration rather than stylistic direction.",
+  "posters": [
+    {
+      "name": "A4 - 1",
+      "imageName": "image 54",
+      "src": "/UNBLOCKED-poster_files/ff2033a1c38a4357386d641377703903abf0cb51.ff2033a1.png",
+      "alt": "Creative reference poster 1"
+    },
+    {
+      "name": "A4 - 3",
+      "imageName": "image 56",
+      "src": "/UNBLOCKED-poster_files/e353c20b9b160ceed44fa9f8dfbd71844bc63f36.e353c20b.png",
+      "alt": "Creative reference poster 2"
+    },
+    {
+      "name": "A4 - 2",
+      "imageName": "image 55",
+      "src": "/UNBLOCKED-poster_files/ace3413e5a82a9d017f82762129b9755a0ff0588.ace3413e.png",
+      "alt": "Creative reference poster 3"
+    },
+    {
+      "name": "A4 - 4",
+      "imageName": "image 57",
+      "src": "/UNBLOCKED-poster_files/49a99c5012c102d9fd4cf34cc5a1f852cdfb92ed.49a99c50.png",
+      "alt": "Creative reference poster 4"
+    }
+  ]
+}

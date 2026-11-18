@@ -6,6 +6,7 @@ import { RevealRow } from "../../../components/RevealRow/RevealRow.jsx";
 import SubmitWorkSection from "./submit-work/SubmitWorkSection.jsx";
 import { BrandLogo } from "../logo/index.jsx";
 import { RollingText } from "../../../components/RollingText/RollingText.jsx";
+import content from "./footer-content.json";
 
 export const FOOTER_COLORS = { home: "#d9d9d9", poster: "#d9d9d9" };
 
@@ -95,34 +96,48 @@ function FooterBrand() {
   );
 }
 
+// Explore links that carry their own column / mobile placement rule.
+const EXPLORE_LINK_CLASS = {
+  ownership: styles.ownership,
+  guidelines: styles.guidelines,
+  submit: styles.submit,
+};
+
+function FooterContact({ labelClassName = "" }) {
+  return (
+    <>
+      <RevealText
+        as="p"
+        className={`${styles.text} ${styles.label} ${labelClassName}`.trim()}
+      >
+        {content.contact.title}
+      </RevealText>
+      <div className={styles.menu}>
+        <RevealRow
+          as="a"
+          line={false}
+          className={styles.email}
+          href={content.contact.href}
+        >
+          <RollingText dim text={content.contact.label} />
+        </RevealRow>
+      </div>
+    </>
+  );
+}
+
 export function Footer({ color = FOOTER_COLORS.home, ctaVariant = "default" }) {
   const colorClass =
     color === FOOTER_COLORS.poster ? styles.posterColor : styles.homeColor;
-  const ctaProps =
-    ctaVariant === "poster"
-      ? {
-          variant: "poster",
-          titleLines: ["Read the", "Guidelines (→)"],
-          titleHref: "/guidelines",
-          topLabel:
-            "Before You Submit. Make sure your work is original, prepared in the correct format, and connected to the current theme.",
-          bottomLabel: "",
-        }
-      : ctaVariant === "guidelines"
-        ? {
-            titleLines: ["Submit", "Entry (→)"],
-            titleHref: "/submit",
-            showTopLabel: false,
-            showBottomLabel: false,
-          }
-        : {};
-
   return (
     <footer className={`${styles.footer} ${colorClass}`}>
       <FooterBrand />
 
       <div className={styles.cta}>
-        <SubmitWorkSection {...ctaProps} showBottomLabel={true} />
+        <SubmitWorkSection
+          variant={ctaVariant}
+          content={content.cta[ctaVariant] ?? content.cta.default}
+        />
       </div>
       <div className={styles.main}>
         <div
@@ -134,108 +149,87 @@ export function Footer({ color = FOOTER_COLORS.home, ctaVariant = "default" }) {
             as="p"
             className={`${styles.text} ${styles.description} ${styles["mobile-description"]}`}
           >
-            Exploring ownership, permanence, energy and peers through
-            independent creative work, open calls, grants and residencies.
+            {content.description}
           </RevealText>
 
           <div>
             <RevealText as="p" className={`${styles.text} ${styles.label}`}>
-              Explore
+              {content.explore.title}
             </RevealText>
             <div className={styles.menu}>
-              <RevealRow
-                as="a"
-                line={false}
-                className={`${styles.text} ${styles.ownership}`}
-                href="/posters"
-              >
-                <RollingText dim text="Ownership" />
-              </RevealRow>
-              <RevealRow as="a" line={false} className={styles.text} href="/grants">
-                <RollingText dim text="Grants" />
-              </RevealRow>
-              <RevealRow
-                as="a"
-                line={false}
-                className={`${styles.text} ${styles.guidelines}`}
-                href="/guidelines"
-              >
-                <RollingText dim text="Guidelines" />
-              </RevealRow>
-              <RevealRow as="a" line={false} className={`${styles.text} ${styles.submit}`} href="/submit">
-                <RollingText dim text="(→) Submit" />
-              </RevealRow>
+              {content.explore.links.map((link) => (
+                <RevealRow
+                  key={link.id}
+                  as="a"
+                  line={false}
+                  className={[styles.text, EXPLORE_LINK_CLASS[link.id]].filter(Boolean).join(" ")}
+                  href={link.href}
+                >
+                  <RollingText dim text={link.label} />
+                </RevealRow>
+              ))}
             </div>
           </div>
 
           <div>
             <RevealText as="p" className={`${styles.text} ${styles.label}`}>
-              Socials
+              {content.socials.title}
             </RevealText>
 
             <div className={styles.menu}>
-              <RevealRow
-                as="a"
-                line={false}
-                href="https://www.instagram.com/unblocked.world"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <RollingText dim text="Instagram" />
-              </RevealRow>
-              <RevealRow as="a" line={false} href="https://x.com/johnsBeharry" target="_blank" rel="noreferrer">
-                <RollingText dim text="Twitter (X)" />
-              </RevealRow>
+              {content.socials.links.map((link) => (
+                <RevealRow
+                  key={link.id}
+                  as="a"
+                  line={false}
+                  href={link.href}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <RollingText dim text={link.label} />
+                </RevealRow>
+              ))}
             </div>
           </div>
 
           <div className={`${styles["mobile-question"]}`}>
-            <RevealText as="p" className={`${styles.text} ${styles.label}`}>
-              Question Everything
-            </RevealText>
-            <div className={styles.menu}>
-              <RevealRow as="a" line={false} className={styles.email} href="mailto:ask@unblocked.world">
-                <RollingText dim text="(ask@unblocked.world)" />
-              </RevealRow>
-            </div>
+            <FooterContact />
           </div>
           <div className={`${styles.backToTop} ${styles["desktop"]}`}>
-            <RevealRow as="a" line={false} href="#top"><RollingText dim text="Back to Top (↑)" /></RevealRow>
+            <RevealRow as="a" line={false} href={content.backToTop.href}>
+              <RollingText
+                dim
+                text={`${content.backToTop.label} ${content.backToTop.arrow}`}
+              />
+            </RevealRow>
           </div>
         </div>
         <div className={`${styles["main__content"]}`}>
           <div className={`${styles.backToTop} ${styles["mobile-back-to-top"]}`}>
             {/* Last row of the page: it stays in the bottom 10% band at the
                 page end, so it uses the whole-viewport (pinned) observer. */}
-            <RevealRow as="a" line={false} pinned href="#top">
-              <RollingText dim className={styles.backToTopLabel} text="Back to Top " />
-              <RollingText dim text="(↑)" />
+            <RevealRow as="a" line={false} pinned href={content.backToTop.href}>
+              <RollingText
+                dim
+                className={styles.backToTopLabel}
+                text={`${content.backToTop.label} `}
+              />
+              <RollingText dim text={content.backToTop.arrow} />
             </RevealRow>
           </div>
           <RevealText
             as="p"
             className={`${styles.text} ${styles.description} ${styles["desktop"]}`}
           >
-            Exploring ownership, permanence, energy and peers through
-            independent creative work, open calls, grants and residencies.
+            {content.description}
           </RevealText>
 
           <div className={`${styles["desktop"]}`}>
-            <RevealText
-              as="p"
-              className={`${styles.text} ${styles.label} ${styles["desktop"]}`}
-            >
-              Question Everything
-            </RevealText>
-            <div className={styles.menu}>
-              <RevealRow as="a" line={false} className={styles.email} href="mailto:ask@unblocked.world">
-                <RollingText dim text="(ask@unblocked.world)" />
-              </RevealRow>
-            </div>
+            <FooterContact labelClassName={styles["desktop"]} />
           </div>
 
           <RevealText as="div" className={styles.copyright}>
-            © Copyright&nbsp;2026
+            {content.copyright}
           </RevealText>
         </div>
       </div>

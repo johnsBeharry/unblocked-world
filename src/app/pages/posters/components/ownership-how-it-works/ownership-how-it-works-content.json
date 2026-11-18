@@ -1,0 +1,9 @@
+{
+  "label": "How It Works",
+  "sectionLabel": "Sec. 06 (How It Works)",
+  "steps": "Read the contest overview (→) Review the current theme (→) Read the submission guidelines (→) Create an original poster (→) Submit your entry through the form (→)",
+  "submitLink": {
+    "label": "Submit Work (→)",
+    "href": "/submit"
+  }
+}

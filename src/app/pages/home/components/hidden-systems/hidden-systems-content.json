@@ -1,0 +1,23 @@
+{
+  "headline": {
+    "top": ["Making", "Different"],
+    "bottom": ["Perspectives", "Visible"]
+  },
+  "sideLabels": ["(Through art)", "(Through exhibitions)"],
+  "copy": [
+    "Through creative work. Through open questions.",
+    "Through people who bring their own perspectives to the systems we share."
+  ],
+  "mobileCopy": [
+    "Through creative work.",
+    "Through open questions.",
+    "Through people who see things",
+    "differently and imagine what",
+    "else might be possible."
+  ],
+  "brand": "UNBLOCKED",
+  "partners": {
+    "pxpush": { "label": "pxpush", "href": "https://pxpush.com/?ref=unblocked" },
+    "spiral": { "label": "Spiral", "href": "https://spiral.xyz/?ref=unblocked" }
+  }
+}

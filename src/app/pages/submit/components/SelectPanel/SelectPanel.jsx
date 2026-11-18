@@ -2,6 +2,7 @@ import React, { useEffect, useId, useLayoutEffect, useRef, useState } from 'reac
 import { createPortal } from 'react-dom'
 import { gsap } from 'gsap'
 import styles from './SelectPanel.module.scss'
+import content from './select-panel-content.json'
 
 // Form dropdown in the Submit flow: the field is a button; its options open in
 // a panel pinned to the bottom of the browser over the form column (title,
@@ -16,7 +17,7 @@ export function SelectPanel({
   triggerClassName = '',
   emptyClassName = '',
   disabled = false,
-  emptyMessage = 'No options available.',
+  emptyMessage = content.empty,
 }) {
   const triggerRef = useRef(null)
   const panelRef = useRef(null)
@@ -132,7 +133,7 @@ export function SelectPanel({
         <div ref={panelRef} className={styles.panel} data-lenis-prevent>
           <div className={styles.header}>
             <p className={styles.title}>{label}</p>
-            <button type="button" className={styles.close} onClick={() => close()}>Close</button>
+            <button type="button" className={styles.close} onClick={() => close()}>{content.close}</button>
           </div>
           {options.length ? (
             <ul id={listId} className={styles.list} role="listbox" aria-label={label} onKeyDown={onListKeyDown}>

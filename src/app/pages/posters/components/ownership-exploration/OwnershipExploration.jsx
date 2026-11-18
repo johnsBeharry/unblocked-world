@@ -1,24 +1,26 @@
 import React from 'react'
 import styles from './OwnershipExploration.module.scss'
 import { RevealText } from '../../../../../components/RevealText/RevealText.jsx'
+import { contentLines } from '../../../../../components/ContentLines/ContentLines.jsx'
+import content from './ownership-exploration-content.json'
 
 export function OwnershipExploration() {
   return (
     <section className={styles.section} data-name="exploration">
       <div className={styles.intro}>
         <p>
-          <RevealText highlight as="span" className={styles.desktopCopy}>This theme invites creatives to question assumptions about control, authority, freedom, and the relationship between individuals and the things they claim as their own.</RevealText>
-          <RevealText highlight as="span" className={styles.tabletCopy}>This theme invites creatives to question<br />assumptions about control, authority,<br />freedom, and the relationship between<br />individuals and the things they claim as their<br />own.</RevealText>
+          <RevealText highlight as="span" className={styles.desktopCopy}>{content.intro.desktop}</RevealText>
+          <RevealText highlight as="span" className={styles.tabletCopy}>{contentLines(content.intro.tablet)}</RevealText>
         </p>
       </div>
-      <div className={styles.label}><RevealText as="p">Sec. 02 (Creative Exploration)</RevealText></div>
+      <div className={styles.label}><RevealText as="p">{content.sectionLabel}</RevealText></div>
       <p className={styles.descriptionLeft}>
-        <RevealText as="span" className={styles.desktopCopy}>Creative exploration often begins with questions rather than conclusions. What distinguishes ownership from access? What responsibilities come with control? What can truly be owned, and what remains beyond possession?</RevealText>
-        <RevealText as="span" className={styles.tabletCopy}>Creative exploration often begins with questions rather than conclusions. What distinguishes ownership from access? What responsibilities come with control? What can truly be owned, and what remains beyond possession?</RevealText>
+        <RevealText as="span" className={styles.desktopCopy}>{content.descriptionLeft}</RevealText>
+        <RevealText as="span" className={styles.tabletCopy}>{content.descriptionLeft}</RevealText>
       </p>
       <p className={styles.descriptionRight}>
-        <RevealText as="span" className={styles.desktopCopy}>Participants are encouraged to pursue unexpected directions and develop work that introduces curiosity, reflection, and discussion. Whether conceptual, abstract, narrative, or experimental, submissions should show meaningful engagement with the theme while offering a distinctive perspective.</RevealText>
-        <RevealText as="span" className={styles.tabletCopy}>Participants are encouraged to pursue unexpected directions and develop work that introduces curiosity, reflection, and discussion. Whether conceptual, abstract, narrative, or experimental, submissions should show meaningful engagement with the theme while offering a distinctive perspective.</RevealText>
+        <RevealText as="span" className={styles.desktopCopy}>{content.descriptionRight}</RevealText>
+        <RevealText as="span" className={styles.tabletCopy}>{content.descriptionRight}</RevealText>
       </p>
       <div className={styles.rule} data-name="line" aria-hidden="true">
         <div className={styles.ruleInset}>

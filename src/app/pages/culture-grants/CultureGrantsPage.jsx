@@ -10,11 +10,11 @@ import { ProgramListSection } from "../grants/components/program-list-section/Pr
 import { ProgramStepsSection } from "../grants/components/program-steps-section/ProgramStepsSection.jsx";
 import { ProgramCrossLinkSection } from "../grants/components/program-cross-link-section/ProgramCrossLinkSection.jsx";
 import { RingsArtwork } from "../grants/components/rings-artwork/RingsArtwork.jsx";
-import hero from "./hero.json";
-import funding from "./funding.json";
-import eligibility from "./eligibility.json";
-import application from "./application.json";
-import crossLink from "./crossLink.json";
+import hero from "./hero-content.json";
+import funding from "./funding-content.json";
+import eligibility from "./eligibility-content.json";
+import application from "./application-content.json";
+import crossLink from "./cross-link-content.json";
 import styles from "./CultureGrantsPage.module.scss";
 
 // Open System cross-link rings, measured from the 1440 × 800 mockup (720 ×

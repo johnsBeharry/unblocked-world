@@ -11,11 +11,11 @@ import { ProgramStepsSection } from "../grants/components/program-steps-section/
 import { ProgramCrossLinkSection } from "../grants/components/program-cross-link-section/ProgramCrossLinkSection.jsx";
 import { SliceArtwork } from "../grants/components/slice-artwork/SliceArtwork.jsx";
 import { CROSS_LINK_SLICES } from "./crossLinkSlices";
-import hero from "./hero.json";
-import funding from "./funding.json";
-import role from "./role.json";
-import process from "./process.json";
-import crossLink from "./crossLink.json";
+import hero from "./hero-content.json";
+import funding from "./funding-content.json";
+import role from "./role-content.json";
+import process from "./process-content.json";
+import crossLink from "./cross-link-content.json";
 import styles from "./OpenSystemsPage.module.scss";
 
 // Hero rings measured from the 1440 desktop mockup (artwork 1440 × 854 under

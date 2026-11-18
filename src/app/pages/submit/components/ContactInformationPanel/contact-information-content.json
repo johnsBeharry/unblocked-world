@@ -1,0 +1,40 @@
+{
+  "join": {
+    "title": "Join the Collective",
+    "lede": "Be part of a body of creative work exploring the systems shaping our lives. Submit posters in our open calls, contribute to the archive, discover new voices, and take part in upcoming grants, residencies, exhibitions, and conversations.",
+    "switchPrompt": "Already joined? ",
+    "switchLink": "Sign in"
+  },
+  "signIn": {
+    "title": "Sign In",
+    "lede": "Enter the email you joined with and we’ll send you a code to sign in.",
+    "switchPrompt": "New here? ",
+    "switchLink": "Join UNBLOCKED"
+  },
+  "codeLede": [
+    "Enter the 6-digit code we sent",
+    "to {email} to sign in. It expires in 15 minutes."
+  ],
+  "email": "Email Address",
+  "fields": {
+    "name": "Full Name",
+    "country": "Country",
+    "instagram": "Instagram (Optional)"
+  },
+  "bio": "Short Bio (Optional)",
+  "photo": {
+    "label": "Photo (Optional)",
+    "hint": "JPG, PNG or WebP. Seen by the UNBLOCKED team with your entries.",
+    "add": "(Add a Photo)",
+    "change": "(Change Photo)",
+    "remove": "(Remove)",
+    "tileAdd": "Add a photo",
+    "tileChange": "Change photo",
+    "tileIcon": "(+)"
+  },
+  "terms": "I agree to the {terms} & {privacy}.",
+  "termsDoc": "Terms of Service",
+  "privacyDoc": "Privacy Policy",
+  "submit": "Continue",
+  "submitArrow": "(→)"
+}

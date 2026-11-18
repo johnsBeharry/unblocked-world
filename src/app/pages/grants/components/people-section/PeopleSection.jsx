@@ -3,7 +3,7 @@ import { gsap } from "gsap";
 import { RevealRow } from "../../../../../components/RevealRow/RevealRow.jsx";
 import { RevealText } from "../../../../../components/RevealText/RevealText";
 import { prefersReducedMotion, revealFrames, slideApart } from "../../motion/scrollMotion.js";
-import content from "./people.js";
+import content from "./people-content.json";
 import styles from "./PeopleSection.module.scss";
 
 // Scroll experience: header words slide apart, photos open with a mask and
@@ -86,7 +86,7 @@ export function PeopleSection() {
         <RevealText>{content.title}</RevealText>
       </h2>
 
-      {content.groups.map((group) => (
+      {content.groups.filter((group) => !group.hidden).map((group) => (
         <div
           key={group.id}
           className={`${styles["people-group"]} ${styles[`people-group--${group.id}`]}`}
@@ -99,7 +99,7 @@ export function PeopleSection() {
             {group.title}
           </RevealRow>
           <ul className={styles["people-group__grid"]}>
-            {group.people.map((person) => (
+            {group.people.filter((person) => !person.hidden).map((person) => (
               <PersonCard key={person.id} person={person} />
             ))}
           </ul>

@@ -32,7 +32,8 @@
       width: vw(670);
       margin-left: vw(40);
       padding-top: vw(206);
-      padding-bottom: vw(260);
+      // Clear of the mobile CTA band (156px) + 24px.
+      padding-bottom: vw(360);
     }
   }
 
@@ -173,9 +174,13 @@
     }
   }
 
-  // Sign In "Continue (→)": cap 49px under the email rule (reference).
+  // Sign In "Continue (→)" (no reference of its own): framed like the other
+  // Submit CTAs (2026-11-18 references), 86px tall across the form, label
+  // centred, 47px under the email rule.
   &__submit {
-    align-self: start;
+    display: block;
+    width: 100%;
+    height: vw(86);
     margin-top: vw(47);
     border: 0;
     padding: 0;
@@ -188,6 +193,7 @@
     line-height: 1.02;
 
     @include mobile {
+      height: vw(172);
       margin-top: vw(93);
       font-size: vw(40);
       letter-spacing: vw(-1.6);
@@ -197,6 +203,16 @@
       cursor: wait;
       opacity: 0.5;
     }
+  }
+
+  // RevealRow's sliding content is the frame (frame and label enter
+  // together); label centred.
+  &__submit-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border: 1px solid currentColor;
   }
 
   // Sign In and the code screens of Join / Sign In (2026-11-17 references,
@@ -215,6 +231,7 @@
 
     @include mobile {
       padding-top: vw(206);
+      padding-bottom: vw(360);
     }
   }
 

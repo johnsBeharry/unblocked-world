@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom'
 import { gsap } from 'gsap'
 import { RollingText } from '../../../../../components/RollingText/RollingText.jsx'
 import styles from './ConfirmDialog.module.scss'
+import dialogContent from './confirm-dialog-content.json'
 
 // Confirmation popup of the Submit flow (user reference 2026-11-17, "Remove
 // this poster?"): centred dark panel over a 40% black overlay with Close,
@@ -80,8 +81,8 @@ export function ConfirmDialog({ open, title, children, content = null, className
       <div ref={panelRef} className={`${styles['confirm-dialog']} ${className}`} role="alertdialog" aria-modal="true" aria-labelledby={titleId}>
         {/* Optional (←) on the Close row: back to the previous stage. */}
         <div className={styles['confirm-dialog__bar']}>
-          {onBack && <button type="button" className={styles['confirm-dialog__back']} disabled={busy} onClick={onBack} aria-label="Back"><RollingText text="(←)" /></button>}
-          <button type="button" className={styles['confirm-dialog__close']} onClick={onClose}>Close</button>
+          {onBack && <button type="button" className={styles['confirm-dialog__back']} disabled={busy} onClick={onBack} aria-label={dialogContent.backLabel}><RollingText text={dialogContent.back} /></button>}
+          <button type="button" className={styles['confirm-dialog__close']} onClick={onClose}>{dialogContent.close}</button>
         </div>
         <h2 id={titleId} className={styles['confirm-dialog__title']}>{title}</h2>
         <p className={styles['confirm-dialog__message']}>{children}</p>

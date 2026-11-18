@@ -1,0 +1,23 @@
+{
+  "title": "Your Entries",
+  "add": {
+    "icon": "(+)",
+    "label": "Add a Poster",
+    "dropping": "Drop to add"
+  },
+  "empty": "Nothing here yet. Add your first poster above. It saves as you go, so you can finish it later.",
+  "submittedTitle": "Submitted",
+  "status": {
+    "submitted": "Submitted",
+    "ready": "Ready to submit",
+    "inProgress": "In progress"
+  },
+  "edit": "(Edit)",
+  "remove": "(Remove)",
+  "removeDialog": {
+    "title": "Remove this poster?",
+    "message": "The poster '{title}' won't be submitted. We keep a record of removed drafts.",
+    "confirm": "Remove Poster",
+    "busy": "Removing…"
+  }
+}

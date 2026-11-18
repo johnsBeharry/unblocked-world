@@ -4,27 +4,30 @@ import { RevealText } from '../../../../../components/RevealText/RevealText.jsx'
 import { SelectPanel } from '../SelectPanel/SelectPanel.jsx'
 import { FormField, formFieldStyles as field } from '../form-field/FormField.jsx'
 import { RevealRow } from '../../../../../components/RevealRow/RevealRow.jsx'
+import { contentLines } from '../../../../../components/ContentLines/ContentLines.jsx'
+import content from './poster-details-content.json'
 
 // Add a Poster (fields and limits follow the reference form; layout and copy
 // the user's 2026-11-17 Add a Poster column reference).
 export const POSTER_ACCEPT = '.jpg,.jpeg,.png,.pdf,.gif,.mp4,image/jpeg,image/png,image/gif,application/pdf,video/mp4'
 export const MAX_SUPPORTING_FILES = 3
 const CONCEPT_MAX = 4000
-const YEARS = [...Array.from({ length: 31 }, (_, index) => String(2026 - index)), 'Before 1996']
+const YEARS = [...Array.from({ length: 31 }, (_, index) => String(2026 - index)), content.beforeYears]
 
+// Labels come from poster-details-content.json (`fields`, by name).
 const fields = [
-  { name: 'title', label: 'Poster Title', maxLength: 200 },
-  { name: 'year_designed', label: 'Year Designed', select: true },
-  { name: 'designed_for', label: 'Designed For', maxLength: 500 },
-  { name: 'client_name', label: 'Client Name', maxLength: 500 },
-  { name: 'creation_method', label: 'Creation Method', maxLength: 500 },
-  { name: 'materials_used', label: 'Materials Used', maxLength: 500 },
-  { name: 'digital_programs', label: 'Digital Programs Used', maxLength: 500 },
-  { name: 'printing_method', label: 'Printing Method', maxLength: 500 },
-]
+  { name: 'title', maxLength: 200 },
+  { name: 'year_designed', select: true },
+  { name: 'designed_for', maxLength: 500 },
+  { name: 'client_name', maxLength: 500 },
+  { name: 'creation_method', maxLength: 500 },
+  { name: 'materials_used', maxLength: 500 },
+  { name: 'digital_programs', maxLength: 500 },
+  { name: 'printing_method', maxLength: 500 },
+].map(item => ({ ...item, label: content.fields[item.name] }))
 
 const fileSummary = (files = []) =>
-  files.length === 1 ? files[0].name : `${files.length} files: ${files.map(file => file.name).join(', ')}`
+  files.length === 1 ? files[0].name : content.fileCount.replace('{count}', files.length).replace('{names}', files.map(file => file.name).join(', '))
 
 // File card (2026-11-17 reference): title, optional hint (replaced by the
 // chosen file names) and "Browse"; click to browse or drop files on it.
@@ -45,7 +48,7 @@ function UploadCard({ title, description, files, multiple = false, onFiles }) {
       <input className={styles['poster-upload__file']} type="file" accept={POSTER_ACCEPT} multiple={multiple} onChange={event => onFiles(Array.from(event.target.files || []))} />
       <RevealRow as="span" line={false} className={styles['poster-upload__title']}>{title}</RevealRow>
       {hint && <RevealRow as="span" line={false} className={styles['poster-upload__hint']}>{hint}</RevealRow>}
-      <RevealRow as="span" line={false} className={styles['poster-upload__action']}>{dragging ? 'Drop to add' : 'Browse'}</RevealRow>
+      <RevealRow as="span" line={false} className={styles['poster-upload__action']}>{dragging ? content.dropping : content.browse}</RevealRow>
     </label>
   )
 }
@@ -55,7 +58,7 @@ export function PosterDetailsPanel({ draft = {}, onDraftChange, error }) {
   return (
     <section className={styles['poster-panel']} aria-labelledby="add-poster-title">
       <div className={styles['poster-panel__inner']}>
-        <RevealText as="h1" id="add-poster-title" className={styles['poster-panel__title']}>Add a Poster</RevealText>
+        <RevealText as="h1" id="add-poster-title" className={styles['poster-panel__title']}>{content.title}</RevealText>
         <form className={styles['poster-panel__form']} onSubmit={(event) => event.preventDefault()}>
           {fields.map(item => {
             const value = draft[item.name] ? String(draft[item.name]) : ''
@@ -67,20 +70,20 @@ export function PosterDetailsPanel({ draft = {}, onDraftChange, error }) {
               </FormField>
             )
           })}
-          <FormField label="Poster Concept" filled={Boolean(concept)} className={styles['poster-panel__concept']}>
-            <textarea className={`${field['form-field__control']} ${field['form-field__textarea']}`} aria-label="Poster Concept" placeholder="Poster Concept" maxLength={CONCEPT_MAX} value={concept} onChange={event => onDraftChange?.({ concept: event.target.value })} />
+          <FormField label={content.concept} filled={Boolean(concept)} className={styles['poster-panel__concept']}>
+            <textarea className={`${field['form-field__control']} ${field['form-field__textarea']}`} aria-label={content.concept} placeholder={content.concept} maxLength={CONCEPT_MAX} value={concept} onChange={event => onDraftChange?.({ concept: event.target.value })} />
             {/* Counter only once typing (the reference shows the empty field). */}
             {concept && <span className={styles['poster-panel__counter']} aria-live="polite">{concept.length} / {CONCEPT_MAX}</span>}
           </FormField>
           <div className={styles['poster-panel__uploads']}>
             <UploadCard
-              title="Poster Files"
-              description={<>Static: JPG, PNG, GIF up to 2000px wide under 4mb.<br />Motion: GIF or MP4 up to 2000px wide under 20mb.</>}
+              title={content.posterFiles.title}
+              description={contentLines(content.posterFiles.description)}
               files={draft.posterFiles}
               onFiles={files => files.length && onDraftChange?.({ posterFiles: files.slice(0, 1) })}
             />
             <UploadCard
-              title={<>Supporting Assets<br />(Optional)</>}
+              title={contentLines(content.supportingFiles.title)}
               files={draft.supportingFiles}
               multiple
               onFiles={files => files.length && onDraftChange?.({ supportingFiles: files.slice(0, MAX_SUPPORTING_FILES) })}

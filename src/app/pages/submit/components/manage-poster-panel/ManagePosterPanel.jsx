@@ -1,5 +1,6 @@
 import React from 'react'
 import styles from './ManagePosterPanel.module.scss'
+import content from './manage-poster-content.json'
 import { RevealText } from '../../../../../components/RevealText/RevealText.jsx'
 import { RevealRow } from '../../../../../components/RevealRow/RevealRow.jsx'
 import { fileMeta } from '../PosterEntriesPanel/PosterEntriesPanel.jsx'
@@ -19,8 +20,8 @@ export function ManagePosterPanel({ entries = [], busyId = null, onWithdraw, onR
   return (
     <section className={styles['manage-poster']} aria-labelledby="manage-poster-title">
       <div className={styles['manage-poster__inner']}>
-        <RevealText as="h1" id="manage-poster-title" className={styles['manage-poster__title']}>Manage Poster</RevealText>
-        {entries.length === 0 && <p className={styles['manage-poster__empty']}>No submitted posters yet.</p>}
+        <RevealText as="h1" id="manage-poster-title" className={styles['manage-poster__title']}>{content.title}</RevealText>
+        {entries.length === 0 && <p className={styles['manage-poster__empty']}>{content.empty}</p>}
         <ul className={styles['manage-poster__list']}>
           {entries.map(entry => {
             const withdrawn = entry.status === 'withdrawn'
@@ -31,12 +32,12 @@ export function ManagePosterPanel({ entries = [], busyId = null, onWithdraw, onR
                   <span className={styles['manage-entry__title']}>{entry.title}</span>
                   {fileMeta(entry) && <span className={styles['manage-entry__meta']}>{fileMeta(entry)}</span>}
                   <button type="button" className={styles['manage-entry__action']} disabled={busyId === entry.id} onClick={() => (withdrawn ? onRestore : onWithdraw)?.(entry)}>
-                    {busyId === entry.id ? (withdrawn ? '(Restoring…)' : '(Withdrawing…)') : withdrawn ? '(Restore)' : '(Withdraw)'}
+                    {busyId === entry.id ? (withdrawn ? content.restoring : content.withdrawing) : withdrawn ? content.restore : content.withdraw}
                   </button>
                 </span>
                 <span className={styles['manage-entry__side']}>
                   <span className={styles['manage-entry__date']}>{shortDate(entry.submittedAt)}</span>
-                  <span className={styles['manage-entry__status']}>{withdrawn ? 'Withdrawn' : 'Submitted'}</span>
+                  <span className={styles['manage-entry__status']}>{withdrawn ? content.status.withdrawn : content.status.submitted}</span>
                 </span>
               </RevealRow>
             )

@@ -11,11 +11,11 @@
   z-index: 41;
   // Centred: 377px panel, top on a whole pixel (270 at 918 like the
   // reference; plain 50% / -50% lands on 270.5 and blurs the edge).
-  top: calc(50% - var(--confirm-dialog-offset, #{vw(189)}));
+  top: calc(50% - var(--confirm-dialog-offset, #{vw(222)}));
   left: 50%;
   box-sizing: border-box;
   width: var(--confirm-dialog-width, #{vw(550)});
-  min-height: var(--confirm-dialog-height, #{vw(377)});
+  min-height: var(--confirm-dialog-height, #{vw(443)});
   padding: vw(24) vw(24) vw(63) var(--confirm-dialog-inset, #{vw(72)});
   background: #101010;
   color: var(--dialog-ink);
@@ -123,10 +123,18 @@
     }
   }
 
+  // Framed action (user reference 2026-11-18, "Remove Poster"): 281 × 86,
+  // 1px pink frame, label centred; the panel is 66px taller than with the
+  // plain label (377 → 443 for Remove). Mobile: the panel's full width.
   &__action {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: vw(281);
+    height: vw(86);
     margin-top: var(--confirm-dialog-action-gap, #{vw(72)});
-    border: 0;
+    border: 1px solid var(--dialog-ink);
     padding: 0;
     background: transparent;
     color: inherit;
@@ -137,6 +145,8 @@
     line-height: 1.02;
 
     @include mobile {
+      width: 100%;
+      height: vw(172);
       margin-top: vw(96);
       font-size: vw(40);
       letter-spacing: vw(-1.6);

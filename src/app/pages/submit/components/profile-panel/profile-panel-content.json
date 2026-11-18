@@ -1,0 +1,13 @@
+{
+  "title": "Profile & Contact Information",
+  "lede": "Manage your account details here. Any changes you make will be automatically saved as you type.",
+  "email": "Email Address",
+  "changeEmail": "(Change Email)",
+  "verified": "verified",
+  "fields": {
+    "name": "Full Name",
+    "country": "Country",
+    "instagram": "Instagram (Optional)"
+  },
+  "bio": "Short Bio (Optional)"
+}

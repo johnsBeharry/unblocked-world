@@ -1,0 +1,18 @@
+{
+  "label": "Primary navigation",
+  "home": { "label": "Home", "href": "/" },
+  "links": [
+    { "label": "Poster", "href": "/posters" },
+    { "label": "Grants", "href": "/grants" },
+    { "label": "Guidelines", "href": "/guidelines" },
+    { "label": "Submit (→)", "href": "/submit" }
+  ],
+  "menu": {
+    "open": "Menu",
+    "close": "Close",
+    "label": "Mobile navigation",
+    "linksLabel": "Mobile links",
+    "contactTitle": "Question Everything",
+    "contact": { "label": "(ask@unblocked.world)", "href": "mailto:ask@unblocked.world" }
+  }
+}

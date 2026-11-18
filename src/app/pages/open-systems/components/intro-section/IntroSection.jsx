@@ -2,7 +2,7 @@ import { RevealText } from "../../../../../components/RevealText/RevealText";
 import { ProgramGridSection } from "../../../grants/components/program-grid-section/ProgramGridSection.jsx";
 import { EllipseStackArtwork } from "../intro-artwork/EllipseStackArtwork";
 import { BalanceArtwork } from "../intro-artwork/BalanceArtwork";
-import content from "./intro.json";
+import content from "./intro-content.json";
 import styles from "./IntroSection.module.scss";
 
 // Open Systems "Sec. 01 Intro" on the shared ProgramGridSection shell

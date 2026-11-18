@@ -5,7 +5,7 @@ import { RevealText } from "../../../../../components/RevealText/RevealText";
 import { ThemeArtwork } from "../../../../components/theme-artwork/ThemeArtwork.jsx";
 import { revealFrames } from "../../motion/scrollMotion.js";
 import { SectionLabel } from "../section-label/SectionLabel.jsx";
-import content from "./principles.json";
+import content from "./principles-content.json";
 import styles from "./PrinciplesSection.module.scss";
 
 gsap.registerPlugin(ScrollTrigger);

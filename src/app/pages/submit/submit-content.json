@@ -1,0 +1,100 @@
+{
+  "identity": {
+    "label": "Ownership theme",
+    "homeLink": {
+      "label": "(←) Home",
+      "href": "/"
+    },
+    "title": "Ownership"
+  },
+  "overview": {
+    "titleDesktop": [
+      "Submit to the Poster",
+      "Contest"
+    ],
+    "titleMobile": [
+      "Submit to the",
+      "Poster Contest"
+    ],
+    "intro": "Use this page to submit poster work responding to the theme: Ownership. Before submitting, review the process and guidelines below.",
+    "stepsTitle": "Submission Process",
+    "steps": [
+      "Review the Ownership theme.",
+      "Create one or more original poster responses.",
+      "Prepare your files.",
+      "Join UNBLOCKED and confirm your email with a code we send you. No password needed.",
+      "Add your posters. Everything saves as you go.",
+      "Confirm the submission terms and submit.",
+      "Your posters will then be reviewed by the international jury."
+    ],
+    "rulesTitle": "Rules and Eligibility",
+    "rules": [
+      "Open to individual and collaborative entries.",
+      "You can submit more than one poster, on the same day or later.",
+      "Submitted work must be original.",
+      "Accepted file types: JPG, PNG, PDF, GIF or MP4.",
+      "Static posters (JPG, PNG, PDF) must be under 5 MB.",
+      "Motion posters (GIF, MP4) must be under 20 MB.",
+      "Up to 3 supporting files per poster.",
+      "Use the file name format: YourName_PosterTitle.",
+      "Selected work may require additional formats later."
+    ],
+    "enter": "Enter Submission (→)"
+  },
+  "actions": {
+    "continue": "Continue",
+    "sending": "Sending…",
+    "checking": "Checking…",
+    "saving": "Saving…",
+    "save": "Save",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "submitting": "Submitting",
+    "posterMobile": "Poster",
+    "consentMobile": "Consent",
+    "submitPoster": "Submit Poster (→)",
+    "submitPosterDrafts": "Submit Poster ({count})"
+  },
+  "untitledPoster": "Untitled poster",
+  "errorCodes": {
+    "submissions_closed": "Submissions are closed right now, so posters can’t be saved or submitted. Please try again once the open call is open.",
+    "form_api_unavailable": "The submission service can’t be reached right now. Please try again in a moment."
+  },
+  "messages": {
+    "addEmail": "Add your email",
+    "checkEmail": "Check this email address",
+    "addName": "Add your full name",
+    "chooseCountry": "Choose your country",
+    "agreeTerms": "Agree to the Terms of Service and Privacy Policy to join.",
+    "loadContestFailed": "Could not load the contest.",
+    "removePhotoFailed": "Could not remove the photo.",
+    "photoType": "Profile photo must be JPG, PNG or WebP.",
+    "photoUnreadable": "That photo could not be read.",
+    "savePhotoFailed": "Could not save the photo.",
+    "saveProfileFailed": "Could not save your profile.",
+    "checkEmailAddress": "Check this email address.",
+    "sameEmail": "That is already your email.",
+    "sendCodeFailed": "Could not send the code.",
+    "codeResent": "We sent you a new code.",
+    "enterCode": "Enter the 6-digit code.",
+    "codeInvalid": "That code is not valid.",
+    "withdrawFailed": "Could not withdraw the poster.",
+    "restoreFailed": "Could not restore the poster.",
+    "signOutFailed": "Could not sign out.",
+    "sendVerificationFailed": "Could not send the verification code.",
+    "enterVerificationCode": "Enter the 6-digit verification code.",
+    "verificationInvalid": "That verification code is not valid.",
+    "addPosterFirst": "Add at least one poster before submitting.",
+    "confirmTerms": "Please confirm all three terms before submitting.",
+    "submissionFailed": "Submission failed",
+    "titleRequired": "Poster title is required.",
+    "titleTooLong": "Poster title must be 200 characters or fewer.",
+    "chooseFile": "Please choose a poster file before saving.",
+    "staticFileRule": "Poster must be JPG, PNG, or PDF under 5MB.",
+    "motionFileRule": "Motion poster must be GIF or MP4 under 20MB.",
+    "saveDraftFailed": "Could not save the poster draft.",
+    "uploadPosterFailed": "Could not upload the poster file.",
+    "uploadAssetFailed": "Could not upload a supporting asset.",
+    "removePosterFailed": "Could not remove the poster."
+  }
+}

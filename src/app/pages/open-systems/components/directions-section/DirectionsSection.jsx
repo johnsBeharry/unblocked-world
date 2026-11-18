@@ -4,7 +4,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { RevealText } from "../../../../../components/RevealText/RevealText";
 import { SectionLabel } from "../../../grants/components/section-label/SectionLabel.jsx";
 import { prefersReducedMotion } from "../../../grants/motion/scrollMotion";
-import content from "./directions.json";
+import content from "./directions-content.json";
 import styles from "./DirectionsSection.module.scss";
 
 // Scroll experience (real time, no reveal): the tags sit on a drum that

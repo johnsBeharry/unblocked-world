@@ -159,15 +159,11 @@
     white-space: nowrap;
   }
 
-  // Desktop links (user mockup 2026-11-18): full-strength light pink with a
-  // visible underline, set further below the dates. The underline is a
-  // border: RevealText renders block line spans that text-decoration does
-  // not reach.
+  // Desktop links (user mockup 2026-11-18): full-strength light pink, set
+  // further below the dates; no underline (user request 2026-11-18).
   .guidelines,
   .submit {
     left: 50%;
-    padding-bottom: vw(3);
-    border-bottom: vw(2) solid currentColor;
     color: #f4a9c0;
     font-size: vw(40);
     line-height: 0.86;
@@ -267,11 +263,9 @@
     letter-spacing: vw(-1.6);
   }
 
-  // Tablet keeps its own (dim, no underline) link style.
+  // Tablet keeps its own (dim) link colour.
   .hero .guidelines,
   .hero .submit {
-    padding-bottom: 0;
-    border-bottom: 0;
     font-size: vw(40);
     letter-spacing: vw(-1.6);
     color: #7a5460;
@@ -336,11 +330,9 @@
     letter-spacing: calc(100vw * -0.8 / 375);
   }
 
-  // Mobile keeps its earlier link style (no mobile mockup for the new one).
+  // Mobile keeps its earlier link colour (no mobile mockup for the new one).
   .hero .guidelines,
   .hero .submit {
-    padding-bottom: 0;
-    border-bottom: 0;
     color: rgba(244, 169, 192, 0.5);
     font-size: calc(100vw * 24 / 375);
     letter-spacing: calc(100vw * -0.96 / 375);

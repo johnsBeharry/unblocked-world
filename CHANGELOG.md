@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Home: the Peers theme section is now orange (#FF6E3E), including its mark in the dark box.
 - Home theme sections, desktop: new layout from the design — larger dark artwork box (453 × 356) with a slightly larger theme mark, the "(vs)" row and divider moved up to match, the divider line is now the same near-black as the text, and the question and description use the design's tighter line spacing. Tablets and phones are unchanged.
 - Submit page buttons: each framed button now slides in as a whole (frame and label together) instead of showing the empty frame first; the bottom bar with "(←)" and the next step slides in as one piece.
 - Submit page buttons, desktop and phones: the bottom navigation is now a framed bar across the column (a line on top, "(←)" in its own cell, the next step on the right), "Enter Submission (→)" and "Submit Poster (→)" are full-width framed buttons in the same place, and "Remove Poster", "Save & Leave", "Send Code", "Verify Email", "Explore More (→)" and the Sign In "Continue (→)" are framed buttons. Popups are a little taller to fit them. On phones the last text of each step scrolls clear of the new bottom bar.

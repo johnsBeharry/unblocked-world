@@ -32,6 +32,7 @@
       "variant": "peers",
       "index": "04",
       "title": "Peers",
+      "backgroundColor": "#FF6E3E",
       "question": "What can we do together?",
       "description": "We have more ways to connect than ever. Yet many of us feel increasingly disconnected. How do people organize, exchange and support one another? What becomes possible when we build together?",
       "sideLabel": "Isolation"

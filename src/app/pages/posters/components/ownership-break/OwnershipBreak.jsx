@@ -2,17 +2,10 @@ import React, { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import styles from './OwnershipBreak.module.scss'
 
-const MAIN_BACKGROUND = '#dc91a8'
-const SECOND_LAYER_START = 0.5
-const SECOND_LAYER_END = 0.75
-const THIRD_LAYER_START = SECOND_LAYER_END
-const LAYERS = [
-  ['layerOne', '#865b68'],
-  ['layerTwo', '#ab7284'],
-  ['layerThree', '#865b68'],
-  ['layerFour', '#ab7284'],
-  ['layerFive', MAIN_BACKGROUND],
-]
+// Five glyph layers, outer pairs first, centre last. All layers share the
+// flat pink background (user mockup 2026-11-18: no darker layer colours), so
+// the scroll only moves the glyphs.
+const LAYERS = ['layerOne', 'layerTwo', 'layerThree', 'layerFour', 'layerFive']
 
 export function OwnershipBreak() {
   const sectionRef = useRef(null)
@@ -47,10 +40,6 @@ export function OwnershipBreak() {
       addPair([layers[3], layers[1]], 0, 1)
       addPair([layers[2], layers[0]], 0, 1)
 
-      timeline.fromTo([layers[3], layers[1]], { backgroundColor: MAIN_BACKGROUND }, { backgroundColor: '#ab7284', duration: SECOND_LAYER_END - SECOND_LAYER_START, ease: 'none' }, SECOND_LAYER_START)
-      timeline.fromTo([layers[2], layers[0]], { backgroundColor: MAIN_BACKGROUND }, { backgroundColor: '#ab7284', duration: SECOND_LAYER_END - SECOND_LAYER_START, ease: 'none' }, SECOND_LAYER_START)
-      timeline.to([layers[2], layers[0]], { backgroundColor: '#865b68', duration: 1 - THIRD_LAYER_START, ease: 'none' }, THIRD_LAYER_START)
-      timeline.set(centerLayer, { backgroundColor: MAIN_BACKGROUND }, 0)
     }
 
     const update = () => {
@@ -82,11 +71,10 @@ export function OwnershipBreak() {
 
   return (
     <section ref={sectionRef} className={styles.breakSection} data-name="break" aria-label="Ownership break">
-      {LAYERS.map(([layerName, originalBackground]) => (
+      {LAYERS.map(layerName => (
         <div
           className={`${styles.layer} ${styles[layerName]}`}
           data-ownership-break-layer
-          data-original-background={originalBackground}
           key={layerName}
         >
           <p className={styles.letter} data-ownership-break-letter>O</p>

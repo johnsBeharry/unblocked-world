@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Posters: the big "O" break section is now one flat pink (the darker layer colours that faded in while scrolling are gone; the letters still move). In the hero, "Submission Guidelines (→)" and "Submit Poster (→)" are now full-strength pink with an underline and sit a little further below the dates (desktop).
 - Home: the Peers theme section is now orange (#FF6E3E), including its mark in the dark box.
 - Home theme sections, desktop: new layout from the design — larger dark artwork box (453 × 356) with a slightly larger theme mark, the "(vs)" row and divider moved up to match, the divider line is now the same near-black as the text, and the question and description use the design's tighter line spacing. Tablets and phones are unchanged.
 - Submit page buttons: each framed button now slides in as a whole (frame and label together) instead of showing the empty frame first; the bottom bar with "(←)" and the next step slides in as one piece.

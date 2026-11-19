@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Docs: the README now explains how to deploy the site and which settings to change on a new server (environment variables, which form and contest the Submit page uses, Vercel / own server / Cloudflare notes and a launch checklist). The example settings file now uses the live contest name `ownership`.
 - Submit page on the hosted site: signing in, saving and submitting posters now work on the deployed site too. The connection to the submission form service only existed when running the site locally, so on the deployed site every form step answered "not found" (e.g. when loading the contest).
 - Posters: the big "O" break section is now one flat pink (the darker layer colours that faded in while scrolling are gone; the letters still move). In the hero, "Submission Guidelines (→)" and "Submit Poster (→)" are now full-strength pink (no underline) and sit a little further below the dates (desktop).
 - Home: the Peers theme section is now orange (#FF6E3E), including its mark in the dark box.

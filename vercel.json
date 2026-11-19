@@ -2,6 +2,7 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist/client",
   "rewrites": [
+    { "source": "/api/forms/:path*", "destination": "/api/forms?__path=:path*" },
     { "source": "/posters", "destination": "/index.html" },
     { "source": "/guidelines", "destination": "/index.html" },
     { "source": "/grants", "destination": "/index.html" },

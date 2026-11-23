@@ -2,6 +2,9 @@ import React from 'react'
 import styles from './ProfilePanel.module.scss'
 import { RevealText } from '../../../../../components/RevealText/RevealText.jsx'
 import { RevealRow } from '../../../../../components/RevealRow/RevealRow.jsx'
+import { RollingText } from '../../../../../components/RollingText/RollingText.jsx'
+import { CheckboxRow } from '../CheckboxRow/CheckboxRow.jsx'
+import { contentLines } from '../../../../../components/ContentLines/ContentLines.jsx'
 import { SelectPanel } from '../SelectPanel/SelectPanel.jsx'
 import { FormField, formFieldStyles as field } from '../form-field/FormField.jsx'
 import { PhotoField } from '../ContactInformationPanel/ContactInformationPanel.jsx'
@@ -10,14 +13,16 @@ import content from './profile-panel-content.json'
 
 // Profile & Contact Information (user reference 2026-11-17): the signed-in
 // artist's details. The email is fixed (verified; "(Change Email)" starts
-// over with another address); the other fields save as they are typed.
+// over with another address); the other fields save as they are typed or
+// with Save (status beside it). Name, country and the terms are needed to
+// submit; the terms box locks once the current terms are accepted.
 const TEXT_FIELDS = [
   { name: 'name', maxLength: 200, autoComplete: 'name' },
   { name: 'country', select: true },
   { name: 'instagram', maxLength: 100, autoComplete: 'off' },
 ].map(item => ({ ...item, label: content.fields[item.name] }))
 
-export function ProfilePanel({ value = {}, onChange, onPhotoChange, onChangeEmail, error, busy = false }) {
+export function ProfilePanel({ value = {}, onChange, onPhotoChange, onChangeEmail, onSave, saveState = 'idle', error, busy = false }) {
   return (
     <section className={styles['profile-panel']} aria-labelledby="profile-title">
       <div className={styles['profile-panel__inner']}>
@@ -42,7 +47,15 @@ export function ProfilePanel({ value = {}, onChange, onPhotoChange, onChangeEmai
             <textarea className={`${field['form-field__control']} ${field['form-field__textarea']}`} maxLength={1000} aria-label={content.bio} placeholder={content.bio} value={value.bio || ''} onChange={event => onChange?.({ bio: event.target.value })} />
           </FormField>
           <PhotoField photo={value.photo} onChange={onPhotoChange} ruled={false} />
+          <CheckboxRow className={styles['profile-panel__terms']} checked={Boolean(value.terms || value.termsAccepted)} disabled={Boolean(value.termsAccepted)} onChange={terms => onChange?.({ terms })}>
+            {contentLines(content.terms, undefined, {
+              terms: <span className={styles['profile-panel__terms-doc']}>{content.termsDoc}</span>,
+              privacy: <span className={styles['profile-panel__terms-doc']}>{content.privacyDoc}</span>,
+            })}
+          </CheckboxRow>
           {error && <p className={styles['profile-panel__error']} role="alert">{error}</p>}
+          <RevealRow as="button" line={false} type="button" className={styles['profile-panel__save']} contentClassName={styles['profile-panel__save-content']} disabled={busy || saveState === 'saving'} onClick={onSave}><RollingText text={content.save} /></RevealRow>
+          <p className={styles['profile-panel__save-status']} role="status">{content.saveStatus[saveState] || ''}</p>
         </form>
       </div>
     </section>

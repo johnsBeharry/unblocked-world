@@ -58,7 +58,11 @@
   "untitledPoster": "Untitled poster",
   "errorCodes": {
     "submissions_closed": "Submissions are closed right now, so posters can’t be saved or submitted. Please try again once the open call is open.",
-    "form_api_unavailable": "The submission service can’t be reached right now. Please try again in a moment."
+    "form_api_unavailable": "The submission service can’t be reached right now. Please try again in a moment.",
+    "profile_incomplete": "Your profile needs your full name and country before you can submit. Add them here, then submit again.",
+    "terms_not_accepted": "Please agree to the Terms of Service and Privacy Policy before you submit.",
+    "invalid_instagram": "That doesn’t look like an Instagram handle. Use your @name.",
+    "consent_outdated": "The submission terms have been updated. Please read and confirm them again."
   },
   "messages": {
     "addEmail": "Add your email",
@@ -66,12 +70,15 @@
     "addName": "Add your full name",
     "chooseCountry": "Choose your country",
     "agreeTerms": "Agree to the Terms of Service and Privacy Policy to join.",
+    "profileNeedsName": "Add your full name to your profile before you submit.",
+    "profileNeedsCountry": "Choose your country in your profile before you submit.",
     "loadContestFailed": "Could not load the contest.",
     "removePhotoFailed": "Could not remove the photo.",
     "photoType": "Profile photo must be JPG, PNG or WebP.",
     "photoUnreadable": "That photo could not be read.",
     "savePhotoFailed": "Could not save the photo.",
     "saveProfileFailed": "Could not save your profile.",
+    "loadProfileFailed": "Could not load your profile. Reload the page to try again.",
     "checkEmailAddress": "Check this email address.",
     "sameEmail": "That is already your email.",
     "sendCodeFailed": "Could not send the code.",

@@ -82,11 +82,13 @@ export function PosterDetailsPanel({ draft = {}, onDraftChange, error }) {
               files={draft.posterFiles}
               onFiles={files => files.length && onDraftChange?.({ posterFiles: files.slice(0, 1) })}
             />
+            {/* Already sent supporting files (editing a draft) are listed
+                with the new ones; new picks fill the remaining slots. */}
             <UploadCard
               title={contentLines(content.supportingFiles.title)}
-              files={draft.supportingFiles}
+              files={[...(draft.existingAssets || []), ...(draft.supportingFiles || [])]}
               multiple
-              onFiles={files => files.length && onDraftChange?.({ supportingFiles: files.slice(0, MAX_SUPPORTING_FILES) })}
+              onFiles={files => files.length && onDraftChange?.({ supportingFiles: files.slice(0, Math.max(0, MAX_SUPPORTING_FILES - (draft.existingAssets?.length || 0))) })}
             />
           </div>
           {error && <p className={styles['poster-panel__error']} role="alert">{error}</p>}

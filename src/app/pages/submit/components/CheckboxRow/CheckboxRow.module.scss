@@ -21,6 +21,7 @@
   position: relative;
   cursor: pointer;
 }
+.row input:disabled { cursor: default; }
 .row input:checked { border-color: #dc91a8; background: #dc91a8; }
 .row input:checked::after {
   content: '';

@@ -50,6 +50,9 @@ import { MAX_SUPPORTING_FILES } from './components/PosterDetailsPanel/PosterDeta
 
 const EMAIL_PATTERN = /^\S+@\S+\.\S+$/
 
+// Add a Poster fields saved with an entry (form API `fields`).
+const POSTER_FIELDS = ['title', 'year_designed', 'designed_for', 'client_name', 'creation_method', 'materials_used', 'digital_programs', 'printing_method', 'concept']
+
 const demoPosterEntries = [
   {
     id: 'demo-greener-tomorrow',
@@ -236,6 +239,43 @@ export function SubmitPage({ initialStep = 0 }) {
     }
   }
 
+  // What a profile still needs before posters can be submitted (the form API
+  // answers 422 `profile_incomplete` otherwise). The terms are accepted on
+  // the Consent step (or on Profile), so they don't block here.
+  function profileProblem(profile = contactDraft) {
+    if (!profile.name?.trim()) return content.messages.profileNeedsName
+    if (!profile.country) return content.messages.profileNeedsCountry
+    return ''
+  }
+
+  // Opens the Profile screen (step 01, signed in) with the reason shown.
+  function showProfileProblem(message) {
+    setAccountTab('profile')
+    setStep(1)
+    setVerification({ status: 'verified', code: '', error: message })
+  }
+
+  // Server profile (GET /me) into the form.
+  function applyProfile(profile) {
+    setContactDraft(current => ({
+      ...current,
+      email: profile.email,
+      name: profile.name || '',
+      country: profile.country || '',
+      instagram: profile.instagram || '',
+      bio: profile.bio || '',
+      terms: Boolean(profile.termsAccepted),
+      termsAccepted: Boolean(profile.termsAccepted),
+      photo: profile.hasPhoto ? { remote: true, url: `${PROFILE_PHOTO_URL}?v=${encodeURIComponent(profile.photoId || '')}` } : null,
+    }))
+  }
+
+  // PATCH /me answers with the saved profile: keep its terms flag
+  // (`termsAccepted` = the current terms version is accepted).
+  function applySavedTerms(profile) {
+    if (profile && 'termsAccepted' in profile) setContactDraft(current => ({ ...current, termsAccepted: Boolean(profile.termsAccepted) }))
+  }
+
   // Join validation (reference copy); signing in only needs the email.
   function contactError(email) {
     if (!email) return content.messages.addEmail
@@ -293,18 +333,33 @@ export function SubmitPage({ initialStep = 0 }) {
   }
 
   // Profile screen: details save as they are typed (PATCH /me, 700ms after
-  // the last change).
+  // the last change) or with Save; the terms go along once ticked.
+  // profileSave: 'idle' | 'saving' | 'saved' | 'error' (status under Save).
   const profileDirtyRef = useRef(false)
+  const [profileSave, setProfileSave] = useState('idle')
+  async function saveProfile() {
+    profileDirtyRef.current = false
+    setProfileSave('saving')
+    try {
+      const termsVersion = contactDraft.terms && !contactDraft.termsAccepted ? (await loadContest()).termsVersion : undefined
+      const result = await updateProfile(profileFromContact(), termsVersion)
+      if (!result.ok) throw new Error(getErrorMessage(result, content.messages.saveProfileFailed))
+      applySavedTerms(result.body)
+      setProfileSave('saved')
+    } catch (error) {
+      setProfileSave('error')
+      throw error
+    }
+  }
+  function handleProfileSave() {
+    saveProfile().catch(error => setVerification(current => ({ ...current, error: error.message })))
+  }
   useEffect(() => {
     if (!showProfile || !profileDirtyRef.current) return undefined
-    const timer = setTimeout(async () => {
-      profileDirtyRef.current = false
-      const result = await updateProfile(profileFromContact())
-      if (!result.ok) setVerification(current => ({ ...current, error: getErrorMessage(result, content.messages.saveProfileFailed) }))
-    }, 700)
+    const timer = setTimeout(handleProfileSave, 700)
     return () => clearTimeout(timer)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showProfile, contactDraft.name, contactDraft.country, contactDraft.instagram, contactDraft.bio])
+  }, [showProfile, contactDraft.name, contactDraft.country, contactDraft.instagram, contactDraft.bio, contactDraft.terms])
 
   // A session from an earlier visit (cookie) signs the artist straight in.
   useEffect(() => {
@@ -312,17 +367,7 @@ export function SubmitPage({ initialStep = 0 }) {
     let cancelled = false
     getProfile().then(result => {
       if (cancelled || !result.ok || !result.body?.email) return
-      const profile = result.body
-      setContactDraft(current => ({
-        ...current,
-        email: profile.email,
-        name: profile.name || '',
-        country: profile.country || '',
-        instagram: profile.instagram || '',
-        bio: profile.bio || '',
-        terms: Boolean(profile.termsAccepted),
-        photo: profile.hasPhoto ? { remote: true, url: `${PROFILE_PHOTO_URL}?v=${encodeURIComponent(profile.photoId || '')}` } : null,
-      }))
+      applyProfile(result.body)
       setVerification({ status: 'verified', code: '', error: '' })
     }).catch(() => {})
     return () => { cancelled = true }
@@ -371,6 +416,7 @@ export function SubmitPage({ initialStep = 0 }) {
       const { termsVersion } = await loadContest()
       const profileResult = await updateProfile(profileFromContact(), termsVersion)
       if (!profileResult.ok) throw new Error(getErrorMessage(profileResult, content.messages.saveProfileFailed))
+      applySavedTerms(profileResult.body)
       setContactDraft(current => ({ ...current, email: changeEmail.email, photo: current.photo?.blob ? current.photo : null }))
       setPosterEntries([])
       setChangeEmail(current => ({ ...current, open: false, busy: false }))
@@ -392,6 +438,8 @@ export function SubmitPage({ initialStep = 0 }) {
     remoteId: remote.id,
     version: remote.version,
     title: remote.fields?.title || local?.title || content.untitledPoster,
+    fields: remote.fields || local?.fields || {},
+    assets: remote.assets || local?.assets || [],
     status: remote.status,
     submitted: remote.status !== 'draft',
     submittedAt: remote.submittedAt,
@@ -415,6 +463,8 @@ export function SubmitPage({ initialStep = 0 }) {
   // Add a Poster (user note 2026-11-17).
   const draftCount = posterEntries.filter(entry => !entry.submitted && (!entry.status || entry.status === 'draft')).length
   function openSubmitFromManage() {
+    const problem = profileProblem()
+    if (problem) return showProfileProblem(problem)
     if (draftCount) return setStep(2)
     setPosterDraft({ title: '', posterFiles: [], supportingFiles: [] })
     setEditingEntryId(null)
@@ -453,11 +503,7 @@ export function SubmitPage({ initialStep = 0 }) {
   async function handleSaveAndLeave() {
     setLeave(current => ({ ...current, busy: true, error: '' }))
     try {
-      if (showProfile && profileDirtyRef.current) {
-        profileDirtyRef.current = false
-        const result = await updateProfile(profileFromContact())
-        if (!result.ok) throw new Error(getErrorMessage(result, content.messages.saveProfileFailed))
-      }
+      if (showProfile && profileDirtyRef.current) await saveProfile()
       if (showPosterDetails && (posterDraft.title?.trim() || posterDraft.posterFiles?.length)) {
         // Not saved: close so the reason shows on the form (it stays open).
         if (!(await handlePosterSave())) return setLeave({ open: false, busy: false, error: '' })
@@ -563,6 +609,17 @@ export function SubmitPage({ initialStep = 0 }) {
       if (joinMode === 'join') {
         const profileResult = await updateProfile(profileFromContact(), termsVersion)
         if (!profileResult.ok) throw new Error(getErrorMessage(profileResult, content.messages.saveProfileFailed))
+        applySavedTerms(profileResult.body)
+      } else {
+        // Sign In: load the saved profile; an incomplete one (no name or
+        // country) opens the Profile screen to finish it instead of Posters
+        // (the submit would fail with a 422).
+        // A failed GET /me must not read as "add your name".
+        const profileResult = await getProfile()
+        if (!profileResult.ok) return showProfileProblem(getErrorMessage(profileResult, content.messages.loadProfileFailed))
+        applyProfile(profileResult.body)
+        const missing = profileProblem(profileResult.body)
+        if (missing) return showProfileProblem(missing)
       }
       setVerification({ status: 'verified', code: '', error: '' })
       setStep(2)
@@ -585,14 +642,33 @@ export function SubmitPage({ initialStep = 0 }) {
       return
     }
 
+    // Name and country belong to the profile (step 01); the terms are
+    // accepted here with the "submission terms" box.
+    const missing = profileProblem()
+    if (missing) return showProfileProblem(missing)
+
     setSubmissionState('submitting')
     setSubmissionError('')
     try {
       // Loaded here if the session skipped the code step (e.g. came back).
-      const { consentVersion } = await loadContest()
+      const { consentVersion, termsVersion } = await loadContest()
       const unsaved = chosen.find(entry => !entry.remoteId)
       if (unsaved) throw new Error(`“${unsaved.title}” hasn’t saved yet. Fix it in your entries, then try again.`)
+      if (!contactDraft.termsAccepted) {
+        const termsResult = await updateProfile(profileFromContact(), termsVersion)
+        if (!termsResult.ok) throw new Error(getErrorMessage(termsResult, content.messages.saveProfileFailed))
+        applySavedTerms(termsResult.body)
+      }
       const result = await submitEntries(chosen.map(entry => entry.remoteId), consentVersion)
+      if (result.body?.error === 'profile_incomplete') {
+        setSubmissionState('idle')
+        return showProfileProblem(getErrorMessage(result, content.messages.submissionFailed))
+      }
+      // New consent text: reload the contest and ask for the ticks again.
+      if (result.body?.error === 'consent_outdated') {
+        setContest(null)
+        setConsent({})
+      }
       if (!result.ok) throw new Error(getErrorMessage(result, content.messages.submissionFailed))
       const sent = new Set(chosen.map(entry => entry.id))
       setPosterEntries(current => current.map(entry => sent.has(entry.id) ? { ...entry, submitted: true, status: 'submitted', submittedAt: new Date().toISOString() } : entry))
@@ -624,13 +700,16 @@ export function SubmitPage({ initialStep = 0 }) {
       setSaveState('error')
       return false
     }
-    if ((posterDraft.supportingFiles || []).length > MAX_SUPPORTING_FILES) {
+    if ((posterDraft.existingAssets || []).length + (posterDraft.supportingFiles || []).length > MAX_SUPPORTING_FILES) {
       setSaveError(`You can add up to ${MAX_SUPPORTING_FILES} supporting files.`)
       setSaveState('error')
       return false
     }
 
-    const posterFile = posterDraft.posterFiles[0]
+    // Only a newly chosen file is uploaded: an edited draft shows the saved
+    // file's details ({ name, type, size } from the server), which must not
+    // be sent again as the poster.
+    const posterFile = posterDraft.posterFiles[0] instanceof File ? posterDraft.posterFiles[0] : null
     if (posterFile) {
       const extension = posterFile.name.split('.').pop()?.toLowerCase()
       const staticFile = ['jpg', 'jpeg', 'png', 'pdf'].includes(extension)
@@ -645,8 +724,7 @@ export function SubmitPage({ initialStep = 0 }) {
     setSaveError('')
     setSaveState('saving')
     try {
-      const fields = Object.fromEntries(['title', 'year_designed', 'designed_for', 'client_name', 'creation_method', 'materials_used', 'digital_programs', 'printing_method', 'concept']
-        .map(field => [field, field === 'title' ? title : posterDraft[field] || '']))
+      const fields = Object.fromEntries(POSTER_FIELDS.map(field => [field, field === 'title' ? title : posterDraft[field] || '']))
       const remoteId = posterDraft.remoteId || crypto.randomUUID()
       let result = posterDraft.remoteId
         ? await updateEntry(remoteId, fields, posterDraft.version)
@@ -654,13 +732,18 @@ export function SubmitPage({ initialStep = 0 }) {
       if (!result.ok) throw new Error(getErrorMessage(result, content.messages.saveDraftFailed))
 
       const version = result.body.version || result.body.entry?.version
+      // A retry after a failed upload updates this entry instead of creating
+      // another one.
+      setPosterDraft(current => ({ ...current, remoteId, version }))
       if (posterFile) {
         result = await uploadPoster(remoteId, posterFile)
         if (!result.ok) throw new Error(getErrorMessage(result, content.messages.uploadPosterFailed))
       }
+      const uploadedAssets = []
       for (const asset of posterDraft.supportingFiles || []) {
         result = await uploadAsset(remoteId, asset)
         if (!result.ok) throw new Error(getErrorMessage(result, content.messages.uploadAssetFailed))
+        uploadedAssets.push({ id: result.body?.id, name: asset.name, type: asset.type, size: asset.size })
       }
 
       const previousEntry = posterEntries.find(entry => entry.id === editingEntryId)
@@ -669,8 +752,11 @@ export function SubmitPage({ initialStep = 0 }) {
         remoteId,
         version: result.body.version || version,
         title,
+        fields,
+        assets: [...(posterDraft.existingAssets || []), ...uploadedAssets],
         src: posterFile ? URL.createObjectURL(posterFile) : previousEntry?.src,
-        file: posterFile || previousEntry?.file,
+        // Details only (not the File): editing must not upload it again.
+        file: posterFile ? { name: posterFile.name, type: posterFile.type, size: posterFile.size } : previousEntry?.file,
       }
       setPosterEntries(current => editingEntryId
         ? current.map(entry => entry.id === editingEntryId ? { ...entry, ...nextEntry } : entry)
@@ -711,8 +797,11 @@ export function SubmitPage({ initialStep = 0 }) {
                 value={contactDraft}
                 busy={accountBusy}
                 error={verification.error}
+                saveState={profileSave}
+                onSave={handleProfileSave}
                 onChange={changes => {
                   profileDirtyRef.current = true
+                  setProfileSave('idle')
                   setContactDraft(current => ({ ...current, ...changes }))
                   setVerification(current => (current.error ? { ...current, error: '' } : current))
                 }}
@@ -744,7 +833,9 @@ export function SubmitPage({ initialStep = 0 }) {
             : showPoster
               ? <PosterEntriesPanel entries={posterEntries} onEdit={entry => {
                   setEditingEntryId(entry.id)
-                  setPosterDraft({ title: entry.title, remoteId: entry.remoteId, version: entry.version, posterFiles: entry.file ? [entry.file] : [], supportingFiles: [] })
+                  // Every saved detail goes back into the form (the fields,
+                  // the poster file and the supporting files already sent).
+                  setPosterDraft({ ...entry.fields, title: entry.title, remoteId: entry.remoteId, version: entry.version, posterFiles: entry.file ? [entry.file] : [], supportingFiles: [], existingAssets: entry.assets || [] })
                   setSaveError('')
                   setSaveState('idle')
                   setStep(3)

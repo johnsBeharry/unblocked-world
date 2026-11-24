@@ -4,11 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#2f49eb" />
-    <title>UNBLOCKED — Question Everything</title>
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <!-- Per-page title / description / Open Graph tags, filled from src/app/seo/seo-content.json by the server and the static build. -->
+    <!--seo--><!--/seo-->
   </head>
   <body>
     <!-- Boot cover in the page's curtain colour (hero colour; keep in sync with src/app/components/page-curtain/curtainColors.js). Bridges the gap between pages until the app mounts (removed by App); hides itself after 6s if the app never starts. -->
-    <script>(function(){var c={'/':'#2850fe','/posters':'#000000','/guidelines':'#101010','/grants':'#101010','/grants/culture-grants':'#2449ed','/grants/open-systems':'#f546a4','/submit':'#dc91a8'};var p=location.pathname.replace(/\/$/,'')||'/';var v=c[p]||c['/'];if(p.indexOf('/submit')===0)v=matchMedia('(max-width: 600px), (max-width: 864px) and (orientation: portrait)').matches?'#000000':c['/submit'];document.documentElement.style.setProperty('--curtain-color',v)})()</script>
+    <script>(function(){var c={'/':'#2850fe','/posters':'#000000','/guidelines':'#101010','/grants':'#101010','/grants/culture-grants':'#2449ed','/grants/open-systems':'#f546a4','/submit':'#dc91a8'};var p=location.pathname.replace(/\/$/,'')||'/';var v=c[p]||'#2449ed';if(p.indexOf('/submit')===0)v=matchMedia('(max-width: 600px), (max-width: 864px) and (orientation: portrait)').matches?'#000000':c['/submit'];document.documentElement.style.setProperty('--curtain-color',v)})()</script>
     <style>#boot-cover{position:fixed;inset:0;z-index:1001;background:var(--curtain-color,#2850fe);animation:boot-cover-fallback 0s 6s forwards}@keyframes boot-cover-fallback{to{visibility:hidden}}@media (prefers-reduced-motion:reduce){#boot-cover{display:none}}</style>
     <div id="boot-cover" aria-hidden="true"></div>
     <noscript><style>#boot-cover{display:none}</style></noscript>

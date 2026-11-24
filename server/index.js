@@ -6,6 +6,7 @@ import multer from 'multer'
 import { createServer as createViteServer } from 'vite'
 import { ExternalSubmissionApiError, submitSubmission } from './lib/externalSubmissionApi.js'
 import { proxyFormApi, sendProxyResult } from './lib/formApiProxy.js'
+import { injectSeo } from '../src/app/seo/seoHead.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const root = path.resolve(__dirname, '..')
@@ -94,7 +95,7 @@ app.use(async (req, res, next) => {
     if (!isProd) {
       template = await vite.transformIndexHtml(url, template)
     }
-    const html = template.replace('<!--ssr-outlet-->', '')
+    const html = injectSeo(template, url).replace('<!--ssr-outlet-->', '')
     res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
   } catch (error) {
     vite?.ssrFixStacktrace(error)

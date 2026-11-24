@@ -8,8 +8,13 @@ const TURN = 0.08; // easing toward the new direction per 60fps frame
 // Markup: the marquee element holds a `[data-marquee-track]` whose children
 // are identical groups (at least two, each wider than the viewport); the
 // track moves by one group width and wraps, so the loop is seamless.
-// `speed` is in font sizes of the marquee element per second.
-export function useScrollMarquee(marqueeRef, { speed: fontSizesPerSecond }) {
+// `speed` is in font sizes of the marquee element per second. `reverse`
+// mirrors both directions (right while scrolling down), e.g. for alternating
+// rows. Without scrolling it keeps moving in its last direction.
+export function useScrollMarquee(
+  marqueeRef,
+  { speed: fontSizesPerSecond, reverse = false },
+) {
   useEffect(() => {
     const marquee = marqueeRef.current;
     const track = marquee?.querySelector("[data-marquee-track]");
@@ -17,6 +22,7 @@ export function useScrollMarquee(marqueeRef, { speed: fontSizesPerSecond }) {
       return undefined;
 
     const setX = gsap.quickSetter(track, "x", "px");
+    const sign = reverse ? -1 : 1;
     let speed = 0;
     const measure = () => {
       speed = fontSizesPerSecond * parseFloat(getComputedStyle(marquee).fontSize);
@@ -37,7 +43,8 @@ export function useScrollMarquee(marqueeRef, { speed: fontSizesPerSecond }) {
       if (!groupWidth) return;
       const turn = 1 - (1 - TURN) ** (deltaTime / (1000 / 60));
       velocity += (direction - velocity) * turn;
-      x = gsap.utils.wrap(-groupWidth, 0, x + (velocity * speed * deltaTime) / 1000);
+      const step = (velocity * sign * speed * deltaTime) / 1000;
+      x = gsap.utils.wrap(-groupWidth, 0, x + step);
       setX(x);
     };
 
@@ -49,5 +56,5 @@ export function useScrollMarquee(marqueeRef, { speed: fontSizesPerSecond }) {
       window.removeEventListener("resize", measure);
       gsap.ticker.remove(tick);
     };
-  }, [marqueeRef, fontSizesPerSecond]);
+  }, [marqueeRef, fontSizesPerSecond, reverse]);
 }

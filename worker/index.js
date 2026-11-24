@@ -1,7 +1,8 @@
 // Cloudflare Worker entry. Mirrors server/index.js (which stays for local dev):
 // static files are served by the ASSETS binding before this runs, so this
 // handles the submissions API and server-renders every other page.
-import { render } from '../dist/server/entry-server.js'
+import { isKnownPath, render } from '../dist/server/entry-server.js'
+import { injectSeo } from '../src/app/seo/seoHead.js'
 import { ExternalSubmissionApiError, submitSubmission } from '../server/lib/externalSubmissionApi.js'
 
 const MAX_FILE_BYTES = 20 * 1024 * 1024
@@ -79,8 +80,12 @@ export default {
       return new Response('Method Not Allowed', { status: 405 })
     }
 
-    const html = (await getTemplate(request, env))
+    const html = injectSeo(await getTemplate(request, env), url.pathname)
       .replace('<!--ssr-outlet-->', render(url.pathname + url.search))
-    return new Response(html, { headers: { 'Content-Type': 'text/html; charset=utf-8' } })
+    // Unknown paths render the 404 page; send the matching status.
+    return new Response(html, {
+      status: isKnownPath(url.pathname) ? 200 : 404,
+      headers: { 'Content-Type': 'text/html; charset=utf-8' },
+    })
   },
 }

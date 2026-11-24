@@ -95,7 +95,9 @@ app.use(async (req, res, next) => {
     if (!isProd) {
       template = await vite.transformIndexHtml(url, template)
     }
-    const html = injectSeo(template, url).replace('<!--ssr-outlet-->', '')
+    // SEO URLs follow the host serving the page (proxy headers first).
+    const origin = `${req.get('x-forwarded-proto') || req.protocol}://${req.get('x-forwarded-host') || req.get('host')}`
+    const html = injectSeo(template, url, origin).replace('<!--ssr-outlet-->', '')
     res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
   } catch (error) {
     vite?.ssrFixStacktrace(error)

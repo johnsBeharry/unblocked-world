@@ -53,6 +53,7 @@ browser bundle). For local development copy `.env.example` to `.env`.
 | `UNBLOCKED_EXTERNAL_CONTEST_SLUG` | yes | the contest's slug, e.g. `ownership` (live) or `test-november` (testing) | Which contest `/api/submissions` sends posters to. Check it with `GET https://unblocked-juding-portal.peakshift.workers.dev/api/v1/contests/<slug>`: `not_found` means the slug is wrong or archived; `"acceptingSubmissions": false` means the contest is not open. |
 | `UNBLOCKED_EXTERNAL_API_BASE_URL` | no | default `https://unblocked-juding-portal.peakshift.workers.dev/api/v1` | Judging portal API base. Must be HTTPS. Change it only if the portal moves. |
 | `UNBLOCKED_FORM_API_ORIGIN` | no | default `https://link.unblocked.world` | Where `/api/forms/*` is forwarded. Change it only if the form service moves. |
+| `SITE_URL` | no | e.g. `https://unblocked.world` | Domain used in the page links and share image of the static build (Vercel). Leave it empty on Vercel: the deployment's own domain is used (production domain on production, branch URL on previews). The Node server and Cloudflare use the domain of each request. Last fallback: `site.url` in `src/app/seo/seo-content.json`. |
 
 Environment variables are read when the server starts or a deployment is
 built: after changing one, restart the Node server or redeploy on Vercel.

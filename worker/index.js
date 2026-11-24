@@ -80,7 +80,7 @@ export default {
       return new Response('Method Not Allowed', { status: 405 })
     }
 
-    const html = injectSeo(await getTemplate(request, env), url.pathname)
+    const html = injectSeo(await getTemplate(request, env), url.pathname, url.origin)
       .replace('<!--ssr-outlet-->', render(url.pathname + url.search))
     // Unknown paths render the 404 page; send the matching status.
     return new Response(html, {

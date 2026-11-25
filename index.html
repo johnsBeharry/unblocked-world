@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#2f49eb" />
+    <!-- Stale page guard: a page kept from an earlier deploy (e.g. a Safari tab restored on iOS) asks for hashed /assets/ files the current deploy no longer has (404) and shows up almost unstyled. A failed stylesheet or script under /assets/ reloads the page once to fetch the current HTML; a sessionStorage stamp stops a reload loop (at most one reload per 30s). Must stay above the injected asset tags. -->
+    <script>addEventListener('error',function(e){var t=e.target,u=t&&(t.href||t.src);if(!u||(t.tagName!=='LINK'&&t.tagName!=='SCRIPT')||String(u).indexOf('/assets/')<0)return;try{var k='unblocked-asset-reload',l=Number(sessionStorage.getItem(k))||0;if(Date.now()-l<30000)return;sessionStorage.setItem(k,String(Date.now()))}catch(_){return}location.reload()},true)</script>
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />

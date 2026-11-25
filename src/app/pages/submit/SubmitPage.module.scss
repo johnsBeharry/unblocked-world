@@ -1,11 +1,14 @@
 
-.page { position: relative; display: grid; grid-template-columns: 40% 60%; width: 100vw; min-height: 100vh; overflow: hidden; background: #000; color: #dc91a8; font-family: 'Inter Local', sans-serif; }
+// Heights use svh (vh fallback first): on iOS Safari 100vh is taller than the
+// visible screen, so the window itself scrolled and moved "(←) Home" under the
+// status bar (client QA 2026-11-25).
+.page { position: relative; display: grid; grid-template-columns: 40% 60%; width: 100%; min-height: 100vh; min-height: 100svh; overflow: hidden; background: #000; color: #dc91a8; font-family: 'Inter Local', sans-serif; }
 .identity { position: relative; min-height: 100vh; overflow: hidden; background: #dc91a8; color: #000; }
 .homeLink { position: absolute; top: vw(20); left: vw(20); z-index: 2; color: inherit; letter-spacing: vw(-0.8); line-height: 1.02; text-decoration: none; }
 .artwork { position: absolute; top: 50%; left: vw(125); width: vw(326); height: vw(415.141); transform: translateY(-50%); background: #000; }
 .pattern { position: absolute; top: vw(89.65); left: vw(44.97); width: vw(237); height: vw(237); }
 .identity h1 { position: absolute; bottom: vw(33); left: vw(24); margin: 0; font-size: vw(112.123); font-weight: 600; letter-spacing: vw(-6.7274); line-height: 0.9; white-space: nowrap; }
-.content { position: relative; height: 100vh; min-height: 0; overflow: hidden; background: #000; }
+.content { position: relative; height: 100vh; height: 100svh; min-height: 0; overflow: hidden; background: #000; }
 // Entry (desktop two-column only, see useSubmitIntro): page starts fully pink
 // like the page curtain; GSAP then wipes the black column in from the right.
 .introPending { background: #dc91a8; }
@@ -95,13 +98,18 @@
 .editorBar { display: none; }
 // Thank-you screen: no bottom fade (reference); its content ends well above.
 .success .content::after { display: none; }
+// Profile and Sign In: no CTA fixed at the bottom, so no bottom fade either.
+.noBottomCta .content::after { display: none; }
+// Profile back band: phones only (desktop has "(←) Home" in the pink column).
+// `.account` raises it above the footer module's own display rule.
+.account .profileBack { display: none; }
 
 @include tablet-portrait {
-  .page { display: block; min-height: 100vh; }
+  .page { display: block; min-height: 100vh; min-height: 100svh; }
   .identity { display: block; position: static; min-height: 0; overflow: visible; background: transparent; color: #dc91a8; }
   .identity .artwork, .identity h1 { display: none; }
   .identity .homeLink { top: vw(19); }
-  .content { width: 100%; min-height: 100vh; }
+  .content { width: 100%; min-height: 100vh; min-height: 100svh; }
   .contentInner { width: vw(406); margin-left: vw(229); padding-top: vw(162); padding-bottom: vw(138); }
   .contentInner ol { padding-left: vw(26); }
   .contentInner ol li { padding-left: vw(3); }
@@ -111,21 +119,26 @@
 }
 
 @include mobile {
-  .page { display: block; min-height: 100vh; }
+  .page { display: block; min-height: 100vh; min-height: 100svh; }
   .identity { display: block; position: static; min-height: 0; overflow: visible; background: transparent; color: #dc91a8; }
   .identity .artwork, .identity h1 { display: none; }
   // Mobile header (2026-11-17 mockups): "(←) Home" cap 20.5px from the top.
-  .identity .homeLink { top: vw(37); left: vw(40); font-size: vw(40); letter-spacing: vw(-1.6); }
-  .content { width: 100%; height: 100vh; min-height: 100vh; }
+  // Fixed like the step label and Cancel / Save, so it never scrolls away.
+  .identity .homeLink { position: fixed; top: vw(37); left: vw(40); font-size: vw(40); letter-spacing: vw(-1.6); }
+  .content { width: 100%; height: 100vh; height: 100svh; min-height: 100vh; min-height: 100svh; }
   .content::after { position: fixed; right: 0; left: 0; width: auto; height: vw(169); transform: none; }
   // Header fade (user request 2026-11-17): mirrors the 84px footer layer so
   // scrolled content never runs under "(←) Home" / the step label (they sit
-  // above it, z-index 2+).
-  .content::before { position: fixed; z-index: 1; top: 0; right: 0; left: 0; height: vw(168); pointer-events: none; content: ''; background: linear-gradient(0deg, rgb(0 0 0 / 0) 0%, #000 30.26%); }
+  // above it, z-index 2+). Hidden at scroll 0 (useSubmitLenis sets
+  // `data-scrolled` on the column) so the first content is never dimmed
+  // (user report 2026-11-25); it fades in as soon as the column scrolls.
+  .content::before { position: fixed; z-index: 1; top: 0; right: 0; left: 0; height: vw(168); pointer-events: none; content: ''; background: linear-gradient(0deg, rgb(0 0 0 / 0) 0%, #000 30.26%); opacity: 0; transition: opacity 0.2s linear; }
+  .content:has(> .contentScroll[data-scrolled='true'])::before { opacity: 1; }
   .editing .content::after { display: none; }
   .success .content::after { display: none; }
   // Profile: the account nav (Profile / Poster / Sign out) takes the top row.
   .account .homeLink { display: none; }
+  .account .profileBack { display: block; }
   .contentInner { width: vw(660); margin-left: vw(40); padding-top: vw(206); padding-bottom: vw(360); }
   .titleDesktop { display: none; }
   .titleMobile { display: inline; }
@@ -133,7 +146,10 @@
   .intro { margin-top: vw(94) !important; font-size: vw(40); letter-spacing: vw(-1.6); }
   .content h3 { margin-top: vw(108) !important; font-size: vw(40); letter-spacing: vw(-1.6); }
   .contentInner ol { margin-top: vw(48) !important; padding-left: vw(60); font-size: vw(40); letter-spacing: vw(-1.6); line-height: 1.6; }
-  .contentInner ol { width: vw(730); }
+  // Wider than the 660 column for the long steps, but ending 40 units from the
+  // screen edge: the old vw(730) ran 20 units off screen and let the column
+  // scroll sideways (client QA 2026-11-25).
+  .contentInner ol { width: vw(670); }
   .contentInner ol li { padding-left: vw(2); }
   .contentInner ul { margin-top: vw(42) !important; padding-left: vw(60); font-size: vw(32); letter-spacing: vw(-1.28); }
   .contentInner ul li { padding-left: vw(2); }

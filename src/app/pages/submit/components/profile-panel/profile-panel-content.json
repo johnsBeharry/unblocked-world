@@ -9,5 +9,14 @@
     "country": "Country",
     "instagram": "Instagram (Optional)"
   },
-  "bio": "Short Bio (Optional)"
+  "bio": "Short Bio (Optional)",
+  "terms": "I agree to the {terms} & {privacy}.",
+  "termsDoc": "Terms of Service",
+  "privacyDoc": "Privacy Policy",
+  "save": "Save Changes",
+  "saveStatus": {
+    "saving": "Saving…",
+    "saved": "Saved",
+    "error": "Not saved"
+  }
 }

@@ -22,7 +22,7 @@ export function SubmitFooterNav({ backHref = '/submit', nextHref = '#', nextLabe
       as="nav"
       line={false}
       pinned
-      className={`${styles['footer-nav']} ${className}`}
+      className={`${styles['footer-nav']} ${nextLabel ? '' : styles['footer-nav--back-only']} ${className}`}
       contentClassName={styles['footer-nav__band']}
       aria-label={content.label}
     >

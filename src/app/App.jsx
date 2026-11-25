@@ -11,9 +11,29 @@ import { CultureGrantsPage } from "./pages/culture-grants/CultureGrantsPage.jsx"
 import { OpenSystemsPage } from "./pages/open-systems/OpenSystemsPage.jsx";
 import { SmoothScroll } from "./components/smooth-scroll/SmoothScroll.jsx";
 import { PageCurtain } from "./components/page-curtain/PageCurtain.jsx";
+import { NotFoundPage } from "./pages/not-found/NotFoundPage.jsx";
+
+const toPath = (url) => url.split("?")[0].replace(/\/$/, "") || "/";
+
+// Client routes; any other path renders the 404 page. A new route also needs
+// an entry in seo/seo-content.json, a vercel.json rewrite to its generated
+// <route>/index.html and a curtain colour (curtainColors.js, index.html).
+const PAGES = {
+  "/": () => <HomePage />,
+  "/posters": () => <PostersPage />,
+  "/guidelines": () => <GuidelinesPage />,
+  "/client-static": () => <ClientStaticPreviewPage />,
+  "/grants": () => <GrantsPage />,
+  "/grants/culture-grants": () => <CultureGrantsPage />,
+  "/grants/open-systems": () => <OpenSystemsPage />,
+  "/submit": () => <SubmitPage />,
+  "/submit/form/consent": () => <SubmitPage initialStep={4} />,
+};
+
+export const isKnownPath = (url) => Object.hasOwn(PAGES, toPath(url));
 
 export function App({ url = "/" }) {
-  const path = url.split("?")[0].replace(/\/$/, "") || "/";
+  const path = toPath(url);
   const isStandalonePreview = path === "/client-static";
 
   // Static boot cover from index.html bridges page loads; children (incl. the
@@ -32,26 +52,7 @@ export function App({ url = "/" }) {
     };
   }, [isStandalonePreview]);
 
-  const page =
-    path === "/posters" ? (
-      <PostersPage />
-    ) : path === "/guidelines" ? (
-      <GuidelinesPage />
-    ) : path === "/client-static" ? (
-      <ClientStaticPreviewPage />
-    ) : path === "/grants" ? (
-      <GrantsPage />
-    ) : path === "/grants/culture-grants" ? (
-      <CultureGrantsPage />
-    ) : path === "/grants/open-systems" ? (
-      <OpenSystemsPage />
-    ) : path === "/submit" ? (
-      <SubmitPage />
-    ) : path === "/submit/form/consent" ? (
-      <SubmitPage initialStep={4} />
-    ) : (
-      <HomePage />
-    );
+  const page = PAGES[path]?.() ?? <NotFoundPage />;
   const headerColor =
     path === "/posters"
       ? HEADER_COLORS.poster

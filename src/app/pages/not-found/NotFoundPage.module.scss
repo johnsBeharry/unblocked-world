@@ -1,0 +1,113 @@
+// 404 page: "404" marquee rows behind the "Page not found" footer.
+// Desktop values follow the 1440 × 800 user reference (exported at 2000 ×
+// 1111, 2026-11-24). Tablet and mobile have no reference yet: the rows and
+// footer are scaled to stay readable and the footer stacks on mobile.
+.not-found {
+  --not-found-bg: #2449ed;
+  --not-found-ink: #101010;
+  --not-found-text: #d9d9d9;
+
+  position: relative;
+  height: 100vh;
+  height: 100svh;
+  overflow: clip;
+  background-color: var(--not-found-bg);
+
+  // Rows sit 364px apart (80% of the 454px digits); the first row's baseline
+  // is at 293px, so the row starts above the frame.
+  &__marquee {
+    position: absolute;
+    top: vw(-54.5);
+    left: 0;
+    width: 100%;
+    color: var(--not-found-ink);
+    font-weight: 600;
+    font-size: vw(456);
+    line-height: 80%;
+    letter-spacing: -6%;
+
+    @include tablet {
+      font-size: vw(300);
+    }
+
+    @include mobile {
+      top: vw(-40);
+      font-size: vw(420);
+    }
+  }
+
+  &__marquee-row {
+    overflow: clip;
+  }
+
+  // Start phase of the reference: the first row's "0" starts at 455px.
+  &__marquee-track {
+    display: flex;
+    width: max-content;
+    translate: -0.268em 0;
+    will-change: transform;
+  }
+
+  &__marquee-group {
+    flex: none;
+    white-space: nowrap;
+  }
+
+  &__footer {
+    position: absolute;
+    right: vw(20);
+    bottom: vw(34);
+    left: vw(20);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    color: var(--not-found-text);
+
+    @include mobile {
+      right: vw(40);
+      bottom: vw(40);
+      left: vw(40);
+      flex-direction: column;
+      align-items: flex-start;
+      gap: vw(48);
+    }
+  }
+
+  &__title {
+    font-weight: 600;
+    font-size: vw(100);
+    line-height: 100%;
+    letter-spacing: -6%;
+
+    @include mobile {
+      font-size: vw(120);
+    }
+  }
+
+  &__aside {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: vw(22);
+    // The link's line sits 6.5px above the title's line box (reference).
+    margin-bottom: vw(6.5);
+    font-weight: 400;
+    font-size: vw(20);
+    line-height: 85%;
+    letter-spacing: -4%;
+    text-align: right;
+
+    @include mobile {
+      align-items: flex-start;
+      gap: vw(40);
+      font-size: vw(32);
+      text-align: left;
+    }
+  }
+
+
+  &__back {
+    color: inherit;
+    text-decoration: none;
+  }
+}

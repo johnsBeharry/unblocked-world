@@ -21,7 +21,19 @@
   position: relative;
   cursor: pointer;
 }
+.row input:disabled { cursor: default; }
 .row input:checked { border-color: #dc91a8; background: #dc91a8; }
+// Invalid (user request 2026-11-25): text and box red, easing back once
+// ticked (a ticked box is valid and keeps its pink fill).
+.row {
+  transition: color 0.3s linear;
+
+  &--invalid {
+    color: var(--error-red);
+  }
+}
+.row input { transition: border-color 0.3s linear; }
+.row--invalid input:not(:checked) { border-color: var(--error-red); }
 .row input:checked::after {
   content: '';
   position: absolute;

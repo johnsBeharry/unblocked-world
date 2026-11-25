@@ -11,17 +11,17 @@ import { PHOTO_TYPES } from '../../api/profilePhoto.js'
 import countries from '../../data/countries.json'
 import { contentLines } from '../../../../../components/ContentLines/ContentLines.jsx'
 import content from './contact-information-content.json'
+import { useErrorInView } from '../../hooks/useErrorInView.js'
 
 // Join step (fields and copy follow the reference form; layout follows the
 // user's 2026-11-17 Join and Sign In column references). Joining asks for the
 // profile; "Sign in" (already joined) only needs the email and carries its own
 // Continue action under the field (the footer nav shows only (←) there).
 const PROFILE_FIELDS = [
-  { name: 'name', maxLength: 200, autoComplete: 'name' },
+  { name: 'name', maxLength: 200, autoComplete: 'name', required: true },
   { name: 'country', select: true },
   { name: 'instagram', maxLength: 100, autoComplete: 'off' },
 ].map(item => ({ ...item, label: content.fields[item.name] }))
-
 
 // Photo row (reference layout): a 100px tile that opens the file picker (and
 // shows the chosen photo), with the label, hint and actions beside it.
@@ -69,6 +69,9 @@ export function ContactInformationPanel({
   onPhotoChange,
   submitLabel = content.submit,
   submitDisabled = false,
+  // Field names that failed the last Continue check (email, name, country,
+  // instagram, terms), kept live by SubmitPage so they clear once fixed.
+  invalid = {},
   onSubmit,
 }) {
   const codeSent = verification.status === 'code_sent' || verification.status === 'verifying'
@@ -79,6 +82,8 @@ export function ContactInformationPanel({
   // is checked right away (Join also keeps its footer Continue).
   const codeView = codeSent
   const code = verification.code || ''
+  const errorRef = useRef(null)
+  useErrorInView(errorRef, codeView ? '' : verification.error)
   useEffect(() => {
     if (codeView && verification.status === 'code_sent' && code.length === CODE_LENGTH) onSubmit?.()
     // Only a newly completed code submits; a failed check keeps the same code.
@@ -128,14 +133,14 @@ export function ContactInformationPanel({
             if (!joining && !submitDisabled) onSubmit?.()
           }}
         >
-          <FormField label={content.email} filled={Boolean(value.email)}>
-            <input className={field['form-field__control']} type="email" inputMode="email" autoComplete="email" maxLength={200} aria-label={content.email} placeholder={content.email} disabled={codeSent} value={value.email || ''} onChange={event => onChange?.({ email: event.target.value })} />
+          <FormField label={content.email} filled={Boolean(value.email)} invalid={Boolean(invalid.email)}>
+            <input className={field['form-field__control']} type="email" inputMode="email" autoComplete="email" maxLength={200} aria-label={content.email} aria-required aria-invalid={Boolean(invalid.email) || undefined} placeholder={content.email} disabled={codeSent} value={value.email || ''} onChange={event => onChange?.({ email: event.target.value })} />
           </FormField>
           {joining && PROFILE_FIELDS.map(item => (
-            <FormField label={item.label} filled={Boolean(value[item.name])} chevron={item.select} key={item.name}>
+            <FormField label={item.label} filled={Boolean(value[item.name])} chevron={item.select} invalid={Boolean(invalid[item.name])} key={item.name}>
               {item.select
                 ? <SelectPanel label={item.label} value={value[item.name] || ''} options={countries} triggerClassName={`${field['form-field__control']} ${field['form-field__select']}`} emptyClassName={field['form-field__select--empty']} disabled={codeSent} onChange={country => onChange?.({ country })} />
-                : <input className={field['form-field__control']} aria-label={item.label} placeholder={item.label} maxLength={item.maxLength} autoComplete={item.autoComplete} disabled={codeSent} value={value[item.name] || ''} onChange={event => onChange?.({ [item.name]: event.target.value })} />}
+                : <input className={field['form-field__control']} aria-label={item.label} aria-required={item.required || undefined} aria-invalid={Boolean(invalid[item.name]) || undefined} placeholder={item.label} maxLength={item.maxLength} autoComplete={item.autoComplete} disabled={codeSent} value={value[item.name] || ''} onChange={event => onChange?.({ [item.name]: event.target.value })} />}
             </FormField>
           ))}
           {joining && (
@@ -145,7 +150,7 @@ export function ContactInformationPanel({
           )}
           {joining && <PhotoField photo={value.photo} onChange={onPhotoChange} />}
           {joining && (
-            <CheckboxRow className={styles['contact-panel__terms']} checked={Boolean(value.terms)} onChange={terms => onChange?.({ terms })}>
+            <CheckboxRow className={styles['contact-panel__terms']} checked={Boolean(value.terms)} invalid={Boolean(invalid.terms)} onChange={terms => onChange?.({ terms })}>
               {/* Underlined like links in the reference; no Terms / Privacy
                   pages exist yet, so they are not links. */}
               {contentLines(content.terms, undefined, {
@@ -154,7 +159,7 @@ export function ContactInformationPanel({
               })}
             </CheckboxRow>
           )}
-          {verification.error && <p className={styles['contact-panel__error']} role="alert">{verification.error}</p>}
+          {verification.error && <p ref={errorRef} className={styles['contact-panel__error']} role="alert">{verification.error}</p>}
           {!joining && (
             <RevealRow as="button" line={false} type="submit" className={styles['contact-panel__submit']} contentClassName={styles['contact-panel__submit-content']} disabled={submitDisabled}><RollingText text={`${submitLabel} ${content.submitArrow}`} /></RevealRow>
           )}

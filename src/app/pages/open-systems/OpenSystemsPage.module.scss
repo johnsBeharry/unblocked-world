@@ -1,7 +1,7 @@
 // Open Systems sub page of /grants (/grants/open-systems), desktop mockup
 // 1440 wide (2880 × 21316 @2x). Sections have desktop (1440 base) and
 // mobile values only, like Culture Grants: the global tablet-portrait rule
-// switches --base-size to 864px, which would scale every desktop value by
+// switches --base-size to 864, which would scale every desktop value by
 // 1440 / 864, so the sections wrapper restores the 1440 base there. The
 // shared Footer stays outside it (it has its own 864-based tablet layout).
 .open-systems-page {
@@ -11,7 +11,7 @@
 
   &__sections {
     @include tablet-portrait {
-      --base-size: 1440px;
+      --base-size: 1440;
     }
   }
 

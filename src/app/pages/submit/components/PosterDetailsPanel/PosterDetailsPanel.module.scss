@@ -3,9 +3,9 @@
 // (864 × 1496 @2x, `.visual-qa/submit-add-poster-20261117/reference.png`):
 // the 406px column 229px into the panel, title, eight shared FormField rows
 // (72px, 1px rule), a 232px Poster Concept row, then two 176px #0a0a0a
-// upload cards. No mobile reference: mobile doubles the values in 750 units
-// and keeps the upload cards hidden as before (files come from the entries
-// list "Add a Poster" on mobile).
+// upload cards. No mobile reference: mobile doubles the values in 750 units.
+// The upload cards show on mobile too (client QA 2026-11-25: hidden cards left
+// no way to choose the poster file on a phone, so Save always failed).
 .poster-panel {
   --poster-ink: #dc91a8;
   --poster-muted: rgb(220 145 168 / 0.5);
@@ -87,7 +87,8 @@
     margin-top: vw(10.5);
 
     @include mobile {
-      display: none;
+      gap: vw(40);
+      margin-top: vw(21);
     }
   }
 
@@ -106,6 +107,8 @@
 // Upload card: title cap 29.5px under the top, 12px hint, "Browse" cap 134px
 // under the top, all centred.
 .poster-upload {
+  --poster-upload-invalid-ease: cubic-bezier(0.16, 1, 0.3, 1);
+
   position: relative;
   display: block;
   box-sizing: border-box;
@@ -115,6 +118,11 @@
   color: var(--poster-ink, #dc91a8);
   cursor: pointer;
   text-align: center;
+
+  @include mobile {
+    height: vw(352);
+    padding-top: vw(55);
+  }
 
   &__file {
     position: absolute;
@@ -126,10 +134,16 @@
 
   &__title {
     display: block;
+    transition: color 0.3s linear;
     // Explicit 20px: the label would otherwise pass on the form's 16px.
     font-size: vw(20);
     letter-spacing: vw(-0.8);
     line-height: 1.02;
+
+    @include mobile {
+      font-size: vw(40);
+      letter-spacing: vw(-1.6);
+    }
   }
 
   &__hint {
@@ -141,6 +155,13 @@
     font-size: vw(12);
     letter-spacing: vw(-0.48);
     line-height: 1.02;
+
+    @include mobile {
+      margin-top: vw(40);
+      padding: 0 vw(40);
+      font-size: vw(24);
+      letter-spacing: vw(-0.96);
+    }
   }
 
   &__action {
@@ -154,10 +175,46 @@
     text-decoration-thickness: vw(1.5);
     text-underline-offset: vw(3);
     transform: translateX(-50%);
+
+    @include mobile {
+      top: vw(263.4);
+      font-size: vw(32);
+      letter-spacing: vw(-1.28);
+      text-decoration-thickness: vw(3);
+      text-underline-offset: vw(6);
+    }
   }
 
   &--dragging {
     outline: vw(2) dashed var(--poster-ink, #dc91a8);
     outline-offset: vw(-8);
+  }
+
+  // Missing poster file (user request 2026-11-25): red title and a red
+  // bottom rule drawn in from the left like an invalid FormField row,
+  // retracting once a file is chosen.
+  &::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border-top: vw(1) solid var(--error-red);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.6s var(--poster-upload-invalid-ease);
+    pointer-events: none;
+
+    @include mobile {
+      border-top-width: vw(2);
+    }
+  }
+
+  &--invalid::after {
+    transform: scaleX(1);
+  }
+
+  &--invalid &__title {
+    color: var(--error-red);
   }
 }

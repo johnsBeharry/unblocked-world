@@ -1,2 +1,6 @@
 
-.app { min-height: 100vh; background: var(--blue); color: var(--cream); }
+// svh after the vh fallback: on iOS Safari 100vh is taller than the visible
+// screen, which made the document scrollable under the full-screen Submit
+// page; the keyboard then shifted the window and left it shifted (iPhone
+// report 2026-11-26).
+.app { min-height: 100vh; min-height: 100svh; background: var(--blue); color: var(--cream); }

@@ -137,6 +137,80 @@
     --form-field-height-mobile: #{vw(370)};
   }
 
+  // Terms row under the photo (same type as the Join terms row); its own top
+  // border is the rule after the photo.
+  &__form &__terms {
+    padding-top: vw(11.5);
+    font-size: vw(20);
+    line-height: 100%;
+
+    @include mobile {
+      padding-top: vw(20);
+      font-size: vw(40);
+    }
+  }
+
+  &__terms-doc {
+    text-decoration: underline;
+    text-decoration-thickness: vw(1.5);
+    text-underline-offset: vw(4);
+  }
+
+  // Save: the outlined 86px action of the Sign In form (no Profile mockup has
+  // one; added for the 2026-11-23 client feedback), status line under it.
+  &__save {
+    display: block;
+    width: 100%;
+    height: vw(86);
+    margin-top: vw(24);
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    font-size: vw(20);
+    letter-spacing: vw(-0.8);
+    line-height: 1.02;
+
+    @include mobile {
+      height: vw(172);
+      margin-top: vw(48);
+      font-size: vw(40);
+      letter-spacing: vw(-1.6);
+    }
+
+    &:disabled {
+      cursor: wait;
+      opacity: 0.5;
+    }
+  }
+
+  &__save-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border: 1px solid currentColor;
+  }
+
+  // Fixed line height so the status appearing does not move the column.
+  &__form &__save-status {
+    min-height: vw(20);
+    margin: vw(12) 0 0;
+    font-size: vw(16);
+    letter-spacing: vw(-0.64);
+    line-height: vw(20);
+
+    @include mobile {
+      min-height: vw(40);
+      margin-top: vw(24);
+      font-size: vw(32);
+      letter-spacing: vw(-1.28);
+      line-height: vw(40);
+    }
+  }
+
   &__form &__error {
     margin: vw(16) 0 0;
     font-size: vw(16);

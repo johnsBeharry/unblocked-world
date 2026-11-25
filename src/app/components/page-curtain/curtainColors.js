@@ -9,6 +9,8 @@ const CURTAIN_COLORS = {
   '/grants/open-systems': '#f546a4',
   '/submit': '#dc91a8',
 }
+// Any other path renders the 404 page.
+const NOT_FOUND_COLOR = '#2449ed'
 
 // Submit shows its pink column only in the two-column layout; stacked
 // (tablet portrait / mobile) it is all black.
@@ -19,5 +21,5 @@ export function getCurtainColor(pathname) {
   if (path.startsWith('/submit')) {
     return window.matchMedia(STACKED_QUERY).matches ? '#000000' : CURTAIN_COLORS['/submit']
   }
-  return CURTAIN_COLORS[path] ?? CURTAIN_COLORS['/']
+  return CURTAIN_COLORS[path] ?? NOT_FOUND_COLOR
 }

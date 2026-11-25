@@ -1,7 +1,7 @@
 // Culture Grants sub page of /grants.
 // The sections have desktop (1440 base) and mobile values only: tablet uses
 // the desktop UI (user request 2026-11-16). The global tablet-portrait rule
-// switches --base-size to 864px, which would scale every desktop value by
+// switches --base-size to 864, which would scale every desktop value by
 // 1440 / 864; the sections wrapper restores the 1440 base there. The shared
 // Footer stays outside it (it has its own 864-based tablet layout).
 .culture-grants-page {
@@ -11,7 +11,7 @@
 
   &__sections {
     @include tablet-portrait {
-      --base-size: 1440px;
+      --base-size: 1440;
     }
   }
 

@@ -48,6 +48,14 @@
     }
   }
 
+  // Only "(←)" (Sign In carries its own Continue in the column): no fade
+  // above the band (user request 2026-11-26).
+  &--back-only::before {
+    @include mobile {
+      content: none;
+    }
+  }
+
   // RevealRow's sliding content: the rule, divider and actions move in
   // together (the frame never shows before its labels).
   &__band {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import styles from './PosterDetailsPanel.module.scss'
 import { RevealText } from '../../../../../components/RevealText/RevealText.jsx'
 import { SelectPanel } from '../SelectPanel/SelectPanel.jsx'
@@ -6,6 +6,7 @@ import { FormField, formFieldStyles as field } from '../form-field/FormField.jsx
 import { RevealRow } from '../../../../../components/RevealRow/RevealRow.jsx'
 import { contentLines } from '../../../../../components/ContentLines/ContentLines.jsx'
 import content from './poster-details-content.json'
+import { useErrorInView } from '../../hooks/useErrorInView.js'
 
 // Add a Poster (fields and limits follow the reference form; layout and copy
 // the user's 2026-11-17 Add a Poster column reference).
@@ -16,7 +17,7 @@ const YEARS = [...Array.from({ length: 31 }, (_, index) => String(2026 - index))
 
 // Labels come from poster-details-content.json (`fields`, by name).
 const fields = [
-  { name: 'title', maxLength: 200 },
+  { name: 'title', maxLength: 200, required: true },
   { name: 'year_designed', select: true },
   { name: 'designed_for', maxLength: 500 },
   { name: 'client_name', maxLength: 500 },
@@ -31,12 +32,12 @@ const fileSummary = (files = []) =>
 
 // File card (2026-11-17 reference): title, optional hint (replaced by the
 // chosen file names) and "Browse"; click to browse or drop files on it.
-function UploadCard({ title, description, files, multiple = false, onFiles }) {
+function UploadCard({ title, description, files, multiple = false, invalid = false, onFiles }) {
   const [dragging, setDragging] = useState(false)
   const hint = files?.length ? fileSummary(files) : description
   return (
     <label
-      className={`${styles['poster-upload']} ${dragging ? styles['poster-upload--dragging'] : ''}`}
+      className={`${styles['poster-upload']} ${dragging ? styles['poster-upload--dragging'] : ''} ${invalid ? styles['poster-upload--invalid'] : ''}`}
       onDragOver={(event) => { event.preventDefault(); setDragging(true) }}
       onDragLeave={() => setDragging(false)}
       onDrop={(event) => {
@@ -45,7 +46,7 @@ function UploadCard({ title, description, files, multiple = false, onFiles }) {
         onFiles(Array.from(event.dataTransfer?.files || []))
       }}
     >
-      <input className={styles['poster-upload__file']} type="file" accept={POSTER_ACCEPT} multiple={multiple} onChange={event => onFiles(Array.from(event.target.files || []))} />
+      <input className={styles['poster-upload__file']} type="file" accept={POSTER_ACCEPT} multiple={multiple} aria-invalid={invalid || undefined} onChange={event => onFiles(Array.from(event.target.files || []))} />
       <RevealRow as="span" line={false} className={styles['poster-upload__title']}>{title}</RevealRow>
       {hint && <RevealRow as="span" line={false} className={styles['poster-upload__hint']}>{hint}</RevealRow>}
       <RevealRow as="span" line={false} className={styles['poster-upload__action']}>{dragging ? content.dropping : content.browse}</RevealRow>
@@ -53,8 +54,12 @@ function UploadCard({ title, description, files, multiple = false, onFiles }) {
   )
 }
 
-export function PosterDetailsPanel({ draft = {}, onDraftChange, error }) {
+// `invalid`: field names that failed the last Save check (title,
+// posterFiles), kept live by SubmitPage so they clear once fixed.
+export function PosterDetailsPanel({ draft = {}, onDraftChange, error, errorAttempt, invalid = {} }) {
   const concept = draft.concept || ''
+  const errorRef = useRef(null)
+  useErrorInView(errorRef, error, errorAttempt)
   return (
     <section className={styles['poster-panel']} aria-labelledby="add-poster-title">
       <div className={styles['poster-panel__inner']}>
@@ -63,10 +68,10 @@ export function PosterDetailsPanel({ draft = {}, onDraftChange, error }) {
           {fields.map(item => {
             const value = draft[item.name] ? String(draft[item.name]) : ''
             return (
-              <FormField label={item.label} filled={Boolean(value)} chevron={item.select} key={item.name}>
+              <FormField label={item.label} filled={Boolean(value)} chevron={item.select} invalid={Boolean(invalid[item.name])} key={item.name}>
                 {item.select
-                  ? <SelectPanel label={item.label} value={value} options={YEARS} triggerClassName={`${field['form-field__control']} ${field['form-field__select']}`} emptyClassName={field['form-field__select--empty']} onChange={year => onDraftChange?.({ [item.name]: year })} />
-                  : <input className={field['form-field__control']} aria-label={item.label} placeholder={item.label} maxLength={item.maxLength} value={value} onChange={event => onDraftChange?.({ [item.name]: event.target.value })} />}
+                  ? <SelectPanel label={item.label} title={content.yearPanelTitle} value={value} options={YEARS} triggerClassName={`${field['form-field__control']} ${field['form-field__select']}`} emptyClassName={field['form-field__select--empty']} onChange={year => onDraftChange?.({ [item.name]: year })} />
+                  : <input className={field['form-field__control']} aria-label={item.label} aria-required={item.required || undefined} aria-invalid={Boolean(invalid[item.name]) || undefined} placeholder={item.label} maxLength={item.maxLength} value={value} onChange={event => onDraftChange?.({ [item.name]: event.target.value })} />}
               </FormField>
             )
           })}
@@ -80,16 +85,19 @@ export function PosterDetailsPanel({ draft = {}, onDraftChange, error }) {
               title={content.posterFiles.title}
               description={contentLines(content.posterFiles.description)}
               files={draft.posterFiles}
+              invalid={Boolean(invalid.posterFiles)}
               onFiles={files => files.length && onDraftChange?.({ posterFiles: files.slice(0, 1) })}
             />
+            {/* Already sent supporting files (editing a draft) are listed
+                with the new ones; new picks fill the remaining slots. */}
             <UploadCard
               title={contentLines(content.supportingFiles.title)}
-              files={draft.supportingFiles}
+              files={[...(draft.existingAssets || []), ...(draft.supportingFiles || [])]}
               multiple
-              onFiles={files => files.length && onDraftChange?.({ supportingFiles: files.slice(0, MAX_SUPPORTING_FILES) })}
+              onFiles={files => files.length && onDraftChange?.({ supportingFiles: files.slice(0, Math.max(0, MAX_SUPPORTING_FILES - (draft.existingAssets?.length || 0))) })}
             />
           </div>
-          {error && <p className={styles['poster-panel__error']} role="alert">{error}</p>}
+          {error && <p ref={errorRef} className={styles['poster-panel__error']} role="alert">{error}</p>}
         </form>
       </div>
     </section>

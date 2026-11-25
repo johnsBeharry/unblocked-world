@@ -2,16 +2,16 @@
   "title": "Add a Poster",
   "fields": {
     "title": "Poster Title",
-    "year_designed": "Year Designed",
-    "designed_for": "Designed For",
-    "client_name": "Client Name",
-    "creation_method": "Creation Method",
-    "materials_used": "Materials Used",
-    "digital_programs": "Digital Programs Used",
-    "printing_method": "Printing Method"
+    "year_designed": "Year Designed (Optional)",
+    "designed_for": "Designed For (Optional)",
+    "client_name": "Client Name (Optional)",
+    "creation_method": "Creation Method (Optional)",
+    "materials_used": "Materials Used (Optional)",
+    "digital_programs": "Digital Programs Used (Optional)",
+    "printing_method": "Printing Method (Optional)"
   },
   "beforeYears": "Before 1996",
-  "concept": "Poster Concept",
+  "concept": "Poster Concept (Optional)",
   "posterFiles": {
     "title": "Poster Files",
     "description": [
@@ -27,5 +27,6 @@
   },
   "browse": "Browse",
   "dropping": "Drop to add",
-  "fileCount": "{count} files: {names}"
+  "fileCount": "{count} files: {names}",
+  "yearPanelTitle": "Year Designed"
 }

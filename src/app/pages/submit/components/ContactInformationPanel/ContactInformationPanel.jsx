@@ -18,11 +18,10 @@ import { useErrorInView } from '../../hooks/useErrorInView.js'
 // profile; "Sign in" (already joined) only needs the email and carries its own
 // Continue action under the field (the footer nav shows only (←) there).
 const PROFILE_FIELDS = [
-  { name: 'name', maxLength: 200, autoComplete: 'name' },
+  { name: 'name', maxLength: 200, autoComplete: 'name', required: true },
   { name: 'country', select: true },
   { name: 'instagram', maxLength: 100, autoComplete: 'off' },
 ].map(item => ({ ...item, label: content.fields[item.name] }))
-
 
 // Photo row (reference layout): a 100px tile that opens the file picker (and
 // shows the chosen photo), with the label, hint and actions beside it.
@@ -70,6 +69,9 @@ export function ContactInformationPanel({
   onPhotoChange,
   submitLabel = content.submit,
   submitDisabled = false,
+  // Field names that failed the last Continue check (email, name, country,
+  // instagram, terms), kept live by SubmitPage so they clear once fixed.
+  invalid = {},
   onSubmit,
 }) {
   const codeSent = verification.status === 'code_sent' || verification.status === 'verifying'
@@ -131,14 +133,14 @@ export function ContactInformationPanel({
             if (!joining && !submitDisabled) onSubmit?.()
           }}
         >
-          <FormField label={content.email} filled={Boolean(value.email)}>
-            <input className={field['form-field__control']} type="email" inputMode="email" autoComplete="email" maxLength={200} aria-label={content.email} placeholder={content.email} disabled={codeSent} value={value.email || ''} onChange={event => onChange?.({ email: event.target.value })} />
+          <FormField label={content.email} filled={Boolean(value.email)} invalid={Boolean(invalid.email)}>
+            <input className={field['form-field__control']} type="email" inputMode="email" autoComplete="email" maxLength={200} aria-label={content.email} aria-required aria-invalid={Boolean(invalid.email) || undefined} placeholder={content.email} disabled={codeSent} value={value.email || ''} onChange={event => onChange?.({ email: event.target.value })} />
           </FormField>
           {joining && PROFILE_FIELDS.map(item => (
-            <FormField label={item.label} filled={Boolean(value[item.name])} chevron={item.select} key={item.name}>
+            <FormField label={item.label} filled={Boolean(value[item.name])} chevron={item.select} invalid={Boolean(invalid[item.name])} key={item.name}>
               {item.select
                 ? <SelectPanel label={item.label} value={value[item.name] || ''} options={countries} triggerClassName={`${field['form-field__control']} ${field['form-field__select']}`} emptyClassName={field['form-field__select--empty']} disabled={codeSent} onChange={country => onChange?.({ country })} />
-                : <input className={field['form-field__control']} aria-label={item.label} placeholder={item.label} maxLength={item.maxLength} autoComplete={item.autoComplete} disabled={codeSent} value={value[item.name] || ''} onChange={event => onChange?.({ [item.name]: event.target.value })} />}
+                : <input className={field['form-field__control']} aria-label={item.label} aria-required={item.required || undefined} aria-invalid={Boolean(invalid[item.name]) || undefined} placeholder={item.label} maxLength={item.maxLength} autoComplete={item.autoComplete} disabled={codeSent} value={value[item.name] || ''} onChange={event => onChange?.({ [item.name]: event.target.value })} />}
             </FormField>
           ))}
           {joining && (
@@ -148,7 +150,7 @@ export function ContactInformationPanel({
           )}
           {joining && <PhotoField photo={value.photo} onChange={onPhotoChange} />}
           {joining && (
-            <CheckboxRow className={styles['contact-panel__terms']} checked={Boolean(value.terms)} onChange={terms => onChange?.({ terms })}>
+            <CheckboxRow className={styles['contact-panel__terms']} checked={Boolean(value.terms)} invalid={Boolean(invalid.terms)} onChange={terms => onChange?.({ terms })}>
               {/* Underlined like links in the reference; no Terms / Privacy
                   pages exist yet, so they are not links. */}
               {contentLines(content.terms, undefined, {

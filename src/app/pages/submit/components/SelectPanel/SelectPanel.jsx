@@ -11,6 +11,9 @@ import content from './select-panel-content.json'
 const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 export function SelectPanel({
   label,
+  // Panel heading; defaults to the label (a field's "(Optional)" suffix
+  // wraps the one-line desktop header, so such fields pass the bare name).
+  title = label,
   value = '',
   options,
   onChange,
@@ -133,7 +136,7 @@ export function SelectPanel({
         <div ref={overlayRef} className={styles['select-overlay']} aria-hidden="true" />
         <div ref={panelRef} className={styles['select-panel']} data-lenis-prevent>
           <div className={styles['select-panel__header']}>
-            <p className={styles['select-panel__title']}>{label}</p>
+            <p className={styles['select-panel__title']}>{title}</p>
             <button type="button" className={styles['select-panel__close']} onClick={() => close()}>{content.close}</button>
           </div>
           {options.length ? (

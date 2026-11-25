@@ -107,6 +107,8 @@
 // Upload card: title cap 29.5px under the top, 12px hint, "Browse" cap 134px
 // under the top, all centred.
 .poster-upload {
+  --poster-upload-invalid-ease: cubic-bezier(0.16, 1, 0.3, 1);
+
   position: relative;
   display: block;
   box-sizing: border-box;
@@ -132,6 +134,7 @@
 
   &__title {
     display: block;
+    transition: color 0.3s linear;
     // Explicit 20px: the label would otherwise pass on the form's 16px.
     font-size: vw(20);
     letter-spacing: vw(-0.8);
@@ -185,5 +188,33 @@
   &--dragging {
     outline: vw(2) dashed var(--poster-ink, #dc91a8);
     outline-offset: vw(-8);
+  }
+
+  // Missing poster file (user request 2026-11-25): red title and a red
+  // bottom rule drawn in from the left like an invalid FormField row,
+  // retracting once a file is chosen.
+  &::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border-top: vw(1) solid var(--error-red);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.6s var(--poster-upload-invalid-ease);
+    pointer-events: none;
+
+    @include mobile {
+      border-top-width: vw(2);
+    }
+  }
+
+  &--invalid::after {
+    transform: scaleX(1);
+  }
+
+  &--invalid &__title {
+    color: var(--error-red);
   }
 }

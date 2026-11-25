@@ -11,6 +11,8 @@
 // below the row top (cap 28.5px above the rule); filled: a 14px label 19px
 // below the top and the value 6.2px under it.
 .form-field {
+  --form-field-invalid-ease: cubic-bezier(0.16, 1, 0.3, 1);
+
   position: relative;
   display: block;
   box-sizing: border-box;
@@ -42,6 +44,7 @@
 
   &__label {
     color: var(--form-field-muted, rgb(220 145 168 / 0.4));
+    transition: color 0.3s linear;
     font-size: vw(14);
     letter-spacing: vw(-0.56);
     line-height: 1.02;
@@ -74,6 +77,7 @@
     &::placeholder {
       color: var(--form-field-muted, rgb(220 145 168 / 0.4));
       opacity: 1;
+      transition: color 0.3s linear;
     }
 
     &:disabled {
@@ -111,6 +115,7 @@
 
     &--empty {
       color: var(--form-field-muted, rgb(220 145 168 / 0.4));
+      transition: color 0.3s linear;
     }
   }
 
@@ -167,5 +172,38 @@
     @include mobile {
       margin-top: vw(16.4);
     }
+  }
+
+  // Invalid row (user request 2026-11-25: show which field failed). A red
+  // rule draws in from the left over the RevealRow rule (same place and
+  // weight; the RevealRow rule's transform belongs to its reveal, so it is
+  // not reused) with the row-reveal expo-out, and retracts when valid again.
+  &::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: vw(-1);
+    left: 0;
+    border-top: vw(1) solid var(--error-red);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.6s var(--form-field-invalid-ease);
+    pointer-events: none;
+
+    @include mobile {
+      bottom: vw(-2);
+      border-top-width: vw(2);
+    }
+  }
+
+  &--invalid::after {
+    transform: scaleX(1);
+  }
+
+  // Empty field: the placeholder is the name; filled: the small label.
+  &--invalid &__label,
+  &--invalid &__control::placeholder,
+  &--invalid &__select--empty {
+    color: var(--error-red);
   }
 }

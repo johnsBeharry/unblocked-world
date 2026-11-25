@@ -17,12 +17,14 @@ import content from './profile-panel-content.json'
 // with Save (status beside it). Name, country and the terms are needed to
 // submit; the terms box locks once the current terms are accepted.
 const TEXT_FIELDS = [
-  { name: 'name', maxLength: 200, autoComplete: 'name' },
+  { name: 'name', maxLength: 200, autoComplete: 'name', required: true },
   { name: 'country', select: true },
   { name: 'instagram', maxLength: 100, autoComplete: 'off' },
 ].map(item => ({ ...item, label: content.fields[item.name] }))
 
-export function ProfilePanel({ value = {}, onChange, onPhotoChange, onChangeEmail, onSave, saveState = 'idle', error, busy = false }) {
+// `invalid`: field names that need fixing (name, country, instagram), kept
+// live by SubmitPage.
+export function ProfilePanel({ value = {}, onChange, onPhotoChange, onChangeEmail, onSave, saveState = 'idle', error, busy = false, invalid = {} }) {
   return (
     <section className={styles['profile-panel']} aria-labelledby="profile-title">
       <div className={styles['profile-panel__inner']}>
@@ -37,10 +39,10 @@ export function ProfilePanel({ value = {}, onChange, onPhotoChange, onChangeEmai
           </FormField>
           <RevealRow as="span" line={false} className={styles['profile-panel__verified']}>{content.verified}</RevealRow>
           {TEXT_FIELDS.map(item => (
-            <FormField label={item.label} filled={Boolean(value[item.name])} chevron={item.select} key={item.name}>
+            <FormField label={item.label} filled={Boolean(value[item.name])} chevron={item.select} invalid={Boolean(invalid[item.name])} key={item.name}>
               {item.select
                 ? <SelectPanel label={item.label} value={value[item.name] || ''} options={countries} triggerClassName={`${field['form-field__control']} ${field['form-field__select']}`} emptyClassName={field['form-field__select--empty']} onChange={country => onChange?.({ country })} />
-                : <input className={field['form-field__control']} aria-label={item.label} placeholder={item.label} maxLength={item.maxLength} autoComplete={item.autoComplete} value={value[item.name] || ''} onChange={event => onChange?.({ [item.name]: event.target.value })} />}
+                : <input className={field['form-field__control']} aria-label={item.label} aria-required={item.required || undefined} aria-invalid={Boolean(invalid[item.name]) || undefined} placeholder={item.label} maxLength={item.maxLength} autoComplete={item.autoComplete} value={value[item.name] || ''} onChange={event => onChange?.({ [item.name]: event.target.value })} />}
             </FormField>
           ))}
           <FormField label={content.bio} filled={Boolean(value.bio)} className={styles['profile-panel__bio']}>

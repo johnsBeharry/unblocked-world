@@ -22,6 +22,8 @@ body {
   --surface:#272727;
   --cream:#d9d9d9;
   --ink:#101010;
+  // Invalid form fields (Submit): label, rule and checkbox turn this red.
+  --error-red:#ff4b4b;
   font-family:'Inter Local', Arial, sans-serif;
   color:var(--cream);
   background:var(--blue);

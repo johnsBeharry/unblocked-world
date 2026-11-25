@@ -10,7 +10,8 @@ import { useErrorInView } from '../../hooks/useErrorInView.js'
 // when entering the step); the reference has no poster picker.
 export const CONSENTS = content.consents
 
-export function ConsentPanel({ value = {}, onChange, error }) {
+// `showInvalid`: after a failed Submit, unticked boxes turn red until ticked.
+export function ConsentPanel({ value = {}, onChange, error, showInvalid = false }) {
   const errorRef = useRef(null)
   useErrorInView(errorRef, error)
   return (
@@ -20,7 +21,7 @@ export function ConsentPanel({ value = {}, onChange, error }) {
         <RevealText as="p" className={styles['consent-panel__lede']}>{content.lede}</RevealText>
         <div className={styles['consent-panel__list']} role="group" aria-label={content.listLabel}>
           {CONSENTS.map(consent => (
-            <CheckboxRow key={consent.name} className={styles['consent-panel__row']} required checked={Boolean(value[consent.name])} onChange={checked => onChange?.({ [consent.name]: checked })}>
+            <CheckboxRow key={consent.name} className={styles['consent-panel__row']} required invalid={showInvalid && !value[consent.name]} checked={Boolean(value[consent.name])} onChange={checked => onChange?.({ [consent.name]: checked })}>
               {consent.label}
             </CheckboxRow>
           ))}

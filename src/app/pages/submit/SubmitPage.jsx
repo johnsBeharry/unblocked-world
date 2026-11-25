@@ -226,6 +226,12 @@ export function SubmitPage({ initialStep = 0 }) {
   const [submissionState, setSubmissionState] = useState('idle')
   const [submissionError, setSubmissionError] = useState('')
   const [accountTab, setAccountTab] = useState(dev?.accountTab ?? 'profile')
+  // Set by a failed check (Continue / profile save, Save poster, Submit):
+  // from then on the failing fields are marked red, live, so each one turns
+  // back as soon as it is valid (client request 2026-11-25).
+  const [contactAttempt, setContactAttempt] = useState(false)
+  const [posterAttempt, setPosterAttempt] = useState(false)
+  const [consentAttempt, setConsentAttempt] = useState(false)
   const contentScrollRef = useRef(null)
   useSubmitLenis(contentScrollRef, `${step}-${joinMode}-${accountTab}`)
   const contentRef = useRef(null)
@@ -279,6 +285,7 @@ export function SubmitPage({ initialStep = 0 }) {
 
   // Opens the Profile screen (step 01, signed in) with the reason shown.
   function showProfileProblem(message) {
+    setContactAttempt(true)
     setAccountTab('profile')
     setStep(1)
     setVerification({ status: 'verified', code: '', error: message })
@@ -305,16 +312,22 @@ export function SubmitPage({ initialStep = 0 }) {
     if (profile && 'termsAccepted' in profile) setContactDraft(current => ({ ...current, termsAccepted: Boolean(profile.termsAccepted) }))
   }
 
-  // Join validation (reference copy); signing in only needs the email.
+  // Join validation (reference copy) per field, in message order; signing in
+  // only needs the email. The first message is shown, every failed field is
+  // marked red (client request 2026-11-25).
+  function contactProblems(email) {
+    const problems = { email: !email ? content.messages.addEmail : EMAIL_PATTERN.test(email) ? '' : content.messages.checkEmail }
+    if (joinMode !== 'join') return problems
+    return {
+      ...problems,
+      name: contactDraft.name?.trim() ? '' : content.messages.addName,
+      country: contactDraft.country ? '' : content.messages.chooseCountry,
+      instagram: isInstagram(cleanText(contactDraft.instagram)) ? '' : ERROR_MESSAGES.invalid_instagram,
+      terms: contactDraft.terms ? '' : content.messages.agreeTerms,
+    }
+  }
   function contactError(email) {
-    if (!email) return content.messages.addEmail
-    if (!EMAIL_PATTERN.test(email)) return content.messages.checkEmail
-    if (joinMode !== 'join') return ''
-    if (!contactDraft.name?.trim()) return content.messages.addName
-    if (!contactDraft.country) return content.messages.chooseCountry
-    if (!isInstagram(cleanText(contactDraft.instagram))) return ERROR_MESSAGES.invalid_instagram
-    if (!contactDraft.terms) return content.messages.agreeTerms
-    return ''
+    return Object.values(contactProblems(email)).find(Boolean) || ''
   }
 
   // Contest details (terms/consent versions), loaded once and cached.
@@ -371,7 +384,10 @@ export function SubmitPage({ initialStep = 0 }) {
     profileDirtyRef.current = false
     setProfileSave('saving')
     try {
-      if (!isInstagram(cleanText(contactDraft.instagram))) throw new Error(ERROR_MESSAGES.invalid_instagram)
+      if (!isInstagram(cleanText(contactDraft.instagram))) {
+        setContactAttempt(true)
+        throw new Error(ERROR_MESSAGES.invalid_instagram)
+      }
       const termsVersion = contactDraft.terms && !contactDraft.termsAccepted ? (await loadContest()).termsVersion : undefined
       const result = await updateProfile(profileFromContact(), termsVersion)
       if (!result.ok) throw new Error(getErrorMessage(result, content.messages.saveProfileFailed))
@@ -531,6 +547,7 @@ export function SubmitPage({ initialStep = 0 }) {
     setPosterDraft(draft)
     setEditingEntryId(entryId)
     setPosterDirty(false)
+    setPosterAttempt(false)
     setSaveError('')
     setSaveState('idle')
     setStep(3)
@@ -656,6 +673,7 @@ export function SubmitPage({ initialStep = 0 }) {
       try {
         if (joinMode === 'join') {
           const invalid = contactError(email)
+          setContactAttempt(Boolean(invalid))
           if (invalid) throw new Error(invalid)
           const { termsVersion } = await loadContest()
           const profileResult = await updateProfile(profileFromContact(), termsVersion)
@@ -669,6 +687,7 @@ export function SubmitPage({ initialStep = 0 }) {
       return
     }
     const invalid = verification.status !== 'code_sent' && contactError(email)
+    setContactAttempt(Boolean(invalid))
     if (invalid) {
       setVerification({ status: 'idle', code: '', error: invalid })
       return
@@ -713,6 +732,18 @@ export function SubmitPage({ initialStep = 0 }) {
 
   const inProgressEntries = posterEntries.filter(entry => !entry.submitted)
 
+  // Add a Poster fields that block Save (title, a poster file for a new entry).
+  function posterProblems() {
+    const title = cleanText(posterDraft.title)
+    return { title: !title || title.length > 200, posterFiles: !editingEntryId && !posterDraft.posterFiles?.[0] }
+  }
+  // Failed fields only (values are truthy messages or flags).
+  const failedFields = problems => Object.fromEntries(Object.entries(problems).filter(([, failed]) => failed))
+  const contactInvalid = !contactAttempt ? {} : failedFields(showProfile
+    ? { name: !contactDraft.name?.trim(), country: !contactDraft.country, instagram: !isInstagram(cleanText(contactDraft.instagram)) }
+    : contactProblems(contactDraft.email?.trim().toLowerCase()))
+  const posterInvalid = posterAttempt ? failedFields(posterProblems()) : {}
+
   async function handleSubmission() {
     // Every in-progress poster is sent (the Consent step has no picker).
     const chosen = inProgressEntries
@@ -720,6 +751,7 @@ export function SubmitPage({ initialStep = 0 }) {
       setSubmissionError(content.messages.addPosterFirst)
       return
     }
+    setConsentAttempt(true)
     if (!CONSENTS.every(item => consent[item.name])) {
       setSubmissionError(content.messages.confirmTerms)
       return
@@ -756,6 +788,7 @@ export function SubmitPage({ initialStep = 0 }) {
       const sent = new Set(chosen.map(entry => entry.id))
       setPosterEntries(current => current.map(entry => sent.has(entry.id) ? { ...entry, submitted: true, status: 'submitted', submittedAt: new Date().toISOString() } : entry))
       setConsent({})
+      setConsentAttempt(false)
       setSubmissionState('submitted')
       setStep(5)
     } catch (error) {
@@ -769,6 +802,7 @@ export function SubmitPage({ initialStep = 0 }) {
     if (saveState === 'saving') return false
     setSaveAttempt(count => count + 1)
     const title = cleanText(posterDraft.title)
+    setPosterAttempt(Object.values(posterProblems()).some(Boolean))
     if (!title) {
       setSaveError(content.messages.titleRequired)
       setSaveState('error')
@@ -884,6 +918,7 @@ export function SubmitPage({ initialStep = 0 }) {
                 busy={accountBusy}
                 error={verification.error}
                 saveState={profileSave}
+                invalid={contactInvalid}
                 onSave={handleProfileSave}
                 onChange={changes => {
                   profileDirtyRef.current = true
@@ -898,7 +933,8 @@ export function SubmitPage({ initialStep = 0 }) {
             ? <ContactInformationPanel
                 value={contactDraft}
                 mode={joinMode}
-                onModeChange={mode => { setJoinMode(mode); setVerification(current => (current.status === 'verified' ? { ...current, error: '' } : { status: 'idle', code: '', error: '' })) }}
+                invalid={contactInvalid}
+                onModeChange={mode => { setJoinMode(mode); setContactAttempt(false); setVerification(current => (current.status === 'verified' ? { ...current, error: '' } : { status: 'idle', code: '', error: '' })) }}
                 verification={verification}
                 onVerificationChange={changes => setVerification(current => ({ ...current, ...changes }))}
                 onChange={changes => {
@@ -932,9 +968,9 @@ export function SubmitPage({ initialStep = 0 }) {
                   openPosterEditor({ ...EMPTY_POSTER_DRAFT, posterFiles: files.slice(0, 1), supportingFiles: files.slice(1, 1 + MAX_SUPPORTING_FILES) }, null)
                 }} />
               : showPosterDetails
-                ? <PosterDetailsPanel draft={posterDraft} error={saveError} errorAttempt={saveAttempt} onDraftChange={changes => { setSaveError(''); setSaveState('idle'); setPosterDirty(true); setPosterDraft(current => ({ ...current, ...changes })) }} />
+                ? <PosterDetailsPanel draft={posterDraft} error={saveError} errorAttempt={saveAttempt} invalid={posterInvalid} onDraftChange={changes => { setSaveError(''); setSaveState('idle'); setPosterDirty(true); setPosterDraft(current => ({ ...current, ...changes })) }} />
                 : showConsent
-                  ? <ConsentPanel value={consent} onChange={changes => setConsent(current => ({ ...current, ...changes }))} error={submissionError} />
+                  ? <ConsentPanel value={consent} showInvalid={consentAttempt} onChange={changes => setConsent(current => ({ ...current, ...changes }))} error={submissionError} />
                   : showSuccess
                   ? <SubmissionSuccessPanel />
                 : <div className={styles.contentInner}>
@@ -967,6 +1003,7 @@ export function SubmitPage({ initialStep = 0 }) {
         {showPosterDetails && <SubmitFooterNav className={styles.mobileHidden} nextLabel={saveState === 'saving' ? content.actions.saving : content.actions.continue} disabled={saveState === 'saving'} onBack={leavePosterEditor} onNext={handlePosterSave} />}
         {showPoster && <SubmitFooterNav nextLabel={content.actions.submit} nextLabelMobile={content.actions.consentMobile} onBack={() => setStep(1)} onNext={() => {
           setSubmissionError('')
+          setConsentAttempt(false)
           setStep(4)
         }} />}
         {showConsent && <SubmitFooterNav nextLabel={submissionState === 'submitting' ? content.actions.submitting : content.actions.submit} disabled={submissionState === 'submitting'} onBack={() => setStep(2)} onNext={handleSubmission} />}

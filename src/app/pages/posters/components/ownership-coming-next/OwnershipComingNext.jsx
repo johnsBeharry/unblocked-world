@@ -10,7 +10,8 @@ const columns = [
   [421.75, [[265.875, 3], [280.875, 6], [298.875, 12], [322.875, 18], [352.875, 24], [391.875, 24]]],
 ]
 
-const toVw = (size) => `calc(${size}px / var(--base-size) * var(--viewport-scale, 1) * 100vw)`
+// Same formula as the SCSS vw() (unitless --base-size, see _functions.scss).
+const toVw = (size) => `calc(${size} / var(--base-size) * var(--viewport-scale, 1) * 100vw)`
 
 export function OwnershipComingNext() {
   return (

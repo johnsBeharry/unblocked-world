@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Submit page: the dark fade at the bottom of the screen now only shows where a button is fixed at the bottom. Profile and Sign In (only "(←)") have none, so nothing there is dimmed and Sign In's "Continue (→)" button stays fully visible.
+- Submit page on iPhone: after typing in a field (e.g. the email on Sign In) the page no longer stays pushed up under the header when the keyboard closes; titles stay in place and the form scrolls normally. On phones and tablets the form now uses the device's own scrolling.
+- Fixed the whole site showing up with default sizes on iPhone (Safari) and other browsers outside recent Chrome: text, spacing and positions were dropped, so sections overlapped. Sizes now use a formula every browser understands; on Chrome nothing changes.
 - After a new release, a page kept open from before (for example a Safari tab restored on iPhone) no longer shows up almost unstyled: when its style or script files are no longer available, the page reloads itself once to get the current version.
 - Submit page on phones: the dark fade at the top of the screen now appears only once you scroll, so titles and the first content are never dimmed while the page is at the top.
 - Submit forms show which fields are needed and which failed: fields you may skip now say "(Optional)" in Add a Poster too (Year Designed, Designed For, Client Name, Creation Method, Materials Used, Digital Programs Used, Printing Method, Poster Concept); everything else is required. When Continue, Save or Submit stops, each field that needs fixing turns red (its name and a red line drawn under it; on "Poster Files" the title and a line under the card; unticked required boxes turn red) and goes back to normal as soon as it is filled in correctly. This works on Join, Profile, Add a Poster and the Consent step.
@@ -571,3 +574,4 @@
 - Corrected mobile Footer spacing by restoring the top logo inset and anchoring the copyright/back-to-top row near the bottom edge of the footer reference.
 - Tightened mobile Footer vertical rhythm and aligned the copyright/back-to-top grid content to the bottom edge to remove the remaining visible spacing ghost.
 - Fixed the mobile Footer bottom-row selector so copyright and back-to-top alignment actually applies to the second `.main__content` child.
+- Made the local Unblocked dev server use port 5180 by default, with `PORT` available for overrides, so it does not share Vite's default port with other projects.

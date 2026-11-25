@@ -1,6 +1,11 @@
+// Mockup px -> viewport width. `--base-size` is a plain number (1440, 864,
+// 375): dividing a length by a length (`40px / 1440px`) is typed arithmetic,
+// which only recent Chrome supports; iOS Safari and Firefox dropped every
+// vw() declaration and the site rendered with default sizes (user report
+// 2026-11-26).
 @function vw($sizeInPx) {
   @return #{calc(
-      $sizeInPx * 1px / var(--base-size) * var(--viewport-scale, 1) * 100vw
+      $sizeInPx / var(--base-size) * var(--viewport-scale, 1) * 100vw
     )};
 
   // @return calc($sizeInPx / var(--base-size) * 100vw);

@@ -1,7 +1,9 @@
 import { useLayoutEffect } from 'react'
 import Lenis from 'lenis'
 
-// Smooth scrolling for the Submit form column. `contentKey` changes with each
+// Smooth scrolling for the Submit form column (mouse / trackpad only: touch
+// screens keep native scrolling, Lenis adds nothing there and the iOS
+// keyboard handling is simpler without it, user request 2026-11-26). `contentKey` changes with each
 // step (and Join / Sign in): the column is reset to the top in a layout effect,
 // before the new content is painted, and `behavior: 'instant'` overrides the
 // column's CSS `scroll-behavior: smooth`, so the user never sees it scroll up.
@@ -21,18 +23,19 @@ export function useSubmitLenis(wrapperRef, contentKey) {
     }
     markScrolled()
     wrapper.addEventListener('scroll', markScrolled, { passive: true })
-    const lenis = new Lenis({ wrapper, content, autoRaf: false, smoothWheel: true })
+    const touch = window.matchMedia('(hover: none) and (pointer: coarse)').matches
+    const lenis = touch ? null : new Lenis({ wrapper, content, autoRaf: false, smoothWheel: true })
     let frameId
     const frame = time => {
       lenis.raf(time)
       frameId = requestAnimationFrame(frame)
     }
 
-    frameId = requestAnimationFrame(frame)
+    if (lenis) frameId = requestAnimationFrame(frame)
     return () => {
       cancelAnimationFrame(frameId)
       wrapper.removeEventListener('scroll', markScrolled)
-      lenis.destroy()
+      lenis?.destroy()
     }
   }, [wrapperRef, contentKey])
 }

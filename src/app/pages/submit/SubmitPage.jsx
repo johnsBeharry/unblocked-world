@@ -46,6 +46,7 @@ import content from './submit-content.json'
 import { MAX_SUPPORTING_FILES } from './components/PosterDetailsPanel/PosterDetailsPanel.jsx'
 import { ConfirmDialog } from './components/confirm-dialog/ConfirmDialog.jsx'
 import countries from './data/countries.json'
+import { useWindowAtTop } from './hooks/useWindowAtTop.js'
 import { checkUploadFile, cleanText, clearJoinDraft, isInstagram, readJoinDraft, saveJoinDraft } from './api/formGuards.js'
 
 // Copy lives in submit-content.json (overview follows the reference form).
@@ -196,6 +197,7 @@ function useBlackPageBackground() {
 
 export function SubmitPage({ initialStep = 0 }) {
   useBlackPageBackground()
+  useWindowAtTop()
   const [dev] = useState(readDevState)
   const [step, setStep] = useState(dev?.step ?? initialStep)
   const [posterEntries, setPosterEntries] = useState(() => {
@@ -254,6 +256,9 @@ export function SubmitPage({ initialStep = 0 }) {
   const showPosterDetails = step === 3
   const showConsent = step === 4
   const showSuccess = step === 5
+  // No action fixed at the bottom (Profile; Sign In shows only "(←)"): the
+  // bottom fade has nothing to sit behind (user request 2026-11-26).
+  const noBottomCta = showProfile || (showContact && !showAccount && joinMode !== 'join')
 
   // The form API answers with machine codes (e.g. 409 `submissions_closed`);
   // show a sentence instead. A readable `message` wins over a bare code.
@@ -893,7 +898,7 @@ export function SubmitPage({ initialStep = 0 }) {
   }
 
   return (
-    <main className={`${styles.page} ${showPosterDetails ? styles.editing : ''} ${showSuccess ? styles.success : ''} ${showAccount ? styles.account : ''} ${introPending ? styles.introPending : ''}`} data-name="submit-index">
+    <main className={`${styles.page} ${showPosterDetails ? styles.editing : ''} ${showSuccess ? styles.success : ''} ${showAccount ? styles.account : ''} ${noBottomCta ? styles.noBottomCta : ''} ${introPending ? styles.introPending : ''}`} data-name="submit-index">
       <section className={styles.identity} aria-label={content.identity.label}>
         <RevealRow as="a" line={false} pinned className={styles.homeLink} href={content.identity.homeLink.href} onClick={handleHomeClick}><RollingText text={content.identity.homeLink.label} /></RevealRow>
         <SubmitArtwork introRef={artIntroRef} />

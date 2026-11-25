@@ -98,6 +98,8 @@
 .editorBar { display: none; }
 // Thank-you screen: no bottom fade (reference); its content ends well above.
 .success .content::after { display: none; }
+// Profile and Sign In: no CTA fixed at the bottom, so no bottom fade either.
+.noBottomCta .content::after { display: none; }
 
 @include tablet-portrait {
   .page { display: block; min-height: 100vh; min-height: 100svh; }

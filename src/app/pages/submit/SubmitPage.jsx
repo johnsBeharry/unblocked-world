@@ -44,11 +44,17 @@ import { CONSENTS } from './components/ConsentPanel/ConsentPanel.jsx'
 import { contentLines } from '../../../components/ContentLines/ContentLines.jsx'
 import content from './submit-content.json'
 import { MAX_SUPPORTING_FILES } from './components/PosterDetailsPanel/PosterDetailsPanel.jsx'
+import { ConfirmDialog } from './components/confirm-dialog/ConfirmDialog.jsx'
+import countries from './data/countries.json'
+import { checkUploadFile, cleanText, clearJoinDraft, isInstagram, readJoinDraft, saveJoinDraft } from './api/formGuards.js'
 
 // Copy lives in submit-content.json (overview follows the reference form).
 
 
 const EMAIL_PATTERN = /^\S+@\S+\.\S+$/
+// A new code can be asked for once every 30 seconds.
+const RESEND_WAIT_MS = 30000
+const EMPTY_POSTER_DRAFT = { title: '', posterFiles: [], supportingFiles: [] }
 
 // Add a Poster fields saved with an entry (form API `fields`).
 const POSTER_FIELDS = ['title', 'year_designed', 'designed_for', 'client_name', 'creation_method', 'materials_used', 'digital_programs', 'printing_method', 'concept']
@@ -171,7 +177,25 @@ function readDevState() {
   return DEV_STATES[new URLSearchParams(window.location.search).get('dev')] || null
 }
 
+// Submit is black wherever the browser shows the page background (iOS
+// toolbar / status bar tint, keyboard, overscroll); the site default is the
+// blue home colour, which showed through on phones (client QA 2026-11-25).
+function useBlackPageBackground() {
+  useLayoutEffect(() => {
+    const root = document.documentElement
+    const themeColor = document.querySelector('meta[name="theme-color"]')
+    const previous = { background: root.style.backgroundColor, theme: themeColor?.getAttribute('content') }
+    root.style.backgroundColor = '#000'
+    themeColor?.setAttribute('content', '#000000')
+    return () => {
+      root.style.backgroundColor = previous.background
+      if (themeColor && previous.theme) themeColor.setAttribute('content', previous.theme)
+    }
+  }, [])
+}
+
 export function SubmitPage({ initialStep = 0 }) {
+  useBlackPageBackground()
   const [dev] = useState(readDevState)
   const [step, setStep] = useState(dev?.step ?? initialStep)
   const [posterEntries, setPosterEntries] = useState(() => {
@@ -189,7 +213,12 @@ export function SubmitPage({ initialStep = 0 }) {
   const [joinMode, setJoinMode] = useState(dev?.joinMode ?? 'join')
   const [verification, setVerification] = useState(dev?.verification ?? { status: 'idle', code: '', error: '' })
   const [contest, setContest] = useState(null)
-  const [posterDraft, setPosterDraft] = useState({ title: '', posterFiles: [], supportingFiles: [] })
+  const [posterDraft, setPosterDraft] = useState(EMPTY_POSTER_DRAFT)
+  // Unsaved changes in Add a Poster: Cancel / (←) ask before dropping them.
+  const [posterDirty, setPosterDirty] = useState(false)
+  const [discardOpen, setDiscardOpen] = useState(false)
+  // Every Save press, so a repeated error scrolls back into view.
+  const [saveAttempt, setSaveAttempt] = useState(0)
   const [editingEntryId, setEditingEntryId] = useState(null)
   const [saveState, setSaveState] = useState('idle')
   const [saveError, setSaveError] = useState('')
@@ -232,10 +261,10 @@ export function SubmitPage({ initialStep = 0 }) {
 
   function profileFromContact() {
     return {
-      name: contactDraft.name?.trim(),
-      country: contactDraft.country?.trim(),
-      instagram: contactDraft.instagram?.trim(),
-      bio: contactDraft.bio?.trim(),
+      name: cleanText(contactDraft.name),
+      country: cleanText(contactDraft.country),
+      instagram: cleanText(contactDraft.instagram),
+      bio: cleanText(contactDraft.bio),
     }
   }
 
@@ -283,6 +312,7 @@ export function SubmitPage({ initialStep = 0 }) {
     if (joinMode !== 'join') return ''
     if (!contactDraft.name?.trim()) return content.messages.addName
     if (!contactDraft.country) return content.messages.chooseCountry
+    if (!isInstagram(cleanText(contactDraft.instagram))) return ERROR_MESSAGES.invalid_instagram
     if (!contactDraft.terms) return content.messages.agreeTerms
     return ''
   }
@@ -341,6 +371,7 @@ export function SubmitPage({ initialStep = 0 }) {
     profileDirtyRef.current = false
     setProfileSave('saving')
     try {
+      if (!isInstagram(cleanText(contactDraft.instagram))) throw new Error(ERROR_MESSAGES.invalid_instagram)
       const termsVersion = contactDraft.terms && !contactDraft.termsAccepted ? (await loadContest()).termsVersion : undefined
       const result = await updateProfile(profileFromContact(), termsVersion)
       if (!result.ok) throw new Error(getErrorMessage(result, content.messages.saveProfileFailed))
@@ -374,6 +405,28 @@ export function SubmitPage({ initialStep = 0 }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  // Join details stay on this device until the email is confirmed ("Save &
+  // Leave" promises the progress is kept; before the code there is no
+  // account to save to). Restored once on load; cleared once signed in.
+  useEffect(() => {
+    if (dev) return
+    const saved = readJoinDraft(countries)
+    if (saved) setContactDraft(current => ({ ...saved, ...current }))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  useEffect(() => {
+    if (dev) return
+    if (verification.status === 'verified') clearJoinDraft()
+    else if (joinMode === 'join') saveJoinDraft(contactDraft)
+  }, [dev, verification.status, joinMode, contactDraft])
+
+  // Code requests wait RESEND_WAIT_MS between sends (Resend, Change Email).
+  const lastCodeRef = useRef(0)
+  function resendWait() {
+    const left = Math.ceil((lastCodeRef.current + RESEND_WAIT_MS - Date.now()) / 1000)
+    return left > 0 ? content.messages.resendWait.replace('{seconds}', left) : ''
+  }
+
   // Change Email (user choice 2026-11-17; the portal can't change an
   // account's email): a code goes to the new address with the current
   // details (a separate profile there); the current session stays until the
@@ -391,17 +444,21 @@ export function SubmitPage({ initialStep = 0 }) {
       const photo = contactDraft.photo?.blob ? await blobToBase64(contactDraft.photo.blob) : undefined
       const result = await requestEmailCode(email, profileFromContact(), termsVersion, photo)
       if (result.status !== 202) throw new Error(getErrorMessage(result, content.messages.sendCodeFailed))
+      lastCodeRef.current = Date.now()
       updateChangeEmail({ email, stage: 'code', code: '', busy: false })
     } catch (error) {
       updateChangeEmail({ busy: false, error: error.message })
     }
   }
   async function handleChangeEmailResend() {
+    const wait = resendWait()
+    if (wait) return updateChangeEmail({ error: wait })
     updateChangeEmail({ busy: true, error: '' })
     try {
       const { termsVersion } = await loadContest()
       const result = await requestEmailCode(changeEmail.email, profileFromContact(), termsVersion)
       if (result.status !== 202) throw new Error(getErrorMessage(result, content.messages.sendCodeFailed))
+      lastCodeRef.current = Date.now()
       updateChangeEmail({ busy: false, code: '', error: content.messages.codeResent })
     } catch (error) {
       updateChangeEmail({ busy: false, error: error.message })
@@ -466,11 +523,32 @@ export function SubmitPage({ initialStep = 0 }) {
     const problem = profileProblem()
     if (problem) return showProfileProblem(problem)
     if (draftCount) return setStep(2)
-    setPosterDraft({ title: '', posterFiles: [], supportingFiles: [] })
-    setEditingEntryId(null)
+    openPosterEditor(EMPTY_POSTER_DRAFT, null)
+  }
+
+  // Add a Poster opens with `draft` (empty, dropped files or a saved entry).
+  function openPosterEditor(draft, entryId) {
+    setPosterDraft(draft)
+    setEditingEntryId(entryId)
+    setPosterDirty(false)
     setSaveError('')
     setSaveState('idle')
     setStep(3)
+  }
+
+  // Cancel / (←) in Add a Poster: unsaved changes ask first (client QA
+  // 2026-11-25: Cancel dropped every typed detail without a word).
+  function leavePosterEditor() {
+    if (saveState === 'saving') return
+    if (posterDirty) return setDiscardOpen(true)
+    discardPoster()
+  }
+  function discardPoster() {
+    setDiscardOpen(false)
+    setPosterDirty(false)
+    setSaveError('')
+    setSaveState('idle')
+    setStep(2)
   }
 
   // Manage Poster: sent posters, withdrawn or restored in place.
@@ -528,6 +606,7 @@ export function SubmitPage({ initialStep = 0 }) {
     try {
       const result = await signOut()
       if (!result.ok && result.status !== 401) throw new Error(getErrorMessage(result, content.messages.signOutFailed))
+      if (!changeEmail) clearJoinDraft()
       setContactDraft(current => (changeEmail
         ? { name: current.name, country: current.country, instagram: current.instagram, bio: current.bio }
         : {}))
@@ -544,10 +623,13 @@ export function SubmitPage({ initialStep = 0 }) {
 
   async function handleResend() {
     const email = contactDraft.email?.trim().toLowerCase()
+    const wait = resendWait()
+    if (wait) return setVerification(current => ({ ...current, error: wait }))
     try {
       const { termsVersion } = await loadContest()
       const result = await sendCode(email, termsVersion)
       if (result.status !== 202) throw new Error(getErrorMessage(result, content.messages.sendVerificationFailed))
+      lastCodeRef.current = Date.now()
       setVerification(current => ({ ...current, code: '', error: content.messages.codeResent }))
     } catch (error) {
       setVerification(current => ({ ...current, error: error.message }))
@@ -599,6 +681,7 @@ export function SubmitPage({ initialStep = 0 }) {
       if (verification.status !== 'code_sent') {
         const result = await sendCode(email, termsVersion)
         if (result.status !== 202) throw new Error(getErrorMessage(result, content.messages.sendVerificationFailed))
+        lastCodeRef.current = Date.now()
         setVerification({ status: 'code_sent', code: '', error: '' })
         return
       }
@@ -653,7 +736,7 @@ export function SubmitPage({ initialStep = 0 }) {
       // Loaded here if the session skipped the code step (e.g. came back).
       const { consentVersion, termsVersion } = await loadContest()
       const unsaved = chosen.find(entry => !entry.remoteId)
-      if (unsaved) throw new Error(`“${unsaved.title}” hasn’t saved yet. Fix it in your entries, then try again.`)
+      if (unsaved) throw new Error(content.messages.entryNotSaved.replace('{title}', unsaved.title))
       if (!contactDraft.termsAccepted) {
         const termsResult = await updateProfile(profileFromContact(), termsVersion)
         if (!termsResult.ok) throw new Error(getErrorMessage(termsResult, content.messages.saveProfileFailed))
@@ -684,7 +767,8 @@ export function SubmitPage({ initialStep = 0 }) {
   async function handlePosterSave() {
     // Returns true when saved, false otherwise (the reason is shown inline).
     if (saveState === 'saving') return false
-    const title = posterDraft.title?.trim()
+    setSaveAttempt(count => count + 1)
+    const title = cleanText(posterDraft.title)
     if (!title) {
       setSaveError(content.messages.titleRequired)
       setSaveState('error')
@@ -701,7 +785,7 @@ export function SubmitPage({ initialStep = 0 }) {
       return false
     }
     if ((posterDraft.existingAssets || []).length + (posterDraft.supportingFiles || []).length > MAX_SUPPORTING_FILES) {
-      setSaveError(`You can add up to ${MAX_SUPPORTING_FILES} supporting files.`)
+      setSaveError(content.messages.tooManySupporting.replace('{count}', MAX_SUPPORTING_FILES))
       setSaveState('error')
       return false
     }
@@ -710,12 +794,13 @@ export function SubmitPage({ initialStep = 0 }) {
     // file's details ({ name, type, size } from the server), which must not
     // be sent again as the poster.
     const posterFile = posterDraft.posterFiles[0] instanceof File ? posterDraft.posterFiles[0] : null
-    if (posterFile) {
-      const extension = posterFile.name.split('.').pop()?.toLowerCase()
-      const staticFile = ['jpg', 'jpeg', 'png', 'pdf'].includes(extension)
-      const allowed = [...['jpg', 'jpeg', 'png', 'pdf'], 'gif', 'mp4']
-      if (!allowed.includes(extension) || posterFile.size > (staticFile ? 5 : 20) * 1024 * 1024) {
-        setSaveError(staticFile ? content.messages.staticFileRule : content.messages.motionFileRule)
+    // Type, size and file signature (formGuards) for the poster and every new
+    // supporting file, before anything is sent.
+    const fileProblems = { type: content.messages.fileType, static: content.messages.staticFileRule, motion: content.messages.motionFileRule }
+    for (const file of [posterFile, ...(posterDraft.supportingFiles || [])].filter(Boolean)) {
+      const problem = await checkUploadFile(file)
+      if (problem) {
+        setSaveError(file === posterFile ? fileProblems[problem] : `${file.name}: ${fileProblems[problem]}`)
         setSaveState('error')
         return false
       }
@@ -724,7 +809,7 @@ export function SubmitPage({ initialStep = 0 }) {
     setSaveError('')
     setSaveState('saving')
     try {
-      const fields = Object.fromEntries(POSTER_FIELDS.map(field => [field, field === 'title' ? title : posterDraft[field] || '']))
+      const fields = Object.fromEntries(POSTER_FIELDS.map(field => [field, field === 'title' ? title : cleanText(posterDraft[field])]))
       const remoteId = posterDraft.remoteId || crypto.randomUUID()
       let result = posterDraft.remoteId
         ? await updateEntry(remoteId, fields, posterDraft.version)
@@ -762,6 +847,7 @@ export function SubmitPage({ initialStep = 0 }) {
         ? current.map(entry => entry.id === editingEntryId ? { ...entry, ...nextEntry } : entry)
         : [...current, nextEntry])
       setSaveState('saved')
+      setPosterDirty(false)
       setEditingEntryId(null)
       setStep(2)
       return true
@@ -832,13 +918,9 @@ export function SubmitPage({ initialStep = 0 }) {
               />
             : showPoster
               ? <PosterEntriesPanel entries={posterEntries} onEdit={entry => {
-                  setEditingEntryId(entry.id)
                   // Every saved detail goes back into the form (the fields,
                   // the poster file and the supporting files already sent).
-                  setPosterDraft({ ...entry.fields, title: entry.title, remoteId: entry.remoteId, version: entry.version, posterFiles: entry.file ? [entry.file] : [], supportingFiles: [], existingAssets: entry.assets || [] })
-                  setSaveError('')
-                  setSaveState('idle')
-                  setStep(3)
+                  openPosterEditor({ ...entry.fields, title: entry.title, remoteId: entry.remoteId, version: entry.version, posterFiles: entry.file ? [entry.file] : [], supportingFiles: [], existingAssets: entry.assets || [] }, entry.id)
                 }} onRemove={async id => {
                   const entry = posterEntries.find(item => item.id === id)
                   if (entry?.remoteId) {
@@ -847,14 +929,10 @@ export function SubmitPage({ initialStep = 0 }) {
                   }
                   setPosterEntries(current => current.filter(item => item.id !== id))
                 }} onAdd={(files = []) => {
-                  setPosterDraft({ title: '', posterFiles: files.slice(0, 1), supportingFiles: files.slice(1, 1 + MAX_SUPPORTING_FILES) })
-                  setEditingEntryId(null)
-                  setSaveError('')
-                  setSaveState('idle')
-                  setStep(3)
+                  openPosterEditor({ ...EMPTY_POSTER_DRAFT, posterFiles: files.slice(0, 1), supportingFiles: files.slice(1, 1 + MAX_SUPPORTING_FILES) }, null)
                 }} />
               : showPosterDetails
-                ? <PosterDetailsPanel draft={posterDraft} error={saveError} onDraftChange={changes => { setSaveError(''); setSaveState('idle'); setPosterDraft(current => ({ ...current, ...changes })) }} />
+                ? <PosterDetailsPanel draft={posterDraft} error={saveError} errorAttempt={saveAttempt} onDraftChange={changes => { setSaveError(''); setSaveState('idle'); setPosterDirty(true); setPosterDraft(current => ({ ...current, ...changes })) }} />
                 : showConsent
                   ? <ConsentPanel value={consent} onChange={changes => setConsent(current => ({ ...current, ...changes }))} error={submissionError} />
                   : showSuccess
@@ -882,11 +960,11 @@ export function SubmitPage({ initialStep = 0 }) {
         {/* Mobile Add a Poster header (mockup): Cancel → entries, Save. */}
         {showPosterDetails && (
           <div className={styles.editorBar}>
-            <RevealRow as="button" line={false} pinned type="button" disabled={saveState === 'saving'} onClick={() => { setSaveError(''); setSaveState('idle'); setStep(2) }}>{content.actions.cancel}</RevealRow>
+            <RevealRow as="button" line={false} pinned type="button" disabled={saveState === 'saving'} onClick={leavePosterEditor}>{content.actions.cancel}</RevealRow>
             <RevealRow as="button" line={false} pinned type="button" disabled={saveState === 'saving'} onClick={handlePosterSave}>{saveState === 'saving' ? content.actions.saving : content.actions.save}</RevealRow>
           </div>
         )}
-        {showPosterDetails && <SubmitFooterNav className={styles.mobileHidden} nextLabel={saveState === 'saving' ? content.actions.saving : content.actions.continue} disabled={saveState === 'saving'} onBack={() => { if (saveState === 'saving') return; setSaveError(''); setSaveState('idle'); setStep(2) }} onNext={handlePosterSave} />}
+        {showPosterDetails && <SubmitFooterNav className={styles.mobileHidden} nextLabel={saveState === 'saving' ? content.actions.saving : content.actions.continue} disabled={saveState === 'saving'} onBack={leavePosterEditor} onNext={handlePosterSave} />}
         {showPoster && <SubmitFooterNav nextLabel={content.actions.submit} nextLabelMobile={content.actions.consentMobile} onBack={() => setStep(1)} onNext={() => {
           setSubmissionError('')
           setStep(4)
@@ -900,6 +978,15 @@ export function SubmitPage({ initialStep = 0 }) {
         onLeave={handleSaveAndLeave}
         onClose={() => { if (!leave.busy) setLeave({ open: false, busy: false, error: '' }) }}
       />
+      <ConfirmDialog
+        open={discardOpen}
+        title={content.discardDialog.title}
+        confirmLabel={content.discardDialog.confirm}
+        onConfirm={discardPoster}
+        onClose={() => setDiscardOpen(false)}
+      >
+        {content.discardDialog.message}
+      </ConfirmDialog>
       <ChangeEmailDialog
         open={changeEmail.open}
         state={changeEmail}

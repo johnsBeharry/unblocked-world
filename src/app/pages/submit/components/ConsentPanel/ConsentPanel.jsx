@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import styles from './ConsentPanel.module.scss'
 import { RevealText } from '../../../../../components/RevealText/RevealText.jsx'
 import { CheckboxRow } from '../CheckboxRow/CheckboxRow.jsx'
 import content from './consent-panel-content.json'
+import { useErrorInView } from '../../hooks/useErrorInView.js'
 
 // Consent step (user reference 2026-11-17): the three required
 // confirmations. Every in-progress poster is sent (SubmitPage ticks them all
@@ -10,6 +11,8 @@ import content from './consent-panel-content.json'
 export const CONSENTS = content.consents
 
 export function ConsentPanel({ value = {}, onChange, error }) {
+  const errorRef = useRef(null)
+  useErrorInView(errorRef, error)
   return (
     <section className={styles['consent-panel']} aria-labelledby="consent-title">
       <div className={styles['consent-panel__inner']}>
@@ -22,7 +25,7 @@ export function ConsentPanel({ value = {}, onChange, error }) {
             </CheckboxRow>
           ))}
         </div>
-        {error && <p className={styles['consent-panel__error']} role="alert">{error}</p>}
+        {error && <p ref={errorRef} className={styles['consent-panel__error']} role="alert">{error}</p>}
       </div>
     </section>
   )

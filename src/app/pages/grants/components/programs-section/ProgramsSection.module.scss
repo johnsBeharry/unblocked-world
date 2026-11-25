@@ -61,9 +61,12 @@
     }
   }
 
+  // Two equal halves of the full-width section (= vw(720) each at 1440). Fixed
+  // vw(720) tracks summed to 1280px on a 768 tablet (base 864) and made the
+  // page scroll sideways (QA 2026-11-25).
   .blocks {
     display: grid;
-    grid-template-columns: vw(720) vw(720);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
 
     @include mobile {
       grid-template-columns: minmax(0, 1fr);

@@ -22,8 +22,12 @@
   }
 
   // Same title treatment as the Programs "Sec.01 (Programs)" header.
+  // Wraps only where both words don't fit (tablet portrait has no mockup; at
+  // 864 base the 164px words ran 340px off screen, QA 2026-11-25); "(People)"
+  // keeps to the right. One line at 1440 as before.
   &__header {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     font-weight: 600;
     font-size: vw(164);
@@ -34,6 +38,7 @@
     // inside the line, so the ink sat 0.06em right of the mockup.
     > :last-child {
       margin-right: 0.06em;
+      margin-left: auto;
     }
 
     // Two centred lines, 40px/102%/-4%; both lines get the trailing-tracking
@@ -48,6 +53,7 @@
 
       > :last-child {
         margin-right: 0;
+        margin-left: 0;
       }
     }
   }

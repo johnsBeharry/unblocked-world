@@ -15,8 +15,8 @@
   "posterFiles": {
     "title": "Poster Files",
     "description": [
-      "Static: JPG, PNG, GIF up to 2000px wide under 4mb.",
-      "Motion: GIF or MP4 up to 2000px wide under 20mb."
+      "Static: JPG, PNG or PDF under 5MB.",
+      "Motion: GIF or MP4 under 20MB."
     ]
   },
   "supportingFiles": {

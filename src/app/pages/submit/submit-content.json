@@ -102,6 +102,15 @@
     "saveDraftFailed": "Could not save the poster draft.",
     "uploadPosterFailed": "Could not upload the poster file.",
     "uploadAssetFailed": "Could not upload a supporting asset.",
-    "removePosterFailed": "Could not remove the poster."
+    "removePosterFailed": "Could not remove the poster.",
+    "resendWait": "Please wait {seconds}s before asking for another code.",
+    "fileType": "Poster files must be JPG, PNG, PDF, GIF or MP4.",
+    "tooManySupporting": "You can add up to {count} supporting files.",
+    "entryNotSaved": "“{title}” hasn’t saved yet. Fix it in your entries, then try again."
+  },
+  "discardDialog": {
+    "title": "Discard this poster?",
+    "message": "Your changes to this poster haven’t been saved yet. Leaving now removes them.",
+    "confirm": "Discard"
   }
 }

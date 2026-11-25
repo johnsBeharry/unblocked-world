@@ -1,15 +1,14 @@
-// Full-screen dim layer behind the panel.
-.overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 29;
-  background: #00000066;
-}
+// Submit form dropdown panel (SelectPanel.jsx): user reference Country panel
+// at 1440 × 918 (top at 327px). Pinned to the browser bottom and aligned with
+// the form column through --form-left / --form-width (measured on open and
+// resize). Stacked layouts have no reference: tablet portrait takes the form
+// width; phones take the full screen width so the 40px title fits beside
+// Close (client QA 2026-11-25: "Year Designed" wrapped onto the options).
+.select-panel {
+  --select-ink: #dc91a8;
+  --select-rule: rgb(220 145 168 / 0.5);
+  --select-surface: #101010;
 
-// Option panel pinned to the bottom of the browser, aligned with the form
-// column (reference: Country dropdown, 1440 × 918 → top at 327px).
-// --form-left / --form-width are set from the form's live position.
-.panel {
   position: fixed;
   bottom: 0;
   left: calc(var(--form-left, 0px) - #{vw(44)});
@@ -20,139 +19,154 @@
   overflow-y: auto;
   overscroll-behavior: contain;
   padding: 0 vw(24) vw(24) vw(25);
-  background: #101010;
-  color: #dc91a8;
+  background: var(--select-surface);
+  color: var(--select-ink);
   font-family: 'Inter Local', sans-serif;
   scrollbar-width: none;
+
+  @include compact-portrait {
+    left: var(--form-left, 0px);
+    width: var(--form-width, 100%);
+    height: 60vh;
+    height: 60svh;
+    padding: 0 vw(24) vw(24);
+  }
+
+  @include mobile {
+    left: 0;
+    width: 100%;
+    padding: 0 vw(40) vw(40);
+  }
+
+  // 76px sticky header (40px title + 20px Close, 2px rule at 50% pink).
+  // Mobile: the height follows the title, so a wrapped title can never run
+  // over the first options.
+  &__header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    box-sizing: border-box;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: vw(24);
+    height: vw(76);
+    padding-top: vw(27);
+    border-bottom: vw(2) solid var(--select-rule);
+    background: var(--select-surface);
+
+    @include mobile {
+      gap: vw(40);
+      height: auto;
+      min-height: vw(152);
+      padding: vw(54) 0 vw(24);
+      border-bottom-width: vw(1);
+    }
+  }
+
+  &__title {
+    min-width: 0;
+    margin: 0;
+    font-size: vw(40);
+    font-weight: 600;
+    letter-spacing: vw(-1.6);
+    line-height: 1.02;
+
+    @include mobile {
+      font-size: vw(80);
+      letter-spacing: vw(-3.2);
+    }
+  }
+
+  &__close {
+    flex: none;
+    margin-top: vw(8);
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    font-size: vw(20);
+    letter-spacing: vw(-0.8);
+    line-height: 1.02;
+
+    @include mobile {
+      margin-top: vw(16);
+      font-size: vw(40);
+      letter-spacing: vw(-1.6);
+    }
+  }
+
+  &__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__item + &__item {
+    border-top: vw(2) solid var(--select-rule);
+
+    @include mobile {
+      border-top-width: vw(1);
+    }
+  }
+
+  // 42px option rows.
+  &__option {
+    display: flex;
+    box-sizing: border-box;
+    align-items: center;
+    width: 100%;
+    height: vw(42);
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    font-size: vw(20);
+    letter-spacing: vw(-0.8);
+    line-height: 1.02;
+    text-align: left;
+
+    @include mobile {
+      height: vw(84);
+      font-size: vw(40);
+      letter-spacing: vw(-1.6);
+    }
+
+    &:focus-visible {
+      outline: vw(1) solid currentColor;
+      outline-offset: vw(-1);
+    }
+
+    &[aria-selected='true'] {
+      font-weight: 600;
+    }
+  }
+
+  &__empty {
+    margin: vw(12) 0 0;
+    font-size: vw(20);
+    letter-spacing: vw(-0.8);
+    line-height: 1.02;
+    opacity: 0.6;
+
+    @include mobile {
+      font-size: vw(40);
+    }
+  }
 
   &::-webkit-scrollbar {
     display: none;
   }
 }
 
-.header {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  display: flex;
-  box-sizing: border-box;
-  align-items: flex-start;
-  justify-content: space-between;
-  height: vw(76);
-  padding-top: vw(27);
-  border-bottom: vw(2) solid rgb(220 145 168 / 0.5);
-  background: #101010;
-}
-
-.title {
-  margin: 0;
-  font-size: vw(40);
-  font-weight: 600;
-  letter-spacing: vw(-1.6);
-  line-height: 1.02;
-}
-
-.close {
-  margin-top: vw(8);
-  border: 0;
-  padding: 0;
-  background: transparent;
-  color: inherit;
-  cursor: pointer;
-  font: inherit;
-  font-size: vw(20);
-  letter-spacing: vw(-0.8);
-  line-height: 1.02;
-}
-
-.list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.item + .item {
-  border-top: vw(2) solid rgb(220 145 168 / 0.5);
-}
-
-.option {
-  display: flex;
-  box-sizing: border-box;
-  align-items: center;
-  width: 100%;
-  height: vw(42);
-  border: 0;
-  padding: 0;
-  background: transparent;
-  color: inherit;
-  cursor: pointer;
-  font: inherit;
-  font-size: vw(20);
-  letter-spacing: vw(-0.8);
-  line-height: 1.02;
-  text-align: left;
-
-  &:focus-visible {
-    outline: vw(1) solid currentColor;
-    outline-offset: vw(-1);
-  }
-
-  &[aria-selected='true'] {
-    font-weight: 600;
-  }
-}
-
-.empty {
-  margin: vw(12) 0 0;
-  font-size: vw(20);
-  letter-spacing: vw(-0.8);
-  line-height: 1.02;
-  opacity: 0.6;
-}
-
-// Stacked layouts (unspecified by the reference): full form width.
-@include compact-portrait {
-  .panel {
-    left: var(--form-left, 0px);
-    width: var(--form-width, 100%);
-    height: 60vh;
-    padding: 0 vw(24) vw(24);
-  }
-}
-
-@include mobile {
-  .panel {
-    padding: 0 vw(40) vw(40);
-  }
-
-  .header {
-    height: vw(152);
-    padding-top: vw(54);
-    border-bottom-width: vw(1);
-  }
-
-  .title {
-    font-size: vw(80);
-    letter-spacing: vw(-3.2);
-  }
-
-  .close {
-    margin-top: vw(16);
-    font-size: vw(40);
-    letter-spacing: vw(-1.6);
-  }
-
-  .item + .item {
-    border-top-width: vw(1);
-  }
-
-  .option {
-    height: vw(84);
-    font-size: vw(40);
-    letter-spacing: vw(-1.6);
-  }
-
-  .empty {
-    font-size: vw(40);
-  }
+// Full-screen dim layer (#00000066) under the panel; clicking it closes.
+.select-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 29;
+  background: #00000066;
 }

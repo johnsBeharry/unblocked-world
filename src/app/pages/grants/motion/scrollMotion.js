@@ -16,8 +16,10 @@ const designPx = (value) => (value * window.innerWidth) / 1440;
 // Two words on one row start `share` of their gap closer to the centre and
 // slide apart to their layout positions while `trigger` enters (scrubbed).
 export function slideApart(trigger, left, right, share = 0.4) {
+  // Never negative: when the two words wrap onto separate lines (narrow
+  // layouts) the "gap" is negative and would push them off screen instead.
   const gather = () =>
-    (right.offsetLeft - (left.offsetLeft + left.offsetWidth)) * share;
+    Math.max(0, right.offsetLeft - (left.offsetLeft + left.offsetWidth)) * share;
   gsap
     .timeline({
       scrollTrigger: {

@@ -15,9 +15,27 @@ function rewriteCookie(cookie, isLocalHost) {
     : hostOnly
 }
 
+// Only form API paths are proxied: "." / ".." segments (also percent-encoded)
+// would let a request climb out of /api/forms on the upstream origin.
+function isFormApiPath(path = '/') {
+  try {
+    return !decodeURIComponent(path.split('?')[0]).split(/[\\/]/).some(segment => segment === '.' || segment === '..')
+  } catch {
+    return false
+  }
+}
+
+const jsonResult = (status, payload) => ({
+  status,
+  headers: [['content-type', 'application/json']],
+  cookies: [],
+  body: Buffer.from(JSON.stringify(payload)),
+})
+
 // path: the part after /api/forms including the query (e.g. "/test/contest").
 // getHeader(name) reads one request header; body is a Buffer or undefined.
 export async function proxyFormApi({ method, path, getHeader, body, hostname, env = process.env }) {
+  if (!isFormApiPath(path)) return jsonResult(400, { error: 'invalid_path' })
   const upstreamOrigin = env.UNBLOCKED_FORM_API_ORIGIN || DEFAULT_FORM_API_ORIGIN
   const headers = {
     origin: upstreamOrigin,
@@ -48,13 +66,9 @@ export async function proxyFormApi({ method, path, getHeader, body, hostname, en
       cookies,
       body: Buffer.from(await upstream.arrayBuffer()),
     }
-  } catch (error) {
-    return {
-      status: 502,
-      headers: [['content-type', 'application/json']],
-      cookies: [],
-      body: Buffer.from(JSON.stringify({ error: 'form_api_unavailable', message: error.message })),
-    }
+  } catch {
+    // The upstream error text stays in the server log, not in the response.
+    return jsonResult(502, { error: 'form_api_unavailable' })
   }
 }
 

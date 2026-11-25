@@ -11,6 +11,7 @@ import { PHOTO_TYPES } from '../../api/profilePhoto.js'
 import countries from '../../data/countries.json'
 import { contentLines } from '../../../../../components/ContentLines/ContentLines.jsx'
 import content from './contact-information-content.json'
+import { useErrorInView } from '../../hooks/useErrorInView.js'
 
 // Join step (fields and copy follow the reference form; layout follows the
 // user's 2026-11-17 Join and Sign In column references). Joining asks for the
@@ -79,6 +80,8 @@ export function ContactInformationPanel({
   // is checked right away (Join also keeps its footer Continue).
   const codeView = codeSent
   const code = verification.code || ''
+  const errorRef = useRef(null)
+  useErrorInView(errorRef, codeView ? '' : verification.error)
   useEffect(() => {
     if (codeView && verification.status === 'code_sent' && code.length === CODE_LENGTH) onSubmit?.()
     // Only a newly completed code submits; a failed check keeps the same code.
@@ -154,7 +157,7 @@ export function ContactInformationPanel({
               })}
             </CheckboxRow>
           )}
-          {verification.error && <p className={styles['contact-panel__error']} role="alert">{verification.error}</p>}
+          {verification.error && <p ref={errorRef} className={styles['contact-panel__error']} role="alert">{verification.error}</p>}
           {!joining && (
             <RevealRow as="button" line={false} type="submit" className={styles['contact-panel__submit']} contentClassName={styles['contact-panel__submit-content']} disabled={submitDisabled}><RollingText text={`${submitLabel} ${content.submitArrow}`} /></RevealRow>
           )}

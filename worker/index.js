@@ -1,9 +1,11 @@
 // Cloudflare Worker entry. Mirrors server/index.js (which stays for local dev):
 // static files are served by the ASSETS binding before this runs, so this
-// handles the submissions API and server-renders every other page.
+// handles the form API proxy, the submissions API and server-renders every
+// other page.
 import { isKnownPath, render } from '../dist/server/entry-server.js'
 import { injectSeo } from '../src/app/seo/seoHead.js'
 import { ExternalSubmissionApiError, submitSubmission } from '../server/lib/externalSubmissionApi.js'
+import { proxyFormApi } from '../server/lib/formApiProxy.js'
 
 const MAX_FILE_BYTES = 20 * 1024 * 1024
 const fieldNames = [
@@ -58,6 +60,35 @@ async function handleSubmission(request, env) {
   }
 }
 
+// /api/forms/* → the submission form API (same proxy as server/index.js and
+// api/forms.js). Workers accept large request bodies (Vercel Functions stop at
+// 4.5 MB), so 20 MB motion posters upload here. Capped at 25 MB like the
+// Node server.
+const FORM_API_PREFIX = '/api/forms'
+const MAX_FORM_BODY_BYTES = 25 * 1024 * 1024
+const NO_BODY_STATUSES = new Set([101, 204, 205, 304])
+
+async function handleFormApi(request, env, url) {
+  let body
+  if (request.method !== 'GET' && request.method !== 'HEAD') {
+    if (Number(request.headers.get('content-length') || 0) > MAX_FORM_BODY_BYTES) return json({ error: 'payload_too_large' }, 413)
+    body = new Uint8Array(await request.arrayBuffer())
+    if (body.length > MAX_FORM_BODY_BYTES) return json({ error: 'payload_too_large' }, 413)
+  }
+  const result = await proxyFormApi({
+    method: request.method,
+    path: url.pathname.slice(FORM_API_PREFIX.length) + url.search,
+    getHeader: name => request.headers.get(name),
+    body,
+    hostname: url.hostname,
+    env,
+  })
+  const headers = new Headers(result.headers)
+  for (const cookie of result.cookies) headers.append('set-cookie', cookie)
+  const empty = request.method === 'HEAD' || NO_BODY_STATUSES.has(result.status)
+  return new Response(empty ? null : result.body, { status: result.status, headers })
+}
+
 let template
 async function getTemplate(request, env) {
   if (!template) {
@@ -70,6 +101,10 @@ async function getTemplate(request, env) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url)
+
+    if (url.pathname === FORM_API_PREFIX || url.pathname.startsWith(`${FORM_API_PREFIX}/`)) {
+      return handleFormApi(request, env, url)
+    }
 
     if (url.pathname === '/api/submissions') {
       if (request.method !== 'POST') return json({ error: 'method_not_allowed' }, 405)

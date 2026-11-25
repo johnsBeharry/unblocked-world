@@ -103,9 +103,18 @@ npm run start   # serves dist/client and both API routes on port 5173
 
 **Cloudflare Workers** (`wrangler.jsonc`, `npm run deploy`)
 
-- `worker/index.js` serves the pages and `/api/submissions` only; it has
-  **no** `/api/forms/*` proxy yet, so the Submit page's sign-in and drafts do
-  not work there. Use Vercel or the Node server for the Submit page.
+- `worker/index.js` serves the pages, `/api/submissions` and the
+  `/api/forms/*` proxy (same code as the Node server and Vercel). Workers take
+  request bodies up to 25 MB here, so 20 MB motion posters upload (on Vercel
+  they stop at 4.5 MB).
+- The Worker imports `dist/server/entry-server.js`, which `npm run build` does
+  not create: the deploy needs `npm run build:client && npm run build:server`
+  first, otherwise the bundle fails with `Could not resolve
+  "../dist/server/entry-server.js"`.
+- The Worker server-renders pages, but the app is not safe to render on the
+  server yet (`window` is read during render, e.g. in `PageCurtain`), so every
+  page answers 500 there until that is fixed. The Node server and Vercel do
+  not server-render.
 - Non-secret values are in `wrangler.jsonc` → `vars` (update
   `UNBLOCKED_EXTERNAL_CONTEST_SLUG` there); set the key with
   `npx wrangler secret put UNBLOCKED_EXTERNAL_API_KEY`.

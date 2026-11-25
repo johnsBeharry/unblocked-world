@@ -85,10 +85,11 @@ export function SelectPanel({
     const panel = panelRef.current
     if (!open || !panel || reducedMotion()) return undefined
     const tween = gsap.fromTo(panel, { yPercent: 100 }, {
-      yPercent: 0, duration: 0.8, ease: 'power3.out',
+      // 0.5s (was 0.8s; client QA 2026-11-25: "the animation is a bit slow").
+      yPercent: 0, duration: 0.5, ease: 'power3.out',
       onComplete: () => gsap.set(panel, { clearProps: 'transform' }),
     })
-    const dim = gsap.fromTo(overlayRef.current, { opacity: 0 }, { opacity: 1, duration: 0.5, ease: 'power1.out' })
+    const dim = gsap.fromTo(overlayRef.current, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: 'power1.out' })
     return () => {
       tween.kill()
       dim.kill()
@@ -129,21 +130,21 @@ export function SelectPanel({
       {open && createPortal(
         <>
         {/* Dim layer (#00000066); clicking it closes the panel. */}
-        <div ref={overlayRef} className={styles.overlay} aria-hidden="true" />
-        <div ref={panelRef} className={styles.panel} data-lenis-prevent>
-          <div className={styles.header}>
-            <p className={styles.title}>{label}</p>
-            <button type="button" className={styles.close} onClick={() => close()}>{content.close}</button>
+        <div ref={overlayRef} className={styles['select-overlay']} aria-hidden="true" />
+        <div ref={panelRef} className={styles['select-panel']} data-lenis-prevent>
+          <div className={styles['select-panel__header']}>
+            <p className={styles['select-panel__title']}>{label}</p>
+            <button type="button" className={styles['select-panel__close']} onClick={() => close()}>{content.close}</button>
           </div>
           {options.length ? (
-            <ul id={listId} className={styles.list} role="listbox" aria-label={label} onKeyDown={onListKeyDown}>
+            <ul id={listId} className={styles['select-panel__list']} role="listbox" aria-label={label} onKeyDown={onListKeyDown}>
               {options.map((option) => (
-                <li key={option} className={styles.item}>
+                <li key={option} className={styles['select-panel__item']}>
                   <button
                     type="button"
                     role="option"
                     aria-selected={option === value}
-                    className={styles.option}
+                    className={styles['select-panel__option']}
                     onClick={() => choose(option)}
                   >
                     {option}
@@ -152,7 +153,7 @@ export function SelectPanel({
               ))}
             </ul>
           ) : (
-            <p className={styles.empty}>{emptyMessage}</p>
+            <p className={styles['select-panel__empty']}>{emptyMessage}</p>
           )}
         </div>
         </>,

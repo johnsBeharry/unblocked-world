@@ -79,6 +79,18 @@
     &:disabled {
       opacity: 0.6;
     }
+
+    // Browser autofill paints its own yellow box and dark text (client QA
+    // 2026-11-25, iOS Safari / Chrome). Keep the field ink and hold the
+    // autofill background off with an endless transition, so the row stays
+    // transparent like a typed value.
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus {
+      -webkit-text-fill-color: var(--form-field-ink, #dc91a8);
+      caret-color: var(--form-field-ink, #dc91a8);
+      transition: background-color 600000s 0s, color 600000s 0s;
+    }
   }
 
   // Dropdown trigger (SelectPanel button): the button draws its text 2px

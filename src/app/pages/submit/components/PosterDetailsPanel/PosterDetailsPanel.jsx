@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import styles from './PosterDetailsPanel.module.scss'
 import { RevealText } from '../../../../../components/RevealText/RevealText.jsx'
 import { SelectPanel } from '../SelectPanel/SelectPanel.jsx'
@@ -6,6 +6,7 @@ import { FormField, formFieldStyles as field } from '../form-field/FormField.jsx
 import { RevealRow } from '../../../../../components/RevealRow/RevealRow.jsx'
 import { contentLines } from '../../../../../components/ContentLines/ContentLines.jsx'
 import content from './poster-details-content.json'
+import { useErrorInView } from '../../hooks/useErrorInView.js'
 
 // Add a Poster (fields and limits follow the reference form; layout and copy
 // the user's 2026-11-17 Add a Poster column reference).
@@ -53,8 +54,10 @@ function UploadCard({ title, description, files, multiple = false, onFiles }) {
   )
 }
 
-export function PosterDetailsPanel({ draft = {}, onDraftChange, error }) {
+export function PosterDetailsPanel({ draft = {}, onDraftChange, error, errorAttempt }) {
   const concept = draft.concept || ''
+  const errorRef = useRef(null)
+  useErrorInView(errorRef, error, errorAttempt)
   return (
     <section className={styles['poster-panel']} aria-labelledby="add-poster-title">
       <div className={styles['poster-panel__inner']}>
@@ -91,7 +94,7 @@ export function PosterDetailsPanel({ draft = {}, onDraftChange, error }) {
               onFiles={files => files.length && onDraftChange?.({ supportingFiles: files.slice(0, Math.max(0, MAX_SUPPORTING_FILES - (draft.existingAssets?.length || 0))) })}
             />
           </div>
-          {error && <p className={styles['poster-panel__error']} role="alert">{error}</p>}
+          {error && <p ref={errorRef} className={styles['poster-panel__error']} role="alert">{error}</p>}
         </form>
       </div>
     </section>

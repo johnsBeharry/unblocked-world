@@ -124,8 +124,11 @@
   .content::after { position: fixed; right: 0; left: 0; width: auto; height: vw(169); transform: none; }
   // Header fade (user request 2026-11-17): mirrors the 84px footer layer so
   // scrolled content never runs under "(←) Home" / the step label (they sit
-  // above it, z-index 2+).
-  .content::before { position: fixed; z-index: 1; top: 0; right: 0; left: 0; height: vw(168); pointer-events: none; content: ''; background: linear-gradient(0deg, rgb(0 0 0 / 0) 0%, #000 30.26%); }
+  // above it, z-index 2+). Hidden at scroll 0 (useSubmitLenis sets
+  // `data-scrolled` on the column) so the first content is never dimmed
+  // (user report 2026-11-25); it fades in as soon as the column scrolls.
+  .content::before { position: fixed; z-index: 1; top: 0; right: 0; left: 0; height: vw(168); pointer-events: none; content: ''; background: linear-gradient(0deg, rgb(0 0 0 / 0) 0%, #000 30.26%); opacity: 0; transition: opacity 0.2s linear; }
+  .content:has(> .contentScroll[data-scrolled='true'])::before { opacity: 1; }
   .editing .content::after { display: none; }
   .success .content::after { display: none; }
   // Profile: the account nav (Profile / Poster / Sign out) takes the top row.

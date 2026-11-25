@@ -12,6 +12,15 @@ export function useSubmitLenis(wrapperRef, contentKey) {
     if (!wrapper || !content) return undefined
 
     wrapper.scrollTo({ top: 0, behavior: 'instant' })
+    // `data-scrolled` while the column is off its top: the mobile header fade
+    // only shows then, so nothing is dimmed at scroll 0 (user report
+    // 2026-11-25: the title sat under the fade on an Android phone).
+    const markScrolled = () => {
+      const scrolled = wrapper.scrollTop > 0
+      if (scrolled !== (wrapper.dataset.scrolled === 'true')) wrapper.dataset.scrolled = String(scrolled)
+    }
+    markScrolled()
+    wrapper.addEventListener('scroll', markScrolled, { passive: true })
     const lenis = new Lenis({ wrapper, content, autoRaf: false, smoothWheel: true })
     let frameId
     const frame = time => {
@@ -22,6 +31,7 @@ export function useSubmitLenis(wrapperRef, contentKey) {
     frameId = requestAnimationFrame(frame)
     return () => {
       cancelAnimationFrame(frameId)
+      wrapper.removeEventListener('scroll', markScrolled)
       lenis.destroy()
     }
   }, [wrapperRef, contentKey])

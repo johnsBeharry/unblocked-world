@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Submit page on phones: the dark fade at the top of the screen now appears only once you scroll, so titles and the first content are never dimmed while the page is at the top.
 - Submit forms show which fields are needed and which failed: fields you may skip now say "(Optional)" in Add a Poster too (Year Designed, Designed For, Client Name, Creation Method, Materials Used, Digital Programs Used, Printing Method, Poster Concept); everything else is required. When Continue, Save or Submit stops, each field that needs fixing turns red (its name and a red line drawn under it; on "Poster Files" the title and a line under the card; unticked required boxes turn red) and goes back to normal as soon as it is filled in correctly. This works on Join, Profile, Add a Poster and the Consent step.
 - Cloudflare hosting: the Submit page's connection to the submission form service (sign-in, drafts, uploads, submit) now also runs on the Cloudflare Worker, and accepts poster uploads up to 20 MB there (Vercel stops at about 4.5 MB). Oversized uploads (over 25 MB) are refused with a clear "payload too large" answer.
 - Submit page, "Poster Files" card: the hint now states the real file rules, "Static: JPG, PNG or PDF under 5MB." and "Motion: GIF or MP4 under 20MB." (it said GIF counted as static, a 4MB limit and a 2000px width that is not checked).

@@ -100,6 +100,9 @@
 .success .content::after { display: none; }
 // Profile and Sign In: no CTA fixed at the bottom, so no bottom fade either.
 .noBottomCta .content::after { display: none; }
+// Profile back band: phones only (desktop has "(←) Home" in the pink column).
+// `.account` raises it above the footer module's own display rule.
+.account .profileBack { display: none; }
 
 @include tablet-portrait {
   .page { display: block; min-height: 100vh; min-height: 100svh; }
@@ -135,6 +138,7 @@
   .success .content::after { display: none; }
   // Profile: the account nav (Profile / Poster / Sign out) takes the top row.
   .account .homeLink { display: none; }
+  .account .profileBack { display: block; }
   .contentInner { width: vw(660); margin-left: vw(40); padding-top: vw(206); padding-bottom: vw(360); }
   .titleDesktop { display: none; }
   .titleMobile { display: inline; }

@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Submit page on phones: Profile now has a "(←)" bar at the bottom that goes back to the Submit overview (before there was no way back from Profile, since the Profile / Poster / Sign out row replaces "(←) Home" on phones). Desktop and tablet are unchanged.
 - Submit page: the dark fade at the bottom of the screen now only shows where a button is fixed at the bottom. Profile and Sign In (only "(←)") have none, so nothing there is dimmed and Sign In's "Continue (→)" button stays fully visible.
 - Submit page on iPhone: after typing in a field (e.g. the email on Sign In) the page no longer stays pushed up under the header when the keyboard closes; titles stay in place and the form scrolls normally. On phones and tablets the form now uses the device's own scrolling.
 - Fixed the whole site showing up with default sizes on iPhone (Safari) and other browsers outside recent Chrome: text, spacing and positions were dropped, so sections overlapped. Sizes now use a formula every browser understands; on Chrome nothing changes.

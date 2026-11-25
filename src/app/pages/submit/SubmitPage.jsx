@@ -996,6 +996,10 @@ export function SubmitPage({ initialStep = 0 }) {
                 </div>}
         </div>
         {showManage && <RevealRow as="button" line={false} pinned className={styles.submitLink} contentClassName={styles.submitLinkContent} type="button" onClick={openSubmitFromManage}><RollingText text={draftCount ? content.actions.submitPosterDrafts.replace('{count}', String(draftCount).padStart(2, '0')) : content.actions.submitPoster} /></RevealRow>}
+        {/* Profile on phones: the account nav replaces "(←) Home", so this
+            back-only band returns to the Submit overview (user request
+            2026-11-26; desktop keeps Home in the pink column). */}
+        {showProfile && <SubmitFooterNav className={styles.profileBack} nextLabel={null} onBack={() => setStep(0)} />}
         {showContact && !showAccount && <SubmitFooterNav nextLabel={joinMode === 'join' ? contactNextLabel : null} nextLabelMobile={contactBusy ? undefined : content.actions.posterMobile} disabled={contactBusy} onBack={handleContactBack} onNext={handleContactNext} />}
         {/* Add a Poster: (←) back to the entries list, Continue saves. */}
         {/* Mobile Add a Poster header (mockup): Cancel → entries, Save. */}

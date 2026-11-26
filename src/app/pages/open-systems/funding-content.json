@@ -1,8 +1,8 @@
 {
-  "label": "Potential project funding",
+  "label": "Project funding",
   "amount": [
     "$100,000"
   ],
-  "amountLabel": "Up to $100,000",
+  "amountLabel": "$100,000",
   "note": "Some projects need more time, funding and specialist support than a cultural grant can provide. This pathway is for substantial, practical design and experience work on Bitcoin as open money or open intelligence. UNBLOCKED helps shape and prepare proposals; Spiral and other funding partners assess applications and make funding decisions."
 }

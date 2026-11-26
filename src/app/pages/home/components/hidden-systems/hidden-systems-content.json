@@ -1,19 +1,19 @@
 {
   "headline": {
-    "top": ["Making", "Different"],
-    "bottom": ["Perspectives", "Visible"]
+    "top": ["Making", "Hidden"],
+    "bottom": ["Systems", "Visible"]
   },
-  "sideLabels": ["(Through art)", "(Through exhibitions)"],
+  "sideLabels": ["(Through creative work)", "(Through exhibitions)"],
   "copy": [
-    "Through creative work. Through open questions.",
-    "Through people who bring their own perspectives to the systems we share."
+    "Creative work makes systems easier to see, question and understand.",
+    "And creatives do more than interpret change. They help imagine, design and build what comes next."
   ],
   "mobileCopy": [
-    "Through creative work.",
-    "Through open questions.",
-    "Through people who see things",
-    "differently and imagine what",
-    "else might be possible."
+    "Creative work makes systems",
+    "easier to see and question.",
+    "Creatives do more than interpret",
+    "change. They help imagine, design",
+    "and build what comes next."
   ],
   "brand": "UNBLOCKED",
   "partners": {

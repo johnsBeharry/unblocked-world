@@ -7,7 +7,7 @@
       "title": "Ownership",
       "backgroundColor": "#DC91A8",
       "question": "What does it mean to own?",
-      "description": "We create, exchange and place value on things every day. But who decides what belongs to us, what it is worth, and who gets to benefit? Where does access end and ownership begin?",
+      "description": "We create, exchange, use and depend on things every day. But where does access end and ownership begin? Who decides what belongs to us, and what happens when the rules change?",
       "sideLabel": "Access"
     },
     {
@@ -15,7 +15,7 @@
       "index": "02",
       "title": "Permanence",
       "backgroundColor": "#34BD5F",
-      "question": "What happens when things don't last?",
+      "question": "What should last?",
       "description": "Objects, memories, platforms and ideas all change or disappear. What do we lose when they don't last? What should be preserved, repaired or passed on, and what are we willing to let go?",
       "sideLabel": "Disposability"
     },
@@ -33,8 +33,8 @@
       "index": "04",
       "title": "Peers",
       "backgroundColor": "#FF6E3E",
-      "question": "How do we connect on our own terms?",
-      "description": "Connection depends on more than being online. How do trust, privacy and shared purpose shape the ways we communicate, organise and support one another? What can people build together when they have control?",
+      "question": "How do we connect?",
+      "description": "Connection depends on more than being online. How do trust, privacy and shared purpose shape the ways we communicate, organise and support one another? What becomes possible when people can connect directly, with no one in the middle?",
       "sideLabel": "Isolation"
     }
   ]

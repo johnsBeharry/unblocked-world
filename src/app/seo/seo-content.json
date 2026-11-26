@@ -4,8 +4,8 @@
     "url": "https://unblocked.world"
   },
   "defaults": {
-    "title": "UNBLOCKED — Question Everything",
-    "description": "The systems around us shape how we live. What we own. What we keep. How we use energy. How we relate to one another. These are shared questions, open to different interpretations.",
+    "title": "UNBLOCKED — Making Hidden Systems Visible",
+    "description": "UNBLOCKED brings creatives and independent thinkers together to investigate the systems shaping our lives, make them visible through creative work, and imagine how they could improve.",
     "image": {
       "src": "/og_images.png",
       "width": 1200,
@@ -17,31 +17,31 @@
     "/": {},
     "/posters": {
       "title": "Ownership Poster Contest — UNBLOCKED",
-      "description": "Ownership poster contest, 21.02.26—23.09.26. UNBLOCKED seeks provocative poster work that challenges the everyday. Everyone is invited."
+      "description": "An open call for original poster work exploring ownership, value, money, labour, access and power. Interpret the theme through your own creative perspective."
     },
     "/guidelines": {
-      "title": "Submission Guidelines — UNBLOCKED",
-      "description": "This page explains how to prepare and submit work for the poster contest. The first theme is Ownership."
+      "title": "Poster Submission Guidelines — UNBLOCKED",
+      "description": "How to prepare and submit original poster work for the UNBLOCKED Ownership open call, including eligibility, file requirements and the submission process."
     },
     "/grants": {
-      "title": "Residency & Grant Programs for Creatives — UNBLOCKED",
-      "description": "We back artists, designers, filmmakers, and writers who make the hidden systems shaping our lives visible—and imagine how they could work differently."
+      "title": "Creative Grants & Residencies — UNBLOCKED",
+      "description": "We support artists, designers, technologists, researchers and independent thinkers exploring the systems shaping culture, technology and everyday life, and how they could be improved."
     },
     "/grants/culture-grants": {
-      "title": "Culture Grants — UNBLOCKED",
-      "description": "One-time money from $500 to $5000 for public work on our four themes. Make a focused piece, show it or document it, and it joins the UNBLOCKED archive and published in our book."
+      "title": "Culture Grants for Independent Creatives — UNBLOCKED",
+      "description": "One-time grants of $500–$5,000 for independent, experimental cultural work responding to UNBLOCKED's themes. Selected projects contribute to a growing public archive."
     },
     "/grants/open-systems": {
-      "title": "Open Systems Application Support — UNBLOCKED",
-      "description": "We prepare the application for Spiral. They fund 12-month design and experience work on open money and open intelligence."
+      "title": "Open Systems Project Support — UNBLOCKED",
+      "description": "Practical design and experience projects exploring Bitcoin as open money and open intelligence. UNBLOCKED helps develop proposals for Spiral funding."
     },
     "/submit": {
-      "title": "Submit to the Poster Contest — UNBLOCKED",
-      "description": "Use this page to submit poster work responding to the theme: Ownership. Before submitting, review the process and guidelines."
+      "title": "Submit Your Poster — UNBLOCKED",
+      "description": "Submit original poster work responding to the UNBLOCKED Ownership theme. Review the contest process and submission guidelines before entering."
     },
     "/submit/form/consent": {
-      "title": "Submit to the Poster Contest — UNBLOCKED",
-      "description": "Use this page to submit poster work responding to the theme: Ownership. Before submitting, review the process and guidelines.",
+      "title": "Submit Your Poster — UNBLOCKED",
+      "description": "Complete your UNBLOCKED Ownership poster submission.",
       "noindex": true
     },
     "/client-static": {

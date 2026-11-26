@@ -15,7 +15,7 @@
       "index": "02",
       "title": "Permanence",
       "backgroundColor": "#34BD5F",
-      "question": "What deserves to last?",
+      "question": "What should last?",
       "description": "Objects, memories, platforms and ideas. What do we choose to preserve? What should be repairable? And why are so many things designed to disappear?",
       "sideLabel": "Disposability"
     },
@@ -24,8 +24,8 @@
       "index": "03",
       "title": "Energy",
       "backgroundColor": "#EAE438",
-      "question": "What makes things possible?",
-      "description": "Energy powers everything we make, from the physical world to the digital one. Who has access to it? How is it distributed? What becomes possible when we rethink abundance?",
+      "question": "What powers possibility?",
+      "description": "Energy moves through the systems we depend on, from natural resources and infrastructure to human effort and creative drive. Who has access to it? How is it distributed, and what does it make possible?",
       "sideLabel": "Scarcity"
     },
     {
@@ -33,8 +33,8 @@
       "index": "04",
       "title": "Peers",
       "backgroundColor": "#FF6E3E",
-      "question": "What can we do together?",
-      "description": "We have more ways to connect than ever. Yet many of us feel increasingly disconnected. How do people organize, exchange and support one another? What becomes possible when we build together?",
+      "question": "How do we connect?",
+      "description": "Connection depends on more than being online. How do trust, privacy and shared purpose shape the ways we communicate, organise and support one another? What becomes possible when people can connect directly, with no one in the middle?",
       "sideLabel": "Isolation"
     }
   ]

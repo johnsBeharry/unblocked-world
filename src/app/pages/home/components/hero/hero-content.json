@@ -2,11 +2,11 @@
   "submitLink": { "label": "Submit Work (→)", "href": "/submit" },
   "exploreLink": { "label": "(↓) Explore Themes", "href": "#ownership" },
   "intro": {
-    "title": "Different Perspectives",
-    "text": "The systems around us shape how we live. What we own. What we keep. How we use energy. How we relate to one another. These are shared questions, open to different interpretations."
+    "title": "Making Hidden Systems Visible",
+    "text": "The systems around us shape how we live. What we own. What lasts. What powers our lives. How we connect and organise. These are shared questions, open to different perspectives."
   },
   "paragraphs": [
-    "Most of the systems that shape our lives were designed by someone. They influence what we own, what we keep, how we use energy, and how we live together.",
-    "These are shared questions, but there are no single answers. We bring artists, designers and makers together to explore them through independent perspectives and creative work."
+    "The systems shaping our lives are designed, built and maintained by people. They influence what we own, what we value, how we work, what we can access and how we live together.",
+    "Creative people have always used tools to change how we see and shape the world. But today, the tools and systems surrounding creative work are increasingly built to extract value from it. We bring artists, designers, technologists, researchers and independent thinkers together to question that direction and help shape what comes next."
   ]
 }

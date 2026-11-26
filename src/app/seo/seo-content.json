@@ -5,7 +5,7 @@
   },
   "defaults": {
     "title": "UNBLOCKED — Making Hidden Systems Visible",
-    "description": "UNBLOCKED brings creatives and independent thinkers together to investigate the systems shaping our lives, make them visible through creative work, and imagine how they could work differently.",
+    "description": "UNBLOCKED brings creatives and independent thinkers together to investigate the systems shaping our lives, make them visible through creative work, and imagine how they could improve.",
     "image": {
       "src": "/og_images.png",
       "width": 1200,
@@ -25,7 +25,7 @@
     },
     "/grants": {
       "title": "Creative Grants & Residencies — UNBLOCKED",
-      "description": "We support artists, designers, technologists, researchers and independent thinkers exploring the systems shaping culture, technology and everyday life."
+      "description": "We support artists, designers, technologists, researchers and independent thinkers exploring the systems shaping culture, technology and everyday life, and how they could be improved."
     },
     "/grants/culture-grants": {
       "title": "Culture Grants for Independent Creatives — UNBLOCKED",
